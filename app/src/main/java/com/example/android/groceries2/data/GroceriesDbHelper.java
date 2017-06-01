@@ -27,6 +27,16 @@ public class GroceriesDbHelper extends SQLiteOpenHelper {
     public static final String DATABASE_NAME = "groceries_db";
     //Database version
     public static final int DBVERSION = 1;
+    //Db table name
+    public static final String TABLE_GROCERIES = "groceries";
+    //Item's name
+    public static final String ITEM_NAME = "name";
+    //Item's price
+    public static final String ITEM_PRICE = "price";
+    //Item's weight
+    public static final String ITEM_WEIGHT = "weight";
+    //Item's measurement
+    public static final String ITEM_MEASURE = "measure";
 
 
     /**
@@ -58,6 +68,12 @@ public class GroceriesDbHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
 
+        String SQL_TABLE_CREATE = "CREATE TABLE " + TABLE_GROCERIES + " (" + "_id" +
+                " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                ITEM_NAME + " TEXT, " + ITEM_PRICE + " INTEGER, " + ITEM_WEIGHT + " INTEGER, " +
+                ITEM_MEASURE + " INTEGER);";
+
+        db.execSQL(SQL_TABLE_CREATE);
     }
 
     /**
@@ -82,6 +98,6 @@ public class GroceriesDbHelper extends SQLiteOpenHelper {
      */
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-
+        //Db stays version 1, nothing to do here
     }
 }
