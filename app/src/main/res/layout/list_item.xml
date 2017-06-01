@@ -42,7 +42,7 @@
         android:text="+" />
 
     <TextView
-        android:id="@+id/item_pre-price"
+        android:id="@+id/item_pre_price"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="~456.99 грн" />
