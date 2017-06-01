@@ -22,6 +22,13 @@ import android.database.sqlite.SQLiteOpenHelper;
  */
 
 public class GroceriesDbHelper extends SQLiteOpenHelper {
+
+    //Database name
+    public static final String DATABASE_NAME = "groceries_db";
+    //Database version
+    public static final int DBVERSION = 1;
+
+
     /**
      * Reqired implementation of a constructor.
      * Create a helper object to create, open, and/or manage a database.
