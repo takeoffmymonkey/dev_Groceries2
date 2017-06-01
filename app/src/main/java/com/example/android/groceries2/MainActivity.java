@@ -45,10 +45,14 @@ public class MainActivity extends AppCompatActivity {
         int itemWeight = cursor.getInt(cursor.getColumnIndex(GroceriesDbHelper.ITEM_WEIGHT));
         int itemMeasure = cursor.getInt(cursor.getColumnIndex(GroceriesDbHelper.ITEM_MEASURE));
 
-        cursor.close();
-        db.close();
+
         testText.setText("ID:" + itemId + " Name:" + itemName + " Price:"
                 + itemPrice + " Weight: " + itemWeight + " Measure: " + itemMeasure);
+
+
+        cursor.close();
+
+        deleteDatabase("groceries_db");
     }
 
 
