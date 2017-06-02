@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?><!-- Options menu for the CatalogActivity -->
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+
+    <item
+        android:id="@+id/settings_option_3"
+        android:title="Settings option 3"
+        android:icon="@drawable/ic_add_pet"
+        app:showAsAction="always"/>
+
+    <item
+        android:id="@+id/settings_option_4"
+        android:title="Settings option 4"
+        app:showAsAction="never" />
+</menu>

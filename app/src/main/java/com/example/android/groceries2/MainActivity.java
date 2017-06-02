@@ -34,11 +34,6 @@ public class MainActivity extends AppCompatActivity {
         dbHelper = new GroceriesDbHelper(this, GroceriesDbHelper.DATABASE_NAME,
                 null, GroceriesDbHelper.DBVERSION);
 
-
-
-
-
-
         CategoryAdapter adapter = new CategoryAdapter(getSupportFragmentManager());
         ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager);
         viewPager.setAdapter(adapter);
@@ -49,11 +44,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    @Override
+/*    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu options from the res/menu/menu_catalog.xml file.
         // This adds menu items to the app bar.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
+        getMenuInflater().inflate(R.menu.menu_list, menu);
         return true;
     }
 
@@ -77,7 +72,7 @@ public class MainActivity extends AppCompatActivity {
                 return true;
         }
         return super.onOptionsItemSelected(item);
-    }
+    }*/
 
 
 }

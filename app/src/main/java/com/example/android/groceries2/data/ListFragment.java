@@ -21,19 +21,19 @@ import com.example.android.groceries2.R;
  * Created by takeoff on 002 02 Jun 17.
  */
 
-public class ItemsFragment extends Fragment {
+public class ListFragment extends Fragment {
 
     private int itemsTotal = 0;
 
-    SQLiteDatabase db = MainActivity.dbHelper.getWritableDatabase();;
+    SQLiteDatabase db = MainActivity.dbHelper.getWritableDatabase();
+
     TextView testText;
     TextView testText2;
     View itemsView;
 
-    public ItemsFragment() {
+    public ListFragment() {
 
     }
-
 
 
     @Nullable
@@ -69,10 +69,9 @@ public class ItemsFragment extends Fragment {
     }
 
 
-
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.menu_items, menu);
+        inflater.inflate(R.menu.menu_list, menu);
         super.onCreateOptionsMenu(menu, inflater);
     }
 
@@ -81,7 +80,7 @@ public class ItemsFragment extends Fragment {
         // User clicked on a menu option in the app bar overflow menu
         switch (item.getItemId()) {
             // Respond to a click on the "Insert dummy data" menu option
-            case R.id.settings_option_3:
+            case R.id.settings_option_1:
                 String s = ("INSERT INTO groceries (" +
                         "_id, name, price, weight, measure) VALUES (" +
                         Integer.toString(itemsTotal + 1) + ", \"Test\"," + " 1, 1, 1);");
@@ -90,7 +89,7 @@ public class ItemsFragment extends Fragment {
                 db.execSQL(s);
                 return true;
             // Respond to a click on the "Delete all entries" menu option
-            case R.id.settings_option_4:
+            case R.id.settings_option_2:
 
                 return true;
         }
