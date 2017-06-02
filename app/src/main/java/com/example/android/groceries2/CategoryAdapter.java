@@ -1,11 +1,9 @@
-package com.example.android.groceries2.data;
+package com.example.android.groceries2;
 
-import android.content.Context;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
-import com.example.android.groceries2.R;
 
 /**
  * Created by takeoff on 002 02 Jun 17.

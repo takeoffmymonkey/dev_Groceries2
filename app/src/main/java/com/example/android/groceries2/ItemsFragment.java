@@ -1,4 +1,4 @@
-package com.example.android.groceries2.data;
+package com.example.android.groceries2;
 
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -14,8 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.example.android.groceries2.MainActivity;
-import com.example.android.groceries2.R;
+import com.example.android.groceries2.data.GroceriesDbHelper;
 
 /**
  * Created by takeoff on 002 02 Jun 17.
@@ -25,7 +24,8 @@ public class ItemsFragment extends Fragment {
 
     private int itemsTotal = 0;
 
-    SQLiteDatabase db = MainActivity.dbHelper.getWritableDatabase();;
+    SQLiteDatabase db = MainActivity.dbHelper.getWritableDatabase();
+    ;
     TextView testText;
     TextView testText2;
     View itemsView;
@@ -33,7 +33,6 @@ public class ItemsFragment extends Fragment {
     public ItemsFragment() {
 
     }
-
 
 
     @Nullable
@@ -67,7 +66,6 @@ public class ItemsFragment extends Fragment {
 
 
     }
-
 
 
     @Override

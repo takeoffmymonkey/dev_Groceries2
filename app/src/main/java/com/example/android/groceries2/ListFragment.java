@@ -1,4 +1,4 @@
-package com.example.android.groceries2.data;
+package com.example.android.groceries2;
 
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -14,8 +14,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.example.android.groceries2.MainActivity;
-import com.example.android.groceries2.R;
+
+import com.example.android.groceries2.data.GroceriesDbHelper;
 
 /**
  * Created by takeoff on 002 02 Jun 17.
