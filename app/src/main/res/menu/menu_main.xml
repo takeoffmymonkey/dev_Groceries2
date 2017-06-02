@@ -5,7 +5,9 @@
 
     <item
         android:id="@+id/settings_option_1"
-        android:title="Settings option 1" />
+        android:title="Settings option 1"
+        android:icon="@drawable/ic_done"
+        app:showAsAction="always"/>
 
     <item
         android:id="@+id/settings_option_2"
