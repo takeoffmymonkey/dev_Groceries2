@@ -2,6 +2,7 @@ package com.example.android.groceries2;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -9,6 +10,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 /**
  * Created by takeoff on 002 02 Jun 17.
@@ -29,8 +31,23 @@ public class LogFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
 
-        logView = inflater.inflate(R.layout.tab_log, container, false);
 
+        if (true) {
+            logView = inflater.inflate(R.layout.empty, container, false);
+
+            FloatingActionButton fabAddInit = (FloatingActionButton) logView.findViewById(R.id.fab_add_item_to_db_init);
+
+            fabAddInit.setVisibility(View.GONE);
+
+            TextView textView = (TextView) logView.findViewById(R.id.empty_text);
+            TextView textSubView = (TextView) logView.findViewById(R.id.empty_text_sub);
+            textView.setText("No complete lists");
+            textSubView.setText("Complete list by checking it on LIST tab");
+
+        } else {
+
+            logView = inflater.inflate(R.layout.tab_log, container, false);
+        }
 
         setHasOptionsMenu(true);
 

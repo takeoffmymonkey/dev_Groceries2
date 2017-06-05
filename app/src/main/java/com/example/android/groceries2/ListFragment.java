@@ -10,6 +10,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 /**
  * Created by takeoff on 002 02 Jun 17.
@@ -30,16 +31,32 @@ public class ListFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
 
-        listView = inflater.inflate(R.layout.tab_list, container, false);
+        if (true) {
+            listView = inflater.inflate(R.layout.empty, container, false);
+
+            FloatingActionButton fabAddInit = (FloatingActionButton) listView.findViewById(R.id.fab_add_item_to_db_init);
+
+            fabAddInit.setVisibility(View.GONE);
+
+            TextView textView = (TextView) listView.findViewById(R.id.empty_text);
+            TextView textSubView = (TextView) listView.findViewById(R.id.empty_text_sub);
+            textView.setText("No created lists");
+            textSubView.setText("Go to ITEMS tab to create a list");
+
+        } else {
 
 
-        FloatingActionButton fabComplete = (FloatingActionButton) listView.findViewById(R.id.fab_complete_list);
+            listView = inflater.inflate(R.layout.tab_list, container, false);
 
-        fabComplete.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-            }
-        });
+
+            FloatingActionButton fabComplete = (FloatingActionButton) listView.findViewById(R.id.fab_complete_list);
+
+            fabComplete.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                }
+            });
+        }
 
         setHasOptionsMenu(true);
 

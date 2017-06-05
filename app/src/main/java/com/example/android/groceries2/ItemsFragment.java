@@ -13,6 +13,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListView;
 import android.widget.TextView;
 
 /**
@@ -25,8 +26,6 @@ public class ItemsFragment extends Fragment {
 
     SQLiteDatabase db = MainActivity.dbHelper.getWritableDatabase();
 
-    TextView testText;
-    TextView testText2;
     View itemsView;
 
     public ItemsFragment() {
@@ -39,26 +38,40 @@ public class ItemsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
 
-        itemsView = inflater.inflate(R.layout.tab_items, container, false);
+        if (true) {
+            itemsView = inflater.inflate(R.layout.empty, container, false);
+
+            FloatingActionButton fabAddInit = (FloatingActionButton) itemsView.findViewById(R.id.fab_add_item_to_db_init);
+
+            TextView textView = (TextView) itemsView.findViewById(R.id.empty_text);
+            TextView textSubView = (TextView) itemsView.findViewById(R.id.empty_text_sub);
+            textView.setText("No added items");
+            textSubView.setText("Add an item with + button");
+
+        } else {
 
 
-        FloatingActionButton fabAdd = (FloatingActionButton) itemsView.findViewById(R.id.fab_add_item_to_db);
-        FloatingActionButton fabAddInit = (FloatingActionButton) itemsView.findViewById(R.id.fab_add_item_to_db_init);
-        FloatingActionButton fabDelete = (FloatingActionButton) itemsView.findViewById(R.id.fab_approve_list);
+            itemsView = inflater.inflate(R.layout.tab_items, container, false);
+            FloatingActionButton fabAdd = (FloatingActionButton) itemsView.findViewById(R.id.fab_add_item_to_db);
+            FloatingActionButton fabDelete = (FloatingActionButton) itemsView.findViewById(R.id.fab_approve_list);
 
-        fabAdd.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //updateItem();
-            }
-        });
+            fabAdd.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    //updateItem();
+                }
+            });
 
-        fabDelete.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+            fabDelete.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
 
-            }
-        });
+                }
+            });
+
+
+        }
+
 
         setHasOptionsMenu(true);
 

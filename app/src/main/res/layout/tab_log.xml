@@ -1,46 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:layout_height="match_parent">
 
     <ListView
         android:id="@+id/items_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
-
-    <RelativeLayout
-        android:id="@+id/items_log_view"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <ImageView
-            android:id="@+id/empty_basket"
-            android:layout_width="150dp"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:adjustViewBounds="true"
-            android:src="@drawable/empty_basket" />
-
-        <TextView
-            android:id="@+id/no_items_in_db"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/empty_basket"
-            android:layout_centerHorizontal="true"
-            android:text="No compete lists yet..."
-            android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
-
-        <TextView
-            android:id="@+id/add_some_items"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/no_items_in_db"
-            android:layout_centerHorizontal="true"
-            android:text="Complete list by checking it on LIST tab" />
-
-
-    </RelativeLayout>
-
 
 </RelativeLayout>
