@@ -37,7 +37,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/no_items_in_db"
             android:layout_centerHorizontal="true"
-            android:text="Complete list by checking it on List tab" />
+            android:text="Complete list by checking it on LIST tab" />
 
 
     </RelativeLayout>

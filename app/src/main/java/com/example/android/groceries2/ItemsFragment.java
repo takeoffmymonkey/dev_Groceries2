@@ -1,6 +1,5 @@
 package com.example.android.groceries2;
 
-import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -13,8 +12,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-
-import com.example.android.groceries2.data.GroceriesDbHelper;
 
 /**
  * Created by takeoff on 002 02 Jun 17.
@@ -40,7 +37,7 @@ public class ItemsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
 
-        itemsView = inflater.inflate(R.layout.items, container, false);
+        itemsView = inflater.inflate(R.layout.tab_items, container, false);
 
 
         FloatingActionButton fabAdd = (FloatingActionButton) itemsView.findViewById(R.id.fab_add_item_to_db);
@@ -62,6 +59,9 @@ public class ItemsFragment extends Fragment {
         });
 
         setHasOptionsMenu(true);
+
+
+
 
         return itemsView;
 

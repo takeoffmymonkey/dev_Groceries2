@@ -2,7 +2,6 @@ package com.example.android.groceries2;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -30,7 +29,7 @@ public class LogFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
 
-        logView = inflater.inflate(R.layout.log, container, false);
+        logView = inflater.inflate(R.layout.tab_log, container, false);
 
 
         setHasOptionsMenu(true);

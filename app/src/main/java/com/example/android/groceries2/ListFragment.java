@@ -30,7 +30,7 @@ public class ListFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
 
-        listView = inflater.inflate(R.layout.list, container, false);
+        listView = inflater.inflate(R.layout.tab_list, container, false);
 
 
         FloatingActionButton fabComplete = (FloatingActionButton) listView.findViewById(R.id.fab_complete_list);

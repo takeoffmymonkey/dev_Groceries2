@@ -21,9 +21,9 @@ public class CategoryAdapter extends FragmentPagerAdapter {
     @Override
     public Fragment getItem(int position) {
         if (position == 0) {
-            return new ListFragment();
-        } else if (position == 1) {
             return new ItemsFragment();
+        } else if (position == 1) {
+            return new ListFragment();
         } else {
             return new LogFragment();
         }
@@ -40,9 +40,9 @@ public class CategoryAdapter extends FragmentPagerAdapter {
     @Override
     public CharSequence getPageTitle(int position) {
         if (position == 0) {
-            return "List";
-        } else if (position == 1) {
             return "Items";
+        } else if (position == 1) {
+            return "List";
         } else {
             return "Log";
         }

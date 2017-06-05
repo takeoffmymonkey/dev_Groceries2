@@ -7,6 +7,7 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
 
 
 import com.example.android.groceries2.data.GroceriesDbHelper;
@@ -25,10 +26,14 @@ public class MainActivity extends AppCompatActivity {
         dbHelper = new GroceriesDbHelper(this, GroceriesDbHelper.DATABASE_NAME,
                 null, GroceriesDbHelper.DBVERSION);
 
+
+
         CategoryAdapter adapter = new CategoryAdapter(getSupportFragmentManager());
         ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager);
         viewPager.setAdapter(adapter);
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
+
+
 
         tabLayout.setupWithViewPager(viewPager);
 
