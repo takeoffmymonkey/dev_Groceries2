@@ -25,7 +25,7 @@ public class ItemsFragment extends Fragment {
     private int itemsTotal = 0;
 
     SQLiteDatabase db = MainActivity.dbHelper.getWritableDatabase();
-    ;
+
     TextView testText;
     TextView testText2;
     View itemsView;
@@ -40,16 +40,17 @@ public class ItemsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
 
-        itemsView = inflater.inflate(R.layout.items_list, container, false);
+        itemsView = inflater.inflate(R.layout.items, container, false);
 
 
-        FloatingActionButton fabAdd = (FloatingActionButton) itemsView.findViewById(R.id.fab_add_item);
-        FloatingActionButton fabDelete = (FloatingActionButton) itemsView.findViewById(R.id.fab_delete_db);
+        FloatingActionButton fabAdd = (FloatingActionButton) itemsView.findViewById(R.id.fab_add_item_to_db);
+        FloatingActionButton fabAddInit = (FloatingActionButton) itemsView.findViewById(R.id.fab_add_item_to_db_init);
+        FloatingActionButton fabDelete = (FloatingActionButton) itemsView.findViewById(R.id.fab_approve_list);
 
         fabAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                updateItem();
+                //updateItem();
             }
         });
 
@@ -96,7 +97,7 @@ public class ItemsFragment extends Fragment {
     }
 
 
-    public void updateItem() {
+/*    public void updateItem() {
         Cursor cursor = db.query(GroceriesDbHelper.TABLE_GROCERIES, null, null, null, null, null, null);
 
         testText = (TextView) itemsView.findViewById(R.id.test_text_field);
@@ -117,5 +118,5 @@ public class ItemsFragment extends Fragment {
 
 
         cursor.close();
-    }
+    }*/
 }

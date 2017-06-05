@@ -15,12 +15,12 @@ import android.view.ViewGroup;
  * Created by takeoff on 002 02 Jun 17.
  */
 
-public class ListFragment extends Fragment {
+public class LogFragment extends Fragment {
 
 
-    View listView;
+    View logView;
 
-    public ListFragment() {
+    public LogFragment() {
 
     }
 
@@ -30,20 +30,12 @@ public class ListFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
 
-        listView = inflater.inflate(R.layout.list, container, false);
+        logView = inflater.inflate(R.layout.log, container, false);
 
-
-        FloatingActionButton fabComplete = (FloatingActionButton) listView.findViewById(R.id.fab_complete_list);
-
-        fabComplete.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-            }
-        });
 
         setHasOptionsMenu(true);
 
-        return listView;
+        return logView;
 
 
     }

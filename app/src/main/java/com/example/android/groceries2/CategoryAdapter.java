@@ -22,8 +22,10 @@ public class CategoryAdapter extends FragmentPagerAdapter {
     public Fragment getItem(int position) {
         if (position == 0) {
             return new ListFragment();
-        } else {
+        } else if (position == 1) {
             return new ItemsFragment();
+        } else {
+            return new LogFragment();
         }
     }
 
@@ -31,7 +33,7 @@ public class CategoryAdapter extends FragmentPagerAdapter {
     //Return number of pages
     @Override
     public int getCount() {
-        return 2;
+        return 3;
     }
 
 
@@ -39,8 +41,10 @@ public class CategoryAdapter extends FragmentPagerAdapter {
     public CharSequence getPageTitle(int position) {
         if (position == 0) {
             return "List";
-        } else {
+        } else if (position == 1) {
             return "Items";
+        } else {
+            return "Log";
         }
     }
 }
