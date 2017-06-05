@@ -46,7 +46,7 @@
             android:layout_alignParentBottom="true"
             android:layout_centerInParent="true"
             android:layout_margin="16dp"
-            android:src="@android:drawable/ic_input_add" />
+            android:src="@mipmap/ic_add_white_24dp" />
 
     </RelativeLayout>
 
@@ -58,7 +58,7 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
         android:layout_margin="16dp"
-        android:src="@drawable/ic_done" />
+        android:src="@mipmap/ic_check_white_24dp" />
 
 
     <android.support.design.widget.FloatingActionButton
@@ -68,6 +68,6 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
         android:layout_margin="16dp"
-        android:src="@android:drawable/ic_input_add" />
+        android:src="@mipmap/ic_add_white_24dp" />
 
 </RelativeLayout>

@@ -4,13 +4,25 @@
 
 
     <item
-        android:id="@+id/settings_option_3"
-        android:title="Settings option 3"
-        android:icon="@drawable/ic_add_pet"
-        app:showAsAction="always"/>
+        android:id="@+id/settings_preferences"
+        android:icon="@mipmap/ic_settings_white_24dp"
+        android:title="Prefernces"
+        app:showAsAction="always" />
 
     <item
-        android:id="@+id/settings_option_4"
-        android:title="Settings option 4"
+        android:id="@+id/settings_option_add_item_dummy"
+        android:title="Add item dummy"
         app:showAsAction="never" />
+
+    <item
+        android:id="@+id/settings_option_add_item"
+        android:title="Add item"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/settings_option_delete_all_items"
+        android:title="Delete all items"
+        app:showAsAction="never" />
+
+
 </menu>

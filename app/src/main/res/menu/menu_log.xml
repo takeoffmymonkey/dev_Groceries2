@@ -4,13 +4,14 @@
 
 
     <item
-        android:id="@+id/settings_option_1"
-        android:icon="@android:drawable/ic_menu_manage"
-        android:title="Settings option 1"
+        android:id="@+id/settings_preferences"
+        android:icon="@mipmap/ic_settings_white_24dp"
+        android:title="Prefernces"
         app:showAsAction="always" />
 
     <item
-        android:id="@+id/settings_option_2"
-        android:title="Settings option 2"
+        android:id="@+id/settings_option_delete_all_lists"
+        android:title="Delete all lists"
         app:showAsAction="never" />
+
 </menu>

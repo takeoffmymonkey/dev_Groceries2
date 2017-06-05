@@ -1,10 +1,12 @@
 package com.example.android.groceries2;
 
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -61,8 +63,6 @@ public class ItemsFragment extends Fragment {
         setHasOptionsMenu(true);
 
 
-
-
         return itemsView;
 
 
@@ -80,7 +80,7 @@ public class ItemsFragment extends Fragment {
         // User clicked on a menu option in the app bar overflow menu
         switch (item.getItemId()) {
             // Respond to a click on the "Insert dummy data" menu option
-            case R.id.settings_option_3:
+            case R.id.settings_option_add_item_dummy:
                 String s = ("INSERT INTO groceries (" +
                         "_id, name, price, weight, measure) VALUES (" +
                         Integer.toString(itemsTotal + 1) + ", \"Test\"," + " 1, 1, 1);");
@@ -89,10 +89,15 @@ public class ItemsFragment extends Fragment {
                 db.execSQL(s);
                 return true;
             // Respond to a click on the "Delete all entries" menu option
-            case R.id.settings_option_4:
+            case R.id.settings_option_add_item:
 
                 return true;
+
+            case R.id.settings_option_delete_all_items:
+                return true;
         }
+
+
         return super.onOptionsItemSelected(item);
     }
 

@@ -42,7 +42,7 @@ public class LogFragment extends Fragment {
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.menu_list, menu);
+        inflater.inflate(R.menu.menu_log, menu);
         super.onCreateOptionsMenu(menu, inflater);
     }
 
@@ -51,12 +51,10 @@ public class LogFragment extends Fragment {
         // User clicked on a menu option in the app bar overflow menu
         switch (item.getItemId()) {
             // Respond to a click on the "Insert dummy data" menu option
-            case R.id.settings_option_1:
+            case R.id.settings_option_delete_all_lists:
                 return true;
             // Respond to a click on the "Delete all entries" menu option
-            case R.id.settings_option_2:
 
-                return true;
         }
         return super.onOptionsItemSelected(item);
     }
