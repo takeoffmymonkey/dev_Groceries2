@@ -1,6 +1,7 @@
 package com.example.android.groceries2;
 
 import android.content.Intent;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -14,6 +15,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.example.android.groceries2.data.GroceriesDbHelper;
 
 import static com.example.android.groceries2.data.GroceriesDbHelper.GROCERIES_TABLE_CREATE;
 import static com.example.android.groceries2.data.GroceriesDbHelper.GROCERIES_TABLE_DROP;
@@ -117,7 +120,10 @@ public class ItemsFragment extends Fragment {
 
                 itemsTotal++;
                 db.execSQL(s);
-                Toast.makeText(getActivity(), "Item added" + "(" + itemsTotal + ")", Toast.LENGTH_SHORT)
+
+                Cursor cursor = db.query(GroceriesDbHelper.TABLE_GROCERIES, null, null, null, null, null, null);
+
+                Toast.makeText(getActivity(), "Item added" + "(" + cursor.getCount() + ")", Toast.LENGTH_SHORT)
                         .show();
                 return true;
             // Respond to a click on the "Delete all entries" menu option
@@ -129,6 +135,7 @@ public class ItemsFragment extends Fragment {
 
                 db.execSQL(GROCERIES_TABLE_DROP);
                 db.execSQL(GROCERIES_TABLE_CREATE);
+                itemsTotal = 0;
                 Toast.makeText(getActivity(), "All items successfully deleted!", Toast.LENGTH_SHORT)
                         .show();
                 return true;
