@@ -1,6 +1,7 @@
 package com.example.android.groceries2;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.drawable.Drawable;
@@ -51,7 +52,8 @@ public class ItemsFragment extends Fragment {
             fabAddInit.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
+                    Intent intent = new Intent(getActivity(), EditorActivity.class);
+                    startActivity(intent);
                 }
             });
 
