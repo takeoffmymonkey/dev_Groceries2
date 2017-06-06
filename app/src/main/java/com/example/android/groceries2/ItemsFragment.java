@@ -92,6 +92,9 @@ public class ItemsFragment extends Fragment {
         }
 
 
+        Cursor cursor = db.query(GroceriesDbHelper.TABLE_GROCERIES, null, null, null, null, null, null);
+        itemsTotal = cursor.getCount();
+
         setHasOptionsMenu(true);
 
 
@@ -128,7 +131,8 @@ public class ItemsFragment extends Fragment {
                 return true;
             // Respond to a click on the "Delete all entries" menu option
             case R.id.settings_option_add_item:
-
+                Intent intent = new Intent(getActivity(), EditorActivity.class);
+                startActivity(intent);
                 return true;
 
             case R.id.settings_option_delete_all_items:
