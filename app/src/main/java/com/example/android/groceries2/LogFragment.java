@@ -32,10 +32,11 @@ public class LogFragment extends Fragment {
                              @Nullable Bundle savedInstanceState) {
 
 
-        if (true) {
+        if (MainActivity.EMPTY) {
             logView = inflater.inflate(R.layout.empty, container, false);
 
-            FloatingActionButton fabAddInit = (FloatingActionButton) logView.findViewById(R.id.fab_add_item_to_db_init);
+            FloatingActionButton fabAddInit =
+                    (FloatingActionButton) logView.findViewById(R.id.fab_add_item_to_db_init);
 
             fabAddInit.setVisibility(View.GONE);
 

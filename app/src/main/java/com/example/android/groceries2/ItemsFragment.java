@@ -1,5 +1,7 @@
 package com.example.android.groceries2;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -15,6 +17,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.TextView;
+
+import static android.R.attr.defaultValue;
 
 /**
  * Created by takeoff on 002 02 Jun 17.
@@ -38,22 +42,35 @@ public class ItemsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
 
-        if (true) {
+        if (MainActivity.EMPTY) {
             itemsView = inflater.inflate(R.layout.empty, container, false);
 
-            FloatingActionButton fabAddInit = (FloatingActionButton) itemsView.findViewById(R.id.fab_add_item_to_db_init);
+            FloatingActionButton fabAddInit = (FloatingActionButton)
+                    itemsView.findViewById(R.id.fab_add_item_to_db_init);
+
+            fabAddInit.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                }
+            });
 
             TextView textView = (TextView) itemsView.findViewById(R.id.empty_text);
             TextView textSubView = (TextView) itemsView.findViewById(R.id.empty_text_sub);
+
+
             textView.setText("No added items");
             textSubView.setText("Add an item with + button");
+
 
         } else {
 
 
             itemsView = inflater.inflate(R.layout.tab_items, container, false);
-            FloatingActionButton fabAdd = (FloatingActionButton) itemsView.findViewById(R.id.fab_add_item_to_db);
-            FloatingActionButton fabDelete = (FloatingActionButton) itemsView.findViewById(R.id.fab_approve_list);
+            FloatingActionButton fabAdd =
+                    (FloatingActionButton) itemsView.findViewById(R.id.fab_add_item_to_db);
+            FloatingActionButton fabDelete =
+                    (FloatingActionButton) itemsView.findViewById(R.id.fab_approve_list);
 
             fabAdd.setOnClickListener(new View.OnClickListener() {
                 @Override

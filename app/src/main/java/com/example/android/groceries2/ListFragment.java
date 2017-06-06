@@ -31,10 +31,11 @@ public class ListFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
 
-        if (true) {
+        if (MainActivity.EMPTY) {
             listView = inflater.inflate(R.layout.empty, container, false);
 
-            FloatingActionButton fabAddInit = (FloatingActionButton) listView.findViewById(R.id.fab_add_item_to_db_init);
+            FloatingActionButton fabAddInit =
+                    (FloatingActionButton) listView.findViewById(R.id.fab_add_item_to_db_init);
 
             fabAddInit.setVisibility(View.GONE);
 
