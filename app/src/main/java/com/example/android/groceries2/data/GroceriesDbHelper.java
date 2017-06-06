@@ -38,6 +38,12 @@ public class GroceriesDbHelper extends SQLiteOpenHelper {
     //Item's measurement
     public static final String ITEM_MEASURE = "measure";
 
+    public static final String GROCERIES_TABLE_CREATE = "CREATE TABLE " + TABLE_GROCERIES + " (" + "_id" +
+            " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+            ITEM_NAME + " TEXT, " + ITEM_PRICE + " INTEGER, " + ITEM_WEIGHT + " INTEGER, " +
+            ITEM_MEASURE + " INTEGER);";
+
+    public static final String GROCERIES_TABLE_DROP = "DROP TABLE " + TABLE_GROCERIES + ";";
 
     /**
      * Reqired implementation of a constructor.
@@ -68,12 +74,7 @@ public class GroceriesDbHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
 
-        String SQL_TABLE_CREATE = "CREATE TABLE " + TABLE_GROCERIES + " (" + "_id" +
-                " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                ITEM_NAME + " TEXT, " + ITEM_PRICE + " INTEGER, " + ITEM_WEIGHT + " INTEGER, " +
-                ITEM_MEASURE + " INTEGER);";
-
-        db.execSQL(SQL_TABLE_CREATE);
+        db.execSQL(GROCERIES_TABLE_CREATE);
     }
 
     /**

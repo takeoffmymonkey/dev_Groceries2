@@ -1,25 +1,22 @@
 package com.example.android.groceries2;
 
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
-import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
-import static android.R.attr.defaultValue;
+import static com.example.android.groceries2.data.GroceriesDbHelper.GROCERIES_TABLE_CREATE;
+import static com.example.android.groceries2.data.GroceriesDbHelper.GROCERIES_TABLE_DROP;
 
 /**
  * Created by takeoff on 002 02 Jun 17.
@@ -113,12 +110,15 @@ public class ItemsFragment extends Fragment {
         switch (item.getItemId()) {
             // Respond to a click on the "Insert dummy data" menu option
             case R.id.settings_option_add_item_dummy:
+
                 String s = ("INSERT INTO groceries (" +
                         "_id, name, price, weight, measure) VALUES (" +
                         Integer.toString(itemsTotal + 1) + ", \"Test\"," + " 1, 1, 1);");
 
                 itemsTotal++;
                 db.execSQL(s);
+                Toast.makeText(getActivity(), "Item added" + "(" + itemsTotal + ")", Toast.LENGTH_SHORT)
+                        .show();
                 return true;
             // Respond to a click on the "Delete all entries" menu option
             case R.id.settings_option_add_item:
@@ -126,6 +126,11 @@ public class ItemsFragment extends Fragment {
                 return true;
 
             case R.id.settings_option_delete_all_items:
+
+                db.execSQL(GROCERIES_TABLE_DROP);
+                db.execSQL(GROCERIES_TABLE_CREATE);
+                Toast.makeText(getActivity(), "All items successfully deleted!", Toast.LENGTH_SHORT)
+                        .show();
                 return true;
         }
 
