@@ -7,16 +7,20 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.CursorAdapter;
+import android.support.v4.widget.SimpleCursorAdapter;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.android.groceries2.data.GroceriesDbHelper;
+
 
 import static com.example.android.groceries2.data.GroceriesDbHelper.GROCERIES_TABLE_CREATE;
 import static com.example.android.groceries2.data.GroceriesDbHelper.GROCERIES_TABLE_DROP;
@@ -29,7 +33,7 @@ public class ItemsFragment extends Fragment {
 
     private int itemsTotal = 0;
 
-    SQLiteDatabase db = MainActivity.dbHelper.getWritableDatabase();
+    SQLiteDatabase db = MainActivity.dbHelper.getReadableDatabase();
 
     View itemsView;
 
@@ -43,7 +47,12 @@ public class ItemsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
 
-        if (MainActivity.EMPTY) {
+
+        Cursor cursor = db.query(GroceriesDbHelper.TABLE_GROCERIES, new String[]{"_id", "name"},
+                null, null, null, null, null);
+        itemsTotal = cursor.getCount();
+
+        if (itemsTotal == 0) {
             itemsView = inflater.inflate(R.layout.empty, container, false);
 
             FloatingActionButton fabAddInit = (FloatingActionButton)
@@ -89,11 +98,24 @@ public class ItemsFragment extends Fragment {
             });
 
 
+            // Find the ListView which will be populated with the pet data
+            //android.widget.ListView{4283e3b8 V.ED.VC. ......I. 0,0-0,0 #7f0e0073 app:id/list}
+            ListView itemsListView = (ListView) itemsView.findViewById(R.id.items_list);
+
+
+            // Find and set empty view on the ListView, so that it only shows when the list has 0 items.
+            /*View emptyView = getActivity().findViewById(R.id.empty_view);
+            itemsListView.setEmptyView(emptyView);*/
+
+            // Setup an Adapter to create a list item for each row of pet data in the Cursor.
+            // There is no pet data yet (until the loader finishes) so pass in null for the Cursor.
+            CursorAdapter simpleCursorAdapter = new SimpleCursorAdapter(getActivity(), R.layout.list_item, cursor,
+                    new String[]{"name"}, new int[]{R.id.item_name}, 0);
+
+            itemsListView.setAdapter(simpleCursorAdapter);
+
+
         }
-
-
-        Cursor cursor = db.query(GroceriesDbHelper.TABLE_GROCERIES, null, null, null, null, null, null);
-        itemsTotal = cursor.getCount();
 
         setHasOptionsMenu(true);
 
@@ -128,6 +150,7 @@ public class ItemsFragment extends Fragment {
 
                 Toast.makeText(getActivity(), "Item added" + "(" + cursor.getCount() + ")", Toast.LENGTH_SHORT)
                         .show();
+                getActivity().recreate();
                 return true;
             // Respond to a click on the "Delete all entries" menu option
             case R.id.settings_option_add_item:
@@ -142,12 +165,17 @@ public class ItemsFragment extends Fragment {
                 itemsTotal = 0;
                 Toast.makeText(getActivity(), "All items successfully deleted!", Toast.LENGTH_SHORT)
                         .show();
+
+
+                getActivity().recreate();
                 return true;
         }
 
 
         return super.onOptionsItemSelected(item);
     }
+
+
 
 
 /*    public void updateItem() {
