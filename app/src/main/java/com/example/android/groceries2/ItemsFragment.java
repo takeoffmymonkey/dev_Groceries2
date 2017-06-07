@@ -36,6 +36,8 @@ public class ItemsFragment extends Fragment {
     SQLiteDatabase db = MainActivity.dbHelper.getReadableDatabase();
 
     View itemsView;
+    CursorAdapter simpleCursorAdapter;
+
 
     public ItemsFragment() {
 
@@ -52,70 +54,53 @@ public class ItemsFragment extends Fragment {
                 null, null, null, null, null);
         itemsTotal = cursor.getCount();
 
-        if (itemsTotal == 0) {
-            itemsView = inflater.inflate(R.layout.empty, container, false);
 
-            FloatingActionButton fabAddInit = (FloatingActionButton)
-                    itemsView.findViewById(R.id.fab_add_item_to_db_init);
+        itemsView = inflater.inflate(R.layout.tab_items, container, false);
+        FloatingActionButton fabAdd =
+                (FloatingActionButton) itemsView.findViewById(R.id.fab_add_item_to_db);
+        FloatingActionButton fabDelete =
+                (FloatingActionButton) itemsView.findViewById(R.id.fab_approve_list);
+        FloatingActionButton fabAddInit = (FloatingActionButton)
+                itemsView.findViewById(R.id.fab_add_item_to_db_init);
 
-            fabAddInit.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent intent = new Intent(getActivity(), EditorActivity.class);
-                    startActivity(intent);
-                }
-            });
+        fabAddInit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), EditorActivity.class);
+                startActivity(intent);
+            }
+        });
 
-            TextView textView = (TextView) itemsView.findViewById(R.id.empty_text);
-            TextView textSubView = (TextView) itemsView.findViewById(R.id.empty_text_sub);
+        fabAdd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //updateItem();
+            }
+        });
 
+        fabDelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
 
-            textView.setText("No added items");
-            textSubView.setText("Add an item with + button");
-
-
-        } else {
-
-
-            itemsView = inflater.inflate(R.layout.tab_items, container, false);
-            FloatingActionButton fabAdd =
-                    (FloatingActionButton) itemsView.findViewById(R.id.fab_add_item_to_db);
-            FloatingActionButton fabDelete =
-                    (FloatingActionButton) itemsView.findViewById(R.id.fab_approve_list);
-
-            fabAdd.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    //updateItem();
-                }
-            });
-
-            fabDelete.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-
-                }
-            });
+            }
+        });
 
 
-            // Find the ListView which will be populated with the pet data
-            //android.widget.ListView{4283e3b8 V.ED.VC. ......I. 0,0-0,0 #7f0e0073 app:id/list}
-            ListView itemsListView = (ListView) itemsView.findViewById(R.id.items_list);
+        // Find the ListView which will be populated with the pet data
+        ListView itemsListView = (ListView) itemsView.findViewById(R.id.items_list);
 
 
-            // Find and set empty view on the ListView, so that it only shows when the list has 0 items.
-            /*View emptyView = getActivity().findViewById(R.id.empty_view);
-            itemsListView.setEmptyView(emptyView);*/
+        // Find and set empty view on the ListView, so that it only shows when the list has 0 items.
+        View emptyView = itemsView.findViewById(R.id.empty_view);
+        itemsListView.setEmptyView(emptyView);
 
-            // Setup an Adapter to create a list item for each row of pet data in the Cursor.
-            // There is no pet data yet (until the loader finishes) so pass in null for the Cursor.
-            CursorAdapter simpleCursorAdapter = new SimpleCursorAdapter(getActivity(), R.layout.list_item, cursor,
-                    new String[]{"name"}, new int[]{R.id.item_name}, 0);
+        // Setup an Adapter to create a list item for each row of pet data in the Cursor.
+        // There is no pet data yet (until the loader finishes) so pass in null for the Cursor.
+        simpleCursorAdapter = new SimpleCursorAdapter(getActivity(), R.layout.list_item, cursor,
+                new String[]{"name"}, new int[]{R.id.item_name}, 0);
 
-            itemsListView.setAdapter(simpleCursorAdapter);
+        itemsListView.setAdapter(simpleCursorAdapter);
 
-
-        }
 
         setHasOptionsMenu(true);
 
@@ -150,7 +135,7 @@ public class ItemsFragment extends Fragment {
 
                 Toast.makeText(getActivity(), "Item added" + "(" + cursor.getCount() + ")", Toast.LENGTH_SHORT)
                         .show();
-                getActivity().recreate();
+                simpleCursorAdapter.changeCursor(cursor);
                 return true;
             // Respond to a click on the "Delete all entries" menu option
             case R.id.settings_option_add_item:
@@ -165,39 +150,14 @@ public class ItemsFragment extends Fragment {
                 itemsTotal = 0;
                 Toast.makeText(getActivity(), "All items successfully deleted!", Toast.LENGTH_SHORT)
                         .show();
+                cursor = db.query(GroceriesDbHelper.TABLE_GROCERIES, null, null, null, null, null, null);
 
-
-                getActivity().recreate();
+                simpleCursorAdapter.changeCursor(cursor);
+                //getActivity().recreate();
                 return true;
         }
 
 
         return super.onOptionsItemSelected(item);
     }
-
-
-
-
-/*    public void updateItem() {
-        Cursor cursor = db.query(GroceriesDbHelper.TABLE_GROCERIES, null, null, null, null, null, null);
-
-        testText = (TextView) itemsView.findViewById(R.id.test_text_field);
-        testText2 = (TextView) itemsView.findViewById(R.id.test_text_field2);
-
-
-        cursor.moveToFirst();
-        int itemId = cursor.getInt(cursor.getColumnIndex("_id"));
-        String itemName = cursor.getString(cursor.getColumnIndex(GroceriesDbHelper.ITEM_NAME));
-        int itemPrice = cursor.getInt(cursor.getColumnIndex(GroceriesDbHelper.ITEM_PRICE));
-        int itemWeight = cursor.getInt(cursor.getColumnIndex(GroceriesDbHelper.ITEM_WEIGHT));
-        int itemMeasure = cursor.getInt(cursor.getColumnIndex(GroceriesDbHelper.ITEM_MEASURE));
-
-
-        testText.setText("ID:" + itemId + " Name:" + itemName + " Price:"
-                + itemPrice + " Weight: " + itemWeight + " Measure: " + itemMeasure);
-        testText2.setText("Rows:" + cursor.getCount());
-
-
-        cursor.close();
-    }*/
 }
