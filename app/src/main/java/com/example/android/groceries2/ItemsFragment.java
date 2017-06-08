@@ -56,7 +56,7 @@ public class ItemsFragment extends Fragment {
                              @Nullable Bundle savedInstanceState) {
 
 
-        Cursor cursor = db.query(GroceriesDbHelper.TABLE_GROCERIES, new String[]{"_id", "name"},
+        Cursor cursor = db.query(GroceriesDbHelper.TABLE_GROCERIES, null,
                 null, null, null, null, null);
         itemsTotal = cursor.getCount();
 
@@ -104,7 +104,7 @@ public class ItemsFragment extends Fragment {
         // Setup an Adapter to create a list item for each row of pet data in the Cursor.
         // There is no pet data yet (until the loader finishes) so pass in null for the Cursor.
         simpleCursorAdapter = new SimpleCursorAdapter(getActivity(), R.layout.list_item, cursor,
-                new String[]{"name"}, new int[]{R.id.item_checkbox}, 0);
+                new String[]{"name", "checked"}, new int[]{R.id.item_checkbox, R.id.item_measure}, 0);
 
         itemsListView.setAdapter(simpleCursorAdapter);
 
@@ -203,8 +203,12 @@ public class ItemsFragment extends Fragment {
 
         @Override
         protected void onPostExecute(Boolean success) {
-            if (success) Toast.makeText(getActivity(), "Checked", Toast.LENGTH_SHORT).show();
-            else Toast.makeText(getActivity(), "SQL error", Toast.LENGTH_SHORT).show();
+            if (success) {
+                Toast.makeText(getActivity(), "Checked", Toast.LENGTH_SHORT).show();
+                Cursor cursor = db.query(GroceriesDbHelper.TABLE_GROCERIES, null, null, null, null, null, null);
+                simpleCursorAdapter.changeCursor(cursor);
+
+            } else Toast.makeText(getActivity(), "SQL error", Toast.LENGTH_SHORT).show();
         }
     }
 }
