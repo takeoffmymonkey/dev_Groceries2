@@ -1,8 +1,11 @@
 package com.example.android.groceries2;
 
+import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteException;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
@@ -15,6 +18,8 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -22,6 +27,7 @@ import android.widget.Toast;
 import com.example.android.groceries2.data.GroceriesDbHelper;
 
 
+import static android.R.attr.checked;
 import static com.example.android.groceries2.data.GroceriesDbHelper.GROCERIES_TABLE_CREATE;
 import static com.example.android.groceries2.data.GroceriesDbHelper.GROCERIES_TABLE_DROP;
 
@@ -98,7 +104,7 @@ public class ItemsFragment extends Fragment {
         // Setup an Adapter to create a list item for each row of pet data in the Cursor.
         // There is no pet data yet (until the loader finishes) so pass in null for the Cursor.
         simpleCursorAdapter = new SimpleCursorAdapter(getActivity(), R.layout.list_item, cursor,
-                new String[]{"name"}, new int[]{R.id.item_name}, 0);
+                new String[]{"name"}, new int[]{R.id.item_checkbox}, 0);
 
         itemsListView.setAdapter(simpleCursorAdapter);
 
@@ -139,6 +145,13 @@ public class ItemsFragment extends Fragment {
                 simpleCursorAdapter.changeCursor(cursor);
                 return true;
             // Respond to a click on the "Delete all entries" menu option
+
+            case R.id.settings_option_check_item:
+                new UpdateItem().execute(1);
+
+                return true;
+
+
             case R.id.settings_option_add_item:
                 Intent intent = new Intent(getActivity(), EditorActivity.class);
                 startActivity(intent);
@@ -160,5 +173,38 @@ public class ItemsFragment extends Fragment {
 
 
         return super.onOptionsItemSelected(item);
+    }
+
+
+    private class UpdateItem extends AsyncTask<Integer, Void, Boolean> {
+
+
+        @Override
+        protected void onPreExecute() {
+
+
+        }
+
+        @Override
+        protected Boolean doInBackground(Integer... params) {
+            int i = params[0];
+
+            ContentValues values = new ContentValues();
+            values.put("checked", 1);
+
+            try {
+                db.update("groceries", values, "_id = ?", new String[]{Integer.toString(i)});
+                return true;
+            } catch (SQLiteException e) {
+                return false;
+            }
+
+        }
+
+        @Override
+        protected void onPostExecute(Boolean success) {
+            if (success) Toast.makeText(getActivity(), "Checked", Toast.LENGTH_SHORT).show();
+            else Toast.makeText(getActivity(), "SQL error", Toast.LENGTH_SHORT).show();
+        }
     }
 }
