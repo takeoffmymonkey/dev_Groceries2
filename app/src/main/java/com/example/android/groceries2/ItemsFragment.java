@@ -37,7 +37,7 @@ import static com.example.android.groceries2.data.GroceriesDbHelper.GROCERIES_TA
 
 public class ItemsFragment extends Fragment {
 
-    private int itemsTotal = 0;
+    public int itemsTotal = 0;
 
     SQLiteDatabase db = MainActivity.dbHelper.getReadableDatabase();
 

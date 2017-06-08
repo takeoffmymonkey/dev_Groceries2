@@ -1,5 +1,8 @@
 package com.example.android.groceries2;
 
+import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
@@ -12,17 +15,21 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
 
+import com.example.android.groceries2.data.GroceriesDbHelper;
+
 /**
  * Created by takeoff on 006 06 Jun 17.
  */
 
 public class EditorActivity extends AppCompatActivity {
 
+    SQLiteDatabase db = MainActivity.dbHelper.getReadableDatabase();
+
     private String name;
 
-    private int price;
+    private String price;
 
-    private int weight;
+    private String weight;
 
     private String measurement;
 
@@ -122,6 +129,33 @@ public class EditorActivity extends AppCompatActivity {
 
     private void saveItem() {
 
+        name = "\"" + nameEditText.getText().toString().trim() + "\"";
+        price = priceEditText.getText().toString().trim();
+        weight = weightEditText.getText().toString().trim();
+
+
+        Cursor cursor =
+                db.query(GroceriesDbHelper.TABLE_GROCERIES, null, null, null, null, null, null);
+
+
+/*        String s = ("INSERT INTO groceries (" +
+                "_id, name, price, weight, measure, checked) VALUES (" +
+                Integer.toString(cursor.getCount() - 1) + ", \"Test\"," + " 1, 1, 1, 0);");*/
+
+        String s1 = ("INSERT INTO groceries (" +
+                "_id, name, price, weight, measure, checked) VALUES (" +
+                Integer.toString(cursor.getCount()) + ", " +
+                name + ", " +
+                price + ", " +
+                weight + ", " +
+                "\"" + measurement + "\"" +
+                ", 0);");
+
+
+        db.execSQL(s1);
+
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
 
     }
 
