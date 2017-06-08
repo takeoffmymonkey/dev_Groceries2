@@ -37,11 +37,14 @@ public class GroceriesDbHelper extends SQLiteOpenHelper {
     public static final String ITEM_WEIGHT = "weight";
     //Item's measurement
     public static final String ITEM_MEASURE = "measure";
+    //Item's check state
+    public static final String ITEM_CHECKED = "checked";
+
 
     public static final String GROCERIES_TABLE_CREATE = "CREATE TABLE " + TABLE_GROCERIES + " (" + "_id" +
             " INTEGER PRIMARY KEY AUTOINCREMENT, " +
             ITEM_NAME + " TEXT, " + ITEM_PRICE + " INTEGER, " + ITEM_WEIGHT + " INTEGER, " +
-            ITEM_MEASURE + " INTEGER);";
+            ITEM_MEASURE + " INTEGER, " + ITEM_CHECKED + " INTEGER);";
 
     public static final String GROCERIES_TABLE_DROP = "DROP TABLE " + TABLE_GROCERIES + ";";
 

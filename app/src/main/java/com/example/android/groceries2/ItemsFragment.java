@@ -74,7 +74,8 @@ public class ItemsFragment extends Fragment {
         fabAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //updateItem();
+                Intent intent = new Intent(getActivity(), EditorActivity.class);
+                startActivity(intent);
             }
         });
 
@@ -125,8 +126,8 @@ public class ItemsFragment extends Fragment {
             case R.id.settings_option_add_item_dummy:
 
                 String s = ("INSERT INTO groceries (" +
-                        "_id, name, price, weight, measure) VALUES (" +
-                        Integer.toString(itemsTotal + 1) + ", \"Test\"," + " 1, 1, 1);");
+                        "_id, name, price, weight, measure, checked) VALUES (" +
+                        Integer.toString(itemsTotal + 1) + ", \"Test\"," + " 1, 1, 1, 0);");
 
                 itemsTotal++;
                 db.execSQL(s);
