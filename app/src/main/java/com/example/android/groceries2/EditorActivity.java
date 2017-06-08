@@ -1,5 +1,6 @@
 package com.example.android.groceries2;
 
+import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -129,30 +130,17 @@ public class EditorActivity extends AppCompatActivity {
 
     private void saveItem() {
 
-        name = "\"" + nameEditText.getText().toString().trim() + "\"";
+        name = nameEditText.getText().toString().trim();
         price = priceEditText.getText().toString().trim();
         weight = weightEditText.getText().toString().trim();
 
-
-        Cursor cursor =
-                db.query(GroceriesDbHelper.TABLE_GROCERIES, null, null, null, null, null, null);
-
-
-/*        String s = ("INSERT INTO groceries (" +
-                "_id, name, price, weight, measure, checked) VALUES (" +
-                Integer.toString(cursor.getCount() - 1) + ", \"Test\"," + " 1, 1, 1, 0);");*/
-
-        String s1 = ("INSERT INTO groceries (" +
-                "_id, name, price, weight, measure, checked) VALUES (" +
-                Integer.toString(cursor.getCount()) + ", " +
-                name + ", " +
-                price + ", " +
-                weight + ", " +
-                "\"" + measurement + "\"" +
-                ", 0);");
-
-
-        db.execSQL(s1);
+        ContentValues contentValues = new ContentValues();
+        contentValues.put("name", name);
+        contentValues.put("price", price);
+        contentValues.put("weight", weight);
+        contentValues.put("measure", measurement);
+        contentValues.put("checked", 0);
+        db.insert("groceries", null, contentValues);
 
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
