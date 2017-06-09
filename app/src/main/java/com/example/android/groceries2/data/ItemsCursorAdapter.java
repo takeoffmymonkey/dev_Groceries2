@@ -75,6 +75,7 @@ public class ItemsCursorAdapter extends CursorAdapter {
         final int id = cursor.getInt(cursor.getColumnIndex("_id"));
         final String[] id1 = {Integer.toString(id)};
 
+        changeCursor(cursor);
         Cursor cursor1 = db.query(GroceriesDbHelper.TABLE_GROCERIES, null, null, null, null, null, null);
         cursor1.move(id);
 
@@ -83,8 +84,8 @@ public class ItemsCursorAdapter extends CursorAdapter {
         CheckBox itemCheckBox = (CheckBox) view.findViewById(R.id.item_checkbox);
         final TextView itemTextView = (TextView) view.findViewById(R.id.item_name);
 
-        String name = cursor.getString(cursor.getColumnIndex("name"));
-        int check = cursor.getInt(cursor.getColumnIndex("checked"));
+        String name = cursor1.getString(cursor.getColumnIndex("name"));
+        int check = cursor1.getInt(cursor.getColumnIndex("checked"));
 
         if (check == 1) checkBoxState = true;
         itemCheckBox.setText(name);
@@ -106,7 +107,7 @@ public class ItemsCursorAdapter extends CursorAdapter {
                     ContentValues values = new ContentValues();
                     values.put("checked", 1);
                     db.update("groceries", values, "_id = ?", id1);
-
+                    swapCursor(cursor);
                     Toast.makeText(view.getContext(), "Checked:" + id1[0], Toast.LENGTH_SHORT).show();
 
 
@@ -114,33 +115,12 @@ public class ItemsCursorAdapter extends CursorAdapter {
                     ContentValues values = new ContentValues();
                     values.put("checked", 0);
                     db.update("groceries", values, "_id = ?", id1);
-
+                    swapCursor(cursor);
                     Toast.makeText(view.getContext(), "Unchecked:" + id1[0], Toast.LENGTH_SHORT).show();
                 }
             }
         });
 
-/*        itemCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-
-
-                if (isChecked) {
-                    ContentValues values = new ContentValues();
-                    values.put("checked", 1);
-                    db.update("groceries", values, "_id = ?", id1);
-                    Toast.makeText(view.getContext(), "Checked:" + id1[0], Toast.LENGTH_SHORT).show();
-
-                } else {
-                    ContentValues values = new ContentValues();
-                    values.put("checked", 0);
-                    db.update("groceries", values, "_id = ?", id1);
-                    Toast.makeText(view.getContext(), "Unchecked:" + id1[0], Toast.LENGTH_SHORT).show();
-                }
-
-            }
-        });*/
-
-
     }
+
 }
