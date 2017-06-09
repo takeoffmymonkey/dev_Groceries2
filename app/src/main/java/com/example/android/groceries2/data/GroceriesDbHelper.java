@@ -13,7 +13,7 @@ import android.database.sqlite.SQLiteOpenHelper;
  * You create a subclass implementing onCreate(SQLiteDatabase), onUpgrade(SQLiteDatabase, int, int)
  * and optionally onOpen(SQLiteDatabase), and this class takes care of opening the database if it
  * exists, creating it if it does not, and upgrading it as necessary. Transactions are used to make
- * sure the database is always in a sensible state.
+ * sure the database is always in a sensible checkBoxState.
  * <p>
  * This class makes it easy for ContentProvider implementations to defer opening and upgrading the
  * database until first use, to avoid blocking application startup with long-running database upgrades.
@@ -37,7 +37,7 @@ public class GroceriesDbHelper extends SQLiteOpenHelper {
     public static final String ITEM_WEIGHT = "weight";
     //Item's measurement
     public static final String ITEM_MEASURE = "measure";
-    //Item's check state
+    //Item's check checkBoxState
     public static final String ITEM_CHECKED = "checked";
 
 

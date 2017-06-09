@@ -8,15 +8,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.CursorAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.android.groceries2.MainActivity;
 import com.example.android.groceries2.R;
-
-import org.w3c.dom.Text;
 
 import static android.R.attr.id;
 
@@ -33,6 +30,7 @@ import static android.R.attr.id;
 public class ItemsCursorAdapter extends CursorAdapter {
 
     SQLiteDatabase db = MainActivity.dbHelper.getReadableDatabase();
+
 
     /**
      * Constructs a new {@link ItemsCursorAdapter}.
@@ -57,6 +55,7 @@ public class ItemsCursorAdapter extends CursorAdapter {
     @Override
     public View newView(Context context, Cursor cursor, ViewGroup parent) {
         // Inflate a list item view using the layout specified in list_item.xml
+
         return LayoutInflater.from(context).inflate(R.layout.list_item, parent, false);
     }
 
@@ -73,21 +72,55 @@ public class ItemsCursorAdapter extends CursorAdapter {
     @Override
     public void bindView(final View view, Context context, final Cursor cursor) {
 
+        final int id = cursor.getInt(cursor.getColumnIndex("_id"));
+        final String[] id1 = {Integer.toString(id)};
+
+        Cursor cursor1 = db.query(GroceriesDbHelper.TABLE_GROCERIES, null, null, null, null, null, null);
+        cursor1.move(id);
+
+        boolean checkBoxState = false;
 
         CheckBox itemCheckBox = (CheckBox) view.findViewById(R.id.item_checkbox);
         final TextView itemTextView = (TextView) view.findViewById(R.id.item_name);
 
         String name = cursor.getString(cursor.getColumnIndex("name"));
         int check = cursor.getInt(cursor.getColumnIndex("checked"));
-        boolean checked = false;
-        if (check == 1) checked = true;
+
+        if (check == 1) checkBoxState = true;
         itemCheckBox.setText(name);
-        itemCheckBox.setChecked(checked);
+        itemCheckBox.setChecked(checkBoxState);
 
-        final int id = cursor.getInt(cursor.getColumnIndex("_id"));
-        final String[] id1 = {Integer.toString(id)};
 
-        itemCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+
+        itemCheckBox.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                boolean checkBoxState = false;
+
+                Cursor cursor = db.query(GroceriesDbHelper.TABLE_GROCERIES, null, null, null, null, null, null);
+                cursor.move(id);
+                int check = cursor.getInt(cursor.getColumnIndex("checked"));
+                if (check == 1) checkBoxState = true;
+
+                if (!checkBoxState) {
+                    ContentValues values = new ContentValues();
+                    values.put("checked", 1);
+                    db.update("groceries", values, "_id = ?", id1);
+
+                    Toast.makeText(view.getContext(), "Checked:" + id1[0], Toast.LENGTH_SHORT).show();
+
+
+                } else {
+                    ContentValues values = new ContentValues();
+                    values.put("checked", 0);
+                    db.update("groceries", values, "_id = ?", id1);
+
+                    Toast.makeText(view.getContext(), "Unchecked:" + id1[0], Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+/*        itemCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 
@@ -106,7 +139,7 @@ public class ItemsCursorAdapter extends CursorAdapter {
                 }
 
             }
-        });
+        });*/
 
 
     }

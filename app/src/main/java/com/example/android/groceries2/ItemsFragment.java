@@ -134,18 +134,25 @@ public class ItemsFragment extends Fragment {
             // Respond to a click on the "Insert dummy data" menu option
             case R.id.settings_option_add_item_dummy:
 
-                String s = ("INSERT INTO groceries (" +
-                        "_id, name, price, weight, measure, checked) VALUES (" +
-                        Integer.toString(itemsTotal + 1) + ", \"Test\"," + " 1, 1, 1, 0);");
+                for (int i = 0; i < 60; i++) {
 
-                itemsTotal++;
-                db.execSQL(s);
+                    String s = ("INSERT INTO groceries (" +
+                            "_id, name, price, weight, measure, checked) VALUES (" +
+                            Integer.toString(itemsTotal + 1) + ", \"Test" + (itemsTotal+1) + "\"," + " 1, 1, 1, 0);");
+
+                    itemsTotal++;
+                    db.execSQL(s);
+
+
+                    i++;
+                }
 
                 Cursor cursor = db.query(GroceriesDbHelper.TABLE_GROCERIES, null, null, null, null, null, null);
 
                 Toast.makeText(getActivity(), "Item added" + "(" + cursor.getCount() + ")", Toast.LENGTH_SHORT)
                         .show();
                 itemsCursorAdapter.changeCursor(cursor);
+
                 return true;
             // Respond to a click on the "Delete all entries" menu option
 
