@@ -29,6 +29,7 @@ import com.example.android.groceries2.data.ItemsCursorAdapter;
 
 
 import static android.R.attr.checked;
+import static android.R.attr.name;
 import static com.example.android.groceries2.data.GroceriesDbHelper.GROCERIES_TABLE_CREATE;
 import static com.example.android.groceries2.data.GroceriesDbHelper.GROCERIES_TABLE_DROP;
 
@@ -136,14 +137,15 @@ public class ItemsFragment extends Fragment {
 
                 for (int i = 0; i < 60; i++) {
 
-                    String s = ("INSERT INTO groceries (" +
-                            "_id, name, price, weight, measure, checked) VALUES (" +
-                            Integer.toString(itemsTotal + 1) + ", \"Test" + (itemsTotal+1) + "\"," + " 1, 1, 1, 0);");
+                    ContentValues contentValues = new ContentValues();
+                    contentValues.put("name", itemsTotal + 1);
+                    contentValues.put("price", Math.random() * 11.4);
+                    contentValues.put("weight", Math.random() * 5.5);
+                    contentValues.put("measure", 1);
+                    contentValues.put("checked", 0);
+                    db.insert("groceries", null, contentValues);
 
                     itemsTotal++;
-                    db.execSQL(s);
-
-
                     i++;
                 }
 

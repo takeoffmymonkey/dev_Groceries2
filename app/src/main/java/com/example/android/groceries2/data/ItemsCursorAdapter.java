@@ -73,9 +73,8 @@ public class ItemsCursorAdapter extends CursorAdapter {
     public void bindView(final View view, Context context, final Cursor cursor) {
 
         final int id = cursor.getInt(cursor.getColumnIndex("_id"));
-        final String[] id1 = {Integer.toString(id)};
+        final String[] id1 = {Integer.toString(cursor.getInt(cursor.getColumnIndex("_id")))};
 
-        changeCursor(cursor);
         Cursor cursor1 = db.query(GroceriesDbHelper.TABLE_GROCERIES, null, null, null, null, null, null);
         cursor1.move(id);
 
@@ -87,10 +86,25 @@ public class ItemsCursorAdapter extends CursorAdapter {
         String name = cursor1.getString(cursor.getColumnIndex("name"));
         int check = cursor1.getInt(cursor.getColumnIndex("checked"));
 
+
+        float price = cursor1.getFloat(cursor.getColumnIndex("price"));
+        float weight = cursor1.getFloat(cursor.getColumnIndex("weight"));
+
+
+        TextView preprice = (TextView) view.findViewById(R.id.item_pre_price);
+
+        TextView quantity = (TextView) view.findViewById(R.id.item_quantity);
+        quantity.setText(Float.toString(price));
+
+
+        TextView measure = (TextView) view.findViewById(R.id.item_measure);
+        measure.setText(Float.toString(weight));
+
+        preprice.setText(Float.toString(price * weight));
+
         if (check == 1) checkBoxState = true;
         itemCheckBox.setText(name);
         itemCheckBox.setChecked(checkBoxState);
-
 
 
         itemCheckBox.setOnClickListener(new View.OnClickListener() {
@@ -107,7 +121,6 @@ public class ItemsCursorAdapter extends CursorAdapter {
                     ContentValues values = new ContentValues();
                     values.put("checked", 1);
                     db.update("groceries", values, "_id = ?", id1);
-                    swapCursor(cursor);
                     Toast.makeText(view.getContext(), "Checked:" + id1[0], Toast.LENGTH_SHORT).show();
 
 
@@ -115,7 +128,6 @@ public class ItemsCursorAdapter extends CursorAdapter {
                     ContentValues values = new ContentValues();
                     values.put("checked", 0);
                     db.update("groceries", values, "_id = ?", id1);
-                    swapCursor(cursor);
                     Toast.makeText(view.getContext(), "Unchecked:" + id1[0], Toast.LENGTH_SHORT).show();
                 }
             }

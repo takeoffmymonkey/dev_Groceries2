@@ -43,7 +43,7 @@ public class GroceriesDbHelper extends SQLiteOpenHelper {
 
     public static final String GROCERIES_TABLE_CREATE = "CREATE TABLE " + TABLE_GROCERIES + " (" + "_id" +
             " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-            ITEM_NAME + " TEXT, " + ITEM_PRICE + " INTEGER, " + ITEM_WEIGHT + " INTEGER, " +
+            ITEM_NAME + " TEXT, " + ITEM_PRICE + " REAL, " + ITEM_WEIGHT + " REAL, " +
             ITEM_MEASURE + " TEXT, " + ITEM_CHECKED + " INTEGER);";
 
     public static final String GROCERIES_TABLE_DROP = "DROP TABLE " + TABLE_GROCERIES + ";";
