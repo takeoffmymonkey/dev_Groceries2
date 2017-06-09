@@ -109,7 +109,7 @@ public class ItemsFragment extends Fragment {
 
         itemsListView.setAdapter(simpleCursorAdapter);*/
 
-        itemsCursorAdapter = new ItemsCursorAdapter(getContext(), null, 0);
+        itemsCursorAdapter = new ItemsCursorAdapter(getContext(), cursor, 0);
         itemsListView.setAdapter(itemsCursorAdapter);
 
         setHasOptionsMenu(true);
