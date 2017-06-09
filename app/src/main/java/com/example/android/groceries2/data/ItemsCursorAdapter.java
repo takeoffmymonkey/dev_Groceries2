@@ -1,17 +1,24 @@
 package com.example.android.groceries2.data;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.CursorAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.example.android.groceries2.MainActivity;
 import com.example.android.groceries2.R;
 
 import org.w3c.dom.Text;
+
+import static android.R.attr.id;
 
 /**
  * Created by takeoff on 009 09 Jun 17.
@@ -25,6 +32,7 @@ import org.w3c.dom.Text;
  */
 public class ItemsCursorAdapter extends CursorAdapter {
 
+    SQLiteDatabase db = MainActivity.dbHelper.getReadableDatabase();
 
     /**
      * Constructs a new {@link ItemsCursorAdapter}.
@@ -63,15 +71,43 @@ public class ItemsCursorAdapter extends CursorAdapter {
      *                correct row.
      */
     @Override
-    public void bindView(View view, Context context, Cursor cursor) {
+    public void bindView(final View view, Context context, final Cursor cursor) {
+
 
         CheckBox itemCheckBox = (CheckBox) view.findViewById(R.id.item_checkbox);
+        final TextView itemTextView = (TextView) view.findViewById(R.id.item_name);
+
         String name = cursor.getString(cursor.getColumnIndex("name"));
         int check = cursor.getInt(cursor.getColumnIndex("checked"));
         boolean checked = false;
         if (check == 1) checked = true;
         itemCheckBox.setText(name);
         itemCheckBox.setChecked(checked);
+
+        final int id = cursor.getInt(cursor.getColumnIndex("_id"));
+        final String[] id1 = {Integer.toString(id)};
+
+        itemCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+
+
+                if (isChecked) {
+                    ContentValues values = new ContentValues();
+                    values.put("checked", 1);
+                    db.update("groceries", values, "_id = ?", id1);
+                    Toast.makeText(view.getContext(), "Checked:" + id1[0], Toast.LENGTH_SHORT).show();
+
+                } else {
+                    ContentValues values = new ContentValues();
+                    values.put("checked", 0);
+                    db.update("groceries", values, "_id = ?", id1);
+                    Toast.makeText(view.getContext(), "Unchecked:" + id1[0], Toast.LENGTH_SHORT).show();
+                }
+
+            }
+        });
+
 
     }
 }
