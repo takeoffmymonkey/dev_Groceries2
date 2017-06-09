@@ -25,6 +25,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.android.groceries2.data.GroceriesDbHelper;
+import com.example.android.groceries2.data.ItemsCursorAdapter;
 
 
 import static android.R.attr.checked;
@@ -42,7 +43,7 @@ public class ItemsFragment extends Fragment {
     SQLiteDatabase db = MainActivity.dbHelper.getReadableDatabase();
 
     View itemsView;
-    CursorAdapter simpleCursorAdapter;
+    ItemsCursorAdapter itemsCursorAdapter;
 
 
     public ItemsFragment() {
@@ -103,11 +104,13 @@ public class ItemsFragment extends Fragment {
 
         // Setup an Adapter to create a list item for each row of pet data in the Cursor.
         // There is no pet data yet (until the loader finishes) so pass in null for the Cursor.
-        simpleCursorAdapter = new SimpleCursorAdapter(getActivity(), R.layout.list_item, cursor,
+/*        simpleCursorAdapter = new SimpleCursorAdapter(getActivity(), R.layout.list_item, cursor,
                 new String[]{"name", "checked"}, new int[]{R.id.item_checkbox, R.id.item_measure}, 0);
 
-        itemsListView.setAdapter(simpleCursorAdapter);
+        itemsListView.setAdapter(simpleCursorAdapter);*/
 
+        itemsCursorAdapter = new ItemsCursorAdapter(getContext(), null, 0);
+        itemsListView.setAdapter(itemsCursorAdapter);
 
         setHasOptionsMenu(true);
 
@@ -142,7 +145,7 @@ public class ItemsFragment extends Fragment {
 
                 Toast.makeText(getActivity(), "Item added" + "(" + cursor.getCount() + ")", Toast.LENGTH_SHORT)
                         .show();
-                simpleCursorAdapter.changeCursor(cursor);
+                itemsCursorAdapter.changeCursor(cursor);
                 return true;
             // Respond to a click on the "Delete all entries" menu option
 
@@ -166,7 +169,7 @@ public class ItemsFragment extends Fragment {
                         .show();
                 cursor = db.query(GroceriesDbHelper.TABLE_GROCERIES, null, null, null, null, null, null);
 
-                simpleCursorAdapter.changeCursor(cursor);
+                itemsCursorAdapter.changeCursor(cursor);
                 //getActivity().recreate();
                 return true;
         }
@@ -206,7 +209,7 @@ public class ItemsFragment extends Fragment {
             if (success) {
                 Toast.makeText(getActivity(), "Checked", Toast.LENGTH_SHORT).show();
                 Cursor cursor = db.query(GroceriesDbHelper.TABLE_GROCERIES, null, null, null, null, null, null);
-                simpleCursorAdapter.changeCursor(cursor);
+                itemsCursorAdapter.changeCursor(cursor);
 
             } else Toast.makeText(getActivity(), "SQL error", Toast.LENGTH_SHORT).show();
         }
