@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
@@ -15,6 +16,7 @@ import android.widget.CursorAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.android.groceries2.EditorActivity;
 import com.example.android.groceries2.MainActivity;
 import com.example.android.groceries2.R;
 
@@ -114,7 +116,7 @@ public class ItemsCursorAdapter extends CursorAdapter {
                 AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
 
                 LayoutInflater inflater = LayoutInflater.from(view.getContext());
-                View test = inflater.inflate(R.layout.empty, null);
+                View test = inflater.inflate(R.layout.dialog_edit_item, null);
 
                 builder.setTitle("Please set items amount")
                         //.setMessage("Setting items amount..")
@@ -123,6 +125,8 @@ public class ItemsCursorAdapter extends CursorAdapter {
                         .setNeutralButton("Edit item",
                                 new DialogInterface.OnClickListener() {
                                     public void onClick(DialogInterface dialog, int id) {
+                                        Intent intent = new Intent(view.getContext(), EditorActivity.class);
+                                        view.getContext().startActivity(intent);
                                         dialog.cancel();
                                     }
                                 })

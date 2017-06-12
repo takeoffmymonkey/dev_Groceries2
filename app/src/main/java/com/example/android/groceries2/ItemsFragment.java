@@ -139,7 +139,7 @@ public class ItemsFragment extends Fragment {
 
                 ArrayAdapter<String> adapter;
 
-                String [] names = getResources().getStringArray(R.array.array_auto_name_list);
+                String[] names = getResources().getStringArray(R.array.array_auto_name_list);
 
                 for (int i = 0; i < names.length; i++) {
 
@@ -149,9 +149,7 @@ public class ItemsFragment extends Fragment {
                     contentValues.put("measure", 1);
                     contentValues.put("checked", 0);
                     db.insert("groceries", null, contentValues);
-
                     itemsTotal++;
-                    i++;
                 }
 
                 Cursor cursor = db.query(GroceriesDbHelper.TABLE_GROCERIES, null, null, null, null, null, null);
