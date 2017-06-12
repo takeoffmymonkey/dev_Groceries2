@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -93,12 +94,17 @@ public class ItemsCursorAdapter extends CursorAdapter {
         quantity.setText(Float.toString(price));
 
 
-        if (check == 1) checkBoxState = true;
+        if (check == 1) {
+            checkBoxState = true;
+            view.setBackgroundColor(Color.GRAY);
+        } else {
+            view.setBackgroundColor(Color.WHITE);
+        }
         itemCheckBox.setText(name);
         itemCheckBox.setChecked(checkBoxState);
 
 
-        itemCheckBox.setOnClickListener(new View.OnClickListener() {
+        view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 boolean checkBoxState = false;
@@ -112,6 +118,7 @@ public class ItemsCursorAdapter extends CursorAdapter {
                     ContentValues values = new ContentValues();
                     values.put("checked", 1);
                     db.update("groceries", values, "_id = ?", id1);
+                    view.setBackgroundColor(Color.GRAY);
                     Toast.makeText(view.getContext(), "Checked:" + id1[0], Toast.LENGTH_SHORT).show();
 
 
@@ -119,6 +126,7 @@ public class ItemsCursorAdapter extends CursorAdapter {
                     ContentValues values = new ContentValues();
                     values.put("checked", 0);
                     db.update("groceries", values, "_id = ?", id1);
+                    view.setBackgroundColor(Color.WHITE);
                     Toast.makeText(view.getContext(), "Unchecked:" + id1[0], Toast.LENGTH_SHORT).show();
                 }
             }

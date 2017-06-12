@@ -11,6 +11,7 @@
         android:verticalSpacing="5dp"
         android:horizontalSpacing="5dp"
         android:layout_marginBottom="90dp"
+        android:listSelector="@color/colorEditor"
         />
 
 
@@ -56,14 +57,6 @@
     </RelativeLayout>
 
 
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fab_add_item_to_db"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:layout_margin="16dp"
-        android:src="@mipmap/ic_add_white_24dp" />
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab_approve_list"
@@ -73,5 +66,16 @@
         android:layout_alignParentRight="true"
         android:layout_margin="16dp"
         android:src="@mipmap/ic_check_white_24dp" />
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab_add_item_to_db"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toLeftOf="@id/fab_approve_list"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="16dp"
+        android:src="@mipmap/ic_add_white_24dp" />
+
+
 
 </RelativeLayout>
