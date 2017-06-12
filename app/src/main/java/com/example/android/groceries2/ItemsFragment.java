@@ -18,6 +18,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.GridView;
@@ -136,10 +137,14 @@ public class ItemsFragment extends Fragment {
             // Respond to a click on the "Insert dummy data" menu option
             case R.id.settings_option_add_item_dummy:
 
-                for (int i = 0; i < 60; i++) {
+                ArrayAdapter<String> adapter;
+
+                String [] names = getResources().getStringArray(R.array.array_auto_name_list);
+
+                for (int i = 0; i < names.length; i++) {
 
                     ContentValues contentValues = new ContentValues();
-                    contentValues.put("name", itemsTotal + 1);
+                    contentValues.put("name", names[i]);
                     contentValues.put("price", Math.random() * 11.4);
                     contentValues.put("measure", 1);
                     contentValues.put("checked", 0);
