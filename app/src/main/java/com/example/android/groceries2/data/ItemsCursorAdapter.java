@@ -1,7 +1,9 @@
 package com.example.android.groceries2.data;
 
+import android.app.AlertDialog;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
@@ -107,7 +109,27 @@ public class ItemsCursorAdapter extends CursorAdapter {
         view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                boolean checkBoxState = false;
+                AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
+                builder.setTitle("Please set items amount")
+                        .setMessage("Setting items amount..")
+                        .setCancelable(true)
+                        .setNegativeButton("Cancel",
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int id) {
+                                        dialog.cancel();
+                                    }
+                                })
+                        .setPositiveButton("Ok",
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int id) {
+                                        dialog.cancel();
+                                    }
+                                });
+                AlertDialog alert = builder.create();
+                alert.show();
+
+
+                /*                boolean checkBoxState = false;
 
                 Cursor cursor = db.query(GroceriesDbHelper.TABLE_GROCERIES, null, null, null, null, null, null);
                 cursor.move(id);
@@ -119,7 +141,7 @@ public class ItemsCursorAdapter extends CursorAdapter {
                     values.put("checked", 1);
                     db.update("groceries", values, "_id = ?", id1);
                     view.setBackgroundColor(Color.GRAY);
-                    Toast.makeText(view.getContext(), "Checked:" + id1[0], Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(view.getContext(), "Checked:" + id1[0], Toast.LENGTH_SHORT).show();
 
 
                 } else {
@@ -127,8 +149,8 @@ public class ItemsCursorAdapter extends CursorAdapter {
                     values.put("checked", 0);
                     db.update("groceries", values, "_id = ?", id1);
                     view.setBackgroundColor(Color.WHITE);
-                    Toast.makeText(view.getContext(), "Unchecked:" + id1[0], Toast.LENGTH_SHORT).show();
-                }
+                    //Toast.makeText(view.getContext(), "Unchecked:" + id1[0], Toast.LENGTH_SHORT).show();
+                }*/
             }
         });
 
