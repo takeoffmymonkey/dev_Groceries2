@@ -19,6 +19,7 @@ import com.example.android.groceries2.MainActivity;
 import com.example.android.groceries2.R;
 
 import static android.R.attr.id;
+import static java.security.AccessController.getContext;
 
 /**
  * Created by takeoff on 009 09 Jun 17.
@@ -75,6 +76,7 @@ public class ItemsCursorAdapter extends CursorAdapter {
     @Override
     public void bindView(final View view, Context context, final Cursor cursor) {
 
+
         final int id = cursor.getInt(cursor.getColumnIndex("_id"));
         final String[] id1 = {Integer.toString(cursor.getInt(cursor.getColumnIndex("_id")))};
 
@@ -110,9 +112,20 @@ public class ItemsCursorAdapter extends CursorAdapter {
             @Override
             public void onClick(View v) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
+
+                LayoutInflater inflater = LayoutInflater.from(view.getContext());
+                View test = inflater.inflate(R.layout.empty, null);
+
                 builder.setTitle("Please set items amount")
-                        .setMessage("Setting items amount..")
-                        .setCancelable(true)
+                        //.setMessage("Setting items amount..")
+                        .setView(test)
+                        .setCancelable(true) //to be able to press back
+                        .setNeutralButton("Edit item",
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int id) {
+                                        dialog.cancel();
+                                    }
+                                })
                         .setNegativeButton("Cancel",
                                 new DialogInterface.OnClickListener() {
                                     public void onClick(DialogInterface dialog, int id) {
