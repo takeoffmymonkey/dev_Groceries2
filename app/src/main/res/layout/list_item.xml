@@ -14,11 +14,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
-    <Button
-        android:id="@+id/item_button_minus"
-        android:layout_width="48dp"
-        android:layout_height="wrap_content"
-        android:text="-" />
 
     <TextView
         android:id="@+id/item_quantity"
@@ -33,12 +28,6 @@
         android:layout_marginLeft="4dp"
         android:layout_marginStart="4dp"
         android:text="шт" />
-
-    <Button
-        android:id="@+id/item_button_plus"
-        android:layout_width="48dp"
-        android:layout_height="wrap_content"
-        android:text="+" />
 
     <TextView
         android:id="@+id/item_pre_price"

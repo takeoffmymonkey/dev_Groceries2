@@ -81,26 +81,17 @@ public class ItemsCursorAdapter extends CursorAdapter {
         boolean checkBoxState = false;
 
         CheckBox itemCheckBox = (CheckBox) view.findViewById(R.id.item_checkbox);
-        final TextView itemTextView = (TextView) view.findViewById(R.id.item_name);
 
         String name = cursor1.getString(cursor.getColumnIndex("name"));
         int check = cursor1.getInt(cursor.getColumnIndex("checked"));
 
 
         float price = cursor1.getFloat(cursor.getColumnIndex("price"));
-        float weight = cursor1.getFloat(cursor.getColumnIndex("weight"));
 
-
-        TextView preprice = (TextView) view.findViewById(R.id.item_pre_price);
 
         TextView quantity = (TextView) view.findViewById(R.id.item_quantity);
         quantity.setText(Float.toString(price));
 
-
-        TextView measure = (TextView) view.findViewById(R.id.item_measure);
-        measure.setText(Float.toString(weight));
-
-        preprice.setText(Float.toString(price * weight));
 
         if (check == 1) checkBoxState = true;
         itemCheckBox.setText(name);

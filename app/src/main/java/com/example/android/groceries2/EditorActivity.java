@@ -38,8 +38,6 @@ public class EditorActivity extends AppCompatActivity {
 
     private EditText priceEditText;
 
-    private EditText weightEditText;
-
     private Spinner measurementSpinner;
 
     private boolean itemHasChanged = false;
@@ -59,7 +57,6 @@ public class EditorActivity extends AppCompatActivity {
 
         nameEditText = (EditText) findViewById(R.id.editor_name);
         priceEditText = (EditText) findViewById(R.id.editor_price);
-        weightEditText = (EditText) findViewById(R.id.editor_weight);
         measurementSpinner = (Spinner) findViewById(R.id.editor_measurement);
 
 
@@ -68,7 +65,6 @@ public class EditorActivity extends AppCompatActivity {
         // or not, if the user tries to leave the editor without saving.
         nameEditText.setOnTouchListener(touchListener);
         priceEditText.setOnTouchListener(touchListener);
-        weightEditText.setOnTouchListener(touchListener);
         measurementSpinner.setOnTouchListener(touchListener);
 
         FloatingActionButton fabApproveItem = (FloatingActionButton)
@@ -132,12 +128,10 @@ public class EditorActivity extends AppCompatActivity {
 
         name = nameEditText.getText().toString().trim();
         price = priceEditText.getText().toString().trim();
-        weight = weightEditText.getText().toString().trim();
 
         ContentValues contentValues = new ContentValues();
         contentValues.put("name", name);
         contentValues.put("price", price);
-        contentValues.put("weight", weight);
         contentValues.put("measure", measurement);
         contentValues.put("checked", 0);
         db.insert("groceries", null, contentValues);

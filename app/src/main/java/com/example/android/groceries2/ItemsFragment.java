@@ -20,6 +20,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.GridView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -96,7 +97,7 @@ public class ItemsFragment extends Fragment {
 
 
         // Find the ListView which will be populated with the pet data
-        ListView itemsListView = (ListView) itemsView.findViewById(R.id.items_list);
+        GridView itemsListView = (GridView) itemsView.findViewById(R.id.items_list);
 
 
         // Find and set empty view on the ListView, so that it only shows when the list has 0 items.
@@ -140,7 +141,6 @@ public class ItemsFragment extends Fragment {
                     ContentValues contentValues = new ContentValues();
                     contentValues.put("name", itemsTotal + 1);
                     contentValues.put("price", Math.random() * 11.4);
-                    contentValues.put("weight", Math.random() * 5.5);
                     contentValues.put("measure", 1);
                     contentValues.put("checked", 0);
                     db.insert("groceries", null, contentValues);
