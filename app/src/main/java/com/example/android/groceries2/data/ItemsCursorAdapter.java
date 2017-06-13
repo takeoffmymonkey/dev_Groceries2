@@ -1,6 +1,7 @@
 package com.example.android.groceries2.data;
 
 import android.app.AlertDialog;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -13,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.CursorAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.android.groceries2.EditorActivity;
 import com.example.android.groceries2.MainActivity;
@@ -103,20 +105,11 @@ public class ItemsCursorAdapter extends CursorAdapter {
         int measure = cursor1.getInt(cursor.getColumnIndex(ITEMS_MEASURE_COLUMN));
 
         // TODO: 013 13 Jun 17 narrow down query
-        Cursor cursor2 = db.query(MEASURE_TABLE_NAME, null, null, null, null, null, null);
+/*        Cursor cursor2 = db.query(MEASURE_TABLE_NAME, null, null, null, null, null, null);
 
         cursor2.move(measure);
         String s = cursor2.getString(cursor2.getColumnIndex(MEASURE_MEASURE_COLUMN));
-
-
-        measureTextView.setText(s);
-
-
-        float price = cursor1.getFloat(cursor.getColumnIndex(ITEMS_PRICE_COLUMN));
-
-
-        TextView quantity = (TextView) view.findViewById(R.id.item_quantity);
-        quantity.setText(Float.toString(price));
+        measureTextView.setText(s);*/
 
 
         if (check == 1) {
@@ -165,28 +158,25 @@ public class ItemsCursorAdapter extends CursorAdapter {
                 alert.show();
 
 
-                /*                boolean checkBoxState = false;
-
+                boolean checkBoxState = false;
                 Cursor cursor = db.query(GroceriesDbHelper.ITEMS_TABLE_NAME, null, null, null, null, null, null);
                 cursor.move(id);
-                int check = cursor.getInt(cursor.getColumnIndex("checked"));
+                int check = cursor.getInt(cursor.getColumnIndex(ITEMS_CHECKED_COLUMN));
                 if (check == 1) checkBoxState = true;
-
                 if (!checkBoxState) {
                     ContentValues values = new ContentValues();
-                    values.put("checked", 1);
-                    db.update("groceries", values, "_id = ?", id1);
+                    values.put(ITEMS_CHECKED_COLUMN, 1);
+                    db.update(ITEMS_TABLE_NAME, values, "_id = ?", id1);
                     view.setBackgroundColor(Color.GRAY);
-                    //Toast.makeText(view.getContext(), "Checked:" + id1[0], Toast.LENGTH_SHORT).show();
-
-
+                    Toast.makeText(view.getContext(), "Checked:" + id1[0], Toast.LENGTH_SHORT).show();
                 } else {
                     ContentValues values = new ContentValues();
-                    values.put("checked", 0);
-                    db.update("groceries", values, "_id = ?", id1);
+                    values.put(ITEMS_CHECKED_COLUMN, 0);
+                    db.update(ITEMS_TABLE_NAME, values, "_id = ?", id1);
                     view.setBackgroundColor(Color.WHITE);
-                    //Toast.makeText(view.getContext(), "Unchecked:" + id1[0], Toast.LENGTH_SHORT).show();
-                }*/
+                    Toast.makeText(view.getContext(), "Unchecked:" + id1[0], Toast.LENGTH_SHORT).show();
+                }
+
             }
         });
 
