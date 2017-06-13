@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
-import android.icu.text.IDNA;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,13 +19,12 @@ import com.example.android.groceries2.MainActivity;
 import com.example.android.groceries2.R;
 
 
-import static android.os.Build.ID;
 import static com.example.android.groceries2.data.GroceriesDbHelper.ITEMS_CHECKED_COLUMN;
 import static com.example.android.groceries2.data.GroceriesDbHelper.ITEMS_MEASURE_COLUMN;
-import static com.example.android.groceries2.data.GroceriesDbHelper.ITEMS_TABLE_CREATE_COMMAND;
-import static com.example.android.groceries2.data.GroceriesDbHelper.ITEMS_TABLE_DROP_COMMAND;
 import static com.example.android.groceries2.data.GroceriesDbHelper.ITEMS_TABLE_NAME;
 import static com.example.android.groceries2.data.GroceriesDbHelper.ITEMS_PRICE_COLUMN;
+import static com.example.android.groceries2.data.GroceriesDbHelper.MEASURE_MEASURE_COLUMN;
+import static com.example.android.groceries2.data.GroceriesDbHelper.MEASURE_TABLE_NAME;
 import static com.example.android.groceries2.data.GroceriesDbHelper.NAME_COLUMN;
 import static com.example.android.groceries2.data.GroceriesDbHelper.ID_COLUMN;
 
@@ -89,7 +87,7 @@ public class ItemsCursorAdapter extends CursorAdapter {
         final int id = cursor.getInt(cursor.getColumnIndex(ID_COLUMN));
         final String[] id1 = {Integer.toString(cursor.getInt(cursor.getColumnIndex(ID_COLUMN)))};
 
-        Cursor cursor1 = db.query(GroceriesDbHelper.ITEMS_TABLE_NAME, null, null, null, null, null, null);
+        Cursor cursor1 = db.query(ITEMS_TABLE_NAME, null, null, null, null, null, null);
         cursor1.move(id);
 
         boolean checkBoxState = false;
@@ -98,6 +96,20 @@ public class ItemsCursorAdapter extends CursorAdapter {
 
         String name = cursor1.getString(cursor.getColumnIndex(NAME_COLUMN));
         int check = cursor1.getInt(cursor.getColumnIndex(ITEMS_CHECKED_COLUMN));
+
+
+        TextView measureTextView = (TextView) view.findViewById(R.id.item_measure);
+
+        int measure = cursor1.getInt(cursor.getColumnIndex(ITEMS_MEASURE_COLUMN));
+
+        // TODO: 013 13 Jun 17 narrow down query
+        Cursor cursor2 = db.query(MEASURE_TABLE_NAME, null, null, null, null, null, null);
+
+        cursor2.move(measure);
+        String s = cursor2.getString(cursor2.getColumnIndex(MEASURE_MEASURE_COLUMN));
+
+
+        measureTextView.setText(s);
 
 
         float price = cursor1.getFloat(cursor.getColumnIndex(ITEMS_PRICE_COLUMN));

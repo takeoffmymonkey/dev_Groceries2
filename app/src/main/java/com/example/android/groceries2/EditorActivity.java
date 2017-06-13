@@ -15,7 +15,10 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
 
+import static com.example.android.groceries2.data.GroceriesDbHelper.ITEMS_MEASURE_COLUMN;
+import static com.example.android.groceries2.data.GroceriesDbHelper.ITEMS_PRICE_COLUMN;
 import static com.example.android.groceries2.data.GroceriesDbHelper.ITEMS_TABLE_NAME;
+import static com.example.android.groceries2.data.GroceriesDbHelper.NAME_COLUMN;
 
 /**
  * Created by takeoff on 006 06 Jun 17.
@@ -28,8 +31,6 @@ public class EditorActivity extends AppCompatActivity {
     private String name;
 
     private String price;
-
-    private String weight;
 
     private String measurement;
 
@@ -98,26 +99,29 @@ public class EditorActivity extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String selection = (String) parent.getItemAtPosition(position);
-                if (!TextUtils.isEmpty(selection)) {
-                    if (selection.equals("item(s)")) {
-                        measurement = "item(s)";
-                    } else if (selection.equals("Kg")) {
-                        measurement = "Kg";
-                    } else if (selection.equals("gr")) {
-                        measurement = "gr";
-                    } else if (selection.equals("L")) {
-                        measurement = "L";
-                    } else if (selection.equals("ml")) {
-                        measurement = "ml";
 
+                String[] measures = getResources().getStringArray(R.array.array_measurement_options);
+
+                if (!TextUtils.isEmpty(selection)) {
+                    if (selection.equals(measures[0])) {
+                        measurement = "1";
+                    } else if (selection.equals(measures[1])) {
+                        measurement = "2";
+                    } else if (selection.equals(measures[2])) {
+                        measurement = "3";
+                    } else if (selection.equals(measures[3])) {
+                        measurement = "4";
+                    } else if (selection.equals(measures[4])) {
+                        measurement = "5";
                     }
+
                 }
             }
 
             // Because AdapterView is an abstract class, onNothingSelected must be defined
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-                measurement = "item(s)";
+                measurement = "1";
             }
         });
     }
@@ -129,10 +133,9 @@ public class EditorActivity extends AppCompatActivity {
         price = priceEditText.getText().toString().trim();
 
         ContentValues contentValues = new ContentValues();
-        contentValues.put("name", name);
-        contentValues.put("price", price);
-        contentValues.put("measure", measurement);
-        contentValues.put("checked", 0);
+        contentValues.put(NAME_COLUMN, name);
+        contentValues.put(ITEMS_PRICE_COLUMN, price);
+        contentValues.put(ITEMS_MEASURE_COLUMN, measurement);
         db.insert(ITEMS_TABLE_NAME, null, contentValues);
 
         Intent intent = new Intent(this, MainActivity.class);

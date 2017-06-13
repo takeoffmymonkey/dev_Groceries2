@@ -18,8 +18,6 @@ public class MainActivity extends AppCompatActivity {
     static public boolean EMPTY = true;
 
 
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,19 +35,6 @@ public class MainActivity extends AppCompatActivity {
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
 
         tabLayout.setupWithViewPager(viewPager);
-
-
-/*        *//*Write to shared preferences *//*
-        SharedPreferences sharedPref = getPreferences(Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPref.edit();
-        editor.putString(getString(R.string.temp), "f u");
-        editor.apply();
-
-        *//*Read from shared preferences*//*
-        SharedPreferences sharedPref2 = getPreferences(Context.MODE_PRIVATE);
-        String defaultValue = getResources().getString(R.string.temp);
-        String defaultValue1 = sharedPref2.getString(getString(R.string.temp), defaultValue);*/
-
 
     }
 

@@ -175,7 +175,6 @@ public class ItemsFragment extends Fragment {
                 cursor = db.query(ITEMS_TABLE_NAME, null, null, null, null, null, null);
 
                 itemsCursorAdapter.changeCursor(cursor);
-                //getActivity().recreate();
                 return true;
         }
 
