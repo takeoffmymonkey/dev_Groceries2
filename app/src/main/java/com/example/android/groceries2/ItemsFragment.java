@@ -16,16 +16,20 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.GridView;
 import android.widget.Toast;
 
 import com.example.android.groceries2.data.ItemsCursorAdapter;
 
 
+import static com.example.android.groceries2.data.GroceriesDbHelper.ITEMS_CHECKED_COLUMN;
+import static com.example.android.groceries2.data.GroceriesDbHelper.ITEMS_MEASURE_COLUMN;
 import static com.example.android.groceries2.data.GroceriesDbHelper.ITEMS_TABLE_CREATE_COMMAND;
 import static com.example.android.groceries2.data.GroceriesDbHelper.ITEMS_TABLE_DROP_COMMAND;
 import static com.example.android.groceries2.data.GroceriesDbHelper.ITEMS_TABLE_NAME;
+import static com.example.android.groceries2.data.GroceriesDbHelper.ITEMS_PRICE_COLUMN;
+import static com.example.android.groceries2.data.GroceriesDbHelper.NAME_COLUMN;
+
 
 /**
  * Created by takeoff on 002 02 Jun 17.
@@ -129,17 +133,14 @@ public class ItemsFragment extends Fragment {
             // Respond to a click on the "Insert dummy data" menu option
             case R.id.settings_option_add_item_dummy:
 
-                ArrayAdapter<String> adapter;
-
                 String[] names = getResources().getStringArray(R.array.array_auto_name_list);
 
                 for (int i = 0; i < names.length; i++) {
 
                     ContentValues contentValues = new ContentValues();
-                    contentValues.put("name", names[i]);
-                    contentValues.put("price", Math.random() * 11.4);
-                    contentValues.put("measure", 1);
-                    contentValues.put("checked", 0);
+                    contentValues.put(NAME_COLUMN, names[i]);
+                    contentValues.put(ITEMS_PRICE_COLUMN, Math.random() * 11.4);
+                    contentValues.put(ITEMS_MEASURE_COLUMN, 1);
                     db.insert(ITEMS_TABLE_NAME, null, contentValues);
                     itemsTotal++;
                 }
@@ -197,7 +198,7 @@ public class ItemsFragment extends Fragment {
             int i = params[0];
 
             ContentValues values = new ContentValues();
-            values.put("checked", 1);
+            values.put(ITEMS_CHECKED_COLUMN, 1);
 
             try {
                 db.update(ITEMS_TABLE_NAME, values, "_id = ?", new String[]{Integer.toString(i)});

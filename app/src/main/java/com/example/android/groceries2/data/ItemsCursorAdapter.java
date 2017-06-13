@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
+import android.icu.text.IDNA;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +18,17 @@ import android.widget.TextView;
 import com.example.android.groceries2.EditorActivity;
 import com.example.android.groceries2.MainActivity;
 import com.example.android.groceries2.R;
+
+
+import static android.os.Build.ID;
+import static com.example.android.groceries2.data.GroceriesDbHelper.ITEMS_CHECKED_COLUMN;
+import static com.example.android.groceries2.data.GroceriesDbHelper.ITEMS_MEASURE_COLUMN;
+import static com.example.android.groceries2.data.GroceriesDbHelper.ITEMS_TABLE_CREATE_COMMAND;
+import static com.example.android.groceries2.data.GroceriesDbHelper.ITEMS_TABLE_DROP_COMMAND;
+import static com.example.android.groceries2.data.GroceriesDbHelper.ITEMS_TABLE_NAME;
+import static com.example.android.groceries2.data.GroceriesDbHelper.ITEMS_PRICE_COLUMN;
+import static com.example.android.groceries2.data.GroceriesDbHelper.NAME_COLUMN;
+import static com.example.android.groceries2.data.GroceriesDbHelper.ID_COLUMN;
 
 /**
  * Created by takeoff on 009 09 Jun 17.
@@ -74,8 +86,8 @@ public class ItemsCursorAdapter extends CursorAdapter {
     public void bindView(final View view, Context context, final Cursor cursor) {
 
 
-        final int id = cursor.getInt(cursor.getColumnIndex("_id"));
-        final String[] id1 = {Integer.toString(cursor.getInt(cursor.getColumnIndex("_id")))};
+        final int id = cursor.getInt(cursor.getColumnIndex(ID_COLUMN));
+        final String[] id1 = {Integer.toString(cursor.getInt(cursor.getColumnIndex(ID_COLUMN)))};
 
         Cursor cursor1 = db.query(GroceriesDbHelper.ITEMS_TABLE_NAME, null, null, null, null, null, null);
         cursor1.move(id);
@@ -84,11 +96,11 @@ public class ItemsCursorAdapter extends CursorAdapter {
 
         CheckBox itemCheckBox = (CheckBox) view.findViewById(R.id.item_checkbox);
 
-        String name = cursor1.getString(cursor.getColumnIndex("name"));
-        int check = cursor1.getInt(cursor.getColumnIndex("checked"));
+        String name = cursor1.getString(cursor.getColumnIndex(NAME_COLUMN));
+        int check = cursor1.getInt(cursor.getColumnIndex(ITEMS_CHECKED_COLUMN));
 
 
-        float price = cursor1.getFloat(cursor.getColumnIndex("price"));
+        float price = cursor1.getFloat(cursor.getColumnIndex(ITEMS_PRICE_COLUMN));
 
 
         TextView quantity = (TextView) view.findViewById(R.id.item_quantity);

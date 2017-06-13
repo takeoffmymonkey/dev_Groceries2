@@ -1,8 +1,11 @@
 package com.example.android.groceries2.data;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+
+import com.example.android.groceries2.R;
 
 /**
  * Created by takeoff on 001 01 Jun 17.
@@ -23,6 +26,8 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 public class GroceriesDbHelper extends SQLiteOpenHelper {
 
+    private Context context;
+
     //Database name
     public static final String DB_NAME = "GROCERIES_db";
     //Database version
@@ -36,18 +41,18 @@ public class GroceriesDbHelper extends SQLiteOpenHelper {
     /*ITEMS table*/
     public static final String ITEMS_TABLE_NAME = "ITEMS_table";
     //price column
-    public static final String ITEM_PRICE_COLUMN = "price";
+    public static final String ITEMS_PRICE_COLUMN = "price";
     //measure column
-    public static final String ITEM_MEASURE_COLUMN = "measure";
+    public static final String ITEMS_MEASURE_COLUMN = "measure";
     //checked state column
-    public static final String ITEM_CHECKED_COLUMN = "checked";
+    public static final String ITEMS_CHECKED_COLUMN = "checked";
     //table create command
     public static final String ITEMS_TABLE_CREATE_COMMAND = "CREATE TABLE " + ITEMS_TABLE_NAME + " (" +
             ID_COLUMN + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
             NAME_COLUMN + " TEXT NOT NULL UNIQUE, " +
-            ITEM_PRICE_COLUMN + " REAL NOT NULL DEFAULT 0, " +
-            ITEM_MEASURE_COLUMN + " INTEGER NOT NULL DEFAULT 0, " +
-            ITEM_CHECKED_COLUMN + " INTEGER);";
+            ITEMS_PRICE_COLUMN + " REAL NOT NULL DEFAULT 0, " +
+            ITEMS_MEASURE_COLUMN + " INTEGER NOT NULL DEFAULT 0, " +
+            ITEMS_CHECKED_COLUMN + " INTEGER);";
     //table drop command
     public static final String ITEMS_TABLE_DROP_COMMAND = "DROP TABLE " + ITEMS_TABLE_NAME + ";";
 
@@ -113,6 +118,7 @@ public class GroceriesDbHelper extends SQLiteOpenHelper {
     public GroceriesDbHelper(Context context, String name, SQLiteDatabase.CursorFactory factory,
                              int version) {
         super(context, name, factory, version);
+        this.context = context;
     }
 
     /**
@@ -126,8 +132,20 @@ public class GroceriesDbHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
 
         db.execSQL(ITEMS_TABLE_CREATE_COMMAND);
-        db.execSQL(MEASURE_TABLE_CREATE_COMMAND);
         db.execSQL(LOG_TABLE_CREATE_COMMAND);
+        db.execSQL(MEASURE_TABLE_CREATE_COMMAND);
+
+        //Get the array with measurement values
+        String[] measures = context.getResources().getStringArray(R.array.array_measurement_options);
+
+        //Insert measurement values to MEASURE_table
+        for (int i = 0; i < measures.length; i++) {
+            ContentValues contentValues = new ContentValues();
+            contentValues.put(MEASURE_MEASURE_COLUMN, measures[i]);
+            db.insert(MEASURE_TABLE_NAME, null, contentValues);
+        }
+
+
     }
 
     /**

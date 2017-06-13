@@ -17,10 +17,14 @@ public class MainActivity extends AppCompatActivity {
     static public GroceriesDbHelper dbHelper;
     static public boolean EMPTY = true;
 
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
 
         //Create dbHelper object
         dbHelper = new GroceriesDbHelper(this, GroceriesDbHelper.DB_NAME,
