@@ -2,7 +2,6 @@ package com.example.android.groceries2;
 
 import android.content.ContentValues;
 import android.content.Intent;
-import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -16,7 +15,7 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
 
-import com.example.android.groceries2.data.GroceriesDbHelper;
+import static com.example.android.groceries2.data.GroceriesDbHelper.ITEMS_TABLE_NAME;
 
 /**
  * Created by takeoff on 006 06 Jun 17.
@@ -134,7 +133,7 @@ public class EditorActivity extends AppCompatActivity {
         contentValues.put("price", price);
         contentValues.put("measure", measurement);
         contentValues.put("checked", 0);
-        db.insert("groceries", null, contentValues);
+        db.insert(ITEMS_TABLE_NAME, null, contentValues);
 
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);

@@ -1,7 +1,6 @@
 package com.example.android.groceries2.data;
 
 import android.app.AlertDialog;
-import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -14,14 +13,10 @@ import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.CursorAdapter;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.android.groceries2.EditorActivity;
 import com.example.android.groceries2.MainActivity;
 import com.example.android.groceries2.R;
-
-import static android.R.attr.id;
-import static java.security.AccessController.getContext;
 
 /**
  * Created by takeoff on 009 09 Jun 17.
@@ -82,7 +77,7 @@ public class ItemsCursorAdapter extends CursorAdapter {
         final int id = cursor.getInt(cursor.getColumnIndex("_id"));
         final String[] id1 = {Integer.toString(cursor.getInt(cursor.getColumnIndex("_id")))};
 
-        Cursor cursor1 = db.query(GroceriesDbHelper.TABLE_GROCERIES, null, null, null, null, null, null);
+        Cursor cursor1 = db.query(GroceriesDbHelper.ITEMS_TABLE_NAME, null, null, null, null, null, null);
         cursor1.move(id);
 
         boolean checkBoxState = false;
@@ -148,7 +143,7 @@ public class ItemsCursorAdapter extends CursorAdapter {
 
                 /*                boolean checkBoxState = false;
 
-                Cursor cursor = db.query(GroceriesDbHelper.TABLE_GROCERIES, null, null, null, null, null, null);
+                Cursor cursor = db.query(GroceriesDbHelper.ITEMS_TABLE_NAME, null, null, null, null, null, null);
                 cursor.move(id);
                 int check = cursor.getInt(cursor.getColumnIndex("checked"));
                 if (check == 1) checkBoxState = true;

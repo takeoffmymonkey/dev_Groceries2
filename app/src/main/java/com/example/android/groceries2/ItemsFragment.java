@@ -10,8 +10,6 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
-import android.support.v4.widget.CursorAdapter;
-import android.support.v4.widget.SimpleCursorAdapter;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -19,21 +17,15 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.GridView;
-import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.android.groceries2.data.GroceriesDbHelper;
 import com.example.android.groceries2.data.ItemsCursorAdapter;
 
 
-import static android.R.attr.checked;
-import static android.R.attr.name;
-import static com.example.android.groceries2.data.GroceriesDbHelper.GROCERIES_TABLE_CREATE;
-import static com.example.android.groceries2.data.GroceriesDbHelper.GROCERIES_TABLE_DROP;
+import static com.example.android.groceries2.data.GroceriesDbHelper.ITEMS_TABLE_CREATE_COMMAND;
+import static com.example.android.groceries2.data.GroceriesDbHelper.ITEMS_TABLE_DROP_COMMAND;
+import static com.example.android.groceries2.data.GroceriesDbHelper.ITEMS_TABLE_NAME;
 
 /**
  * Created by takeoff on 002 02 Jun 17.
@@ -60,7 +52,7 @@ public class ItemsFragment extends Fragment {
                              @Nullable Bundle savedInstanceState) {
 
 
-        Cursor cursor = db.query(GroceriesDbHelper.TABLE_GROCERIES, null,
+        Cursor cursor = db.query(ITEMS_TABLE_NAME, null,
                 null, null, null, null, null);
         itemsTotal = cursor.getCount();
 
@@ -148,11 +140,11 @@ public class ItemsFragment extends Fragment {
                     contentValues.put("price", Math.random() * 11.4);
                     contentValues.put("measure", 1);
                     contentValues.put("checked", 0);
-                    db.insert("groceries", null, contentValues);
+                    db.insert(ITEMS_TABLE_NAME, null, contentValues);
                     itemsTotal++;
                 }
 
-                Cursor cursor = db.query(GroceriesDbHelper.TABLE_GROCERIES, null, null, null, null, null, null);
+                Cursor cursor = db.query(ITEMS_TABLE_NAME, null, null, null, null, null, null);
 
                 Toast.makeText(getActivity(), "Item added" + "(" + cursor.getCount() + ")", Toast.LENGTH_SHORT)
                         .show();
@@ -174,12 +166,12 @@ public class ItemsFragment extends Fragment {
 
             case R.id.settings_option_delete_all_items:
 
-                db.execSQL(GROCERIES_TABLE_DROP);
-                db.execSQL(GROCERIES_TABLE_CREATE);
+                db.execSQL(ITEMS_TABLE_DROP_COMMAND);
+                db.execSQL(ITEMS_TABLE_CREATE_COMMAND);
                 itemsTotal = 0;
                 Toast.makeText(getActivity(), "All items successfully deleted!", Toast.LENGTH_SHORT)
                         .show();
-                cursor = db.query(GroceriesDbHelper.TABLE_GROCERIES, null, null, null, null, null, null);
+                cursor = db.query(ITEMS_TABLE_NAME, null, null, null, null, null, null);
 
                 itemsCursorAdapter.changeCursor(cursor);
                 //getActivity().recreate();
@@ -208,7 +200,7 @@ public class ItemsFragment extends Fragment {
             values.put("checked", 1);
 
             try {
-                db.update("groceries", values, "_id = ?", new String[]{Integer.toString(i)});
+                db.update(ITEMS_TABLE_NAME, values, "_id = ?", new String[]{Integer.toString(i)});
                 return true;
             } catch (SQLiteException e) {
                 return false;
@@ -220,7 +212,7 @@ public class ItemsFragment extends Fragment {
         protected void onPostExecute(Boolean success) {
             if (success) {
                 Toast.makeText(getActivity(), "Checked", Toast.LENGTH_SHORT).show();
-                Cursor cursor = db.query(GroceriesDbHelper.TABLE_GROCERIES, null, null, null, null, null, null);
+                Cursor cursor = db.query(ITEMS_TABLE_NAME, null, null, null, null, null, null);
                 itemsCursorAdapter.changeCursor(cursor);
 
             } else Toast.makeText(getActivity(), "SQL error", Toast.LENGTH_SHORT).show();

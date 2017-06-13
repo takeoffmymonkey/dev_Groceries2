@@ -24,28 +24,77 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class GroceriesDbHelper extends SQLiteOpenHelper {
 
     //Database name
-    public static final String DATABASE_NAME = "groceries_db";
+    public static final String DB_NAME = "GROCERIES_db";
     //Database version
-    public static final int DBVERSION = 1;
-    //Db table name
-    public static final String TABLE_GROCERIES = "groceries";
-    //Item's name
-    public static final String ITEM_NAME = "name";
-    //Item's price
-    public static final String ITEM_PRICE = "price";
-    //Item's weight
-    //Item's measurement
-    public static final String ITEM_MEASURE = "measure";
-    //Item's check checkBoxState
-    public static final String ITEM_CHECKED = "checked";
+    public static final int DB_VERSION = 1;
+    //id column for all tables
+    public static final String ID_COLUMN = "_id";
+    //name column for all tables
+    public static final String NAME_COLUMN = "name";
 
 
-    public static final String GROCERIES_TABLE_CREATE = "CREATE TABLE " + TABLE_GROCERIES + " (" + "_id" +
-            " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-            ITEM_NAME + " TEXT, " + ITEM_PRICE + " REAL, " +
-            ITEM_MEASURE + " TEXT, " + ITEM_CHECKED + " INTEGER);";
+    /*ITEMS table*/
+    public static final String ITEMS_TABLE_NAME = "ITEMS_table";
+    //price column
+    public static final String ITEM_PRICE_COLUMN = "price";
+    //measure column
+    public static final String ITEM_MEASURE_COLUMN = "measure";
+    //checked state column
+    public static final String ITEM_CHECKED_COLUMN = "checked";
+    //table create command
+    public static final String ITEMS_TABLE_CREATE_COMMAND = "CREATE TABLE " + ITEMS_TABLE_NAME + " (" +
+            ID_COLUMN + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+            NAME_COLUMN + " TEXT NOT NULL UNIQUE, " +
+            ITEM_PRICE_COLUMN + " REAL NOT NULL DEFAULT 0, " +
+            ITEM_MEASURE_COLUMN + " INTEGER NOT NULL DEFAULT 0, " +
+            ITEM_CHECKED_COLUMN + " INTEGER);";
+    //table drop command
+    public static final String ITEMS_TABLE_DROP_COMMAND = "DROP TABLE " + ITEMS_TABLE_NAME + ";";
 
-    public static final String GROCERIES_TABLE_DROP = "DROP TABLE " + TABLE_GROCERIES + ";";
+
+    /*MEASURE table*/
+    public static final String MEASURE_TABLE_NAME = "MEASURE_table";
+    //measure column
+    public static final String MEASURE_MEASURE_COLUMN = "measure";
+    //table create command
+    public static final String MEASURE_TABLE_CREATE_COMMAND = "CREATE TABLE " + MEASURE_TABLE_NAME + " (" +
+            ID_COLUMN + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+            MEASURE_MEASURE_COLUMN + " TEXT NOT NULL UNIQUE);";
+    //table drop command
+    public static final String MEASURE_TABLE_DROP_COMMAND = "DROP TABLE " + MEASURE_TABLE_NAME + ";";
+
+
+    /*LOG table*/
+    public static final String LOG_TABLE_NAME = "LOG_table";
+    //creation date column
+    public static final String LOG_DATE_CREATED_COLUMN = "created";
+    //completion date column
+    public static final String LOG_DATE_COMPLETE_COLUMN = "complete";
+    //table create command
+    public static final String LOG_TABLE_CREATE_COMMAND = "CREATE TABLE " + LOG_TABLE_NAME + " (" +
+            ID_COLUMN + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+            NAME_COLUMN + " TEXT NOT NULL UNIQUE, " +
+            LOG_DATE_CREATED_COLUMN + " TEXT NOT NULL UNIQUE, " +
+            LOG_DATE_COMPLETE_COLUMN + " TEXT NOT NULL UNIQUE);";
+    //table drop command
+    public static final String LOG_TABLE_DROP_COMMAND = "DROP TABLE " + LOG_TABLE_NAME + ";";
+
+
+    /*LIST table*/
+    // TODO: 013 13 Jun 17 auto increment list table's name dynamically
+    public static final String LIST_TABLE_NAME = "LIST_table";
+    //item column
+    public static final String LIST_ITEM_COLUMN = "item";
+    //amount column
+    public static final String LIST_AMOUNT_COLUMN = "amount";
+    //table create command
+    public static final String LIST_TABLE_CREATE_COMMAND = "CREATE TABLE " + LIST_TABLE_NAME + " (" +
+            ID_COLUMN + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+            LIST_ITEM_COLUMN + " INTEGER NOT NULL UNIQUE, " +
+            LIST_AMOUNT_COLUMN + " REAL NOT NULL);";
+    //table drop command
+    public static final String LIST_TABLE_DROP_COMMAND = "DROP TABLE " + LIST_TABLE_NAME + ";";
+
 
     /**
      * Reqired implementation of a constructor.
@@ -76,7 +125,9 @@ public class GroceriesDbHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
 
-        db.execSQL(GROCERIES_TABLE_CREATE);
+        db.execSQL(ITEMS_TABLE_CREATE_COMMAND);
+        db.execSQL(MEASURE_TABLE_CREATE_COMMAND);
+        db.execSQL(LOG_TABLE_CREATE_COMMAND);
     }
 
     /**
