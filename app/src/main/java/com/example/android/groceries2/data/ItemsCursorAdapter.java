@@ -24,7 +24,6 @@ import com.example.android.groceries2.R;
 import static com.example.android.groceries2.data.GroceriesDbHelper.ITEMS_CHECKED_COLUMN;
 import static com.example.android.groceries2.data.GroceriesDbHelper.ITEMS_MEASURE_COLUMN;
 import static com.example.android.groceries2.data.GroceriesDbHelper.ITEMS_TABLE_NAME;
-import static com.example.android.groceries2.data.GroceriesDbHelper.ITEMS_PRICE_COLUMN;
 import static com.example.android.groceries2.data.GroceriesDbHelper.MEASURE_MEASURE_COLUMN;
 import static com.example.android.groceries2.data.GroceriesDbHelper.MEASURE_TABLE_NAME;
 import static com.example.android.groceries2.data.GroceriesDbHelper.NAME_COLUMN;
@@ -67,9 +66,9 @@ public class ItemsCursorAdapter extends CursorAdapter {
      */
     @Override
     public View newView(Context context, Cursor cursor, ViewGroup parent) {
-        // Inflate a list item view using the layout specified in list_item.xml
+        // Inflate a list item view using the layout specified in items_item.xml
 
-        return LayoutInflater.from(context).inflate(R.layout.list_item, parent, false);
+        return LayoutInflater.from(context).inflate(R.layout.item_items, parent, false);
     }
 
     /**
@@ -100,12 +99,12 @@ public class ItemsCursorAdapter extends CursorAdapter {
         int check = cursor1.getInt(cursor.getColumnIndex(ITEMS_CHECKED_COLUMN));
 
 
-        TextView measureTextView = (TextView) view.findViewById(R.id.item_measure);
+/*        TextView measureTextView = (TextView) view.findViewById(R.id.item_measure);
 
         int measure = cursor1.getInt(cursor.getColumnIndex(ITEMS_MEASURE_COLUMN));
 
         // TODO: 013 13 Jun 17 narrow down query
-/*        Cursor cursor2 = db.query(MEASURE_TABLE_NAME, null, null, null, null, null, null);
+        Cursor cursor2 = db.query(MEASURE_TABLE_NAME, null, null, null, null, null, null);
 
         cursor2.move(measure);
         String s = cursor2.getString(cursor2.getColumnIndex(MEASURE_MEASURE_COLUMN));

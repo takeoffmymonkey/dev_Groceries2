@@ -94,22 +94,22 @@ public class ItemsFragment extends Fragment {
 
 
         // Find the ListView which will be populated with the pet data
-        GridView itemsListView = (GridView) itemsView.findViewById(R.id.items_list);
+        GridView itemsGridView = (GridView) itemsView.findViewById(R.id.items_list);
 
 
         // Find and set empty view on the ListView, so that it only shows when the list has 0 items.
-        View emptyView = itemsView.findViewById(R.id.empty_view);
-        itemsListView.setEmptyView(emptyView);
+        View emptyView = itemsView.findViewById(R.id.items_empty_view);
+        itemsGridView.setEmptyView(emptyView);
 
         // Setup an Adapter to create a list item for each row of pet data in the Cursor.
         // There is no pet data yet (until the loader finishes) so pass in null for the Cursor.
-/*        simpleCursorAdapter = new SimpleCursorAdapter(getActivity(), R.layout.list_item, cursor,
+/*        simpleCursorAdapter = new SimpleCursorAdapter(getActivity(), R.layout.item_items, cursor,
                 new String[]{"name", "checked"}, new int[]{R.id.item_checkbox, R.id.item_measure}, 0);
 
-        itemsListView.setAdapter(simpleCursorAdapter);*/
+        itemsGridView.setAdapter(simpleCursorAdapter);*/
 
         itemsCursorAdapter = new ItemsCursorAdapter(getContext(), cursor, 0);
-        itemsListView.setAdapter(itemsCursorAdapter);
+        itemsGridView.setAdapter(itemsCursorAdapter);
 
         setHasOptionsMenu(true);
 

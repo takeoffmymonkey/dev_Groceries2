@@ -1,5 +1,7 @@
 package com.example.android.groceries2;
 
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
@@ -10,16 +12,28 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.GridView;
+import android.widget.ListView;
 import android.widget.TextView;
+
+import com.example.android.groceries2.data.ItemsCursorAdapter;
+import com.example.android.groceries2.data.ListCursorAdapter;
+
+import java.util.List;
+
+import static com.example.android.groceries2.data.GroceriesDbHelper.ITEMS_TABLE_NAME;
+import static com.example.android.groceries2.data.GroceriesDbHelper.LIST_TABLE_NAME;
 
 /**
  * Created by takeoff on 002 02 Jun 17.
  */
 
 public class ListFragment extends Fragment {
-
+    SQLiteDatabase db = MainActivity.dbHelper.getReadableDatabase();
 
     View listView;
+
+    ListCursorAdapter listCursorAdapter;
 
     public ListFragment() {
 
@@ -31,38 +45,31 @@ public class ListFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
 
-        if (MainActivity.EMPTY) {
-            listView = inflater.inflate(R.layout.empty, container, false);
+        Cursor cursor = db.query(LIST_TABLE_NAME, null,
+                null, null, null, null, null);
 
-            FloatingActionButton fabAddInit =
-                    (FloatingActionButton) listView.findViewById(R.id.fab_add_item_to_db_init);
+        listView = inflater.inflate(R.layout.tab_list, container, false);
 
-            fabAddInit.setVisibility(View.GONE);
+        FloatingActionButton fabAddInit =
+                (FloatingActionButton) listView.findViewById(R.id.fab_complete_list);
 
-            TextView textView = (TextView) listView.findViewById(R.id.empty_text);
-            TextView textSubView = (TextView) listView.findViewById(R.id.empty_text_sub);
-            textView.setText("No created lists");
-            textSubView.setText("Go to ITEMS tab to create a list");
-
-        } else {
+        // Find the ListView which will be populated with the pet data
+        ListView listListView = (ListView) listView.findViewById(R.id.list_list);
 
 
-            listView = inflater.inflate(R.layout.tab_list, container, false);
+        // Find and set empty view on the ListView, so that it only shows when the list has 0 items.
 
+        View emptyView = listView.findViewById(R.id.list_empty_view);
 
-            FloatingActionButton fabComplete = (FloatingActionButton) listView.findViewById(R.id.fab_complete_list);
+        listCursorAdapter = new ListCursorAdapter(getContext(), cursor, 0);
 
-            fabComplete.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                }
-            });
-        }
+        listListView.setEmptyView(emptyView);
+        listListView.setAdapter(listCursorAdapter);
+
 
         setHasOptionsMenu(true);
 
         return listView;
-
 
     }
 

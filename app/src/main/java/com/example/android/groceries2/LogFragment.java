@@ -1,5 +1,7 @@
 package com.example.android.groceries2;
 
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
@@ -10,7 +12,13 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListView;
 import android.widget.TextView;
+
+import com.example.android.groceries2.data.ListCursorAdapter;
+import com.example.android.groceries2.data.LogCursorAdapter;
+
+import static com.example.android.groceries2.data.GroceriesDbHelper.LIST_TABLE_NAME;
 
 /**
  * Created by takeoff on 002 02 Jun 17.
@@ -18,8 +26,11 @@ import android.widget.TextView;
 
 public class LogFragment extends Fragment {
 
+    SQLiteDatabase db = MainActivity.dbHelper.getReadableDatabase();
 
     View logView;
+    LogCursorAdapter logCursorAdapter;
+
 
     public LogFragment() {
 
@@ -31,24 +42,25 @@ public class LogFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
 
+        Cursor cursor = db.query(LIST_TABLE_NAME, null,
+                null, null, null, null, null);
 
-        if (MainActivity.EMPTY) {
-            logView = inflater.inflate(R.layout.empty, container, false);
+        logView = inflater.inflate(R.layout.tab_log, container, false);
 
-            FloatingActionButton fabAddInit =
-                    (FloatingActionButton) logView.findViewById(R.id.fab_add_item_to_db_init);
 
-            fabAddInit.setVisibility(View.GONE);
+        // Find the ListView which will be populated with the pet data
+        ListView logListView = (ListView) logView.findViewById(R.id.log_list);
 
-            TextView textView = (TextView) logView.findViewById(R.id.empty_text);
-            TextView textSubView = (TextView) logView.findViewById(R.id.empty_text_sub);
-            textView.setText("No complete lists");
-            textSubView.setText("Complete list by checking it on LIST tab");
 
-        } else {
+        // Find and set empty view on the ListView, so that it only shows when the list has 0 items.
 
-            logView = inflater.inflate(R.layout.tab_log, container, false);
-        }
+        View emptyView = logView.findViewById(R.id.log_empty_view);
+
+        logCursorAdapter = new LogCursorAdapter(getContext(), cursor, 0);
+
+        logListView.setEmptyView(emptyView);
+        logListView.setAdapter(logCursorAdapter);
+
 
         setHasOptionsMenu(true);
 
