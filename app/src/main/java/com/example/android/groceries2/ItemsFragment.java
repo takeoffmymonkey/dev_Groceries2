@@ -23,7 +23,10 @@ import android.widget.Toast;
 import com.example.android.groceries2.data.ItemsCursorAdapter;
 
 
+import static android.R.attr.value;
+import static com.example.android.groceries2.data.GroceriesDbHelper.AMOUNT_COLUMN;
 import static com.example.android.groceries2.data.GroceriesDbHelper.CHECKED_COLUMN;
+import static com.example.android.groceries2.data.GroceriesDbHelper.ID_COLUMN;
 import static com.example.android.groceries2.data.GroceriesDbHelper.ITEMS_MEASURE_COLUMN;
 import static com.example.android.groceries2.data.GroceriesDbHelper.ITEMS_TABLE_CREATE_COMMAND;
 import static com.example.android.groceries2.data.GroceriesDbHelper.ITEMS_TABLE_DROP_COMMAND;
@@ -94,11 +97,15 @@ public class ItemsFragment extends Fragment {
             public void onClick(View v) {
                 db.execSQL(createListTable());
 
-/*                Cursor cursor1 = db.query(ITEMS_TABLE_NAME,
+
+                // TODO: 015 14 Jun 17 bug with incrementing/decr version number
+
+                Cursor cursor1 = db.query(ITEMS_TABLE_NAME,
                         new String[]{ID_COLUMN, AMOUNT_COLUMN},//columns to choose from
-                        CHECKED_COLUMN, // WHERE value
+                        CHECKED_COLUMN + "=?", /*WHERE value, should be an expression
+                        (and # of ? should match # if selectionArgs[])*/
                         new String[]{"1"}, // is 1
-                        null, null, null);*/
+                        null, null, null);
 
 
                 // TODO: 014 14 Jun 17 update log table
@@ -106,7 +113,7 @@ public class ItemsFragment extends Fragment {
 
                 TabLayout tabhost = (TabLayout) getActivity().findViewById(R.id.tabs);
                 tabhost.getTabAt(1).select();
-                Toast.makeText(getContext(), listTableName, Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), Integer.toString(cursor1.getCount()), Toast.LENGTH_SHORT).show();
             }
         });
 
