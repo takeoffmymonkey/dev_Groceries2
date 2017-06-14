@@ -23,7 +23,7 @@ import com.example.android.groceries2.R;
 
 import static com.example.android.groceries2.data.GroceriesDbHelper.CHECKED_COLUMN;
 import static com.example.android.groceries2.data.GroceriesDbHelper.ITEMS_TABLE_NAME;
-import static com.example.android.groceries2.data.GroceriesDbHelper.LIST_AMOUNT_COLUMN;
+import static com.example.android.groceries2.data.GroceriesDbHelper.AMOUNT_COLUMN;
 import static com.example.android.groceries2.data.GroceriesDbHelper.LIST_ITEM_COLUMN;
 import static com.example.android.groceries2.data.GroceriesDbHelper.LIST_TABLE_NAME;
 import static com.example.android.groceries2.data.GroceriesDbHelper.NAME_COLUMN;
@@ -161,7 +161,7 @@ public class ItemsCursorAdapter extends CursorAdapter {
                                         contentValues.put(LIST_ITEM_COLUMN, id0);
 
                                         int amount = Integer.parseInt(amt.getText().toString());
-                                        contentValues.put(LIST_AMOUNT_COLUMN, amount);
+                                        contentValues.put(AMOUNT_COLUMN, amount);
                                         long newID = db.insert(LIST_TABLE_NAME, null, contentValues);
 
                                         Toast.makeText(view.getContext(), contentValues.toString() +

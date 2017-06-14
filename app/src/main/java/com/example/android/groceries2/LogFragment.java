@@ -4,7 +4,6 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -13,13 +12,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
-import android.widget.TextView;
 
-import com.example.android.groceries2.data.ListCursorAdapter;
+
 import com.example.android.groceries2.data.LogCursorAdapter;
 
-import static com.example.android.groceries2.data.GroceriesDbHelper.LIST_AMOUNT_COLUMN;
-import static com.example.android.groceries2.data.GroceriesDbHelper.LIST_TABLE_NAME;
+
 import static com.example.android.groceries2.data.GroceriesDbHelper.LOG_TABLE_NAME;
 
 /**

@@ -28,6 +28,8 @@ public class GroceriesDbHelper extends SQLiteOpenHelper {
 
     private Context context;
 
+    public static int listTableVersion = 0;
+
     //Database name
     public static final String DB_NAME = "GROCERIES_db";
     //Database version
@@ -38,6 +40,8 @@ public class GroceriesDbHelper extends SQLiteOpenHelper {
     public static final String NAME_COLUMN = "name";
     //checked state column
     public static final String CHECKED_COLUMN = "checked";
+    //checked column
+    public static final String AMOUNT_COLUMN = "amount";
 
 
     /*ITEMS table*/
@@ -53,6 +57,7 @@ public class GroceriesDbHelper extends SQLiteOpenHelper {
             NAME_COLUMN + " TEXT NOT NULL UNIQUE, " +
             ITEMS_PRICE_COLUMN + " REAL NOT NULL DEFAULT 0, " +
             ITEMS_MEASURE_COLUMN + " INTEGER NOT NULL DEFAULT 0, " +
+            AMOUNT_COLUMN + " REAL, " +
             CHECKED_COLUMN + " INTEGER);";
     //table drop command
     public static final String ITEMS_TABLE_DROP_COMMAND = "DROP TABLE " + ITEMS_TABLE_NAME + ";";
@@ -88,16 +93,14 @@ public class GroceriesDbHelper extends SQLiteOpenHelper {
 
     /*LIST table*/
     // TODO: 013 13 Jun 17 auto increment list table's name dynamically
-    public static final String LIST_TABLE_NAME = "LIST_table";
+    public static String LIST_TABLE_NAME = "LIST_table" + listTableVersion;
     //item column
     public static final String LIST_ITEM_COLUMN = "item";
-    //checked column
-    public static final String LIST_AMOUNT_COLUMN = "amount";
     //table create command
     public static final String LIST_TABLE_CREATE_COMMAND = "CREATE TABLE " + LIST_TABLE_NAME + " (" +
             ID_COLUMN + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
             LIST_ITEM_COLUMN + " INTEGER NOT NULL UNIQUE, " +
-            LIST_AMOUNT_COLUMN + " REAL NOT NULL, " +
+            AMOUNT_COLUMN + " REAL, " +
             CHECKED_COLUMN + " INTEGER);";
     //table drop command
     public static final String LIST_TABLE_DROP_COMMAND = "DROP TABLE " + LIST_TABLE_NAME + ";";
