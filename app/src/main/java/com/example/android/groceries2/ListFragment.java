@@ -18,6 +18,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.android.groceries2.data.GroceriesDbHelper;
 import com.example.android.groceries2.data.ItemsCursorAdapter;
 import com.example.android.groceries2.data.ListCursorAdapter;
 
@@ -66,24 +67,27 @@ public class ListFragment extends Fragment {
 
         listListView.setEmptyView(emptyView);
 
-        Cursor cursor = db.query(LIST_TABLE_NAME, null,
-                null, null, null, null, null);
+        if (GroceriesDbHelper.listTableVersion > 0) {
 
-        listCursorAdapter = new ListCursorAdapter(getContext(), cursor, 0);
+            Cursor cursor = db.query(LIST_TABLE_NAME, null,
+                    null, null, null, null, null);
 
-        listListView.setAdapter(listCursorAdapter);
+            listCursorAdapter = new ListCursorAdapter(getContext(), cursor, 0);
+
+            listListView.setAdapter(listCursorAdapter);
 
 
-        fabRefresh.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Cursor cursor = db.query(LIST_TABLE_NAME, null, null, null, null, null, null);
+            fabRefresh.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Cursor cursor = db.query(LIST_TABLE_NAME, null, null, null, null, null, null);
 
-                listCursorAdapter.changeCursor(cursor);
+                    listCursorAdapter.changeCursor(cursor);
 
-            }
-        });
+                }
+            });
 
+        }
         setHasOptionsMenu(true);
 
         return listView;

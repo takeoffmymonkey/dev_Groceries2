@@ -138,7 +138,6 @@ public class GroceriesDbHelper extends SQLiteOpenHelper {
 
         db.execSQL(ITEMS_TABLE_CREATE_COMMAND);
         db.execSQL(LOG_TABLE_CREATE_COMMAND);
-        db.execSQL(LIST_TABLE_CREATE_COMMAND);
         db.execSQL(MEASURE_TABLE_CREATE_COMMAND);
 
         //Get the array with measurement values
