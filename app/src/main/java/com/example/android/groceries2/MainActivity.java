@@ -9,6 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
 
+import com.example.android.groceries2.data.CategoryAdapter;
 import com.example.android.groceries2.data.GroceriesDbHelper;
 
 

@@ -13,7 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.CursorAdapter;
-import android.widget.TextView;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.android.groceries2.EditorActivity;
@@ -22,10 +22,10 @@ import com.example.android.groceries2.R;
 
 
 import static com.example.android.groceries2.data.GroceriesDbHelper.ITEMS_CHECKED_COLUMN;
-import static com.example.android.groceries2.data.GroceriesDbHelper.ITEMS_MEASURE_COLUMN;
 import static com.example.android.groceries2.data.GroceriesDbHelper.ITEMS_TABLE_NAME;
-import static com.example.android.groceries2.data.GroceriesDbHelper.MEASURE_MEASURE_COLUMN;
-import static com.example.android.groceries2.data.GroceriesDbHelper.MEASURE_TABLE_NAME;
+import static com.example.android.groceries2.data.GroceriesDbHelper.LIST_AMOUNT_COLUMN;
+import static com.example.android.groceries2.data.GroceriesDbHelper.LIST_ITEM_COLUMN;
+import static com.example.android.groceries2.data.GroceriesDbHelper.LIST_TABLE_NAME;
 import static com.example.android.groceries2.data.GroceriesDbHelper.NAME_COLUMN;
 import static com.example.android.groceries2.data.GroceriesDbHelper.ID_COLUMN;
 
@@ -82,14 +82,14 @@ public class ItemsCursorAdapter extends CursorAdapter {
      *                correct row.
      */
     @Override
-    public void bindView(final View view, Context context, final Cursor cursor) {
+    public void bindView(final View view, final Context context, final Cursor cursor) {
 
 
-        final int id = cursor.getInt(cursor.getColumnIndex(ID_COLUMN));
+        final int id0 = cursor.getInt(cursor.getColumnIndex(ID_COLUMN));
         final String[] id1 = {Integer.toString(cursor.getInt(cursor.getColumnIndex(ID_COLUMN)))};
 
-        Cursor cursor1 = db.query(ITEMS_TABLE_NAME, null, null, null, null, null, null);
-        cursor1.move(id);
+        final Cursor cursor1 = db.query(ITEMS_TABLE_NAME, null, null, null, null, null, null);
+        cursor1.move(id0);
 
         boolean checkBoxState = false;
 
@@ -99,7 +99,8 @@ public class ItemsCursorAdapter extends CursorAdapter {
         int check = cursor1.getInt(cursor.getColumnIndex(ITEMS_CHECKED_COLUMN));
 
 
-/*        TextView measureTextView = (TextView) view.findViewById(R.id.item_measure);
+
+/*        TextView measureTextView = (TextView) view.findViewById(R.id0.item_measure);
 
         int measure = cursor1.getInt(cursor.getColumnIndex(ITEMS_MEASURE_COLUMN));
 
@@ -109,7 +110,6 @@ public class ItemsCursorAdapter extends CursorAdapter {
         cursor2.move(measure);
         String s = cursor2.getString(cursor2.getColumnIndex(MEASURE_MEASURE_COLUMN));
         measureTextView.setText(s);*/
-
 
         if (check == 1) {
             checkBoxState = true;
@@ -128,6 +128,13 @@ public class ItemsCursorAdapter extends CursorAdapter {
 
                 LayoutInflater inflater = LayoutInflater.from(view.getContext());
                 View test = inflater.inflate(R.layout.dialog_edit_item, null);
+
+                final EditText amt = (EditText) test.findViewById(R.id.editor_price);
+
+                boolean checkBoxState = false;
+                final Cursor cursor = db.query(ITEMS_TABLE_NAME, null, null, null, null, null, null);
+                cursor.move(id0);
+
 
                 builder.setTitle("Please set items amount")
                         //.setMessage("Setting items amount..")
@@ -150,6 +157,16 @@ public class ItemsCursorAdapter extends CursorAdapter {
                         .setPositiveButton("Ok",
                                 new DialogInterface.OnClickListener() {
                                     public void onClick(DialogInterface dialog, int id) {
+                                        ContentValues contentValues = new ContentValues();
+                                        contentValues.put(LIST_ITEM_COLUMN, id0);
+
+                                        int amount = Integer.parseInt(amt.getText().toString());
+                                        contentValues.put(LIST_AMOUNT_COLUMN, amount);
+                                        /*db.insert(LIST_TABLE_NAME, null, contentValues);*/
+
+                                        Toast.makeText(view.getContext(), contentValues.toString() +
+                                                        "new id" + db.insert(LIST_TABLE_NAME, null, contentValues),
+                                                Toast.LENGTH_SHORT).show();
                                         dialog.cancel();
                                     }
                                 });
@@ -157,9 +174,6 @@ public class ItemsCursorAdapter extends CursorAdapter {
                 alert.show();
 
 
-                boolean checkBoxState = false;
-                Cursor cursor = db.query(GroceriesDbHelper.ITEMS_TABLE_NAME, null, null, null, null, null, null);
-                cursor.move(id);
                 int check = cursor.getInt(cursor.getColumnIndex(ITEMS_CHECKED_COLUMN));
                 if (check == 1) checkBoxState = true;
                 if (!checkBoxState) {
@@ -175,6 +189,9 @@ public class ItemsCursorAdapter extends CursorAdapter {
                     view.setBackgroundColor(Color.WHITE);
                     Toast.makeText(view.getContext(), "Unchecked:" + id1[0], Toast.LENGTH_SHORT).show();
                 }
+
+                cursor.close();
+                cursor1.close();
 
             }
         });

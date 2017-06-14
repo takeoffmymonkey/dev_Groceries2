@@ -101,12 +101,6 @@ public class ItemsFragment extends Fragment {
         View emptyView = itemsView.findViewById(R.id.items_empty_view);
         itemsGridView.setEmptyView(emptyView);
 
-        // Setup an Adapter to create a list item for each row of pet data in the Cursor.
-        // There is no pet data yet (until the loader finishes) so pass in null for the Cursor.
-/*        simpleCursorAdapter = new SimpleCursorAdapter(getActivity(), R.layout.item_items, cursor,
-                new String[]{"name", "checked"}, new int[]{R.id.item_checkbox, R.id.item_measure}, 0);
-
-        itemsGridView.setAdapter(simpleCursorAdapter);*/
 
         itemsCursorAdapter = new ItemsCursorAdapter(getContext(), cursor, 0);
         itemsGridView.setAdapter(itemsCursorAdapter);

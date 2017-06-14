@@ -1,8 +1,12 @@
-package com.example.android.groceries2;
+package com.example.android.groceries2.data;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+
+import com.example.android.groceries2.ItemsFragment;
+import com.example.android.groceries2.ListFragment;
+import com.example.android.groceries2.LogFragment;
 
 
 /**
