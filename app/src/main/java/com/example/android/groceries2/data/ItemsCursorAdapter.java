@@ -162,7 +162,7 @@ public class ItemsCursorAdapter extends CursorAdapter {
 
                                         int amount = Integer.parseInt(amt.getText().toString());
                                         contentValues.put(AMOUNT_COLUMN, amount);
-                                        long newID = db.insert(LIST_TABLE_NAME, null, contentValues);
+                                        long newID = db.insert(ITEMS_TABLE_NAME, null, contentValues);
 
                                         Toast.makeText(view.getContext(), contentValues.toString() +
                                                         "new id" + newID,
