@@ -94,6 +94,7 @@ public class ItemsFragment extends Fragment {
                 // Create new fragment and transaction
                 TabLayout tabhost = (TabLayout) getActivity().findViewById(R.id.tabs);
                 tabhost.getTabAt(1).select();
+                Toast.makeText(getContext(), "List created", Toast.LENGTH_SHORT).show();
             }
         });
 

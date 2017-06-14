@@ -5,6 +5,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -15,6 +16,7 @@ import android.view.ViewGroup;
 import android.widget.GridView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.android.groceries2.data.ItemsCursorAdapter;
 import com.example.android.groceries2.data.ListCursorAdapter;
@@ -52,8 +54,12 @@ public class ListFragment extends Fragment {
 
         listView = inflater.inflate(R.layout.tab_list, container, false);
 
-        FloatingActionButton fabAddInit =
+        FloatingActionButton fabCompleteList =
                 (FloatingActionButton) listView.findViewById(R.id.fab_complete_list);
+
+        FloatingActionButton fabRefresh =
+                (FloatingActionButton) listView.findViewById(R.id.fab_TEMP_refresh_list);
+
 
         // Find the ListView which will be populated with the pet data
         ListView listListView = (ListView) listView.findViewById(R.id.list_list);
@@ -69,12 +75,37 @@ public class ListFragment extends Fragment {
         listListView.setAdapter(listCursorAdapter);
 
 
+        fabRefresh.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Cursor cursor = db.query(LIST_TABLE_NAME, null, null, null, null, null, null);
+
+                listCursorAdapter.changeCursor(cursor);
+
+            }
+        });
+
         setHasOptionsMenu(true);
 
         return listView;
 
     }
 
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        Toast.makeText(getContext(), "Paused", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Toast.makeText(getContext(), "Resumed", Toast.LENGTH_SHORT).show();
+        Cursor cursor = db.query(LIST_TABLE_NAME, null,
+                null, null, null, null, null);
+        listCursorAdapter.changeCursor(cursor);
+    }
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {

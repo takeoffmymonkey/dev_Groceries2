@@ -17,6 +17,7 @@ public class MainActivity extends AppCompatActivity {
 
     static public GroceriesDbHelper dbHelper;
     static public boolean EMPTY = true;
+    public CategoryAdapter adapter;
 
 
     @Override
@@ -30,7 +31,7 @@ public class MainActivity extends AppCompatActivity {
                 null, GroceriesDbHelper.DB_VERSION);
 
 
-        CategoryAdapter adapter = new CategoryAdapter(getSupportFragmentManager());
+        adapter = new CategoryAdapter(getSupportFragmentManager());
         ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager);
         viewPager.setAdapter(adapter);
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
