@@ -49,9 +49,6 @@ public class ListFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
 
-        Cursor cursor = db.query(LIST_TABLE_NAME, null,
-                null, null, null, null, null);
-
         listView = inflater.inflate(R.layout.tab_list, container, false);
 
         FloatingActionButton fabCompleteList =
@@ -60,18 +57,20 @@ public class ListFragment extends Fragment {
         FloatingActionButton fabRefresh =
                 (FloatingActionButton) listView.findViewById(R.id.fab_TEMP_refresh_list);
 
-
         // Find the ListView which will be populated with the pet data
         ListView listListView = (ListView) listView.findViewById(R.id.list_list);
-
 
         // Find and set empty view on the ListView, so that it only shows when the list has 0 items.
 
         View emptyView = listView.findViewById(R.id.list_empty_view);
 
+        listListView.setEmptyView(emptyView);
+
+        Cursor cursor = db.query(LIST_TABLE_NAME, null,
+                null, null, null, null, null);
+
         listCursorAdapter = new ListCursorAdapter(getContext(), cursor, 0);
 
-        listListView.setEmptyView(emptyView);
         listListView.setAdapter(listCursorAdapter);
 
 
@@ -102,9 +101,6 @@ public class ListFragment extends Fragment {
     public void onResume() {
         super.onResume();
         Toast.makeText(getContext(), "Resumed", Toast.LENGTH_SHORT).show();
-        Cursor cursor = db.query(LIST_TABLE_NAME, null,
-                null, null, null, null, null);
-        listCursorAdapter.changeCursor(cursor);
     }
 
     @Override
@@ -124,9 +120,6 @@ public class ListFragment extends Fragment {
             case R.id.settings_option_delete_list:
                 db.execSQL(LIST_TABLE_DROP_COMMAND);
                 db.execSQL(LIST_TABLE_CREATE_COMMAND);
-                Cursor cursor = db.query(LIST_TABLE_NAME, null,
-                        null, null, null, null, null);
-                listCursorAdapter.changeCursor(cursor);
                 return true;
         }
         return super.onOptionsItemSelected(item);
