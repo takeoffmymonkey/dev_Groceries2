@@ -9,7 +9,9 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -17,12 +19,13 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.GridView;
+import android.widget.TabHost;
 import android.widget.Toast;
 
 import com.example.android.groceries2.data.ItemsCursorAdapter;
 
 
-import static com.example.android.groceries2.data.GroceriesDbHelper.ITEMS_CHECKED_COLUMN;
+import static com.example.android.groceries2.data.GroceriesDbHelper.CHECKED_COLUMN;
 import static com.example.android.groceries2.data.GroceriesDbHelper.ITEMS_MEASURE_COLUMN;
 import static com.example.android.groceries2.data.GroceriesDbHelper.ITEMS_TABLE_CREATE_COMMAND;
 import static com.example.android.groceries2.data.GroceriesDbHelper.ITEMS_TABLE_DROP_COMMAND;
@@ -52,7 +55,7 @@ public class ItemsFragment extends Fragment {
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
+    public View onCreateView(LayoutInflater inflater, @Nullable final ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
 
 
@@ -62,9 +65,9 @@ public class ItemsFragment extends Fragment {
 
 
         itemsView = inflater.inflate(R.layout.tab_items, container, false);
-        FloatingActionButton fabAdd =
+        FloatingActionButton fabAddItem =
                 (FloatingActionButton) itemsView.findViewById(R.id.fab_add_item_to_db);
-        FloatingActionButton fabDelete =
+        FloatingActionButton fabApproveList =
                 (FloatingActionButton) itemsView.findViewById(R.id.fab_approve_list);
         FloatingActionButton fabAddInit = (FloatingActionButton)
                 itemsView.findViewById(R.id.fab_add_item_to_db_init);
@@ -77,7 +80,7 @@ public class ItemsFragment extends Fragment {
             }
         });
 
-        fabAdd.setOnClickListener(new View.OnClickListener() {
+        fabAddItem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getActivity(), EditorActivity.class);
@@ -85,10 +88,12 @@ public class ItemsFragment extends Fragment {
             }
         });
 
-        fabDelete.setOnClickListener(new View.OnClickListener() {
+        fabApproveList.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                // Create new fragment and transaction
+                TabLayout tabhost = (TabLayout) getActivity().findViewById(R.id.tabs);
+                tabhost.getTabAt(1).select();
             }
         });
 
@@ -191,7 +196,7 @@ public class ItemsFragment extends Fragment {
             int i = params[0];
 
             ContentValues values = new ContentValues();
-            values.put(ITEMS_CHECKED_COLUMN, 1);
+            values.put(CHECKED_COLUMN, 1);
 
             try {
                 db.update(ITEMS_TABLE_NAME, values, "_id = ?", new String[]{Integer.toString(i)});

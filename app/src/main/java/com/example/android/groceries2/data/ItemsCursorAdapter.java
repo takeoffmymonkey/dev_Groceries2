@@ -21,7 +21,7 @@ import com.example.android.groceries2.MainActivity;
 import com.example.android.groceries2.R;
 
 
-import static com.example.android.groceries2.data.GroceriesDbHelper.ITEMS_CHECKED_COLUMN;
+import static com.example.android.groceries2.data.GroceriesDbHelper.CHECKED_COLUMN;
 import static com.example.android.groceries2.data.GroceriesDbHelper.ITEMS_TABLE_NAME;
 import static com.example.android.groceries2.data.GroceriesDbHelper.LIST_AMOUNT_COLUMN;
 import static com.example.android.groceries2.data.GroceriesDbHelper.LIST_ITEM_COLUMN;
@@ -96,7 +96,7 @@ public class ItemsCursorAdapter extends CursorAdapter {
         CheckBox itemCheckBox = (CheckBox) view.findViewById(R.id.item_checkbox);
 
         String name = cursor1.getString(cursor.getColumnIndex(NAME_COLUMN));
-        int check = cursor1.getInt(cursor.getColumnIndex(ITEMS_CHECKED_COLUMN));
+        int check = cursor1.getInt(cursor.getColumnIndex(CHECKED_COLUMN));
 
 
 
@@ -162,10 +162,10 @@ public class ItemsCursorAdapter extends CursorAdapter {
 
                                         int amount = Integer.parseInt(amt.getText().toString());
                                         contentValues.put(LIST_AMOUNT_COLUMN, amount);
-                                        /*db.insert(LIST_TABLE_NAME, null, contentValues);*/
+                                        long newID = db.insert(LIST_TABLE_NAME, null, contentValues);
 
                                         Toast.makeText(view.getContext(), contentValues.toString() +
-                                                        "new id" + db.insert(LIST_TABLE_NAME, null, contentValues),
+                                                        "new id" + newID,
                                                 Toast.LENGTH_SHORT).show();
                                         dialog.cancel();
                                     }
@@ -174,17 +174,17 @@ public class ItemsCursorAdapter extends CursorAdapter {
                 alert.show();
 
 
-                int check = cursor.getInt(cursor.getColumnIndex(ITEMS_CHECKED_COLUMN));
+                int check = cursor.getInt(cursor.getColumnIndex(CHECKED_COLUMN));
                 if (check == 1) checkBoxState = true;
                 if (!checkBoxState) {
                     ContentValues values = new ContentValues();
-                    values.put(ITEMS_CHECKED_COLUMN, 1);
+                    values.put(CHECKED_COLUMN, 1);
                     db.update(ITEMS_TABLE_NAME, values, "_id = ?", id1);
                     view.setBackgroundColor(Color.GRAY);
                     Toast.makeText(view.getContext(), "Checked:" + id1[0], Toast.LENGTH_SHORT).show();
                 } else {
                     ContentValues values = new ContentValues();
-                    values.put(ITEMS_CHECKED_COLUMN, 0);
+                    values.put(CHECKED_COLUMN, 0);
                     db.update(ITEMS_TABLE_NAME, values, "_id = ?", id1);
                     view.setBackgroundColor(Color.WHITE);
                     Toast.makeText(view.getContext(), "Unchecked:" + id1[0], Toast.LENGTH_SHORT).show();

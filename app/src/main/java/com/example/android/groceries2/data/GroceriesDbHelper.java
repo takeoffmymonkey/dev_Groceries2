@@ -36,6 +36,8 @@ public class GroceriesDbHelper extends SQLiteOpenHelper {
     public static final String ID_COLUMN = "_id";
     //name column for all tables
     public static final String NAME_COLUMN = "name";
+    //checked state column
+    public static final String CHECKED_COLUMN = "checked";
 
 
     /*ITEMS table*/
@@ -44,15 +46,14 @@ public class GroceriesDbHelper extends SQLiteOpenHelper {
     public static final String ITEMS_PRICE_COLUMN = "price";
     //measure column
     public static final String ITEMS_MEASURE_COLUMN = "measure";
-    //checked state column
-    public static final String ITEMS_CHECKED_COLUMN = "checked";
+
     //table create command
     public static final String ITEMS_TABLE_CREATE_COMMAND = "CREATE TABLE " + ITEMS_TABLE_NAME + " (" +
             ID_COLUMN + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
             NAME_COLUMN + " TEXT NOT NULL UNIQUE, " +
             ITEMS_PRICE_COLUMN + " REAL NOT NULL DEFAULT 0, " +
             ITEMS_MEASURE_COLUMN + " INTEGER NOT NULL DEFAULT 0, " +
-            ITEMS_CHECKED_COLUMN + " INTEGER);";
+            CHECKED_COLUMN + " INTEGER);";
     //table drop command
     public static final String ITEMS_TABLE_DROP_COMMAND = "DROP TABLE " + ITEMS_TABLE_NAME + ";";
 
@@ -90,13 +91,14 @@ public class GroceriesDbHelper extends SQLiteOpenHelper {
     public static final String LIST_TABLE_NAME = "LIST_table";
     //item column
     public static final String LIST_ITEM_COLUMN = "item";
-    //amount column
+    //checked column
     public static final String LIST_AMOUNT_COLUMN = "amount";
     //table create command
     public static final String LIST_TABLE_CREATE_COMMAND = "CREATE TABLE " + LIST_TABLE_NAME + " (" +
             ID_COLUMN + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
             LIST_ITEM_COLUMN + " INTEGER NOT NULL UNIQUE, " +
-            LIST_AMOUNT_COLUMN + " REAL NOT NULL);";
+            LIST_AMOUNT_COLUMN + " REAL NOT NULL, " +
+            CHECKED_COLUMN + " INTEGER);";
     //table drop command
     public static final String LIST_TABLE_DROP_COMMAND = "DROP TABLE " + LIST_TABLE_NAME + ";";
 

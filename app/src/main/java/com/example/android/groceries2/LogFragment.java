@@ -18,7 +18,9 @@ import android.widget.TextView;
 import com.example.android.groceries2.data.ListCursorAdapter;
 import com.example.android.groceries2.data.LogCursorAdapter;
 
+import static com.example.android.groceries2.data.GroceriesDbHelper.LIST_AMOUNT_COLUMN;
 import static com.example.android.groceries2.data.GroceriesDbHelper.LIST_TABLE_NAME;
+import static com.example.android.groceries2.data.GroceriesDbHelper.LOG_TABLE_NAME;
 
 /**
  * Created by takeoff on 002 02 Jun 17.
@@ -42,7 +44,7 @@ public class LogFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
 
-        Cursor cursor = db.query(LIST_TABLE_NAME, null,
+        Cursor cursor = db.query(LOG_TABLE_NAME, null,
                 null, null, null, null, null);
 
         logView = inflater.inflate(R.layout.tab_log, container, false);

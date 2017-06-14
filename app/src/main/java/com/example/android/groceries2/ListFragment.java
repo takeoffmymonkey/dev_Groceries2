@@ -22,6 +22,8 @@ import com.example.android.groceries2.data.ListCursorAdapter;
 import java.util.List;
 
 import static com.example.android.groceries2.data.GroceriesDbHelper.ITEMS_TABLE_NAME;
+import static com.example.android.groceries2.data.GroceriesDbHelper.LIST_TABLE_CREATE_COMMAND;
+import static com.example.android.groceries2.data.GroceriesDbHelper.LIST_TABLE_DROP_COMMAND;
 import static com.example.android.groceries2.data.GroceriesDbHelper.LIST_TABLE_NAME;
 
 /**
@@ -89,7 +91,11 @@ public class ListFragment extends Fragment {
                 return true;
             // Respond to a click on the "Delete all entries" menu option
             case R.id.settings_option_delete_list:
-
+                db.execSQL(LIST_TABLE_DROP_COMMAND);
+                db.execSQL(LIST_TABLE_CREATE_COMMAND);
+                Cursor cursor = db.query(LIST_TABLE_NAME, null,
+                        null, null, null, null, null);
+                listCursorAdapter.changeCursor(cursor);
                 return true;
         }
         return super.onOptionsItemSelected(item);
