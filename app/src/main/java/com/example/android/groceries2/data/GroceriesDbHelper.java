@@ -28,7 +28,9 @@ public class GroceriesDbHelper extends SQLiteOpenHelper {
 
     private Context context;
 
-    public static int listTableVersion = 0;
+    public static int list_table_name_part_2 = 0;
+
+    public static final String LIST_TABLE_NAME_part_1 = "LIST_table_";
 
     //Database name
     public static final String DB_NAME = "GROCERIES_db";
@@ -93,17 +95,12 @@ public class GroceriesDbHelper extends SQLiteOpenHelper {
 
     /*LIST table*/
     // TODO: 013 13 Jun 17 auto increment list table's name dynamically
-    public static String LIST_TABLE_NAME = "LIST_table" + listTableVersion;
+    public static String listTableName;
     //item column
     public static final String LIST_ITEM_COLUMN = "item";
     //table create command
-    public static final String LIST_TABLE_CREATE_COMMAND = "CREATE TABLE " + LIST_TABLE_NAME + " (" +
-            ID_COLUMN + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-            LIST_ITEM_COLUMN + " INTEGER NOT NULL UNIQUE, " +
-            AMOUNT_COLUMN + " REAL, " +
-            CHECKED_COLUMN + " INTEGER);";
     //table drop command
-    public static final String LIST_TABLE_DROP_COMMAND = "DROP TABLE " + LIST_TABLE_NAME + ";";
+
 
 
     /**
@@ -176,5 +173,23 @@ public class GroceriesDbHelper extends SQLiteOpenHelper {
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         //Db stays version 1, nothing to do here
+    }
+
+    public static String createListTable() {
+        list_table_name_part_2 += 1;
+        listTableName = LIST_TABLE_NAME_part_1 + list_table_name_part_2;
+        String LIST_TABLE_CREATE_COMMAND = "CREATE TABLE " + listTableName + " (" +
+                ID_COLUMN + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                LIST_ITEM_COLUMN + " INTEGER NOT NULL UNIQUE, " +
+                AMOUNT_COLUMN + " REAL, " +
+                CHECKED_COLUMN + " INTEGER);";
+        return LIST_TABLE_CREATE_COMMAND;
+    }
+
+    public static String dropListTable(int version) {
+        listTableName = LIST_TABLE_NAME_part_1 + version;
+        String LIST_TABLE_DROP_COMMAND = "DROP TABLE " + listTableName + ";";
+        list_table_name_part_2 -= 1;
+        return LIST_TABLE_DROP_COMMAND;
     }
 }

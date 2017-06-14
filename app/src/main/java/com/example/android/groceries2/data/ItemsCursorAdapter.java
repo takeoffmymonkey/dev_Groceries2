@@ -25,7 +25,6 @@ import static com.example.android.groceries2.data.GroceriesDbHelper.CHECKED_COLU
 import static com.example.android.groceries2.data.GroceriesDbHelper.ITEMS_TABLE_NAME;
 import static com.example.android.groceries2.data.GroceriesDbHelper.AMOUNT_COLUMN;
 import static com.example.android.groceries2.data.GroceriesDbHelper.LIST_ITEM_COLUMN;
-import static com.example.android.groceries2.data.GroceriesDbHelper.LIST_TABLE_NAME;
 import static com.example.android.groceries2.data.GroceriesDbHelper.NAME_COLUMN;
 import static com.example.android.groceries2.data.GroceriesDbHelper.ID_COLUMN;
 

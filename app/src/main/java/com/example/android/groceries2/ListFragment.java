@@ -5,7 +5,6 @@ import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -13,21 +12,17 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.GridView;
 import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.android.groceries2.data.GroceriesDbHelper;
-import com.example.android.groceries2.data.ItemsCursorAdapter;
 import com.example.android.groceries2.data.ListCursorAdapter;
 
-import java.util.List;
 
-import static com.example.android.groceries2.data.GroceriesDbHelper.ITEMS_TABLE_NAME;
-import static com.example.android.groceries2.data.GroceriesDbHelper.LIST_TABLE_CREATE_COMMAND;
-import static com.example.android.groceries2.data.GroceriesDbHelper.LIST_TABLE_DROP_COMMAND;
-import static com.example.android.groceries2.data.GroceriesDbHelper.LIST_TABLE_NAME;
+import static com.example.android.groceries2.data.GroceriesDbHelper.createListTable;
+import static com.example.android.groceries2.data.GroceriesDbHelper.dropListTable;
+import static com.example.android.groceries2.data.GroceriesDbHelper.listTableName;
+import static com.example.android.groceries2.data.GroceriesDbHelper.list_table_name_part_2;
 
 /**
  * Created by takeoff on 002 02 Jun 17.
@@ -67,9 +62,9 @@ public class ListFragment extends Fragment {
 
         listListView.setEmptyView(emptyView);
 
-        if (GroceriesDbHelper.listTableVersion > 0) {
+        if (GroceriesDbHelper.list_table_name_part_2 > 0) {
 
-            Cursor cursor = db.query(LIST_TABLE_NAME, null,
+            Cursor cursor = db.query(listTableName, null,
                     null, null, null, null, null);
 
             listCursorAdapter = new ListCursorAdapter(getContext(), cursor, 0);
@@ -80,7 +75,7 @@ public class ListFragment extends Fragment {
             fabRefresh.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Cursor cursor = db.query(LIST_TABLE_NAME, null, null, null, null, null, null);
+                    Cursor cursor = db.query(listTableName, null, null, null, null, null, null);
 
                     listCursorAdapter.changeCursor(cursor);
 
@@ -122,8 +117,8 @@ public class ListFragment extends Fragment {
                 return true;
             // Respond to a click on the "Delete all entries" menu option
             case R.id.settings_option_delete_list:
-                db.execSQL(LIST_TABLE_DROP_COMMAND);
-                db.execSQL(LIST_TABLE_CREATE_COMMAND);
+                db.execSQL(dropListTable(list_table_name_part_2));
+                db.execSQL(createListTable());
                 return true;
         }
         return super.onOptionsItemSelected(item);

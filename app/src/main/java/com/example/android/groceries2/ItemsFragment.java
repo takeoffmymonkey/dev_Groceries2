@@ -11,7 +11,6 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -19,7 +18,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.GridView;
-import android.widget.TabHost;
 import android.widget.Toast;
 
 import com.example.android.groceries2.data.ItemsCursorAdapter;
@@ -31,7 +29,10 @@ import static com.example.android.groceries2.data.GroceriesDbHelper.ITEMS_TABLE_
 import static com.example.android.groceries2.data.GroceriesDbHelper.ITEMS_TABLE_DROP_COMMAND;
 import static com.example.android.groceries2.data.GroceriesDbHelper.ITEMS_TABLE_NAME;
 import static com.example.android.groceries2.data.GroceriesDbHelper.ITEMS_PRICE_COLUMN;
+
 import static com.example.android.groceries2.data.GroceriesDbHelper.NAME_COLUMN;
+import static com.example.android.groceries2.data.GroceriesDbHelper.createListTable;
+import static com.example.android.groceries2.data.GroceriesDbHelper.listTableName;
 
 
 /**
@@ -91,10 +92,21 @@ public class ItemsFragment extends Fragment {
         fabApproveList.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Create new fragment and transaction
+                db.execSQL(createListTable());
+
+/*                Cursor cursor1 = db.query(ITEMS_TABLE_NAME,
+                        new String[]{ID_COLUMN, AMOUNT_COLUMN},//columns to choose from
+                        CHECKED_COLUMN, // WHERE value
+                        new String[]{"1"}, // is 1
+                        null, null, null);*/
+
+
+                // TODO: 014 14 Jun 17 update log table
+
+
                 TabLayout tabhost = (TabLayout) getActivity().findViewById(R.id.tabs);
                 tabhost.getTabAt(1).select();
-                Toast.makeText(getContext(), "List created", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), listTableName, Toast.LENGTH_SHORT).show();
             }
         });
 
