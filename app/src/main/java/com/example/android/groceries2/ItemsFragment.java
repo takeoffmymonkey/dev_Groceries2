@@ -24,6 +24,7 @@ import com.example.android.groceries2.data.ItemsCursorAdapter;
 
 
 import static android.R.attr.value;
+import static com.example.android.groceries2.MainActivity.dbHelper;
 import static com.example.android.groceries2.data.GroceriesDbHelper.AMOUNT_COLUMN;
 import static com.example.android.groceries2.data.GroceriesDbHelper.CHECKED_COLUMN;
 import static com.example.android.groceries2.data.GroceriesDbHelper.ID_COLUMN;
@@ -34,7 +35,6 @@ import static com.example.android.groceries2.data.GroceriesDbHelper.ITEMS_TABLE_
 import static com.example.android.groceries2.data.GroceriesDbHelper.ITEMS_PRICE_COLUMN;
 
 import static com.example.android.groceries2.data.GroceriesDbHelper.NAME_COLUMN;
-import static com.example.android.groceries2.data.GroceriesDbHelper.createListTable;
 import static com.example.android.groceries2.data.GroceriesDbHelper.listTableName;
 
 
@@ -46,7 +46,7 @@ public class ItemsFragment extends Fragment {
 
     public int itemsTotal = 0;
 
-    SQLiteDatabase db = MainActivity.dbHelper.getReadableDatabase();
+    SQLiteDatabase db = dbHelper.getReadableDatabase();
 
     View itemsView;
     ItemsCursorAdapter itemsCursorAdapter;
@@ -95,7 +95,7 @@ public class ItemsFragment extends Fragment {
         fabApproveList.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                db.execSQL(createListTable());
+                dbHelper.createListTable(db);
 
 
                 // TODO: 015 14 Jun 17 bug with incrementing/decr version number

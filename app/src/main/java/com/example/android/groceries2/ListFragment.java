@@ -19,17 +19,16 @@ import com.example.android.groceries2.data.GroceriesDbHelper;
 import com.example.android.groceries2.data.ListCursorAdapter;
 
 
-import static com.example.android.groceries2.data.GroceriesDbHelper.createListTable;
-import static com.example.android.groceries2.data.GroceriesDbHelper.dropListTable;
+import static com.example.android.groceries2.MainActivity.dbHelper;
 import static com.example.android.groceries2.data.GroceriesDbHelper.listTableName;
-import static com.example.android.groceries2.data.GroceriesDbHelper.list_table_name_part_2;
+
 
 /**
  * Created by takeoff on 002 02 Jun 17.
  */
 
 public class ListFragment extends Fragment {
-    SQLiteDatabase db = MainActivity.dbHelper.getReadableDatabase();
+    SQLiteDatabase db = dbHelper.getReadableDatabase();
 
     View listView;
 
@@ -62,7 +61,7 @@ public class ListFragment extends Fragment {
 
         listListView.setEmptyView(emptyView);
 
-        if (GroceriesDbHelper.list_table_name_part_2 > 0) {
+        if (dbHelper.getListsCount() > 0) {
 
             Cursor cursor = db.query(listTableName, null,
                     null, null, null, null, null);
@@ -117,8 +116,8 @@ public class ListFragment extends Fragment {
                 return true;
             // Respond to a click on the "Delete all entries" menu option
             case R.id.settings_option_delete_list:
-                db.execSQL(dropListTable(list_table_name_part_2));
-                db.execSQL(createListTable());
+                dbHelper.dropCurrentListTable(db);
+                dbHelper.createListTable(db);
                 return true;
         }
         return super.onOptionsItemSelected(item);

@@ -15,23 +15,18 @@ import com.example.android.groceries2.data.GroceriesDbHelper;
 
 public class MainActivity extends AppCompatActivity {
 
-    static public GroceriesDbHelper dbHelper;
-    static public boolean EMPTY = true;
-    public CategoryAdapter adapter;
-
+    public static GroceriesDbHelper dbHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
         //Create dbHelper object
         dbHelper = new GroceriesDbHelper(this, GroceriesDbHelper.DB_NAME,
                 null, GroceriesDbHelper.DB_VERSION);
 
-
-        adapter = new CategoryAdapter(getSupportFragmentManager());
+        CategoryAdapter adapter = new CategoryAdapter(getSupportFragmentManager());
         ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager);
         viewPager.setAdapter(adapter);
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);

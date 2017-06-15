@@ -2,10 +2,13 @@ package com.example.android.groceries2.data;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import com.example.android.groceries2.R;
+
+import static android.R.attr.version;
 
 /**
  * Created by takeoff on 001 01 Jun 17.
@@ -28,7 +31,7 @@ public class GroceriesDbHelper extends SQLiteOpenHelper {
 
     private Context context;
 
-    public static int list_table_name_part_2 = 0;
+    private int listsCount = 0;
 
     public static final String LIST_TABLE_NAME_part_1 = "LIST_table_";
 
@@ -100,7 +103,6 @@ public class GroceriesDbHelper extends SQLiteOpenHelper {
     public static final String LIST_ITEM_COLUMN = "item";
     //table create command
     //table drop command
-
 
 
     /**
@@ -175,21 +177,63 @@ public class GroceriesDbHelper extends SQLiteOpenHelper {
         //Db stays version 1, nothing to do here
     }
 
-    public static String createListTable() {
-        list_table_name_part_2 += 1;
-        listTableName = LIST_TABLE_NAME_part_1 + list_table_name_part_2;
-        String LIST_TABLE_CREATE_COMMAND = "CREATE TABLE " + listTableName + " (" +
-                ID_COLUMN + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                LIST_ITEM_COLUMN + " INTEGER NOT NULL UNIQUE, " +
-                AMOUNT_COLUMN + " REAL, " +
-                CHECKED_COLUMN + " INTEGER);";
-        return LIST_TABLE_CREATE_COMMAND;
+    public boolean createListTable(SQLiteDatabase db) {
+        // TODO: 015 15 Jun 17 narrow to LOG_DATE_COMPLETE_COLUMN
+        Cursor cursor = db.query(LOG_TABLE_NAME, null, null, null, null, null, null);
+        cursor.moveToLast();
+
+        if (listsCount == 0
+                || cursor.getString(cursor.getColumnIndex(LOG_DATE_COMPLETE_COLUMN)) != null) {
+
+            cursor.close();
+            listTableName = LIST_TABLE_NAME_part_1 + listsCount;
+            String LIST_TABLE_CREATE_COMMAND = "CREATE TABLE " + listTableName + " (" +
+                    ID_COLUMN + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                    LIST_ITEM_COLUMN + " INTEGER NOT NULL UNIQUE, " +
+                    AMOUNT_COLUMN + " REAL, " +
+                    CHECKED_COLUMN + " INTEGER);";
+            listsCount += 1;
+            db.execSQL(LIST_TABLE_CREATE_COMMAND);
+            return true;
+        } else return false;
     }
 
-    public static String dropListTable(int version) {
-        listTableName = LIST_TABLE_NAME_part_1 + version;
+
+    public boolean dropCurrentListTable(SQLiteDatabase db) {
+        // TODO: 015 15 Jun 17 narrow to LOG_DATE_COMPLETE_COLUMN
+        Cursor cursor = db.query(LOG_TABLE_NAME, null, null, null, null, null, null);
+        cursor.moveToLast();
+
+        if (listsCount > 0 &&
+                cursor.getString(cursor.getColumnIndex(LOG_DATE_COMPLETE_COLUMN)) == null) {
+
+            listTableName = LIST_TABLE_NAME_part_1 + listsCount;
+            String LIST_TABLE_DROP_COMMAND = "DROP TABLE " + listTableName + ";";
+            db.execSQL(LIST_TABLE_DROP_COMMAND);
+            db.delete(LOG_TABLE_NAME, ID_COLUMN + "=?", new String[]{Integer.toString(listsCount)});
+            listsCount -= 1;
+            return true;
+        } else return false;
+    }
+
+/*    public  dropListTable(SQLiteDatabase db) {
+
+
+        listTableName = LIST_TABLE_NAME_part_1 + listsCount;
         String LIST_TABLE_DROP_COMMAND = "DROP TABLE " + listTableName + ";";
-        list_table_name_part_2 -= 1;
+        listsCount -= 1;
+
+
         return LIST_TABLE_DROP_COMMAND;
+    }*/
+
+    public void updateListsCount(SQLiteDatabase db) {
+        Cursor cursor = db.query(LOG_TABLE_NAME, null, null, null, null, null, null);
+        listsCount = cursor.getCount();
+    }
+
+
+    public int getListsCount() {
+        return listsCount;
     }
 }
