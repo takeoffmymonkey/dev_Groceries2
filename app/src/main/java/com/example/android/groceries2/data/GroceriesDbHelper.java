@@ -34,11 +34,7 @@ public class GroceriesDbHelper extends SQLiteOpenHelper {
 
     private Context context;
 
-    private int listsCount = 0;
-
     private boolean activeList = false;
-
-    private final String LIST_TABLE_NAME_part_1 = "LIST_table_";
 
     //Database name
     public static final String DB_NAME = "GROCERIES_db";
@@ -112,7 +108,6 @@ public class GroceriesDbHelper extends SQLiteOpenHelper {
 
     /*LIST table*/
     // TODO: 013 13 Jun 17 auto increment list table's name dynamically
-    private String listTableName;
     //item column
     public static final String LIST_ITEM_COLUMN = "item";
 
@@ -149,9 +144,8 @@ public class GroceriesDbHelper extends SQLiteOpenHelper {
 
         db.execSQL(ITEMS_TABLE_CREATE_COMMAND);
         db.execSQL(LOG_TABLE_CREATE_COMMAND);
-        db.execSQL(MEASURE_TABLE_CREATE_COMMAND);
-        db.execSQL(VALUES_TABLE_CREATE_COMMAND);
 
+        db.execSQL(MEASURE_TABLE_CREATE_COMMAND);
         //Get the array with measurement values
         String[] measures = context.getResources().getStringArray(R.array.array_measurement_options);
 
@@ -162,7 +156,12 @@ public class GroceriesDbHelper extends SQLiteOpenHelper {
             db.insert(MEASURE_TABLE_NAME, null, contentValues);
         }
 
-
+        db.execSQL(VALUES_TABLE_CREATE_COMMAND);
+        //Add 1st row with default values
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(VALUES_LIST_VERSION_COLUMN, "0");
+        contentValues.put(VALUES_IS_ACTIVE_COLUMN, "0");
+        db.insert(VALUES_TABLE_NAME, null, contentValues);
     }
 
     /**
@@ -214,9 +213,10 @@ public class GroceriesDbHelper extends SQLiteOpenHelper {
 
             //There is no active list -> create
             if (!activeList) {
-
-                listsCount += 1; //New list in the family
-                listTableName = LIST_TABLE_NAME_part_1 + listsCount; //Update active list name
+                //New list in the family
+                setListsCount(db, getListsCount(db) + 1);
+                //Get its name
+                String listTableName = getCurrentListTableName(db);
 
                 //Create SQL command to execute
                 String LIST_TABLE_CREATE_COMMAND = "CREATE TABLE " + listTableName + " (" +
@@ -263,7 +263,8 @@ public class GroceriesDbHelper extends SQLiteOpenHelper {
 
                 //There is active list -> update
             } else {
-
+                //Get list's proper name
+                String listTableName = getCurrentListTableName(db);
                 do {
 
                     //Get ID_COLUMN value
@@ -296,71 +297,46 @@ public class GroceriesDbHelper extends SQLiteOpenHelper {
     }
 
 
+    /*Returns latest list version #*/
+    public int getListsCount(SQLiteDatabase db) {
+        int listCount;
+        Cursor cursor = db.query(VALUES_TABLE_NAME, null, null, null, null, null, null);
+        cursor.moveToFirst();
+        listCount = cursor.getInt(cursor.getColumnIndex(VALUES_LIST_VERSION_COLUMN));
+        return listCount;
+    }
 
+    /*Update latest list version #*/
+    public void setListsCount(SQLiteDatabase db, int newCount) {
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(VALUES_LIST_VERSION_COLUMN, newCount);
+        db.update(VALUES_TABLE_NAME, contentValues,
+                ID_COLUMN + "=?", new String[]{"1"});
+    }
 
+    /*Returns latest list version active state*/
+    public boolean getListActiveState(SQLiteDatabase db) {
+        int stateInt;
+        Cursor cursor = db.query(VALUES_TABLE_NAME, null, null, null, null, null, null);
+        cursor.moveToFirst();
+        stateInt = cursor.getInt(cursor.getColumnIndex(VALUES_IS_ACTIVE_COLUMN));
+        if (stateInt == 0) return false;
+        else return true;
+    }
 
-
-/*    public String createListTable(SQLiteDatabase db) {
-        // TODO: 015 15 Jun 17 narrow to LOG_DATE_COMPLETE_COLUMN
-        Cursor cursor = db.query(LOG_TABLE_NAME, null, null, null, null, null, null);
-        cursor.moveToLast();
-
-        if (listsCount == 0
-                || cursor.getString(cursor.getColumnIndex(LOG_DATE_COMPLETE_COLUMN)) != null) {
-
-            cursor.close();
-            listsCount += 1;
-            listTableName = LIST_TABLE_NAME_part_1 + listsCount;
-            String LIST_TABLE_CREATE_COMMAND = "CREATE TABLE " + listTableName + " (" +
-                    ID_COLUMN + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                    LIST_ITEM_COLUMN + " INTEGER NOT NULL UNIQUE, " +
-                    AMOUNT_COLUMN + " REAL, " +
-                    CHECKED_COLUMN + " INTEGER);";
-            db.execSQL(LIST_TABLE_CREATE_COMMAND);
-            return listTableName + " created successfully";
-        } else return "Error while creating proper listTable";
+    /*Sets latest list version active state*/
+    public void setListActiveState(SQLiteDatabase db, boolean newState) {
+        ContentValues contentValues = new ContentValues();
+        int stateInt;
+        if (newState) stateInt = 1;
+        else stateInt = 0;
+        contentValues.put(VALUES_IS_ACTIVE_COLUMN, stateInt);
+        db.update(VALUES_TABLE_NAME, contentValues,
+                ID_COLUMN + "=?", new String[]{"1"});
     }
 
 
-    public boolean dropActiveListTable(SQLiteDatabase db) {
-        // TODO: 015 15 Jun 17 narrow to LOG_DATE_COMPLETE_COLUMN
-        Cursor cursor = db.query(LOG_TABLE_NAME, null, null, null, null, null, null);
-        cursor.moveToLast();
-
-        if (listsCount > 0 &&
-                cursor.getString(cursor.getColumnIndex(LOG_DATE_COMPLETE_COLUMN)) == null) {
-
-            listTableName = LIST_TABLE_NAME_part_1 + listsCount;
-            String LIST_TABLE_DROP_COMMAND = "DROP TABLE " + listTableName + ";";
-            db.execSQL(LIST_TABLE_DROP_COMMAND);
-            db.delete(LOG_TABLE_NAME, ID_COLUMN + "=?", new String[]{Integer.toString(listsCount)});
-            listsCount -= 1;
-            return true;
-        } else return false;
-    }*/
-
-/*    public  dropListTable(SQLiteDatabase db) {
-
-
-        listTableName = LIST_TABLE_NAME_part_1 + listsCount;
-        String LIST_TABLE_DROP_COMMAND = "DROP TABLE " + listTableName + ";";
-        listsCount -= 1;
-
-
-        return LIST_TABLE_DROP_COMMAND;
-    }*/
-
-    public void updateListsCount(SQLiteDatabase db) {
-        Cursor cursor = db.query(LOG_TABLE_NAME, null, null, null, null, null, null);
-        listsCount = cursor.getCount();
-    }
-
-
-    public int getListsCount() {
-        return listsCount;
-    }
-
-    public String getActiveListTableName() {
-        return listTableName;
+    public String getCurrentListTableName(SQLiteDatabase db) {
+        return "LIST_table_" + getListsCount(db);
     }
 }

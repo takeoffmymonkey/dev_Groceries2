@@ -21,7 +21,6 @@ import com.example.android.groceries2.data.ListCursorAdapter;
 import static com.example.android.groceries2.MainActivity.dbHelper;
 
 
-
 /**
  * Created by takeoff on 002 02 Jun 17.
  */
@@ -60,9 +59,9 @@ public class ListFragment extends Fragment {
 
         listListView.setEmptyView(emptyView);
 
-        if (dbHelper.getListsCount() > 0) {
+        if (dbHelper.getListsCount(db) > 0) {
 
-            Cursor cursor = db.query(dbHelper.getActiveListTableName(), null,
+            Cursor cursor = db.query(dbHelper.getCurrentListTableName(db), null,
                     null, null, null, null, null);
 
             listCursorAdapter = new ListCursorAdapter(getContext(), cursor, 0);
@@ -73,7 +72,7 @@ public class ListFragment extends Fragment {
             fabRefresh.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Cursor cursor = db.query(dbHelper.getActiveListTableName(), null, null, null, null, null, null);
+                    Cursor cursor = db.query(dbHelper.getCurrentListTableName(db), null, null, null, null, null, null);
 
                     listCursorAdapter.changeCursor(cursor);
 
