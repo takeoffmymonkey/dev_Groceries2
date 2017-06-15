@@ -15,12 +15,11 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.example.android.groceries2.data.GroceriesDbHelper;
 import com.example.android.groceries2.data.ListCursorAdapter;
 
 
 import static com.example.android.groceries2.MainActivity.dbHelper;
-import static com.example.android.groceries2.data.GroceriesDbHelper.listTableName;
+
 
 
 /**
@@ -63,7 +62,7 @@ public class ListFragment extends Fragment {
 
         if (dbHelper.getListsCount() > 0) {
 
-            Cursor cursor = db.query(listTableName, null,
+            Cursor cursor = db.query(dbHelper.getActiveListTableName(), null,
                     null, null, null, null, null);
 
             listCursorAdapter = new ListCursorAdapter(getContext(), cursor, 0);
@@ -74,7 +73,7 @@ public class ListFragment extends Fragment {
             fabRefresh.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Cursor cursor = db.query(listTableName, null, null, null, null, null, null);
+                    Cursor cursor = db.query(dbHelper.getActiveListTableName(), null, null, null, null, null, null);
 
                     listCursorAdapter.changeCursor(cursor);
 
@@ -116,7 +115,7 @@ public class ListFragment extends Fragment {
                 return true;
             // Respond to a click on the "Delete all entries" menu option
             case R.id.settings_option_delete_list:
-                dbHelper.dropCurrentListTable(db);
+                dbHelper.dropActiveListTable(db);
                 dbHelper.createListTable(db);
                 return true;
         }

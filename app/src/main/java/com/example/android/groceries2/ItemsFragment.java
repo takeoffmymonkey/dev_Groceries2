@@ -1,6 +1,7 @@
 package com.example.android.groceries2;
 
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -24,6 +25,7 @@ import com.example.android.groceries2.data.ItemsCursorAdapter;
 
 
 import static android.R.attr.value;
+import static android.R.id.tabhost;
 import static com.example.android.groceries2.MainActivity.dbHelper;
 import static com.example.android.groceries2.data.GroceriesDbHelper.AMOUNT_COLUMN;
 import static com.example.android.groceries2.data.GroceriesDbHelper.CHECKED_COLUMN;
@@ -34,8 +36,10 @@ import static com.example.android.groceries2.data.GroceriesDbHelper.ITEMS_TABLE_
 import static com.example.android.groceries2.data.GroceriesDbHelper.ITEMS_TABLE_NAME;
 import static com.example.android.groceries2.data.GroceriesDbHelper.ITEMS_PRICE_COLUMN;
 
+import static com.example.android.groceries2.data.GroceriesDbHelper.LIST_ITEM_COLUMN;
+import static com.example.android.groceries2.data.GroceriesDbHelper.LOG_DATE_CREATED_COLUMN;
+import static com.example.android.groceries2.data.GroceriesDbHelper.LOG_TABLE_NAME;
 import static com.example.android.groceries2.data.GroceriesDbHelper.NAME_COLUMN;
-import static com.example.android.groceries2.data.GroceriesDbHelper.listTableName;
 
 
 /**
@@ -63,7 +67,7 @@ public class ItemsFragment extends Fragment {
                              @Nullable Bundle savedInstanceState) {
 
 
-        Cursor cursor = db.query(ITEMS_TABLE_NAME, null,
+        final Cursor cursor = db.query(ITEMS_TABLE_NAME, null,
                 null, null, null, null, null);
         itemsTotal = cursor.getCount();
 
@@ -100,20 +104,44 @@ public class ItemsFragment extends Fragment {
 
                 // TODO: 015 14 Jun 17 bug with incrementing/decr version number
 
-                Cursor cursor1 = db.query(ITEMS_TABLE_NAME,
+                Cursor checkedRowsInItemsCursor = db.query(ITEMS_TABLE_NAME,
                         new String[]{ID_COLUMN, AMOUNT_COLUMN},//columns to choose from
                         CHECKED_COLUMN + "=?", /*WHERE value, should be an expression
                         (and # of ? should match # if selectionArgs[])*/
                         new String[]{"1"}, // is 1
                         null, null, null);
 
+                if (checkedRowsInItemsCursor.getCount() > 0) {
+
+                    int idColumnIndex = checkedRowsInItemsCursor.getColumnIndex(ID_COLUMN);
+                    int amountColumnIndex = checkedRowsInItemsCursor.getColumnIndex(AMOUNT_COLUMN);
+                    checkedRowsInItemsCursor.moveToFirst();
+
+                    do {
+
+                        int itemId = checkedRowsInItemsCursor.getInt(idColumnIndex);
+                        float itemAmount = checkedRowsInItemsCursor.getFloat(amountColumnIndex);
+                        ContentValues contentValues = new ContentValues();
+                        contentValues.put(LIST_ITEM_COLUMN, itemId);
+                        contentValues.put(AMOUNT_COLUMN, itemAmount);
+                        db.insert(dbHelper.getActiveListTableName(), null, contentValues);
+
+                    } while (checkedRowsInItemsCursor.moveToNext());
+
+                    checkedRowsInItemsCursor.close();
+                }
+
 
                 // TODO: 014 14 Jun 17 update log table
+                ContentValues contentValues = new ContentValues();
+                contentValues.put(NAME_COLUMN, dbHelper.getActiveListTableName());
+                contentValues.put(LOG_DATE_CREATED_COLUMN, System.currentTimeMillis());
+                db.insert(LOG_TABLE_NAME, null, contentValues);
 
 
                 TabLayout tabhost = (TabLayout) getActivity().findViewById(R.id.tabs);
                 tabhost.getTabAt(1).select();
-                Toast.makeText(getContext(), Integer.toString(cursor1.getCount()), Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), Integer.toString(checkedRowsInItemsCursor.getCount()), Toast.LENGTH_SHORT).show();
             }
         });
 

@@ -33,7 +33,7 @@ public class GroceriesDbHelper extends SQLiteOpenHelper {
 
     private int listsCount = 0;
 
-    public static final String LIST_TABLE_NAME_part_1 = "LIST_table_";
+    private final String LIST_TABLE_NAME_part_1 = "LIST_table_";
 
     //Database name
     public static final String DB_NAME = "GROCERIES_db";
@@ -90,15 +90,15 @@ public class GroceriesDbHelper extends SQLiteOpenHelper {
     public static final String LOG_TABLE_CREATE_COMMAND = "CREATE TABLE " + LOG_TABLE_NAME + " (" +
             ID_COLUMN + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
             NAME_COLUMN + " TEXT NOT NULL UNIQUE, " +
-            LOG_DATE_CREATED_COLUMN + " TEXT NOT NULL UNIQUE, " +
-            LOG_DATE_COMPLETE_COLUMN + " TEXT NOT NULL UNIQUE);";
+            LOG_DATE_CREATED_COLUMN + " INTEGER NOT NULL UNIQUE, " +
+            LOG_DATE_COMPLETE_COLUMN + " INTEGER UNIQUE);";
     //table drop command
     public static final String LOG_TABLE_DROP_COMMAND = "DROP TABLE " + LOG_TABLE_NAME + ";";
 
 
     /*LIST table*/
     // TODO: 013 13 Jun 17 auto increment list table's name dynamically
-    public static String listTableName;
+    private String listTableName;
     //item column
     public static final String LIST_ITEM_COLUMN = "item";
     //table create command
@@ -199,7 +199,7 @@ public class GroceriesDbHelper extends SQLiteOpenHelper {
     }
 
 
-    public boolean dropCurrentListTable(SQLiteDatabase db) {
+    public boolean dropActiveListTable(SQLiteDatabase db) {
         // TODO: 015 15 Jun 17 narrow to LOG_DATE_COMPLETE_COLUMN
         Cursor cursor = db.query(LOG_TABLE_NAME, null, null, null, null, null, null);
         cursor.moveToLast();
@@ -235,5 +235,9 @@ public class GroceriesDbHelper extends SQLiteOpenHelper {
 
     public int getListsCount() {
         return listsCount;
+    }
+
+    public String getActiveListTableName() {
+        return LIST_TABLE_NAME_part_1 + listsCount;
     }
 }
