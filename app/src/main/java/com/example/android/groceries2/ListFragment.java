@@ -115,8 +115,7 @@ public class ListFragment extends Fragment {
                 return true;
             // Respond to a click on the "Delete all entries" menu option
             case R.id.settings_option_delete_list:
-                dbHelper.dropActiveListTable(db);
-                dbHelper.createListTable(db);
+                //dbHelper.dropActiveListTable(db);
                 return true;
         }
         return super.onOptionsItemSelected(item);

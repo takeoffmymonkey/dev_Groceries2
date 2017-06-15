@@ -156,16 +156,17 @@ public class ItemsCursorAdapter extends CursorAdapter {
                         .setPositiveButton("Ok",
                                 new DialogInterface.OnClickListener() {
                                     public void onClick(DialogInterface dialog, int id) {
-                                        ContentValues contentValues = new ContentValues();
-                                        contentValues.put(LIST_ITEM_COLUMN, id0);
-
+                                        //Read the value (amount) of the dialog
                                         int amount = Integer.parseInt(amt.getText().toString());
+                                        //Prepare ContentValues var
+                                        ContentValues contentValues = new ContentValues();
+                                        //Put amount value into it
                                         contentValues.put(AMOUNT_COLUMN, amount);
-                                        long newID = db.insert(ITEMS_TABLE_NAME, null, contentValues);
-
-                                        Toast.makeText(view.getContext(), contentValues.toString() +
-                                                        "new id" + newID,
-                                                Toast.LENGTH_SHORT).show();
+                                        //Update AMOUNT_COLUMN of ITEMS_table
+                                        db.update(ITEMS_TABLE_NAME, contentValues,
+                                                ID_COLUMN + "=?", new String[]{Integer.toString(id0)}
+                                        );
+                                        //Close the dialog
                                         dialog.cancel();
                                     }
                                 });
