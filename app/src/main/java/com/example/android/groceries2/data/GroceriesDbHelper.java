@@ -81,8 +81,19 @@ public class GroceriesDbHelper extends SQLiteOpenHelper {
     public static final String MEASURE_TABLE_CREATE_COMMAND = "CREATE TABLE " + MEASURE_TABLE_NAME + " (" +
             ID_COLUMN + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
             MEASURE_MEASURE_COLUMN + " TEXT NOT NULL UNIQUE);";
-    //table drop command
-    public static final String MEASURE_TABLE_DROP_COMMAND = "DROP TABLE " + MEASURE_TABLE_NAME + ";";
+
+
+    /*VALUES table*/
+    public static final String VALUES_TABLE_NAME = "VALUES_table";
+    //list version column
+    public static final String VALUES_LIST_VERSION_COLUMN = "list_version";
+    //is active column
+    public static final String VALUES_IS_ACTIVE_COLUMN = "is_active";
+    //table create command
+    public static final String VALUES_TABLE_CREATE_COMMAND = "CREATE TABLE " + VALUES_TABLE_NAME + " (" +
+            ID_COLUMN + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+            VALUES_LIST_VERSION_COLUMN + " INTEGER NOT NULL DEFAULT 0, " +
+            VALUES_IS_ACTIVE_COLUMN + " INTEGER NOT NULL DEFAULT 0);";
 
 
     /*LOG table*/
@@ -97,8 +108,6 @@ public class GroceriesDbHelper extends SQLiteOpenHelper {
             NAME_COLUMN + " TEXT NOT NULL UNIQUE, " +
             LOG_DATE_CREATED_COLUMN + " INTEGER NOT NULL UNIQUE, " +
             LOG_DATE_COMPLETE_COLUMN + " INTEGER UNIQUE);";
-    //table drop command
-    public static final String LOG_TABLE_DROP_COMMAND = "DROP TABLE " + LOG_TABLE_NAME + ";";
 
 
     /*LIST table*/
@@ -106,8 +115,6 @@ public class GroceriesDbHelper extends SQLiteOpenHelper {
     private String listTableName;
     //item column
     public static final String LIST_ITEM_COLUMN = "item";
-    //table create command
-    //table drop command
 
 
     /**
@@ -143,6 +150,7 @@ public class GroceriesDbHelper extends SQLiteOpenHelper {
         db.execSQL(ITEMS_TABLE_CREATE_COMMAND);
         db.execSQL(LOG_TABLE_CREATE_COMMAND);
         db.execSQL(MEASURE_TABLE_CREATE_COMMAND);
+        db.execSQL(VALUES_TABLE_CREATE_COMMAND);
 
         //Get the array with measurement values
         String[] measures = context.getResources().getStringArray(R.array.array_measurement_options);
@@ -184,41 +192,42 @@ public class GroceriesDbHelper extends SQLiteOpenHelper {
 
 
     public String createOrUpdateActiveListTable(SQLiteDatabase db) {
-        //There is no active list -> create
-        if (!activeList) {
 
-            listsCount += 1; //New list in the family
-            listTableName = LIST_TABLE_NAME_part_1 + listsCount; //Update active list name
-
-            //Create SQL command to execute
-            String LIST_TABLE_CREATE_COMMAND = "CREATE TABLE " + listTableName + " (" +
-                    ID_COLUMN + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                    LIST_ITEM_COLUMN + " INTEGER NOT NULL UNIQUE, " +
-                    AMOUNT_COLUMN + " REAL, " +
-                    CHECKED_COLUMN + " INTEGER);";
-
-            db.execSQL(LIST_TABLE_CREATE_COMMAND);//Create new list table
-
-            //Create cursor for checked items in ITEMS_table
-            Cursor checkedRowsInItemsCursor = db.query(ITEMS_TABLE_NAME,
-                    new String[]{ID_COLUMN, AMOUNT_COLUMN},//columns to choose from
-                    CHECKED_COLUMN + "=?", /*WHERE value, should be an expression
+        //Create cursor for checked items in ITEMS_table
+        Cursor checkedRowsInItemsCursor = db.query(ITEMS_TABLE_NAME,
+                new String[]{ID_COLUMN, AMOUNT_COLUMN},//columns to choose from
+                CHECKED_COLUMN + "=?", /*WHERE value, should be an expression
                         (and # of ? should match # if selectionArgs[])*/
-                    new String[]{"1"}, // is 1
-                    null, null, null);
+                new String[]{"1"}, // is 1
+                null, null, null);
 
-            //cursor rows must be > 0 before pasting them to the active list
-            if (checkedRowsInItemsCursor.getCount() > 0) {
+        //cursor rows must be > 0 before pasting them to the active list
+        if (checkedRowsInItemsCursor.getCount() > 0) {
 
-                //Get ID_COLUMN index
-                int idColumnIndex = checkedRowsInItemsCursor.getColumnIndex(ID_COLUMN);
-                //Get AMOUNT_COLUMN index
-                int amountColumnIndex = checkedRowsInItemsCursor.getColumnIndex(AMOUNT_COLUMN);
-                //Move cursor to first row
-                checkedRowsInItemsCursor.moveToFirst();
+            //Get ID_COLUMN index
+            int idColumnIndex = checkedRowsInItemsCursor.getColumnIndex(ID_COLUMN);
+            //Get AMOUNT_COLUMN index
+            int amountColumnIndex = checkedRowsInItemsCursor.getColumnIndex(AMOUNT_COLUMN);
+            //Move cursor to first row
+            checkedRowsInItemsCursor.moveToFirst();
+
+
+            //There is no active list -> create
+            if (!activeList) {
+
+                listsCount += 1; //New list in the family
+                listTableName = LIST_TABLE_NAME_part_1 + listsCount; //Update active list name
+
+                //Create SQL command to execute
+                String LIST_TABLE_CREATE_COMMAND = "CREATE TABLE " + listTableName + " (" +
+                        ID_COLUMN + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                        LIST_ITEM_COLUMN + " INTEGER NOT NULL UNIQUE, " +
+                        AMOUNT_COLUMN + " REAL, " +
+                        CHECKED_COLUMN + " INTEGER);";
+
+                db.execSQL(LIST_TABLE_CREATE_COMMAND);//Create new list table
 
                 do {
-
                     //Get ID_COLUMN value
                     int itemId = checkedRowsInItemsCursor.getInt(idColumnIndex);
                     //Get AMOUNT_COLUMN value
@@ -236,42 +245,24 @@ public class GroceriesDbHelper extends SQLiteOpenHelper {
 
                 //close the cursor
                 checkedRowsInItemsCursor.close();
-            }
 
-            //Create contentValues var to store values of new list record of the LOG_TABLE
-            ContentValues contentValues = new ContentValues();
-            //Put name value of new list table
-            contentValues.put(NAME_COLUMN, listTableName);
-            //Put creation date of new list table in ms
-            contentValues.put(LOG_DATE_CREATED_COLUMN, System.currentTimeMillis());
-            //Update LOG_TABLE with new list record
-            db.insert(LOG_TABLE_NAME, null, contentValues);//add new record to LOG_table
+                //Create contentValues var to store values of new list record of the LOG_TABLE
+                ContentValues contentValues = new ContentValues();
+                //Put name value of new list table
+                contentValues.put(NAME_COLUMN, listTableName);
+                //Put creation date of new list table in ms
+                contentValues.put(LOG_DATE_CREATED_COLUMN, System.currentTimeMillis());
+                //Update LOG_TABLE with new list record
+                db.insert(LOG_TABLE_NAME, null, contentValues);//add new record to LOG_table
 
-            //list is active now
-            activeList = true;
+                //list is active now
+                activeList = true;
 
-            return listTableName + "successfully created!";
+                Toast.makeText(context, listTableName + "successfully created!", Toast.LENGTH_SHORT).show();
+                return listTableName + "successfully created!";
 
-            //There is active list -> update
-        } else {
-
-            //Create cursor for checked items in ITEMS_table
-            Cursor checkedRowsInItemsCursor = db.query(ITEMS_TABLE_NAME,
-                    new String[]{ID_COLUMN, AMOUNT_COLUMN},//columns to choose from
-                    CHECKED_COLUMN + "=?", /*WHERE value, should be an expression
-                        (and # of ? should match # if selectionArgs[])*/
-                    new String[]{"1"}, // is 1
-                    null, null, null);
-
-            //cursor rows must be > 0 before pasting them to the active list
-            if (checkedRowsInItemsCursor.getCount() > 0) {
-
-                //Get ID_COLUMN index
-                int idColumnIndex = checkedRowsInItemsCursor.getColumnIndex(ID_COLUMN);
-                //Get AMOUNT_COLUMN index
-                int amountColumnIndex = checkedRowsInItemsCursor.getColumnIndex(AMOUNT_COLUMN);
-                //Move cursor to first row
-                checkedRowsInItemsCursor.moveToFirst();
+                //There is active list -> update
+            } else {
 
                 do {
 
@@ -292,13 +283,20 @@ public class GroceriesDbHelper extends SQLiteOpenHelper {
 
                 //close the cursor
                 checkedRowsInItemsCursor.close();
+                Toast.makeText(context, listTableName + "successfully updated!", Toast.LENGTH_SHORT).show();
+                return listTableName + "successfully updated!";
             }
 
-            return listTableName + "successfully updated!";
+            //There are 0 rows
+        } else {
+            // TODO: 015 15 Jun 17 if reselect to 0?
+            Toast.makeText(context, "There are 0 rows", Toast.LENGTH_SHORT).show();
+            return "There are 0 rows";
         }
-
-
     }
+
+
+
 
 
 
