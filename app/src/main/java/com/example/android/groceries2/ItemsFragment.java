@@ -88,11 +88,8 @@ public class ItemsFragment extends Fragment {
             @Override
             public void onClick(View v) {
 
-                SQLiteDatabase db = dbHelper.getReadableDatabase();
-                dbHelper.createOrUpdateActiveListTable(db);
                 TabLayout tabhost = (TabLayout) getActivity().findViewById(R.id.tabs);
                 tabhost.getTabAt(1).select();
-                db.close();
             }
         });
 

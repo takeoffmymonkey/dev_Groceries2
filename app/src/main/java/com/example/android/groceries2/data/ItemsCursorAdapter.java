@@ -202,7 +202,41 @@ public class ItemsCursorAdapter extends CursorAdapter {
                 } else {
                     //Row was checked
 
+                    //Uncheck it in Items_table:
+                    //Create contentValuesItemsTable var to store CHECKED_COLUMN value
+                    ContentValues contentValuesItemsTable
+                            = new ContentValues();
+                    //Put new value into contentValuesItemsTable
+                    contentValuesItemsTable.put(CHECKED_COLUMN, 0);
+                    //Open db connection
+                    SQLiteDatabase db = dbHelper.getReadableDatabase();
+                    //Update checked field
+                    db.update(ITEMS_TABLE_NAME, contentValuesItemsTable,
+                            ID_COLUMN + "=?",
+                            new String[]{Integer.toString(rowIdInt)});
 
+
+                    //Remove item from List table:
+                    //Get currentListTableName
+                    String currentListTableName = dbHelper.getCurrentListTableName(db);
+                    db.delete(currentListTableName,
+                            LIST_ITEM_COLUMN + "=?",
+                            new String[]{Integer.toString(rowIdInt)});
+
+                    //Check if List table is empty now:
+                    //Get proper cursor
+                    Cursor listTableCursor = db.query(currentListTableName,
+                            //1 column is sufficient
+                            new String[]{ID_COLUMN},
+                            null, null, null, null, null);
+                    if (listTableCursor.getCount() == 0) {
+                        //List table is empty
+                        //Delete the table
+                        dbHelper.deleteListTable(db);
+                    }
+
+                    //Close the cursor
+                    listTableCursor.close();
                 }
 
             }

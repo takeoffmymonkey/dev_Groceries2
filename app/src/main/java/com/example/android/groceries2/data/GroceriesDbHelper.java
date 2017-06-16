@@ -37,66 +37,66 @@ public class GroceriesDbHelper extends SQLiteOpenHelper {
     private boolean activeList = false;
 
     //Database name
-    public static final String DB_NAME = "GROCERIES_db";
+    static final String DB_NAME = "GROCERIES_db";
     //Database version
-    public static final int DB_VERSION = 1;
+    static final int DB_VERSION = 1;
     //id column for all tables
-    public static final String ID_COLUMN = "_id";
+    static final String ID_COLUMN = "_id";
     //name column for all tables
-    public static final String NAME_COLUMN = "name";
+    static final String NAME_COLUMN = "name";
     //checked state column
-    public static final String CHECKED_COLUMN = "checked";
+    static final String CHECKED_COLUMN = "checked";
 
 
     /*ITEMS table*/
-    public static final String ITEMS_TABLE_NAME = "ITEMS_table";
+    static final String ITEMS_TABLE_NAME = "ITEMS_table";
     //price column
-    public static final String ITEMS_PRICE_COLUMN = "price";
+    static final String ITEMS_PRICE_COLUMN = "price";
     //measure column
-    public static final String ITEMS_MEASURE_COLUMN = "measure";
+    static final String ITEMS_MEASURE_COLUMN = "measure";
 
     //table create command
-    public static final String ITEMS_TABLE_CREATE_COMMAND = "CREATE TABLE " + ITEMS_TABLE_NAME + " (" +
+    static final String ITEMS_TABLE_CREATE_COMMAND = "CREATE TABLE " + ITEMS_TABLE_NAME + " (" +
             ID_COLUMN + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
             NAME_COLUMN + " TEXT NOT NULL UNIQUE, " +
             ITEMS_PRICE_COLUMN + " REAL NOT NULL DEFAULT 0, " +
             ITEMS_MEASURE_COLUMN + " INTEGER NOT NULL DEFAULT 0, " +
             CHECKED_COLUMN + " INTEGER);";
     //table drop command
-    public static final String ITEMS_TABLE_DROP_COMMAND = "DROP TABLE " + ITEMS_TABLE_NAME + ";";
+    static final String ITEMS_TABLE_DROP_COMMAND = "DROP TABLE " + ITEMS_TABLE_NAME + ";";
 
 
     /*MEASURE table*/
-    public static final String MEASURE_TABLE_NAME = "MEASURE_table";
+    static final String MEASURE_TABLE_NAME = "MEASURE_table";
     //measure column
-    public static final String MEASURE_MEASURE_COLUMN = "measure";
+    static final String MEASURE_MEASURE_COLUMN = "measure";
     //table create command
-    public static final String MEASURE_TABLE_CREATE_COMMAND = "CREATE TABLE " + MEASURE_TABLE_NAME + " (" +
+    static final String MEASURE_TABLE_CREATE_COMMAND = "CREATE TABLE " + MEASURE_TABLE_NAME + " (" +
             ID_COLUMN + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
             MEASURE_MEASURE_COLUMN + " TEXT NOT NULL UNIQUE);";
 
 
     /*VALUES table*/
-    public static final String VALUES_TABLE_NAME = "VALUES_table";
+    static final String VALUES_TABLE_NAME = "VALUES_table";
     //list version column
-    public static final String VALUES_LIST_VERSION_COLUMN = "list_version";
+    static final String VALUES_LIST_VERSION_COLUMN = "list_version";
     //is active column
-    public static final String VALUES_IS_ACTIVE_COLUMN = "is_active";
+    static final String VALUES_IS_ACTIVE_COLUMN = "is_active";
     //table create command
-    public static final String VALUES_TABLE_CREATE_COMMAND = "CREATE TABLE " + VALUES_TABLE_NAME + " (" +
+    static final String VALUES_TABLE_CREATE_COMMAND = "CREATE TABLE " + VALUES_TABLE_NAME + " (" +
             ID_COLUMN + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
             VALUES_LIST_VERSION_COLUMN + " INTEGER NOT NULL DEFAULT 0, " +
             VALUES_IS_ACTIVE_COLUMN + " INTEGER NOT NULL DEFAULT 0);";
 
 
     /*LOG table*/
-    public static final String LOG_TABLE_NAME = "LOG_table";
+    private static final String LOG_TABLE_NAME = "LOG_table";
     //creation date column
-    public static final String LOG_DATE_CREATED_COLUMN = "created";
+    static final String LOG_DATE_CREATED_COLUMN = "created";
     //completion date column
-    public static final String LOG_DATE_COMPLETE_COLUMN = "complete";
+    static final String LOG_DATE_COMPLETE_COLUMN = "complete";
     //table create command
-    public static final String LOG_TABLE_CREATE_COMMAND = "CREATE TABLE " + LOG_TABLE_NAME + " (" +
+    private static final String LOG_TABLE_CREATE_COMMAND = "CREATE TABLE " + LOG_TABLE_NAME + " (" +
             ID_COLUMN + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
             NAME_COLUMN + " TEXT NOT NULL UNIQUE, " +
             LOG_DATE_CREATED_COLUMN + " INTEGER NOT NULL UNIQUE, " +
@@ -104,10 +104,12 @@ public class GroceriesDbHelper extends SQLiteOpenHelper {
 
 
     /*LIST table*/
-    //item column
-    public static final String LIST_TABLE_NAME_part_1 = "List_";
-    public static final String LIST_ITEM_COLUMN = "item";
-    public static final String LIST_AMOUNT_COLUMN = "amount";
+    //List table name 1st part
+    private static final String LIST_TABLE_NAME_part_1 = "List_";
+    //List table item column
+    static final String LIST_ITEM_COLUMN = "item";
+    //List table amount column
+    static final String LIST_AMOUNT_COLUMN = "amount";
 
 
     /**
@@ -148,9 +150,9 @@ public class GroceriesDbHelper extends SQLiteOpenHelper {
         String[] measures = context.getResources().getStringArray(R.array.array_measurement_options);
 
         //Insert measurement values to MEASURE_table
-        for (int i = 0; i < measures.length; i++) {
+        for (String i : measures) {
             ContentValues contentValues = new ContentValues();
-            contentValues.put(MEASURE_MEASURE_COLUMN, measures[i]);
+            contentValues.put(MEASURE_MEASURE_COLUMN, i);
             db.insert(MEASURE_TABLE_NAME, null, contentValues);
         }
 
@@ -187,116 +189,8 @@ public class GroceriesDbHelper extends SQLiteOpenHelper {
         //Db stays version 1, nothing to do here
     }
 
-
-    public String createOrUpdateActiveListTable(SQLiteDatabase db) {
-
-        //Create cursor for checked items in ITEMS_table
-        Cursor checkedRowsInItemsCursor = db.query(ITEMS_TABLE_NAME,
-                new String[]{ID_COLUMN},//columns to choose from
-                CHECKED_COLUMN + "=?", /*WHERE value, should be an expression
-                        (and # of ? should match # if selectionArgs[])*/
-                new String[]{"1"}, // is 1
-                null, null, null);
-
-        //cursor rows must be > 0 before pasting them to the active list
-        if (checkedRowsInItemsCursor.getCount() > 0) {
-
-            //Get ID_COLUMN index
-            int idColumnIndex = checkedRowsInItemsCursor.getColumnIndex(ID_COLUMN);
-            //Get AMOUNT_COLUMN index
-
-            //Move cursor to first row
-            checkedRowsInItemsCursor.moveToFirst();
-
-
-            //There is no active list -> create
-            if (!activeList) {
-                //New list in the family
-                setListsCount(db, getListsCount(db) + 1);
-                //Get its name
-                String listTableName = getCurrentListTableName(db);
-
-                //Create SQL command to execute
-                String LIST_TABLE_CREATE_COMMAND = "CREATE TABLE " + listTableName + " (" +
-                        ID_COLUMN + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                        LIST_ITEM_COLUMN + " INTEGER NOT NULL UNIQUE, " +
-
-                        CHECKED_COLUMN + " INTEGER);";
-
-                db.execSQL(LIST_TABLE_CREATE_COMMAND);//Create new list table
-
-                do {
-                    //Get ID_COLUMN value
-                    int itemId = checkedRowsInItemsCursor.getInt(idColumnIndex);
-                    //Get AMOUNT_COLUMN value
-
-                    //Create contentValues var to store these values
-                    ContentValues contentValues = new ContentValues();
-                    //Put values into contentValues
-                    contentValues.put(LIST_ITEM_COLUMN, itemId);
-
-                    //Put contentValues into new list table
-                    db.insert(listTableName, null, contentValues);
-
-                    //stop when reach the end of cursor
-                } while (checkedRowsInItemsCursor.moveToNext());
-
-                //close the cursor
-                checkedRowsInItemsCursor.close();
-
-                //Create contentValues var to store values of new list record of the LOG_TABLE
-                ContentValues contentValues = new ContentValues();
-                //Put name value of new list table
-                contentValues.put(NAME_COLUMN, listTableName);
-                //Put creation date of new list table in ms
-                contentValues.put(LOG_DATE_CREATED_COLUMN, System.currentTimeMillis());
-                //Update LOG_TABLE with new list record
-                db.insert(LOG_TABLE_NAME, null, contentValues);//add new record to LOG_table
-
-                //list is active now
-                activeList = true;
-
-                Toast.makeText(context, listTableName + "successfully created!", Toast.LENGTH_SHORT).show();
-                return listTableName + "successfully created!";
-
-                //There is active list -> update
-            } else {
-                //Get list's proper name
-                String listTableName = getCurrentListTableName(db);
-                do {
-
-                    //Get ID_COLUMN value
-                    int itemId = checkedRowsInItemsCursor.getInt(idColumnIndex);
-                    //Get AMOUNT_COLUMN value
-
-                    //Create contentValues var to store these values
-                    ContentValues contentValues = new ContentValues();
-                    //Put values into contentValues
-                    contentValues.put(LIST_ITEM_COLUMN, itemId);
-
-                    //Put contentValues into active list table
-                    db.insert(listTableName, null, contentValues);
-
-                    //stop when reach the end of cursor
-                } while (checkedRowsInItemsCursor.moveToNext());
-
-                //close the cursor
-                checkedRowsInItemsCursor.close();
-                Toast.makeText(context, listTableName + "successfully updated!", Toast.LENGTH_SHORT).show();
-                return listTableName + "successfully updated!";
-            }
-
-            //There are 0 rows
-        } else {
-            // TODO: 015 15 Jun 17 if reselect to 0?
-            Toast.makeText(context, "There are 0 rows", Toast.LENGTH_SHORT).show();
-            return "There are 0 rows";
-        }
-    }
-
-
     /*Returns latest list version #*/
-    public int getListsCount(SQLiteDatabase db) {
+    private int getListsCount(SQLiteDatabase db) {
         int listCount;
         Cursor cursor = db.query(VALUES_TABLE_NAME, null, null, null, null, null, null);
         cursor.moveToFirst();
@@ -306,7 +200,7 @@ public class GroceriesDbHelper extends SQLiteOpenHelper {
     }
 
     /*Update latest list version #*/
-    public void setListsCount(SQLiteDatabase db, int newCount) {
+    private void setListsCount(SQLiteDatabase db, int newCount) {
         ContentValues contentValues = new ContentValues();
         contentValues.put(VALUES_LIST_VERSION_COLUMN, newCount);
         db.update(VALUES_TABLE_NAME, contentValues,
@@ -314,7 +208,7 @@ public class GroceriesDbHelper extends SQLiteOpenHelper {
     }
 
     /*Returns latest list version active state*/
-    public boolean getListActiveState(SQLiteDatabase db) {
+    boolean getListActiveState(SQLiteDatabase db) {
         int stateInt;
         Cursor cursor = db.query(VALUES_TABLE_NAME, null, null, null, null, null, null);
         cursor.moveToFirst();
@@ -325,7 +219,7 @@ public class GroceriesDbHelper extends SQLiteOpenHelper {
     }
 
     /*Sets latest list version active state*/
-    public void setListActiveState(SQLiteDatabase db, boolean newState) {
+    private void setListActiveState(SQLiteDatabase db, boolean newState) {
         ContentValues contentValues = new ContentValues();
         int stateInt;
         if (newState) stateInt = 1;
@@ -336,7 +230,7 @@ public class GroceriesDbHelper extends SQLiteOpenHelper {
     }
 
     /*Get currentListName*/
-    public String getCurrentListTableName(SQLiteDatabase db) {
+    String getCurrentListTableName(SQLiteDatabase db) {
         return LIST_TABLE_NAME_part_1 + getListsCount(db);
     }
 
@@ -345,7 +239,7 @@ public class GroceriesDbHelper extends SQLiteOpenHelper {
     updates count of lists,
     sets it as active,
     updates LOG_table */
-    public void createListTable(SQLiteDatabase db) {
+    void createListTable(SQLiteDatabase db) {
         //Create int for new version
         int newVersion = getListsCount(db) + 1;
 
@@ -376,5 +270,40 @@ public class GroceriesDbHelper extends SQLiteOpenHelper {
         db.insert(LOG_TABLE_NAME, null, contentValues);//add new record to LOG_table
     }
 
+
+    /*Deletes List table
+    updates count of lists,
+    deactivates active field in values,
+    updates LOG_table */
+    void deleteListTable(SQLiteDatabase db) {
+        //Create int for new version
+        int newVersion = getListsCount(db) + 1;
+
+        //Create string for CREATE TABLE command
+        String LIST_TABLE_CREATE_COMMAND = "CREATE TABLE " + LIST_TABLE_NAME_part_1 + newVersion +
+                " (" +
+                ID_COLUMN + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                LIST_ITEM_COLUMN + " INTEGER NOT NULL UNIQUE, " +
+                LIST_AMOUNT_COLUMN + " REAL);";
+
+        //Create new table
+        db.execSQL(LIST_TABLE_CREATE_COMMAND);
+
+        //Set new version of latest list table
+        setListsCount(db, newVersion);
+
+        //Set latest list table to active state
+        setListActiveState(db, true);
+
+        //Update LOG_table
+        //Create contentValues var to store values of new list record of the LOG_TABLE
+        ContentValues contentValues = new ContentValues();
+        //Put name value of new list table
+        contentValues.put(NAME_COLUMN, LIST_TABLE_NAME_part_1 + newVersion);
+        //Put creation date of new list table in ms
+        contentValues.put(LOG_DATE_CREATED_COLUMN, System.currentTimeMillis());
+        //Update LOG_TABLE with new list record
+        db.insert(LOG_TABLE_NAME, null, contentValues);//add new record to LOG_table
+    }
 
 }
