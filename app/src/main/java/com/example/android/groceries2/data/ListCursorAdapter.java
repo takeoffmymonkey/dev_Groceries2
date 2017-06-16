@@ -40,7 +40,7 @@ public class ListCursorAdapter extends CursorAdapter {
     @Override
     public void bindView(View view, Context context, Cursor cursor) {
 
-        //Get LIST_ITEM_COLUMN value of the item in List table
+/*        //Get LIST_ITEM_COLUMN value of the item in List table
         int itemCode = cursor.getInt(cursor.getColumnIndex(LIST_ITEM_COLUMN));
 
         //Get cursor with NAME_COLUMN and ITEMS_MEASURE_COLUMN columns for required ID
@@ -89,7 +89,7 @@ public class ListCursorAdapter extends CursorAdapter {
         //Get itemPrice value from cursor
         int itemPrice = cursor.getInt(cursor.getColumnIndex(PRICE_COLUMN));
         //Set total itemPrice as product of itemPrice and ItemAmount to itemPrice textView
-        itemPriceTextView.setText(Integer.toString(itemPrice * itemAmount));
+        itemPriceTextView.setText(Integer.toString(itemPrice * itemAmount));*/
 
     }
 }
