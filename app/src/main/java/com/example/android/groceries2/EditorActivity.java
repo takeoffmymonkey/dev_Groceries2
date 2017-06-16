@@ -15,8 +15,9 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
 
+import static com.example.android.groceries2.MainActivity.db;
 import static com.example.android.groceries2.data.GroceriesDbHelper.ITEMS_MEASURE_COLUMN;
-import static com.example.android.groceries2.data.GroceriesDbHelper.ITEMS_PRICE_COLUMN;
+import static com.example.android.groceries2.data.GroceriesDbHelper.PRICE_COLUMN;
 import static com.example.android.groceries2.data.GroceriesDbHelper.ITEMS_TABLE_NAME;
 import static com.example.android.groceries2.data.GroceriesDbHelper.NAME_COLUMN;
 
@@ -25,8 +26,6 @@ import static com.example.android.groceries2.data.GroceriesDbHelper.NAME_COLUMN;
  */
 
 public class EditorActivity extends AppCompatActivity {
-
-    SQLiteDatabase db = MainActivity.dbHelper.getReadableDatabase();
 
     private String name;
 
@@ -134,7 +133,7 @@ public class EditorActivity extends AppCompatActivity {
 
         ContentValues contentValues = new ContentValues();
         contentValues.put(NAME_COLUMN, name);
-        contentValues.put(ITEMS_PRICE_COLUMN, price);
+        contentValues.put(PRICE_COLUMN, price);
         contentValues.put(ITEMS_MEASURE_COLUMN, measurement);
         db.insert(ITEMS_TABLE_NAME, null, contentValues);
 

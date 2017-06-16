@@ -3,7 +3,6 @@ package com.example.android.groceries2;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -22,17 +21,15 @@ import android.widget.Toast;
 
 import com.example.android.groceries2.data.ItemsCursorAdapter;
 
-
-import static com.example.android.groceries2.MainActivity.dbHelper;
+import static com.example.android.groceries2.MainActivity.db;
 
 import static com.example.android.groceries2.data.GroceriesDbHelper.CHECKED_COLUMN;
 import static com.example.android.groceries2.data.GroceriesDbHelper.ITEMS_MEASURE_COLUMN;
 import static com.example.android.groceries2.data.GroceriesDbHelper.ITEMS_TABLE_CREATE_COMMAND;
 import static com.example.android.groceries2.data.GroceriesDbHelper.ITEMS_TABLE_DROP_COMMAND;
 import static com.example.android.groceries2.data.GroceriesDbHelper.ITEMS_TABLE_NAME;
-import static com.example.android.groceries2.data.GroceriesDbHelper.ITEMS_PRICE_COLUMN;
-
 import static com.example.android.groceries2.data.GroceriesDbHelper.NAME_COLUMN;
+import static com.example.android.groceries2.data.GroceriesDbHelper.PRICE_COLUMN;
 
 
 /**
@@ -41,10 +38,10 @@ import static com.example.android.groceries2.data.GroceriesDbHelper.NAME_COLUMN;
 
 public class ItemsFragment extends Fragment {
 
-
+    //Create ItemsCursorAdapter link
     private ItemsCursorAdapter itemsCursorAdapter;
 
-
+    //Required empty constructor
     public ItemsFragment() {
 
     }
@@ -54,63 +51,74 @@ public class ItemsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable final ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        SQLiteDatabase db = dbHelper.getReadableDatabase();
-
-        final Cursor cursor = db.query(ITEMS_TABLE_NAME, null,
-                null, null, null, null, null);
 
 
+        //Create the view object and inflate in with tab_items layout
         View itemsView = inflater.inflate(R.layout.tab_items, container, false);
-        FloatingActionButton fabAddItem =
-                (FloatingActionButton) itemsView.findViewById(R.id.fab_add_item_to_db);
-        FloatingActionButton fabApproveList =
-                (FloatingActionButton) itemsView.findViewById(R.id.fab_approve_list);
+
+        //Create floating action button for adding 1 item when list is empty
         FloatingActionButton fabAddInit = (FloatingActionButton)
                 itemsView.findViewById(R.id.fab_add_item_to_db_init);
-
+        //Set click listener on it
         fabAddInit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //Create object for intent
                 Intent intent = new Intent(getActivity(), EditorActivity.class);
+                //Create editor activity
                 startActivity(intent);
             }
         });
 
+        //Create floating action button for adding 1 item
+        FloatingActionButton fabAddItem =
+                (FloatingActionButton) itemsView.findViewById(R.id.fab_add_item_to_db);
+        //Set click listener on it
         fabAddItem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //Create object for intent
                 Intent intent = new Intent(getActivity(), EditorActivity.class);
+                //Create editor activity
                 startActivity(intent);
             }
         });
 
+        //Create floating action button for approving the list
+        FloatingActionButton fabApproveList =
+                (FloatingActionButton) itemsView.findViewById(R.id.fab_approve_list);
+        //Set click listener on it
         fabApproveList.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                TabLayout tabhost = (TabLayout) getActivity().findViewById(R.id.tabs);
-                tabhost.getTabAt(1).select();
+                //Create Tablayout object that hold all tabs
+                TabLayout tabHost = (TabLayout) getActivity().findViewById(R.id.tabs);
+                //Make it open a proper tab
+                tabHost.getTabAt(1).select();
             }
         });
 
 
-        // Find the ListView which will be populated with the pet data
+        //Find the gridView to hold items
         GridView itemsGridView = (GridView) itemsView.findViewById(R.id.items_list);
 
-
-        // Find and set empty view on the ListView, so that it only shows when the list has 0 items.
+        //Find empty view when nothing to show
         View emptyView = itemsView.findViewById(R.id.items_empty_view);
+        //Set it to gridView
         itemsGridView.setEmptyView(emptyView);
 
+        //Create cursor
+        Cursor cursor = db.query(ITEMS_TABLE_NAME, null, null, null, null, null, null);
 
         itemsCursorAdapter = new ItemsCursorAdapter(getContext(), cursor, 0);
         itemsGridView.setAdapter(itemsCursorAdapter);
 
+
+        //This fragment has options menu
         setHasOptionsMenu(true);
 
-
+        //Return fragment's view
         return itemsView;
-
 
     }
 
@@ -123,7 +131,6 @@ public class ItemsFragment extends Fragment {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        SQLiteDatabase db = dbHelper.getReadableDatabase();
 
         // User clicked on a menu option in the app bar overflow menu
         switch (item.getItemId()) {
@@ -135,16 +142,13 @@ public class ItemsFragment extends Fragment {
                 for (String i : names) {
                     ContentValues contentValues = new ContentValues();
                     contentValues.put(NAME_COLUMN, i);
-                    contentValues.put(ITEMS_PRICE_COLUMN, Math.random() * 11.4);
+                    contentValues.put(PRICE_COLUMN, Math.random() * 11.4);
                     contentValues.put(ITEMS_MEASURE_COLUMN, 1);
                     db.insert(ITEMS_TABLE_NAME, null, contentValues);
                 }
 
-
                 Cursor cursor = db.query(ITEMS_TABLE_NAME, null, null, null, null, null, null);
 
-                Toast.makeText(getActivity(), "Item added" + "(" + cursor.getCount() + ")", Toast.LENGTH_SHORT)
-                        .show();
                 itemsCursorAdapter.changeCursor(cursor);
 
                 return true;
@@ -175,7 +179,6 @@ public class ItemsFragment extends Fragment {
                 return true;
         }
 
-        db.close();
         return super.onOptionsItemSelected(item);
     }
 
@@ -189,32 +192,29 @@ public class ItemsFragment extends Fragment {
 
         }
 
+        //Actions to perform on background thread
         @Override
         protected Boolean doInBackground(Integer... params) {
             int i = params[0];
 
             ContentValues values = new ContentValues();
             values.put(CHECKED_COLUMN, 1);
-            SQLiteDatabase db = dbHelper.getReadableDatabase();
             try {
                 db.update(ITEMS_TABLE_NAME, values, "_id = ?", new String[]{Integer.toString(i)});
-                db.close();
                 return true;
             } catch (SQLiteException e) {
-                db.close();
                 return false;
             }
 
         }
 
+
         @Override
         protected void onPostExecute(Boolean success) {
             if (success) {
                 Toast.makeText(getActivity(), "Checked", Toast.LENGTH_SHORT).show();
-                SQLiteDatabase db = dbHelper.getReadableDatabase();
                 Cursor cursor = db.query(ITEMS_TABLE_NAME, null, null, null, null, null, null);
                 itemsCursorAdapter.changeCursor(cursor);
-                db.close();
             } else Toast.makeText(getActivity(), "SQL error", Toast.LENGTH_SHORT).show();
         }
     }

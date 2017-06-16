@@ -3,6 +3,7 @@ This is MainActivity
  */
 package com.example.android.groceries2;
 
+import android.database.sqlite.SQLiteDatabase;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
@@ -19,6 +20,7 @@ import static com.example.android.groceries2.data.GroceriesDbHelper.DB_VERSION;
 public class MainActivity extends AppCompatActivity {
 
     public static GroceriesDbHelper dbHelper;
+    public static SQLiteDatabase db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,6 +31,9 @@ public class MainActivity extends AppCompatActivity {
         dbHelper = new GroceriesDbHelper(this, DB_NAME,
                 null, DB_VERSION);
 
+        //Create db object
+        db = dbHelper.getReadableDatabase();
+
         CategoryAdapter adapter = new CategoryAdapter(getSupportFragmentManager());
         ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager);
         viewPager.setAdapter(adapter);
@@ -38,4 +43,10 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        db.close();
+        dbHelper.close();
+    }
 }

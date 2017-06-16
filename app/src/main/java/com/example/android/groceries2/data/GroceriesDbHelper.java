@@ -42,6 +42,8 @@ public class GroceriesDbHelper extends SQLiteOpenHelper {
     public static final int DB_VERSION = 1;
     //id column for all tables
     static final String ID_COLUMN = "_id";
+    //price column for all tables
+    public static final String PRICE_COLUMN = "price";
     //name column for all tables
     public static final String NAME_COLUMN = "name";
     //checked state column
@@ -50,8 +52,6 @@ public class GroceriesDbHelper extends SQLiteOpenHelper {
 
     /*ITEMS table*/
     public static final String ITEMS_TABLE_NAME = "ITEMS_table";
-    //price column
-    public static final String ITEMS_PRICE_COLUMN = "price";
     //measure column
     public static final String ITEMS_MEASURE_COLUMN = "measure";
 
@@ -59,9 +59,9 @@ public class GroceriesDbHelper extends SQLiteOpenHelper {
     public static final String ITEMS_TABLE_CREATE_COMMAND = "CREATE TABLE " + ITEMS_TABLE_NAME + " (" +
             ID_COLUMN + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
             NAME_COLUMN + " TEXT NOT NULL UNIQUE, " +
-            ITEMS_PRICE_COLUMN + " REAL NOT NULL DEFAULT 0, " +
+            PRICE_COLUMN + " REAL NOT NULL DEFAULT 0, " +
             ITEMS_MEASURE_COLUMN + " INTEGER NOT NULL DEFAULT 0, " +
-            CHECKED_COLUMN + " INTEGER);";
+            CHECKED_COLUMN + " INTEGER DEFAULT 0);";
     //table drop command
     public static final String ITEMS_TABLE_DROP_COMMAND = "DROP TABLE " + ITEMS_TABLE_NAME + ";";
 
@@ -248,7 +248,9 @@ public class GroceriesDbHelper extends SQLiteOpenHelper {
                 " (" +
                 ID_COLUMN + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 LIST_ITEM_COLUMN + " INTEGER NOT NULL UNIQUE, " +
-                LIST_AMOUNT_COLUMN + " REAL);";
+                LIST_AMOUNT_COLUMN + " REAL, " +
+                PRICE_COLUMN + " REAL NOT NULL DEFAULT 0, " +
+                CHECKED_COLUMN + " INTEGER DEFAULT 0);";
 
         //Create new table
         db.execSQL(LIST_TABLE_CREATE_COMMAND);
@@ -274,36 +276,53 @@ public class GroceriesDbHelper extends SQLiteOpenHelper {
     /*Deletes List table
     updates count of lists,
     deactivates active field in values,
+    unchecks all items in Item table
     updates LOG_table */
-    void deleteListTable(SQLiteDatabase db) {
-        //Create int for new version
-        int newVersion = getListsCount(db) + 1;
+    public String deleteListTable(SQLiteDatabase db) {
+        //Get current list version
+        int currentVersion = getListsCount(db);
 
-        //Create string for CREATE TABLE command
-        String LIST_TABLE_CREATE_COMMAND = "CREATE TABLE " + LIST_TABLE_NAME_part_1 + newVersion +
-                " (" +
-                ID_COLUMN + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                LIST_ITEM_COLUMN + " INTEGER NOT NULL UNIQUE, " +
-                LIST_AMOUNT_COLUMN + " REAL);";
+        String currentListTableName = LIST_TABLE_NAME_part_1 + currentVersion;
 
-        //Create new table
-        db.execSQL(LIST_TABLE_CREATE_COMMAND);
+        //Should be at least 1 to delete
+        if (currentVersion > 0) {
 
-        //Set new version of latest list table
-        setListsCount(db, newVersion);
+            //Create string for DROP TABLE command
+            String LIST_TABLE_DROP_COMMAND = "DROP TABLE " + currentListTableName + ";";
 
-        //Set latest list table to active state
-        setListActiveState(db, true);
+            //Drop current table
+            db.execSQL(LIST_TABLE_DROP_COMMAND);
 
-        //Update LOG_table
-        //Create contentValues var to store values of new list record of the LOG_TABLE
-        ContentValues contentValues = new ContentValues();
-        //Put name value of new list table
-        contentValues.put(NAME_COLUMN, LIST_TABLE_NAME_part_1 + newVersion);
-        //Put creation date of new list table in ms
-        contentValues.put(LOG_DATE_CREATED_COLUMN, System.currentTimeMillis());
-        //Update LOG_TABLE with new list record
-        db.insert(LOG_TABLE_NAME, null, contentValues);//add new record to LOG_table
+            //Delete current list from LOG_table
+            db.delete(LOG_TABLE_NAME, NAME_COLUMN + "=?",
+                    new String[]{currentListTableName});
+
+            //Set new version of latest list table
+            setListsCount(db, currentVersion - 1);
+
+            //Set latest list table to active state
+            setListActiveState(db, false);
+
+            //Uncheck all items in Item table
+            //Create contentValues var
+            ContentValues contentValues = new ContentValues();
+            //Put new value to it
+            contentValues.put(CHECKED_COLUMN, 0);
+            //Update table
+            // TODO: 016 16 Jun 17 what if none is checked?
+            db.update(ITEMS_TABLE_NAME, contentValues,
+                    CHECKED_COLUMN + "=?",
+                    new String[]{"1"});
+
+            //Return success message
+            return currentListTableName + "deleted";
+
+        } else {
+            //Return failure message
+            return "No list to delete";
+        }
+
+
     }
 
 }

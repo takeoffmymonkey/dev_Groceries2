@@ -18,6 +18,7 @@ import com.example.android.groceries2.data.GroceriesDbHelper;
 import com.example.android.groceries2.data.LogCursorAdapter;
 
 
+import static com.example.android.groceries2.MainActivity.db;
 import static com.example.android.groceries2.data.GroceriesDbHelper.LOG_TABLE_NAME;
 
 /**
@@ -26,7 +27,6 @@ import static com.example.android.groceries2.data.GroceriesDbHelper.LOG_TABLE_NA
 
 public class LogFragment extends Fragment {
 
-    SQLiteDatabase db = MainActivity.dbHelper.getReadableDatabase();
 
     View logView;
     LogCursorAdapter logCursorAdapter;

@@ -18,6 +18,7 @@ import android.widget.Toast;
 import com.example.android.groceries2.data.ListCursorAdapter;
 
 
+import static com.example.android.groceries2.MainActivity.db;
 import static com.example.android.groceries2.MainActivity.dbHelper;
 
 
@@ -26,7 +27,6 @@ import static com.example.android.groceries2.MainActivity.dbHelper;
  */
 
 public class ListFragment extends Fragment {
-    SQLiteDatabase db = dbHelper.getReadableDatabase();
 
     View listView;
 
@@ -114,7 +114,7 @@ public class ListFragment extends Fragment {
                 return true;
             // Respond to a click on the "Delete all entries" menu option
             case R.id.settings_option_delete_list:
-                //dbHelper.dropActiveListTable(db);
+                Toast.makeText(getContext(), dbHelper.deleteListTable(db), Toast.LENGTH_SHORT).show();
                 return true;
         }
         return super.onOptionsItemSelected(item);

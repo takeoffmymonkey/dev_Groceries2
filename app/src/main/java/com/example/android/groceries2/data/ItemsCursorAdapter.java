@@ -6,7 +6,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,7 +17,7 @@ import android.widget.TextView;
 import com.example.android.groceries2.EditorActivity;
 import com.example.android.groceries2.R;
 
-
+import static com.example.android.groceries2.MainActivity.db;
 import static com.example.android.groceries2.MainActivity.dbHelper;
 import static com.example.android.groceries2.data.GroceriesDbHelper.CHECKED_COLUMN;
 import static com.example.android.groceries2.data.GroceriesDbHelper.ITEMS_TABLE_NAME;
@@ -26,6 +25,7 @@ import static com.example.android.groceries2.data.GroceriesDbHelper.LIST_AMOUNT_
 import static com.example.android.groceries2.data.GroceriesDbHelper.LIST_ITEM_COLUMN;
 import static com.example.android.groceries2.data.GroceriesDbHelper.NAME_COLUMN;
 import static com.example.android.groceries2.data.GroceriesDbHelper.ID_COLUMN;
+import static com.example.android.groceries2.data.GroceriesDbHelper.PRICE_COLUMN;
 
 /**
  * Created by takeoff on 009 09 Jun 17.
@@ -93,6 +93,9 @@ public class ItemsCursorAdapter extends CursorAdapter {
         //Get ID_COLUMN of current row in int
         final int rowIdInt = cursor.getInt(cursor.getColumnIndex(ID_COLUMN));
 
+        //Get PRICE_COLUMN of current row in int
+        final int rowPriceInt = cursor.getInt(cursor.getColumnIndex(PRICE_COLUMN));
+
         //Set click listener to the view
         view.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -127,8 +130,6 @@ public class ItemsCursorAdapter extends CursorAdapter {
                                                     = new ContentValues();
                                             //Put new value into contentValuesItemsTable
                                             contentValuesItemsTable.put(CHECKED_COLUMN, 1);
-                                            //Open db connection
-                                            SQLiteDatabase db = dbHelper.getReadableDatabase();
                                             //Update checked field
                                             db.update(ITEMS_TABLE_NAME, contentValuesItemsTable,
                                                     ID_COLUMN + "=?",
@@ -147,6 +148,8 @@ public class ItemsCursorAdapter extends CursorAdapter {
                                             contentValuesListTable.put(LIST_ITEM_COLUMN, rowIdInt);
                                             //Put new value into contentValuesItemsTable
                                             contentValuesListTable.put(LIST_AMOUNT_COLUMN, amount);
+                                            //Put new value into contentValuesItemsTable
+                                            contentValuesListTable.put(PRICE_COLUMN, rowPriceInt);
 
                                             //Check if there activeListTable
                                             if (!dbHelper.getListActiveState(db)) {
@@ -163,8 +166,6 @@ public class ItemsCursorAdapter extends CursorAdapter {
                                                         null, contentValuesListTable);
                                             }
 
-                                            //Close db connection
-                                            db.close();
 
                                             //Close the dialog window
                                             dialog.cancel();
@@ -206,8 +207,6 @@ public class ItemsCursorAdapter extends CursorAdapter {
                             = new ContentValues();
                     //Put new value into contentValuesItemsTable
                     contentValuesItemsTable.put(CHECKED_COLUMN, 0);
-                    //Open db connection
-                    SQLiteDatabase db = dbHelper.getReadableDatabase();
                     //Update checked field
                     db.update(ITEMS_TABLE_NAME, contentValuesItemsTable,
                             ID_COLUMN + "=?",
