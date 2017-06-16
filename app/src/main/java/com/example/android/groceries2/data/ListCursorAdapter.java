@@ -40,8 +40,8 @@ public class ListCursorAdapter extends CursorAdapter {
     @Override
     public void bindView(View view, Context context, Cursor cursor) {
 
-/*        //Get LIST_ITEM_COLUMN value of the item in List table
-        int itemCode = cursor.getInt(cursor.getColumnIndex(LIST_ITEM_COLUMN));
+        /*//Get LIST_ITEM_COLUMN value of the item in List table
+        int itemCode = cursor.getInt(cursor.getColumnIndexOrThrow(LIST_ITEM_COLUMN));
 
         //Get cursor with NAME_COLUMN and ITEMS_MEASURE_COLUMN columns for required ID
         Cursor itemsTableCursor = db.query(ITEMS_TABLE_NAME,
@@ -50,11 +50,11 @@ public class ListCursorAdapter extends CursorAdapter {
                 null, null, null);
 
         //Save string with proper name
-        String name = itemsTableCursor.getString(itemsTableCursor.getColumnIndex(NAME_COLUMN));
+        String name = itemsTableCursor.getString(itemsTableCursor.getColumnIndexOrThrow(NAME_COLUMN));
 
         //Get code of the items measure
         int measureInItems = itemsTableCursor
-                .getInt(itemsTableCursor.getColumnIndex(ITEMS_MEASURE_COLUMN));
+                .getInt(itemsTableCursor.getColumnIndexOrThrow(ITEMS_MEASURE_COLUMN));
 
         //Close itemsTableCursor cursor
         itemsTableCursor.close();
@@ -67,7 +67,7 @@ public class ListCursorAdapter extends CursorAdapter {
 
         //Save string with proper measure
         String measure = measureTableCursor
-                .getString(measureTableCursor.getColumnIndex(MEASURE_MEASURE_COLUMN));
+                .getString(measureTableCursor.getColumnIndexOrThrow(MEASURE_MEASURE_COLUMN));
 
         //Close measureTableCursor cursor
         measureTableCursor.close();
@@ -80,14 +80,14 @@ public class ListCursorAdapter extends CursorAdapter {
         //Create itemAmount textView object
         TextView itemAmountTextView = (TextView) view.findViewById(R.id.list_item_amount);
         //Get itemAmount value from cursor
-        int itemAmount = cursor.getInt(cursor.getColumnIndex(LIST_AMOUNT_COLUMN));
+        int itemAmount = cursor.getInt(cursor.getColumnIndexOrThrow(LIST_AMOUNT_COLUMN));
         //Set itemAmount + measure as text to itemAmount textView
         itemAmountTextView.setText(Integer.toString(itemAmount) + " " + measure);
 
         //Create itemPrice textView object
         TextView itemPriceTextView = (TextView) view.findViewById(R.id.list_item_price);
         //Get itemPrice value from cursor
-        int itemPrice = cursor.getInt(cursor.getColumnIndex(PRICE_COLUMN));
+        int itemPrice = cursor.getInt(cursor.getColumnIndexOrThrow(PRICE_COLUMN));
         //Set total itemPrice as product of itemPrice and ItemAmount to itemPrice textView
         itemPriceTextView.setText(Integer.toString(itemPrice * itemAmount));*/
 

@@ -83,18 +83,18 @@ public class ItemsCursorAdapter extends CursorAdapter {
         TextView itemNameTextView = (TextView) view.findViewById(R.id.item_name);
 
         //Set its name to NAME_COLUMN
-        itemNameTextView.setText(cursor.getString(cursor.getColumnIndex(NAME_COLUMN)));
+        itemNameTextView.setText(cursor.getString(cursor.getColumnIndexOrThrow(NAME_COLUMN)));
 
         //Set color of the view (according to CHECKED_COLUMN state of the row)
-        if (cursor.getInt(cursor.getColumnIndex(CHECKED_COLUMN)) == 1)
+        if (cursor.getInt(cursor.getColumnIndexOrThrow(CHECKED_COLUMN)) == 1)
             view.setBackgroundColor(Color.GRAY);
         else view.setBackgroundColor(Color.WHITE);
 
         //Get ID_COLUMN of current row in int
-        final int rowIdInt = cursor.getInt(cursor.getColumnIndex(ID_COLUMN));
+        final int rowIdInt = cursor.getInt(cursor.getColumnIndexOrThrow(ID_COLUMN));
 
         //Get PRICE_COLUMN of current row in int
-        final int rowPriceInt = cursor.getInt(cursor.getColumnIndex(PRICE_COLUMN));
+        final int rowPriceInt = cursor.getInt(cursor.getColumnIndexOrThrow(PRICE_COLUMN));
 
         //Set click listener to the view
         view.setOnClickListener(new View.OnClickListener() {
@@ -102,7 +102,7 @@ public class ItemsCursorAdapter extends CursorAdapter {
             public void onClick(View v) {
 
                 //Check if the row was checked
-                if (cursor.getInt(cursor.getColumnIndex(CHECKED_COLUMN)) == 0) {
+                if (cursor.getInt(cursor.getColumnIndexOrThrow(CHECKED_COLUMN)) == 0) {
                     //Row wasn't checked
                     //Create alert dialog:
                     //Create alert dialog object

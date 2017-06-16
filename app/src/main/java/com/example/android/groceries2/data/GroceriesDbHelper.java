@@ -194,7 +194,7 @@ public class GroceriesDbHelper extends SQLiteOpenHelper {
         int listCount;
         Cursor cursor = db.query(VALUES_TABLE_NAME, null, null, null, null, null, null);
         cursor.moveToFirst();
-        listCount = cursor.getInt(cursor.getColumnIndex(VALUES_LIST_VERSION_COLUMN));
+        listCount = cursor.getInt(cursor.getColumnIndexOrThrow(VALUES_LIST_VERSION_COLUMN));
         cursor.close();
         return listCount;
     }
@@ -212,7 +212,7 @@ public class GroceriesDbHelper extends SQLiteOpenHelper {
         int stateInt;
         Cursor cursor = db.query(VALUES_TABLE_NAME, null, null, null, null, null, null);
         cursor.moveToFirst();
-        stateInt = cursor.getInt(cursor.getColumnIndex(VALUES_IS_ACTIVE_COLUMN));
+        stateInt = cursor.getInt(cursor.getColumnIndexOrThrow(VALUES_IS_ACTIVE_COLUMN));
         cursor.close();
         if (stateInt == 0) return false;
         else return true;
