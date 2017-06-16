@@ -48,19 +48,19 @@ public class GroceriesDbHelper extends SQLiteOpenHelper {
     public static final String NAME_COLUMN = "name";
     //checked state column
     public static final String CHECKED_COLUMN = "checked";
+    //measure column
+    public static final String MEASURE_COLUMN = "measure";
 
 
     /*ITEMS table*/
     public static final String ITEMS_TABLE_NAME = "ITEMS_table";
     //measure column
-    public static final String ITEMS_MEASURE_COLUMN = "measure";
-
     //table create command
     public static final String ITEMS_TABLE_CREATE_COMMAND = "CREATE TABLE " + ITEMS_TABLE_NAME + " (" +
             ID_COLUMN + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
             NAME_COLUMN + " TEXT NOT NULL UNIQUE, " +
             PRICE_COLUMN + " REAL NOT NULL DEFAULT 0, " +
-            ITEMS_MEASURE_COLUMN + " INTEGER NOT NULL DEFAULT 0, " +
+            MEASURE_COLUMN + " INTEGER NOT NULL DEFAULT 0, " +
             CHECKED_COLUMN + " INTEGER DEFAULT 0);";
     //table drop command
     public static final String ITEMS_TABLE_DROP_COMMAND = "DROP TABLE " + ITEMS_TABLE_NAME + ";";
@@ -68,12 +68,10 @@ public class GroceriesDbHelper extends SQLiteOpenHelper {
 
     /*MEASURE table*/
     static final String MEASURE_TABLE_NAME = "MEASURE_table";
-    //measure column
-    static final String MEASURE_MEASURE_COLUMN = "measure";
     //table create command
     static final String MEASURE_TABLE_CREATE_COMMAND = "CREATE TABLE " + MEASURE_TABLE_NAME + " (" +
             ID_COLUMN + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-            MEASURE_MEASURE_COLUMN + " TEXT NOT NULL UNIQUE);";
+            MEASURE_COLUMN + " TEXT NOT NULL UNIQUE);";
 
 
     /*VALUES table*/
@@ -152,7 +150,7 @@ public class GroceriesDbHelper extends SQLiteOpenHelper {
         //Insert measurement values to MEASURE_table
         for (String i : measures) {
             ContentValues contentValues = new ContentValues();
-            contentValues.put(MEASURE_MEASURE_COLUMN, i);
+            contentValues.put(MEASURE_COLUMN, i);
             db.insert(MEASURE_TABLE_NAME, null, contentValues);
         }
 

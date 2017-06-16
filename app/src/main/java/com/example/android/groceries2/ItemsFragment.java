@@ -24,10 +24,10 @@ import com.example.android.groceries2.data.ItemsCursorAdapter;
 import static com.example.android.groceries2.MainActivity.db;
 
 import static com.example.android.groceries2.data.GroceriesDbHelper.CHECKED_COLUMN;
-import static com.example.android.groceries2.data.GroceriesDbHelper.ITEMS_MEASURE_COLUMN;
 import static com.example.android.groceries2.data.GroceriesDbHelper.ITEMS_TABLE_CREATE_COMMAND;
 import static com.example.android.groceries2.data.GroceriesDbHelper.ITEMS_TABLE_DROP_COMMAND;
 import static com.example.android.groceries2.data.GroceriesDbHelper.ITEMS_TABLE_NAME;
+import static com.example.android.groceries2.data.GroceriesDbHelper.MEASURE_COLUMN;
 import static com.example.android.groceries2.data.GroceriesDbHelper.NAME_COLUMN;
 import static com.example.android.groceries2.data.GroceriesDbHelper.PRICE_COLUMN;
 
@@ -143,7 +143,7 @@ public class ItemsFragment extends Fragment {
                     ContentValues contentValues = new ContentValues();
                     contentValues.put(NAME_COLUMN, i);
                     contentValues.put(PRICE_COLUMN, Math.random() * 11.4);
-                    contentValues.put(ITEMS_MEASURE_COLUMN, 1);
+                    contentValues.put(MEASURE_COLUMN, 1);
                     db.insert(ITEMS_TABLE_NAME, null, contentValues);
                 }
 
