@@ -11,7 +11,6 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -42,12 +41,8 @@ import static com.example.android.groceries2.data.GroceriesDbHelper.NAME_COLUMN;
 
 public class ItemsFragment extends Fragment {
 
-    public int itemsTotal = 0;
 
-    SQLiteDatabase db = dbHelper.getReadableDatabase();
-
-    View itemsView;
-    ItemsCursorAdapter itemsCursorAdapter;
+    private ItemsCursorAdapter itemsCursorAdapter;
 
 
     public ItemsFragment() {
@@ -59,14 +54,13 @@ public class ItemsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable final ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
 
         final Cursor cursor = db.query(ITEMS_TABLE_NAME, null,
                 null, null, null, null, null);
-        itemsTotal = cursor.getCount();
 
 
-        itemsView = inflater.inflate(R.layout.tab_items, container, false);
+        View itemsView = inflater.inflate(R.layout.tab_items, container, false);
         FloatingActionButton fabAddItem =
                 (FloatingActionButton) itemsView.findViewById(R.id.fab_add_item_to_db);
         FloatingActionButton fabApproveList =
@@ -94,9 +88,11 @@ public class ItemsFragment extends Fragment {
             @Override
             public void onClick(View v) {
 
+                SQLiteDatabase db = dbHelper.getReadableDatabase();
                 dbHelper.createOrUpdateActiveListTable(db);
                 TabLayout tabhost = (TabLayout) getActivity().findViewById(R.id.tabs);
                 tabhost.getTabAt(1).select();
+                db.close();
             }
         });
 
@@ -130,6 +126,8 @@ public class ItemsFragment extends Fragment {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+
         // User clicked on a menu option in the app bar overflow menu
         switch (item.getItemId()) {
             // Respond to a click on the "Insert dummy data" menu option
@@ -137,15 +135,14 @@ public class ItemsFragment extends Fragment {
 
                 String[] names = getResources().getStringArray(R.array.array_auto_name_list);
 
-                for (int i = 0; i < names.length; i++) {
-
+                for (String i : names) {
                     ContentValues contentValues = new ContentValues();
-                    contentValues.put(NAME_COLUMN, names[i]);
+                    contentValues.put(NAME_COLUMN, i);
                     contentValues.put(ITEMS_PRICE_COLUMN, Math.random() * 11.4);
                     contentValues.put(ITEMS_MEASURE_COLUMN, 1);
                     db.insert(ITEMS_TABLE_NAME, null, contentValues);
-                    itemsTotal++;
                 }
+
 
                 Cursor cursor = db.query(ITEMS_TABLE_NAME, null, null, null, null, null, null);
 
@@ -169,9 +166,10 @@ public class ItemsFragment extends Fragment {
 
             case R.id.settings_option_delete_all_items:
 
+
                 db.execSQL(ITEMS_TABLE_DROP_COMMAND);
                 db.execSQL(ITEMS_TABLE_CREATE_COMMAND);
-                itemsTotal = 0;
+
                 Toast.makeText(getActivity(), "All items successfully deleted!", Toast.LENGTH_SHORT)
                         .show();
                 cursor = db.query(ITEMS_TABLE_NAME, null, null, null, null, null, null);
@@ -180,14 +178,14 @@ public class ItemsFragment extends Fragment {
                 return true;
         }
 
-
+        db.close();
         return super.onOptionsItemSelected(item);
     }
 
 
     private class UpdateItem extends AsyncTask<Integer, Void, Boolean> {
 
-
+        //Actions to perform in main thread before background execusion
         @Override
         protected void onPreExecute() {
 
@@ -200,11 +198,13 @@ public class ItemsFragment extends Fragment {
 
             ContentValues values = new ContentValues();
             values.put(CHECKED_COLUMN, 1);
-
+            SQLiteDatabase db = dbHelper.getReadableDatabase();
             try {
                 db.update(ITEMS_TABLE_NAME, values, "_id = ?", new String[]{Integer.toString(i)});
+                db.close();
                 return true;
             } catch (SQLiteException e) {
+                db.close();
                 return false;
             }
 
@@ -214,9 +214,10 @@ public class ItemsFragment extends Fragment {
         protected void onPostExecute(Boolean success) {
             if (success) {
                 Toast.makeText(getActivity(), "Checked", Toast.LENGTH_SHORT).show();
+                SQLiteDatabase db = dbHelper.getReadableDatabase();
                 Cursor cursor = db.query(ITEMS_TABLE_NAME, null, null, null, null, null, null);
                 itemsCursorAdapter.changeCursor(cursor);
-
+                db.close();
             } else Toast.makeText(getActivity(), "SQL error", Toast.LENGTH_SHORT).show();
         }
     }

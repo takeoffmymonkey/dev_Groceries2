@@ -11,9 +11,9 @@ import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CheckBox;
 import android.widget.CursorAdapter;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.android.groceries2.EditorActivity;
@@ -21,9 +21,10 @@ import com.example.android.groceries2.MainActivity;
 import com.example.android.groceries2.R;
 
 
+import static com.example.android.groceries2.MainActivity.dbHelper;
 import static com.example.android.groceries2.data.GroceriesDbHelper.CHECKED_COLUMN;
 import static com.example.android.groceries2.data.GroceriesDbHelper.ITEMS_TABLE_NAME;
-import static com.example.android.groceries2.data.GroceriesDbHelper.AMOUNT_COLUMN;
+import static com.example.android.groceries2.data.GroceriesDbHelper.LIST_AMOUNT_COLUMN;
 import static com.example.android.groceries2.data.GroceriesDbHelper.LIST_ITEM_COLUMN;
 import static com.example.android.groceries2.data.GroceriesDbHelper.NAME_COLUMN;
 import static com.example.android.groceries2.data.GroceriesDbHelper.ID_COLUMN;
@@ -39,8 +40,6 @@ import static com.example.android.groceries2.data.GroceriesDbHelper.ID_COLUMN;
  * how to create list items for each row of pet data in the {@link Cursor}.
  */
 public class ItemsCursorAdapter extends CursorAdapter {
-
-    SQLiteDatabase db = MainActivity.dbHelper.getReadableDatabase();
 
 
     /**
@@ -66,7 +65,6 @@ public class ItemsCursorAdapter extends CursorAdapter {
     @Override
     public View newView(Context context, Cursor cursor, ViewGroup parent) {
         // Inflate a list item view using the layout specified in items_item.xml
-
         return LayoutInflater.from(context).inflate(R.layout.item_items, parent, false);
     }
 
@@ -83,119 +81,135 @@ public class ItemsCursorAdapter extends CursorAdapter {
     @Override
     public void bindView(final View view, final Context context, final Cursor cursor) {
 
+        //Create text view object for item's name
+        TextView itemNameTextView = (TextView) view.findViewById(R.id.item_name);
 
-        final int id0 = cursor.getInt(cursor.getColumnIndex(ID_COLUMN));
-        final String[] id1 = {Integer.toString(cursor.getInt(cursor.getColumnIndex(ID_COLUMN)))};
+        //Set its name to NAME_COLUMN
+        itemNameTextView.setText(cursor.getString(cursor.getColumnIndex(NAME_COLUMN)));
 
-        final Cursor cursor1 = db.query(ITEMS_TABLE_NAME, null, null, null, null, null, null);
-        cursor1.move(id0);
-
-        boolean checkBoxState = false;
-
-        CheckBox itemCheckBox = (CheckBox) view.findViewById(R.id.item_checkbox);
-
-        String name = cursor1.getString(cursor.getColumnIndex(NAME_COLUMN));
-        int check = cursor1.getInt(cursor.getColumnIndex(CHECKED_COLUMN));
-
-
-
-/*        TextView measureTextView = (TextView) view.findViewById(R.id0.item_measure);
-
-        int measure = cursor1.getInt(cursor.getColumnIndex(ITEMS_MEASURE_COLUMN));
-
-        // TODO: 013 13 Jun 17 narrow down query
-        Cursor cursor2 = db.query(MEASURE_TABLE_NAME, null, null, null, null, null, null);
-
-        cursor2.move(measure);
-        String s = cursor2.getString(cursor2.getColumnIndex(MEASURE_MEASURE_COLUMN));
-        measureTextView.setText(s);*/
-
-        if (check == 1) {
-            checkBoxState = true;
+        //Set color of the view (according to CHECKED_COLUMN state of the row)
+        if (cursor.getInt(cursor.getColumnIndex(CHECKED_COLUMN)) == 1)
             view.setBackgroundColor(Color.GRAY);
-        } else {
-            view.setBackgroundColor(Color.WHITE);
-        }
-        itemCheckBox.setText(name);
-        itemCheckBox.setChecked(checkBoxState);
+        else view.setBackgroundColor(Color.WHITE);
 
+        //Get ID_COLUMN of current row in int
+        final int rowIdInt = cursor.getInt(cursor.getColumnIndex(ID_COLUMN));
 
+        //Set click listener to the view
         view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
 
-                LayoutInflater inflater = LayoutInflater.from(view.getContext());
-                View test = inflater.inflate(R.layout.dialog_edit_item, null);
+                //Check if the row was checked
+                if (cursor.getInt(cursor.getColumnIndex(CHECKED_COLUMN)) == 0) {
+                    //Row wasn't checked
+                    //Create alert dialog:
+                    //Create alert dialog object
+                    AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
+                    //Create inflater object
+                    LayoutInflater inflater = LayoutInflater.from(view.getContext());
+                    //Create view object containing dialog_edit_item layout
+                    View editItemDialogView = inflater.inflate(R.layout.dialog_edit_item, null);
+                    //Create edit text object linked to to editor_price id
+                    final EditText editNumber = (EditText) editItemDialogView
+                            .findViewById(R.id.dialog_edit_price_number_field);
+                    //Set title of the dialog
+                    builder.setTitle("Please set items amount")
+                            //Set custom view of the dialog
+                            .setView(editItemDialogView)
+                            //Set ability to press back
+                            .setCancelable(true)
+                            //Set Ok button with click listener
+                            .setPositiveButton("Ok",
+                                    new DialogInterface.OnClickListener() {
+                                        public void onClick(DialogInterface dialog, int id) {
 
-                final EditText amt = (EditText) test.findViewById(R.id.editor_price);
+                                            //Create contentValuesItemsTable var to store CHECKED_COLUMN value
+                                            ContentValues contentValuesItemsTable
+                                                    = new ContentValues();
+                                            //Put new value into contentValuesItemsTable
+                                            contentValuesItemsTable.put(CHECKED_COLUMN, 1);
+                                            //Open db connection
+                                            SQLiteDatabase db = dbHelper.getReadableDatabase();
+                                            //Update checked field
+                                            db.update(ITEMS_TABLE_NAME, contentValuesItemsTable,
+                                                    ID_COLUMN + "=?",
+                                                    new String[]{Integer.toString(rowIdInt)});
 
-                boolean checkBoxState = false;
-                final Cursor cursor = db.query(ITEMS_TABLE_NAME, null, null, null, null, null, null);
-                cursor.move(id0);
+                                            //Prepare new values for List table
+                                            //Read the value (amount) of the dialog
+                                            // TODO: 016 16 Jun 17 invalid int bug 
+                                            int amount = Integer
+                                                    .parseInt(editNumber.getText().toString());
+
+                                            //Create contentValuesListTable var
+                                            ContentValues contentValuesListTable
+                                                    = new ContentValues();
+                                            //Put new value into contentValuesItemsTable
+                                            contentValuesListTable.put(LIST_ITEM_COLUMN, rowIdInt);
+                                            //Put new value into contentValuesItemsTable
+                                            contentValuesListTable.put(LIST_AMOUNT_COLUMN, amount);
+
+                                            //Check if there activeListTable
+                                            if (!dbHelper.getListActiveState(db)) {
+                                                //No active List table:
+                                                //Create active List table
+                                                dbHelper.createListTable(db);
+                                                //Insert new item into List table
+                                                db.insert(dbHelper.getCurrentListTableName(db),
+                                                        null, contentValuesListTable);
+
+                                            } else {
+                                                //There is active table
+                                                db.insert(dbHelper.getCurrentListTableName(db),
+                                                        null, contentValuesListTable);
+                                            }
+
+                                            //Close db connection
+                                            db.close();
+
+                                            //Close the dialog window
+                                            dialog.cancel();
+                                        }
+                                    })
+                            //Set neutral button (Edit item) with click listener
+                            .setNeutralButton("Edit item",
+                                    new DialogInterface.OnClickListener() {
+                                        public void onClick(DialogInterface dialog, int id) {
+                                            //Redirect user to Editor activity
+                                            //Create intent object
+                                            Intent intent = new Intent(view.getContext(), EditorActivity.class);
+                                            // TODO: 016 16 Jun 17 pass items' data to editor
+                                            //Start new activity
+                                            view.getContext().startActivity(intent);
+                                            //Close the dialog window
+                                            dialog.cancel();
+                                        }
+                                    })
+                            //Set cancel button with click listener
+                            .setNegativeButton("Cancel",
+                                    new DialogInterface.OnClickListener() {
+                                        public void onClick(DialogInterface dialog, int id) {
+                                            //Close the dialog window
+                                            dialog.cancel();
+                                        }
+                                    });
+
+                    AlertDialog alert = builder.create();
+                    alert.show();
 
 
-                builder.setTitle("Please set items amount")
-                        //.setMessage("Setting items amount..")
-                        .setView(test)
-                        .setCancelable(true) //to be able to press back
-                        .setNeutralButton("Edit item",
-                                new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog, int id) {
-                                        Intent intent = new Intent(view.getContext(), EditorActivity.class);
-                                        view.getContext().startActivity(intent);
-                                        dialog.cancel();
-                                    }
-                                })
-                        .setNegativeButton("Cancel",
-                                new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog, int id) {
-                                        dialog.cancel();
-                                    }
-                                })
-                        .setPositiveButton("Ok",
-                                new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog, int id) {
-                                        //Read the value (amount) of the dialog
-                                        int amount = Integer.parseInt(amt.getText().toString());
-                                        //Prepare ContentValues var
-                                        ContentValues contentValues = new ContentValues();
-                                        //Put amount value into it
-                                        contentValues.put(AMOUNT_COLUMN, amount);
-                                        //Update AMOUNT_COLUMN of ITEMS_table
-                                        db.update(ITEMS_TABLE_NAME, contentValues,
-                                                ID_COLUMN + "=?", new String[]{Integer.toString(id0)}
-                                        );
-                                        //Close the dialog
-                                        dialog.cancel();
-                                    }
-                                });
-                AlertDialog alert = builder.create();
-                alert.show();
-
-
-                int check = cursor.getInt(cursor.getColumnIndex(CHECKED_COLUMN));
-                if (check == 1) checkBoxState = true;
-                if (!checkBoxState) {
-                    ContentValues values = new ContentValues();
-                    values.put(CHECKED_COLUMN, 1);
-                    db.update(ITEMS_TABLE_NAME, values, "_id = ?", id1);
-                    view.setBackgroundColor(Color.GRAY);
-                    Toast.makeText(view.getContext(), "Checked:" + id1[0], Toast.LENGTH_SHORT).show();
                 } else {
-                    ContentValues values = new ContentValues();
-                    values.put(CHECKED_COLUMN, 0);
-                    db.update(ITEMS_TABLE_NAME, values, "_id = ?", id1);
-                    view.setBackgroundColor(Color.WHITE);
-                    Toast.makeText(view.getContext(), "Unchecked:" + id1[0], Toast.LENGTH_SHORT).show();
-                }
+                    //Row was checked
 
-                cursor.close();
-                cursor1.close();
+
+                }
 
             }
         });
 
+
     }
+
 
 }

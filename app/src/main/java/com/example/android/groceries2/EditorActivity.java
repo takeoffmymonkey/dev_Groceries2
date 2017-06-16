@@ -56,7 +56,7 @@ public class EditorActivity extends AppCompatActivity {
         setContentView(R.layout.activity_editor);
 
         nameEditText = (EditText) findViewById(R.id.editor_name);
-        priceEditText = (EditText) findViewById(R.id.editor_price);
+        priceEditText = (EditText) findViewById(R.id.dialog_edit_price_number_field);
         measurementSpinner = (Spinner) findViewById(R.id.editor_measurement);
 
 
