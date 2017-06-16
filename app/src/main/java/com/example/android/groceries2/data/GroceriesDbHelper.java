@@ -37,33 +37,33 @@ public class GroceriesDbHelper extends SQLiteOpenHelper {
     private boolean activeList = false;
 
     //Database name
-    static final String DB_NAME = "GROCERIES_db";
+    public static final String DB_NAME = "GROCERIES_db";
     //Database version
-    static final int DB_VERSION = 1;
+    public static final int DB_VERSION = 1;
     //id column for all tables
     static final String ID_COLUMN = "_id";
     //name column for all tables
-    static final String NAME_COLUMN = "name";
+    public static final String NAME_COLUMN = "name";
     //checked state column
-    static final String CHECKED_COLUMN = "checked";
+    public static final String CHECKED_COLUMN = "checked";
 
 
     /*ITEMS table*/
-    static final String ITEMS_TABLE_NAME = "ITEMS_table";
+    public static final String ITEMS_TABLE_NAME = "ITEMS_table";
     //price column
-    static final String ITEMS_PRICE_COLUMN = "price";
+    public static final String ITEMS_PRICE_COLUMN = "price";
     //measure column
-    static final String ITEMS_MEASURE_COLUMN = "measure";
+    public static final String ITEMS_MEASURE_COLUMN = "measure";
 
     //table create command
-    static final String ITEMS_TABLE_CREATE_COMMAND = "CREATE TABLE " + ITEMS_TABLE_NAME + " (" +
+    public static final String ITEMS_TABLE_CREATE_COMMAND = "CREATE TABLE " + ITEMS_TABLE_NAME + " (" +
             ID_COLUMN + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
             NAME_COLUMN + " TEXT NOT NULL UNIQUE, " +
             ITEMS_PRICE_COLUMN + " REAL NOT NULL DEFAULT 0, " +
             ITEMS_MEASURE_COLUMN + " INTEGER NOT NULL DEFAULT 0, " +
             CHECKED_COLUMN + " INTEGER);";
     //table drop command
-    static final String ITEMS_TABLE_DROP_COMMAND = "DROP TABLE " + ITEMS_TABLE_NAME + ";";
+    public static final String ITEMS_TABLE_DROP_COMMAND = "DROP TABLE " + ITEMS_TABLE_NAME + ";";
 
 
     /*MEASURE table*/
@@ -90,7 +90,7 @@ public class GroceriesDbHelper extends SQLiteOpenHelper {
 
 
     /*LOG table*/
-    private static final String LOG_TABLE_NAME = "LOG_table";
+    public static final String LOG_TABLE_NAME = "LOG_table";
     //creation date column
     static final String LOG_DATE_CREATED_COLUMN = "created";
     //completion date column
@@ -190,7 +190,7 @@ public class GroceriesDbHelper extends SQLiteOpenHelper {
     }
 
     /*Returns latest list version #*/
-    private int getListsCount(SQLiteDatabase db) {
+    public int getListsCount(SQLiteDatabase db) {
         int listCount;
         Cursor cursor = db.query(VALUES_TABLE_NAME, null, null, null, null, null, null);
         cursor.moveToFirst();
@@ -230,7 +230,7 @@ public class GroceriesDbHelper extends SQLiteOpenHelper {
     }
 
     /*Get currentListName*/
-    String getCurrentListTableName(SQLiteDatabase db) {
+    public String getCurrentListTableName(SQLiteDatabase db) {
         return LIST_TABLE_NAME_part_1 + getListsCount(db);
     }
 

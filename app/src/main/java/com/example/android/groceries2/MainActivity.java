@@ -12,6 +12,9 @@ import android.os.Bundle;
 import com.example.android.groceries2.data.CategoryAdapter;
 import com.example.android.groceries2.data.GroceriesDbHelper;
 
+import static com.example.android.groceries2.data.GroceriesDbHelper.DB_NAME;
+import static com.example.android.groceries2.data.GroceriesDbHelper.DB_VERSION;
+
 
 public class MainActivity extends AppCompatActivity {
 
@@ -23,8 +26,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         //Create dbHelper object
-        dbHelper = new GroceriesDbHelper(this, GroceriesDbHelper.DB_NAME,
-                null, GroceriesDbHelper.DB_VERSION);
+        dbHelper = new GroceriesDbHelper(this, DB_NAME,
+                null, DB_VERSION);
 
         CategoryAdapter adapter = new CategoryAdapter(getSupportFragmentManager());
         ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager);

@@ -14,10 +14,8 @@ import android.view.ViewGroup;
 import android.widget.CursorAdapter;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.android.groceries2.EditorActivity;
-import com.example.android.groceries2.MainActivity;
 import com.example.android.groceries2.R;
 
 

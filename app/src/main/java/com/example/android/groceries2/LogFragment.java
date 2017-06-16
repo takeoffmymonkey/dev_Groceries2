@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 
 
+import com.example.android.groceries2.data.GroceriesDbHelper;
 import com.example.android.groceries2.data.LogCursorAdapter;
 
 
