@@ -18,7 +18,9 @@ import com.example.android.groceries2.data.GroceriesDbHelper;
 import com.example.android.groceries2.data.LogCursorAdapter;
 
 
+import static com.example.android.groceries2.ItemsFragment.itemsCursorAdapter;
 import static com.example.android.groceries2.MainActivity.db;
+import static com.example.android.groceries2.data.GroceriesDbHelper.ITEMS_TABLE_NAME;
 import static com.example.android.groceries2.data.GroceriesDbHelper.LOG_TABLE_NAME;
 
 /**
@@ -29,7 +31,7 @@ public class LogFragment extends Fragment {
 
 
     View logView;
-    LogCursorAdapter logCursorAdapter;
+    static LogCursorAdapter logCursorAdapter;
 
 
     public LogFragment() {
@@ -89,5 +91,10 @@ public class LogFragment extends Fragment {
         return super.onOptionsItemSelected(item);
     }
 
+
+    public static void refreshLogCursor() {
+        Cursor cursor = db.query(LOG_TABLE_NAME, null, null, null, null, null, null);
+        logCursorAdapter.changeCursor(cursor);
+    }
 
 }

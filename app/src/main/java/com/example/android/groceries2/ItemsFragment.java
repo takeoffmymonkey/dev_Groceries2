@@ -39,7 +39,7 @@ import static com.example.android.groceries2.data.GroceriesDbHelper.PRICE_COLUMN
 public class ItemsFragment extends Fragment {
 
     //Create ItemsCursorAdapter link
-    private ItemsCursorAdapter itemsCursorAdapter;
+    static ItemsCursorAdapter itemsCursorAdapter;
 
     //Required empty constructor
     public ItemsFragment() {
@@ -235,10 +235,16 @@ public class ItemsFragment extends Fragment {
         @Override
         protected void onPostExecute(Boolean success) {
             if (success) {
-                Toast.makeText(getActivity(), "Checked", Toast.LENGTH_SHORT).show();
-                Cursor cursor = db.query(ITEMS_TABLE_NAME, null, null, null, null, null, null);
-                itemsCursorAdapter.changeCursor(cursor);
+                refreshItemsCursor();
             } else Toast.makeText(getActivity(), "SQL error", Toast.LENGTH_SHORT).show();
         }
     }
+
+
+    public static void refreshItemsCursor() {
+        Cursor cursor = db.query(ITEMS_TABLE_NAME, null, null, null, null, null, null);
+        itemsCursorAdapter.changeCursor(cursor);
+    }
+
+
 }

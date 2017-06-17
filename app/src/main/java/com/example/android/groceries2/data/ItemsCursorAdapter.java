@@ -13,8 +13,11 @@ import android.view.ViewGroup;
 import android.widget.CursorAdapter;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.android.groceries2.EditorActivity;
+import com.example.android.groceries2.ItemsFragment;
+import com.example.android.groceries2.ListFragment;
 import com.example.android.groceries2.R;
 
 import static com.example.android.groceries2.MainActivity.db;
@@ -166,7 +169,8 @@ public class ItemsCursorAdapter extends CursorAdapter {
                                                         null, contentValuesListTable);
                                             }
 
-
+                                            ItemsFragment.refreshItemsCursor();
+                                            ListFragment.refreshListCursor();
                                             //Close the dialog window
                                             dialog.cancel();
                                         }
@@ -234,9 +238,15 @@ public class ItemsCursorAdapter extends CursorAdapter {
 
                     //Close the cursor
                     listTableCursor.close();
+
+                    ItemsFragment.refreshItemsCursor();
+                    ListFragment.refreshListCursor();
                 }
 
+
             }
+
+
         });
 
 
