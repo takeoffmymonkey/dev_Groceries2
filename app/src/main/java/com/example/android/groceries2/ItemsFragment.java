@@ -21,6 +21,7 @@ import android.widget.Toast;
 
 import com.example.android.groceries2.data.ItemsCursorAdapter;
 
+import static com.example.android.groceries2.ListFragment.listCursorAdapter;
 import static com.example.android.groceries2.MainActivity.db;
 
 import static com.example.android.groceries2.data.GroceriesDbHelper.CHECKED_COLUMN;
@@ -242,8 +243,8 @@ public class ItemsFragment extends Fragment {
 
 
     public static void refreshItemsCursor() {
-        Cursor cursor = db.query(ITEMS_TABLE_NAME, null, null, null, null, null, null);
-        itemsCursorAdapter.changeCursor(cursor);
+            Cursor cursor = db.query(ITEMS_TABLE_NAME, null, null, null, null, null, null);
+            itemsCursorAdapter.changeCursor(cursor);
     }
 
 

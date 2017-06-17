@@ -170,7 +170,8 @@ public class ItemsCursorAdapter extends CursorAdapter {
                                             }
 
                                             ItemsFragment.refreshItemsCursor();
-                                            ListFragment.refreshListCursor();
+                                            Toast.makeText(context, ListFragment.refreshListCursor(), Toast.LENGTH_SHORT).show();
+
                                             //Close the dialog window
                                             dialog.cancel();
                                         }

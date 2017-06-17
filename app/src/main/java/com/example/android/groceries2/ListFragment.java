@@ -49,8 +49,6 @@ public class ListFragment extends Fragment {
         FloatingActionButton fabCompleteList =
                 (FloatingActionButton) listView.findViewById(R.id.fab_complete_list);
 
-        FloatingActionButton fabRefresh =
-                (FloatingActionButton) listView.findViewById(R.id.fab_TEMP_refresh_list);
 
         // Find the ListView which will be populated with the pet data
         ListView listListView = (ListView) listView.findViewById(R.id.list_list);
@@ -63,23 +61,13 @@ public class ListFragment extends Fragment {
 
         if (dbHelper.getListsCount(db) > 0) {
 
+
             Cursor cursor = db.query(dbHelper.getCurrentListTableName(db), null,
                     null, null, null, null, null);
 
             listCursorAdapter = new ListCursorAdapter(getContext(), cursor, 0);
 
             listListView.setAdapter(listCursorAdapter);
-
-
-            fabRefresh.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Cursor cursor = db.query(dbHelper.getCurrentListTableName(db), null, null, null, null, null, null);
-
-                    listCursorAdapter.changeCursor(cursor);
-
-                }
-            });
 
         }
         setHasOptionsMenu(true);
@@ -124,7 +112,10 @@ public class ListFragment extends Fragment {
 
 
     public static void refreshListCursor() {
-        Cursor cursor = db.query(dbHelper.getCurrentListTableName(db), null, null, null, null, null, null);
-        listCursorAdapter.changeCursor(cursor);
+
+        if (dbHelper.getListsCount(db) > 0) {
+            Cursor cursor = db.query(dbHelper.getCurrentListTableName(db), null, null, null, null, null, null);
+            listCursorAdapter.changeCursor(cursor);
+        }
     }
 }

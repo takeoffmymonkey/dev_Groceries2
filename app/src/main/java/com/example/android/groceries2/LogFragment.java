@@ -19,6 +19,7 @@ import com.example.android.groceries2.data.LogCursorAdapter;
 
 
 import static com.example.android.groceries2.ItemsFragment.itemsCursorAdapter;
+import static com.example.android.groceries2.ListFragment.listCursorAdapter;
 import static com.example.android.groceries2.MainActivity.db;
 import static com.example.android.groceries2.data.GroceriesDbHelper.ITEMS_TABLE_NAME;
 import static com.example.android.groceries2.data.GroceriesDbHelper.LOG_TABLE_NAME;
