@@ -10,6 +10,10 @@ import android.widget.TextView;
 
 import com.example.android.groceries2.R;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+import static com.example.android.groceries2.data.GroceriesDbHelper.LOG_DATE_COMPLETE_COLUMN;
 import static com.example.android.groceries2.data.GroceriesDbHelper.LOG_DATE_CREATED_COLUMN;
 import static com.example.android.groceries2.data.GroceriesDbHelper.NAME_COLUMN;
 
@@ -30,12 +34,24 @@ public class LogCursorAdapter extends CursorAdapter {
     @Override
     public void bindView(View view, Context context, Cursor cursor) {
 
+        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy (hh:mm:ss)");
+
         TextView logItemName = (TextView) view.findViewById(R.id.log_item);
-        TextView logItemCreationDate = (TextView) view.findViewById(R.id.log_item_date);
-
         logItemName.setText(cursor.getString(cursor.getColumnIndexOrThrow(NAME_COLUMN)));
-        logItemCreationDate.setText(cursor.getString(cursor.getColumnIndexOrThrow(LOG_DATE_CREATED_COLUMN)));
 
+        TextView logItemCreateDate = (TextView) view.findViewById(R.id.log_item_date_created);
+        long dateCreatedInMs = cursor.getLong(cursor.getColumnIndexOrThrow(LOG_DATE_CREATED_COLUMN));
+        String dateCreatedString = formatter.format(new Date(dateCreatedInMs));
+        logItemCreateDate.setText("Created: " + dateCreatedString);
+
+        TextView logItemCompleteDate = (TextView) view.findViewById(R.id.log_item_date_complete);
+        if (cursor.getString(cursor.getColumnIndexOrThrow(LOG_DATE_COMPLETE_COLUMN)) == null) {
+            logItemCompleteDate.setText("Complete: incomplete");
+        } else {
+            long dateCompleteInMs = cursor.getLong(cursor.getColumnIndexOrThrow(LOG_DATE_COMPLETE_COLUMN));
+            String dateCompleteString = formatter.format(new Date(dateCompleteInMs));
+            logItemCompleteDate.setText("Created: " + dateCompleteString);
+        }
 
     }
 }
