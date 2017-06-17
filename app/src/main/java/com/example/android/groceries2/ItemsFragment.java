@@ -135,15 +135,38 @@ public class ItemsFragment extends Fragment {
         // User clicked on a menu option in the app bar overflow menu
         switch (item.getItemId()) {
             // Respond to a click on the "Insert dummy data" menu option
-            case R.id.settings_option_add_item_dummy:
+            case R.id.settings_option_populate_list:
 
                 String[] names = getResources().getStringArray(R.array.array_auto_name_list);
+                int[] measures = getResources().getIntArray(R.array.array_auto_measure_list);
 
-                for (String i : names) {
+                float[] prices = {
+                        78.95f,
+                        7.45f,
+                        6.35f,
+                        5.4f,
+                        16.99f,
+                        33.95f,
+                        35.99f,
+                        8.85f,
+                        10.46f,
+                        17.7f,
+                        29.95f,
+                        14.45f,
+                        20.95f,
+                        12.69f,
+                        10.45f,
+                        20.6f,
+                        20.69f,
+                        44.53f,
+                        9.95f,
+                        24.73f};
+
+                for (int i = 0; i < prices.length; i++) {
                     ContentValues contentValues = new ContentValues();
-                    contentValues.put(NAME_COLUMN, i);
-                    contentValues.put(PRICE_COLUMN, Math.random() * 11.4);
-                    contentValues.put(MEASURE_COLUMN, 1);
+                    contentValues.put(NAME_COLUMN, names[i]);
+                    contentValues.put(PRICE_COLUMN, prices[i]);
+                    contentValues.put(MEASURE_COLUMN, measures[i]);
                     db.insert(ITEMS_TABLE_NAME, null, contentValues);
                 }
 

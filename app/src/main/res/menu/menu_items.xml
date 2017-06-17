@@ -10,13 +10,13 @@
         app:showAsAction="always" />
 
     <item
-        android:id="@+id/settings_option_add_item_dummy"
-        android:title="Add item dummy"
+        android:id="@+id/settings_option_populate_list"
+        android:title="Populate list"
         app:showAsAction="never" />
 
     <item
         android:id="@+id/settings_option_check_item"
-        android:title="Check item"
+        android:title="Check 1st item"
         app:showAsAction="never" />
 
     <item

@@ -9,8 +9,11 @@ import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.CursorAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.android.groceries2.R;
+
+import java.text.DecimalFormat;
 
 import static android.R.attr.name;
 import static com.example.android.groceries2.MainActivity.db;
@@ -93,9 +96,11 @@ public class ListCursorAdapter extends CursorAdapter {
         //Create itemPrice textView object
         TextView itemPriceTextView = (TextView) view.findViewById(R.id.list_item_price);
         //Get itemPrice value from cursor
-        int itemPrice = cursor.getInt(cursor.getColumnIndexOrThrow(PRICE_COLUMN));
-        //Set total itemPrice as product of itemPrice and ItemAmount to itemPrice textView
-        itemPriceTextView.setText("~" + Integer.toString(itemPrice * itemAmount) + " грн");
+        float itemPrice = cursor.getFloat(cursor.getColumnIndexOrThrow(PRICE_COLUMN));
+        //Create proper decimal format object
+        DecimalFormat decimalFormat = new DecimalFormat("#.##");
+        //Set itemPriceTextView to the product of item's amount and price
+        itemPriceTextView.setText("~" + decimalFormat.format(itemPrice * itemAmount) + " грн");
 
     }
 }

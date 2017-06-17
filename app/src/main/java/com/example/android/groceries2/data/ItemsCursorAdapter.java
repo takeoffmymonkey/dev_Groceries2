@@ -94,7 +94,7 @@ public class ItemsCursorAdapter extends CursorAdapter {
         final int rowIdInt = cursor.getInt(cursor.getColumnIndexOrThrow(ID_COLUMN));
 
         //Get PRICE_COLUMN of current row in int
-        final int rowPriceInt = cursor.getInt(cursor.getColumnIndexOrThrow(PRICE_COLUMN));
+        final float rowPriceInt = cursor.getFloat(cursor.getColumnIndexOrThrow(PRICE_COLUMN));
 
         //Set click listener to the view
         view.setOnClickListener(new View.OnClickListener() {

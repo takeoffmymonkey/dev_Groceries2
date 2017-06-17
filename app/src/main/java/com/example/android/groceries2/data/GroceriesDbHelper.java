@@ -139,10 +139,13 @@ public class GroceriesDbHelper extends SQLiteOpenHelper {
      */
     @Override
     public void onCreate(SQLiteDatabase db) {
-
+        //Create ITEMS_table
         db.execSQL(ITEMS_TABLE_CREATE_COMMAND);
+
+        //Create LOG_table
         db.execSQL(LOG_TABLE_CREATE_COMMAND);
 
+        //Create MEASURE_table
         db.execSQL(MEASURE_TABLE_CREATE_COMMAND);
         //Get the array with measurement values
         String[] measures = context.getResources().getStringArray(R.array.array_measurement_options);
@@ -154,6 +157,7 @@ public class GroceriesDbHelper extends SQLiteOpenHelper {
             db.insert(MEASURE_TABLE_NAME, null, contentValues);
         }
 
+        //Create VALUES_table
         db.execSQL(VALUES_TABLE_CREATE_COMMAND);
         //Add 1st row with default values
         ContentValues contentValues = new ContentValues();

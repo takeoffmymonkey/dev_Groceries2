@@ -90,13 +90,11 @@ public class ListFragment extends Fragment {
     @Override
     public void onPause() {
         super.onPause();
-        Toast.makeText(getContext(), "Paused", Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        Toast.makeText(getContext(), "Resumed", Toast.LENGTH_SHORT).show();
     }
 
     @Override
