@@ -34,7 +34,7 @@ public class GroceriesDbHelper extends SQLiteOpenHelper {
     //Database version
     public static final int DB_VERSION = 1;
     //id column for all tables
-    static final String ID_COLUMN = "_id";
+    public static final String ID_COLUMN = "_id";
     //price column for all tables
     public static final String PRICE_COLUMN = "price";
     //name column for all tables

@@ -2,6 +2,7 @@ package com.example.android.groceries2;
 
 import android.content.ContentValues;
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
@@ -13,8 +14,11 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import static com.example.android.groceries2.MainActivity.db;
+import static com.example.android.groceries2.data.GroceriesDbHelper.CHECKED_COLUMN;
+import static com.example.android.groceries2.data.GroceriesDbHelper.ID_COLUMN;
 import static com.example.android.groceries2.data.GroceriesDbHelper.MEASURE_COLUMN;
 import static com.example.android.groceries2.data.GroceriesDbHelper.PRICE_COLUMN;
 import static com.example.android.groceries2.data.GroceriesDbHelper.ITEMS_TABLE_NAME;
@@ -55,6 +59,36 @@ public class EditorActivity extends AppCompatActivity {
         priceEditText = (EditText) findViewById(R.id.dialog_edit_price_number_field);
         measurementSpinner = (Spinner) findViewById(R.id.editor_measurement);
 
+        setupSpinner();
+
+        //Receive id of the item if bundled
+        int itemId = getIntent().getIntExtra("ID", 0);
+
+        if (itemId != 0) {
+
+            //Get cursor with proper data for the id
+            Cursor cursor = db.query(ITEMS_TABLE_NAME,
+                    new String[]{NAME_COLUMN, PRICE_COLUMN, MEASURE_COLUMN},
+                    ID_COLUMN + "=?", new String[]{Integer.toString(itemId)},
+                    null, null, null);
+
+            //Moving cursor to 1st row
+            cursor.moveToFirst();
+
+            String name = cursor.getString(cursor.getColumnIndex(NAME_COLUMN));
+            Float price = cursor.getFloat(cursor.getColumnIndex(PRICE_COLUMN));
+
+            nameEditText.setText(name);
+            priceEditText.setText(Float.toString(price));
+
+            int measure = cursor.getInt(cursor.getColumnIndex(MEASURE_COLUMN));
+
+            Toast.makeText(this, Integer.toString(measure), Toast.LENGTH_SHORT).show();
+            measurementSpinner.setSelection(measure - 1);
+
+
+            cursor.close();
+        }
 
         // Setup OnTouchListeners on all the input fields, so we can determine if the user
         // has touched or modified them. This will let us know if there are unsaved changes
@@ -73,7 +107,6 @@ public class EditorActivity extends AppCompatActivity {
             }
         });
 
-        setupSpinner();
 
     }
 
@@ -109,6 +142,8 @@ public class EditorActivity extends AppCompatActivity {
                         measurement = "4";
                     } else if (selection.equals(measures[4])) {
                         measurement = "5";
+                    } else if (selection.equals(measures[5])) {
+                        measurement = "6";
                     }
 
                 }

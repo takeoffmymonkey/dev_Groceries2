@@ -20,6 +20,7 @@ import com.example.android.groceries2.ItemsFragment;
 import com.example.android.groceries2.ListFragment;
 import com.example.android.groceries2.R;
 
+import static android.os.Build.ID;
 import static com.example.android.groceries2.MainActivity.db;
 import static com.example.android.groceries2.MainActivity.dbHelper;
 import static com.example.android.groceries2.data.GroceriesDbHelper.CHECKED_COLUMN;
@@ -95,7 +96,7 @@ public class ItemsCursorAdapter extends CursorAdapter {
                     //Create alert dialog object
                     AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
                     //Create inflater object
-                    LayoutInflater inflater = LayoutInflater.from(view.getContext());
+                    final LayoutInflater inflater = LayoutInflater.from(view.getContext());
                     //Create view object containing dialog_edit_item layout
                     View editItemDialogView = inflater.inflate(R.layout.dialog_edit_item, null);
                     //Create edit text object linked to to editor_price id
@@ -168,6 +169,7 @@ public class ItemsCursorAdapter extends CursorAdapter {
                                             //Redirect user to Editor activity
                                             //Create intent object
                                             Intent intent = new Intent(view.getContext(), EditorActivity.class);
+                                            intent.putExtra("ID", rowIdInt);
                                             // TODO: 016 16 Jun 17 pass items' data to editor
                                             //Start new activity
                                             view.getContext().startActivity(intent);

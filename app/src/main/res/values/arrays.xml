@@ -36,26 +36,26 @@
 
 
     <integer-array name="array_auto_measure_list">
-        <item>3</item>
+        <item>2</item>
+        <item>0</item>
         <item>1</item>
-        <item>2</item>
-        <item>2</item>
-        <item>2</item>
-        <item>2</item>
-        <item>2</item>
-        <item>2</item>
-        <item>2</item>
-        <item>2</item>
-        <item>3</item>
-        <item>3</item>
-        <item>3</item>
-        <item>3</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
         <item>2</item>
         <item>2</item>
         <item>2</item>
         <item>2</item>
         <item>1</item>
         <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>0</item>
+        <item>0</item>
     </integer-array>
 
 
