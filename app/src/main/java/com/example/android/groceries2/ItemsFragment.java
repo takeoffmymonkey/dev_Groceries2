@@ -84,7 +84,7 @@ public class ItemsFragment extends Fragment {
             }
         });
 
-        //Create floating action button for approving the list
+/*        //Create floating action button for approving the list
         FloatingActionButton fabApproveList =
                 (FloatingActionButton) itemsView.findViewById(R.id.fab_approve_list);
         //Set click listener on it
@@ -96,7 +96,7 @@ public class ItemsFragment extends Fragment {
                 //Make it open a proper tab
                 tabHost.getTabAt(1).select();
             }
-        });
+        });*/
 
 
         //Find the gridView to hold items
