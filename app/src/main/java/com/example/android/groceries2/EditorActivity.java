@@ -15,9 +15,7 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
-
 import static com.example.android.groceries2.MainActivity.db;
-import static com.example.android.groceries2.data.GroceriesDbHelper.CHECKED_COLUMN;
 import static com.example.android.groceries2.data.GroceriesDbHelper.ID_COLUMN;
 import static com.example.android.groceries2.data.GroceriesDbHelper.MEASURE_COLUMN;
 import static com.example.android.groceries2.data.GroceriesDbHelper.PRICE_COLUMN;
@@ -32,15 +30,17 @@ public class EditorActivity extends AppCompatActivity {
 
     private String name;
 
-    private String price;
+    private float price;
 
-    private String measurement;
+    private String measurement = "1";
 
     private EditText nameEditText;
 
     private EditText priceEditText;
 
     private Spinner measurementSpinner;
+
+    private int itemId = 0;
 
 
     private View.OnTouchListener touchListener = new View.OnTouchListener() {
@@ -62,7 +62,7 @@ public class EditorActivity extends AppCompatActivity {
         setupSpinner();
 
         //Receive id of the item if bundled
-        int itemId = getIntent().getIntExtra("ID", 0);
+        itemId = getIntent().getIntExtra("ID", 0);
 
         if (itemId != 0) {
 
@@ -75,15 +75,14 @@ public class EditorActivity extends AppCompatActivity {
             //Moving cursor to 1st row
             cursor.moveToFirst();
 
-            String name = cursor.getString(cursor.getColumnIndex(NAME_COLUMN));
-            Float price = cursor.getFloat(cursor.getColumnIndex(PRICE_COLUMN));
+            name = cursor.getString(cursor.getColumnIndex(NAME_COLUMN));
+            price = cursor.getFloat(cursor.getColumnIndex(PRICE_COLUMN));
 
             nameEditText.setText(name);
             priceEditText.setText(Float.toString(price));
 
             int measure = cursor.getInt(cursor.getColumnIndex(MEASURE_COLUMN));
 
-            Toast.makeText(this, Integer.toString(measure), Toast.LENGTH_SHORT).show();
             measurementSpinner.setSelection(measure - 1);
 
 
@@ -103,7 +102,7 @@ public class EditorActivity extends AppCompatActivity {
         fabApproveItem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                saveItem();
+                saveItem(name, price, itemId);
             }
         });
 
@@ -158,16 +157,38 @@ public class EditorActivity extends AppCompatActivity {
     }
 
 
-    private void saveItem() {
+    //Save item, but get the init name to compare with new one
+    //0 - add mode
+    //!0 - edit mode
+    private void saveItem(String exName, float exPrice, int itemId) {
 
-        name = nameEditText.getText().toString().trim();
-        price = priceEditText.getText().toString().trim();
+        //Get new name
+        String newName = nameEditText.getText().toString().trim();
+        //Get new price as string
+        String newPriceString = priceEditText.getText().toString().trim();
+        //Convert newPriceString to float
+        Float newPrice = Float.parseFloat(newPriceString);
+        //Get new measurement
 
-        ContentValues contentValues = new ContentValues();
-        contentValues.put(NAME_COLUMN, name);
-        contentValues.put(PRICE_COLUMN, price);
-        contentValues.put(MEASURE_COLUMN, measurement);
-        db.insert(ITEMS_TABLE_NAME, null, contentValues);
+        if (itemId == 0) {
+            //add item mode
+            ContentValues contentValues = new ContentValues();
+            contentValues.put(NAME_COLUMN, newName);
+            contentValues.put(PRICE_COLUMN, newPrice);
+            contentValues.put(MEASURE_COLUMN, measurement);
+            db.insert(ITEMS_TABLE_NAME, null, contentValues);
+            Toast.makeText(this, "New item added", Toast.LENGTH_SHORT).show();
+
+        } else {
+            //edit mode
+            ContentValues contentValues = new ContentValues();
+            contentValues.put(NAME_COLUMN, newName);
+            contentValues.put(PRICE_COLUMN, newPrice);
+            contentValues.put(MEASURE_COLUMN, measurement);
+            db.update(ITEMS_TABLE_NAME, contentValues, ID_COLUMN + "=?",
+                    new String[]{Integer.toString(itemId)});
+            Toast.makeText(this, "Item updated", Toast.LENGTH_SHORT).show();
+        }
 
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
