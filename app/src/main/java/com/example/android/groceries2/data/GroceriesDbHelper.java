@@ -5,13 +5,8 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.widget.Toast;
-
 import com.example.android.groceries2.R;
 
-import static android.R.attr.version;
-import static com.example.android.groceries2.MainActivity.dbHelper;
-import static java.security.AccessController.getContext;
 
 /**
  * Created by takeoff on 001 01 Jun 17.
@@ -33,8 +28,6 @@ import static java.security.AccessController.getContext;
 public class GroceriesDbHelper extends SQLiteOpenHelper {
 
     private Context context;
-
-    private boolean activeList = false;
 
     //Database name
     public static final String DB_NAME = "GROCERIES_db";
@@ -110,33 +103,13 @@ public class GroceriesDbHelper extends SQLiteOpenHelper {
     static final String LIST_AMOUNT_COLUMN = "amount";
 
 
-    /**
-     * Reqired implementation of a constructor.
-     * Create a helper object to create, open, and/or manage a database.
-     * This method always returns very quickly.  The database is not actually
-     * created or opened until one of {@link #getWritableDatabase} or
-     * {@link #getReadableDatabase} is called.
-     *
-     * @param context to use to open or create the database
-     * @param name    of the database file, or null for an in-memory database
-     * @param factory to use for creating cursor objects, or null for the default
-     * @param version number of the database (starting at 1); if the database is older,
-     *                {@link #onUpgrade} will be used to upgrade the database; if the database is
-     *                newer, {@link #onDowngrade} will be used to downgrade the database
-     */
     public GroceriesDbHelper(Context context, String name, SQLiteDatabase.CursorFactory factory,
                              int version) {
         super(context, name, factory, version);
         this.context = context;
     }
 
-    /**
-     * Requred implementation of an abstract method.
-     * Called when the database is created for the first time. This is where the
-     * creation of tables and the initial population of the tables should happen.
-     *
-     * @param db The database.
-     */
+
     @Override
     public void onCreate(SQLiteDatabase db) {
         //Create ITEMS_table
@@ -166,30 +139,12 @@ public class GroceriesDbHelper extends SQLiteOpenHelper {
         db.insert(VALUES_TABLE_NAME, null, contentValues);
     }
 
-    /**
-     * Requred implementation of an abstract method.
-     * Called when the database needs to be upgraded. The implementation
-     * should use this method to drop tables, add tables, or do anything else it
-     * needs to upgrade to the new schema version.
-     * <p>
-     * The SQLite ALTER TABLE documentation can be found
-     * <a href="http://sqlite.org/lang_altertable.html">here</a>. If you add new columns
-     * you can use ALTER TABLE to insert them into a live table. If you rename or remove columns
-     * you can use ALTER TABLE to rename the old table, then create the new table and then
-     * populate the new table with the contents of the old table.
-     * </p><p>
-     * This method executes within a transaction.  If an exception is thrown, all changes
-     * will automatically be rolled back.
-     * </p>
-     *
-     * @param db         The database.
-     * @param oldVersion The old database version.
-     * @param newVersion The new database version.
-     */
+
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         //Db stays version 1, nothing to do here
     }
+
 
     /*Returns latest list version #*/
     public int getListsCount(SQLiteDatabase db) {
@@ -201,6 +156,7 @@ public class GroceriesDbHelper extends SQLiteOpenHelper {
         return listCount;
     }
 
+
     /*Update latest list version #*/
     private void setListsCount(SQLiteDatabase db, int newCount) {
         ContentValues contentValues = new ContentValues();
@@ -208,6 +164,7 @@ public class GroceriesDbHelper extends SQLiteOpenHelper {
         db.update(VALUES_TABLE_NAME, contentValues,
                 ID_COLUMN + "=?", new String[]{"1"});
     }
+
 
     /*Returns latest list version active state*/
     boolean getListActiveState(SQLiteDatabase db) {
@@ -220,6 +177,7 @@ public class GroceriesDbHelper extends SQLiteOpenHelper {
         else return true;
     }
 
+
     /*Sets latest list version active state*/
     private void setListActiveState(SQLiteDatabase db, boolean newState) {
         ContentValues contentValues = new ContentValues();
@@ -230,6 +188,7 @@ public class GroceriesDbHelper extends SQLiteOpenHelper {
         db.update(VALUES_TABLE_NAME, contentValues,
                 ID_COLUMN + "=?", new String[]{"1"});
     }
+
 
     /*Get currentListName*/
     public String getCurrentListTableName(SQLiteDatabase db) {

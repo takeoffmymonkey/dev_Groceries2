@@ -7,13 +7,13 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Color;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CursorAdapter;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.android.groceries2.EditorActivity;
 import com.example.android.groceries2.ItemsFragment;
@@ -26,6 +26,7 @@ import static com.example.android.groceries2.data.GroceriesDbHelper.CHECKED_COLU
 import static com.example.android.groceries2.data.GroceriesDbHelper.ITEMS_TABLE_NAME;
 import static com.example.android.groceries2.data.GroceriesDbHelper.LIST_AMOUNT_COLUMN;
 import static com.example.android.groceries2.data.GroceriesDbHelper.LIST_ITEM_COLUMN;
+import static com.example.android.groceries2.data.GroceriesDbHelper.MEASURE_COLUMN;
 import static com.example.android.groceries2.data.GroceriesDbHelper.NAME_COLUMN;
 import static com.example.android.groceries2.data.GroceriesDbHelper.ID_COLUMN;
 import static com.example.android.groceries2.data.GroceriesDbHelper.PRICE_COLUMN;
@@ -35,52 +36,27 @@ import static com.example.android.groceries2.data.GroceriesDbHelper.PRICE_COLUMN
  */
 
 
-/**
- * {@link ItemsCursorAdapter} is an adapter for a list or grid view
- * that uses a {@link Cursor} of pet data as its data source. This adapter knows
- * how to create list items for each row of pet data in the {@link Cursor}.
- */
 public class ItemsCursorAdapter extends CursorAdapter {
 
-
-    /**
-     * Constructs a new {@link ItemsCursorAdapter}.
-     *
-     * @param context The context
-     * @param c       The cursor from which to get the data.
-     */
     public ItemsCursorAdapter(Context context, Cursor c, int flags) {
         super(context, c, flags);
     }
 
 
-    /**
-     * Makes a new blank list item view. No data is set (or bound) to the views yet.
-     *
-     * @param context app context
-     * @param cursor  The cursor from which to get the data. The cursor is already
-     *                moved to the correct position.
-     * @param parent  The parent to which the new view is attached to
-     * @return the newly created list item view.
-     */
     @Override
     public View newView(Context context, Cursor cursor, ViewGroup parent) {
-        // Inflate a list item view using the layout specified in items_item.xml
+        //Inflate a list item view using the layout specified in items_item.xml
         return LayoutInflater.from(context).inflate(R.layout.item_items, parent, false);
     }
 
-    /**
-     * This method binds the pet data (in the current row pointed to by cursor) to the given
-     * list item layout. For example, the name for the current pet can be set on the name TextView
-     * in the list item layout.
-     *
-     * @param view    Existing view, returned earlier by newView() method
-     * @param context app context
-     * @param cursor  The cursor from which to get the data. The cursor is already moved to the
-     *                correct row.
-     */
+
+    //This method binds data from cursors' row to the given item layout.
     @Override
     public void bindView(final View view, final Context context, final Cursor cursor) {
+
+        Log.e("START. Cursor:", cursor.toString());
+        String value = cursor.getString(cursor.getColumnIndex(CHECKED_COLUMN));
+        Log.e("START. Value:", value);
 
         //Create text view object for item's name
         TextView itemNameTextView = (TextView) view.findViewById(R.id.item_name);
@@ -104,9 +80,17 @@ public class ItemsCursorAdapter extends CursorAdapter {
             @Override
             public void onClick(View v) {
 
+                final Cursor freshItemsTableCursor = db.query(ITEMS_TABLE_NAME,
+                        new String[]{CHECKED_COLUMN},
+                        ID_COLUMN + "=?", new String[]{Integer.toString(rowIdInt)},
+                        null, null, null);
+
+                //Move cursor to 1st row
+                freshItemsTableCursor.moveToFirst();
+
                 //Check if the row was checked
-                if (cursor.getInt(cursor.getColumnIndexOrThrow(CHECKED_COLUMN)) == 0) {
-                    //Row wasn't checked
+                if (freshItemsTableCursor.getInt(freshItemsTableCursor.getColumnIndexOrThrow(CHECKED_COLUMN)) == 0) {
+                     //Row wasn't checked
                     //Create alert dialog:
                     //Create alert dialog object
                     AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
@@ -169,8 +153,9 @@ public class ItemsCursorAdapter extends CursorAdapter {
                                                         null, contentValuesListTable);
                                             }
 
+
+                                            freshItemsTableCursor.close();
                                             ItemsFragment.refreshItemsCursor();
-                                            Toast.makeText(context, ListFragment.refreshListCursor(), Toast.LENGTH_SHORT).show();
 
                                             //Close the dialog window
                                             dialog.cancel();
@@ -194,6 +179,10 @@ public class ItemsCursorAdapter extends CursorAdapter {
                             .setNegativeButton("Cancel",
                                     new DialogInterface.OnClickListener() {
                                         public void onClick(DialogInterface dialog, int id) {
+
+                                            freshItemsTableCursor.close();
+                                            ItemsFragment.refreshItemsCursor();
+
                                             //Close the dialog window
                                             dialog.cancel();
                                         }
@@ -204,6 +193,8 @@ public class ItemsCursorAdapter extends CursorAdapter {
 
 
                 } else {
+
+
                     //Row was checked
 
                     //Uncheck it in Items_table:
@@ -240,8 +231,9 @@ public class ItemsCursorAdapter extends CursorAdapter {
                     //Close the cursor
                     listTableCursor.close();
 
+                    freshItemsTableCursor.close();
                     ItemsFragment.refreshItemsCursor();
-                    ListFragment.refreshListCursor();
+
                 }
 
 

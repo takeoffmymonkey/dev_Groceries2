@@ -2,20 +2,14 @@ package com.example.android.groceries2.data;
 
 import android.content.Context;
 import android.database.Cursor;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.CursorAdapter;
 import android.widget.TextView;
-import android.widget.Toast;
-
 import com.example.android.groceries2.R;
-
 import java.text.DecimalFormat;
-
-import static android.R.attr.name;
 import static com.example.android.groceries2.MainActivity.db;
 import static com.example.android.groceries2.data.GroceriesDbHelper.ID_COLUMN;
 import static com.example.android.groceries2.data.GroceriesDbHelper.ITEMS_TABLE_NAME;
@@ -35,11 +29,15 @@ public class ListCursorAdapter extends CursorAdapter {
         super(context, c, flags);
     }
 
+
     @Override
     public View newView(Context context, Cursor cursor, ViewGroup parent) {
+        //Inflate a list item view using the layout specified in item_list.xml
         return LayoutInflater.from(context).inflate(R.layout.item_list, parent, false);
     }
 
+
+    //This method binds data from cursors' row to the given item layout.
     @Override
     public void bindView(View view, Context context, Cursor cursor) {
 

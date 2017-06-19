@@ -2,7 +2,6 @@ package com.example.android.groceries2;
 
 import android.content.ContentValues;
 import android.content.Intent;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
@@ -39,12 +38,10 @@ public class EditorActivity extends AppCompatActivity {
 
     private Spinner measurementSpinner;
 
-    private boolean itemHasChanged = false;
 
     private View.OnTouchListener touchListener = new View.OnTouchListener() {
         @Override
         public boolean onTouch(View view, MotionEvent motionEvent) {
-            itemHasChanged = true;
             return false;
         }
     };

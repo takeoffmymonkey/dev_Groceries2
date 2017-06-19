@@ -19,12 +19,16 @@ import static com.example.android.groceries2.data.GroceriesDbHelper.DB_VERSION;
 
 public class MainActivity extends AppCompatActivity {
 
+    //Global link to dbHelper object
     public static GroceriesDbHelper dbHelper;
+    //Global Link to db object
     public static SQLiteDatabase db;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //Set view for main activity class
         setContentView(R.layout.activity_main);
 
         //Create dbHelper object
@@ -34,19 +38,26 @@ public class MainActivity extends AppCompatActivity {
         //Create db object
         db = dbHelper.getReadableDatabase();
 
+        //Create adapter for fragments
         CategoryAdapter adapter = new CategoryAdapter(getSupportFragmentManager());
-        ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager);
-        viewPager.setAdapter(adapter);
-        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
 
+        //Create view pager for fragments content
+        ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager);
+        //Set a PagerAdapter that will supply views for this pager as needed
+        viewPager.setAdapter(adapter);
+
+        //Create tab layout object for tabs
+        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
+        //Link tab layout with view pager
         tabLayout.setupWithViewPager(viewPager);
 
     }
 
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        db.close();
+        //Close any open database object
         dbHelper.close();
     }
 }

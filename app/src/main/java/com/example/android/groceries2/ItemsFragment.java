@@ -10,6 +10,7 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -21,9 +22,8 @@ import android.widget.Toast;
 
 import com.example.android.groceries2.data.ItemsCursorAdapter;
 
-import static com.example.android.groceries2.ListFragment.listCursorAdapter;
+import static com.example.android.groceries2.ItemsFragment.refreshItemsCursor;
 import static com.example.android.groceries2.MainActivity.db;
-
 import static com.example.android.groceries2.data.GroceriesDbHelper.CHECKED_COLUMN;
 import static com.example.android.groceries2.data.GroceriesDbHelper.ITEMS_TABLE_CREATE_COMMAND;
 import static com.example.android.groceries2.data.GroceriesDbHelper.ITEMS_TABLE_DROP_COMMAND;
@@ -44,7 +44,6 @@ public class ItemsFragment extends Fragment {
 
     //Required empty constructor
     public ItemsFragment() {
-
     }
 
 
@@ -111,9 +110,11 @@ public class ItemsFragment extends Fragment {
         //Create cursor
         Cursor cursor = db.query(ITEMS_TABLE_NAME, null, null, null, null, null, null);
 
+        //Create cursor adapter object and pass cursor there
         itemsCursorAdapter = new ItemsCursorAdapter(getContext(), cursor, 0);
-        itemsGridView.setAdapter(itemsCursorAdapter);
 
+        //Set adapter to the grid view
+        itemsGridView.setAdapter(itemsCursorAdapter);
 
         //This fragment has options menu
         setHasOptionsMenu(true);
@@ -124,12 +125,14 @@ public class ItemsFragment extends Fragment {
     }
 
 
+    //Set menu layout
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.menu_items, menu);
         super.onCreateOptionsMenu(menu, inflater);
     }
 
+    //When option from menu is selected
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
@@ -137,10 +140,12 @@ public class ItemsFragment extends Fragment {
         switch (item.getItemId()) {
             // Respond to a click on the "Insert dummy data" menu option
             case R.id.settings_option_populate_list:
-
+                //TODO: 019 19 Jun 17 move this to dbHelper
+                //Get array of items' names from resources
                 String[] names = getResources().getStringArray(R.array.array_auto_name_list);
+                //Get array of items' measures from resources
                 int[] measures = getResources().getIntArray(R.array.array_auto_measure_list);
-
+                //Create array of items' prices
                 float[] prices = {
                         78.95f,
                         7.45f,
@@ -243,8 +248,9 @@ public class ItemsFragment extends Fragment {
 
 
     public static void refreshItemsCursor() {
-            Cursor cursor = db.query(ITEMS_TABLE_NAME, null, null, null, null, null, null);
-            itemsCursorAdapter.changeCursor(cursor);
+        Cursor cursor = db.query(ITEMS_TABLE_NAME, null, null, null, null, null, null);
+        itemsCursorAdapter.changeCursor(cursor);
+        Log.e("REFRESH. Cursor:", cursor.toString());
     }
 
 
