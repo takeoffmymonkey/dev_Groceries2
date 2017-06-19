@@ -157,6 +157,7 @@ public class ItemsCursorAdapter extends CursorAdapter {
 
                                             freshItemsTableCursor.close();
                                             ItemsFragment.refreshItemsCursor();
+                                            ListFragment.refreshListCursor();
 
                                             //Close the dialog window
                                             dialog.cancel();
