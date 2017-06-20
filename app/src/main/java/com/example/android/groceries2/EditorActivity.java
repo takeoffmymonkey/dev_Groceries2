@@ -9,6 +9,7 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
@@ -33,6 +34,8 @@ public class EditorActivity extends AppCompatActivity {
     private String name;
 
     private float price;
+
+    private int measure;
 
     private String measurement = "1";
 
@@ -68,27 +71,45 @@ public class EditorActivity extends AppCompatActivity {
 
         if (itemId != 0) {
 
-            //Get cursor with proper data for the id
-            Cursor cursor = db.query(ITEMS_TABLE_NAME,
-                    new String[]{NAME_COLUMN, PRICE_COLUMN, MEASURE_COLUMN},
-                    ID_COLUMN + "=?", new String[]{Integer.toString(itemId)},
-                    null, null, null);
 
-            //Moving cursor to 1st row
-            cursor.moveToFirst();
+            class Query extends AsyncTask<Void, Void, Boolean> {
 
-            name = cursor.getString(cursor.getColumnIndex(NAME_COLUMN));
-            price = cursor.getFloat(cursor.getColumnIndex(PRICE_COLUMN));
+                @Override
+                protected Boolean doInBackground(Void... params) {
+                    //Get cursor with proper data for the id
+                    Cursor cursor = db.query(ITEMS_TABLE_NAME,
+                            new String[]{NAME_COLUMN, PRICE_COLUMN, MEASURE_COLUMN},
+                            ID_COLUMN + "=?", new String[]{Integer.toString(itemId)},
+                            null, null, null);
 
-            nameEditText.setText(name);
-            priceEditText.setText(Float.toString(price));
-
-            int measure = cursor.getInt(cursor.getColumnIndex(MEASURE_COLUMN));
-
-            measurementSpinner.setSelection(measure - 1);
+                    //Moving cursor to 1st row
+                    cursor.moveToFirst();
 
 
-            cursor.close();
+                    name = cursor.getString(cursor.getColumnIndex(NAME_COLUMN));
+                    price = cursor.getFloat(cursor.getColumnIndex(PRICE_COLUMN));
+                    measure = cursor.getInt(cursor.getColumnIndex(MEASURE_COLUMN));
+
+                    cursor.close();
+                    return true;
+                }
+
+                @Override
+                protected void onPostExecute(Boolean aBoolean) {
+                    super.onPostExecute(aBoolean);
+
+                    measurementSpinner.setSelection(measure - 1);
+
+                    nameEditText.setText(name);
+                    priceEditText.setText(Float.toString(price));
+
+                }
+            }
+
+
+            new Query().execute();
+
+
         }
 
         // Setup OnTouchListeners on all the input fields, so we can determine if the user
@@ -162,54 +183,33 @@ public class EditorActivity extends AppCompatActivity {
     //Save item, but get the init name to compare with new one
     //0 - add mode
     //!0 - edit mode
-    private void saveItem(String exName, float exPrice, final int itemId) {
+    private void saveItem(String exName, float exPrice, int itemId) {
 
         //Get new name
-        final String newName = nameEditText.getText().toString().trim();
+        String newName = nameEditText.getText().toString().trim();
         //Get new price as string
-        final String newPriceString = priceEditText.getText().toString().trim();
+        String newPriceString = priceEditText.getText().toString().trim();
         //Convert newPriceString to float
-        final Float newPrice = Float.parseFloat(newPriceString);
+        Float newPrice = Float.parseFloat(newPriceString);
         //Get new measurement
-
-
-        class SaveItemBackground extends AsyncTask<Integer, Void, Boolean> {
-            @Override
-            protected Boolean doInBackground(Integer... params) {
-                switch (params[0]) {
-                    case 0:
-                        ContentValues contentValuesAddItem = new ContentValues();
-                        contentValuesAddItem.put(NAME_COLUMN, newName);
-                        contentValuesAddItem.put(PRICE_COLUMN, newPrice);
-                        contentValuesAddItem.put(MEASURE_COLUMN, measurement);
-                        db.insert(ITEMS_TABLE_NAME, null, contentValuesAddItem);
-                        break;
-                    case 1:
-                        ContentValues contentValuesEditItem = new ContentValues();
-                        contentValuesEditItem.put(NAME_COLUMN, newName);
-                        contentValuesEditItem.put(PRICE_COLUMN, newPrice);
-                        contentValuesEditItem.put(MEASURE_COLUMN, measurement);
-                        db.update(ITEMS_TABLE_NAME, contentValuesEditItem, ID_COLUMN + "=?",
-                                new String[]{Integer.toString(itemId)});
-                        break;
-                }
-                return true;
-            }
-
-            @Override
-            protected void onPostExecute(Boolean aBoolean) {
-                super.onPostExecute(aBoolean);
-            }
-        }
 
         if (itemId == 0) {
             //add item mode
-            new SaveItemBackground().execute(0);
+            ContentValues contentValues = new ContentValues();
+            contentValues.put(NAME_COLUMN, newName);
+            contentValues.put(PRICE_COLUMN, newPrice);
+            contentValues.put(MEASURE_COLUMN, measurement);
+            db.insert(ITEMS_TABLE_NAME, null, contentValues);
             Toast.makeText(this, "New item added", Toast.LENGTH_SHORT).show();
 
         } else {
             //edit mode
-            new SaveItemBackground().execute(1);
+            ContentValues contentValues = new ContentValues();
+            contentValues.put(NAME_COLUMN, newName);
+            contentValues.put(PRICE_COLUMN, newPrice);
+            contentValues.put(MEASURE_COLUMN, measurement);
+            db.update(ITEMS_TABLE_NAME, contentValues, ID_COLUMN + "=?",
+                    new String[]{Integer.toString(itemId)});
             Toast.makeText(this, "Item updated", Toast.LENGTH_SHORT).show();
         }
 
@@ -217,6 +217,5 @@ public class EditorActivity extends AppCompatActivity {
         startActivity(intent);
 
     }
-
 
 }
