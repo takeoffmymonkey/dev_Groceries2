@@ -7,6 +7,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import com.example.android.groceries2.R;
 
+import static com.example.android.groceries2.MainActivity.db;
+
 
 /**
  * Created by takeoff on 001 01 Jun 17.
@@ -101,6 +103,14 @@ public class GroceriesDbHelper extends SQLiteOpenHelper {
     static final String LIST_ITEM_COLUMN = "item";
     //List table amount column
     static final String LIST_AMOUNT_COLUMN = "amount";
+    //Create string for CREATE TABLE command
+    private String LIST_INIT_TABLE_CREATE_COMMAND = "CREATE TABLE " + LIST_TABLE_NAME_part_1 + "0" +
+            " (" +
+            ID_COLUMN + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+            LIST_ITEM_COLUMN + " INTEGER NOT NULL UNIQUE, " +
+            LIST_AMOUNT_COLUMN + " REAL, " +
+            PRICE_COLUMN + " REAL NOT NULL DEFAULT 0, " +
+            CHECKED_COLUMN + " INTEGER DEFAULT 0);";
 
 
     public GroceriesDbHelper(Context context, String name, SQLiteDatabase.CursorFactory factory,
@@ -137,6 +147,10 @@ public class GroceriesDbHelper extends SQLiteOpenHelper {
         contentValues.put(VALUES_LIST_VERSION_COLUMN, "0");
         contentValues.put(VALUES_IS_ACTIVE_COLUMN, "0");
         db.insert(VALUES_TABLE_NAME, null, contentValues);
+
+
+        //Create init list table for the cursor
+        db.execSQL(LIST_INIT_TABLE_CREATE_COMMAND);
     }
 
 
@@ -194,6 +208,7 @@ public class GroceriesDbHelper extends SQLiteOpenHelper {
     public String getCurrentListTableName(SQLiteDatabase db) {
         return LIST_TABLE_NAME_part_1 + getListsCount(db);
     }
+
 
 
     /*Creates new List table

@@ -250,7 +250,6 @@ public class ItemsFragment extends Fragment {
     public static void refreshItemsCursor() {
         Cursor cursor = db.query(ITEMS_TABLE_NAME, null, null, null, null, null, null);
         itemsCursorAdapter.changeCursor(cursor);
-        Log.e("REFRESH. Cursor:", cursor.toString());
     }
 
 

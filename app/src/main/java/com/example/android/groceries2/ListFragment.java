@@ -59,17 +59,13 @@ public class ListFragment extends Fragment {
 
         listListView.setEmptyView(emptyView);
 
-        if (dbHelper.getListsCount(db) > 0) {
+        Cursor cursor = db.query(dbHelper.getCurrentListTableName(db), null,
+                null, null, null, null, null);
 
+        listCursorAdapter = new ListCursorAdapter(getContext(), cursor, 0);
 
-            Cursor cursor = db.query(dbHelper.getCurrentListTableName(db), null,
-                    null, null, null, null, null);
+        listListView.setAdapter(listCursorAdapter);
 
-            listCursorAdapter = new ListCursorAdapter(getContext(), cursor, 0);
-
-            listListView.setAdapter(listCursorAdapter);
-
-        }
         setHasOptionsMenu(true);
 
         return listView;
@@ -118,4 +114,5 @@ public class ListFragment extends Fragment {
             listCursorAdapter.changeCursor(cursor);
         }
     }
+
 }

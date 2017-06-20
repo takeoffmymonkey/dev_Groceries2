@@ -55,10 +55,6 @@ public class ItemsCursorAdapter extends CursorAdapter {
     @Override
     public void bindView(final View view, final Context context, final Cursor cursor) {
 
-        Log.e("START. Cursor:", cursor.toString());
-        String value = cursor.getString(cursor.getColumnIndex(CHECKED_COLUMN));
-        Log.e("START. Value:", value);
-
         //Create text view object for item's name
         TextView itemNameTextView = (TextView) view.findViewById(R.id.item_name);
 
