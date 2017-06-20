@@ -16,6 +16,7 @@ import android.widget.ListView;
 
 
 import com.example.android.groceries2.data.GroceriesDbHelper;
+import com.example.android.groceries2.data.ItemsCursorAdapter;
 import com.example.android.groceries2.data.LogCursorAdapter;
 
 
@@ -37,7 +38,6 @@ public class LogFragment extends Fragment {
 
 
     public LogFragment() {
-
     }
 
 
@@ -46,24 +46,39 @@ public class LogFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
 
-        Cursor cursor = db.query(LOG_TABLE_NAME, null,
-                null, null, null, null, null);
 
         logView = inflater.inflate(R.layout.tab_log, container, false);
 
 
         // Find the ListView which will be populated with the pet data
-        ListView logListView = (ListView) logView.findViewById(R.id.log_list);
-
+        final ListView logListView = (ListView) logView.findViewById(R.id.log_list);
 
         // Find and set empty view on the ListView, so that it only shows when the list has 0 items.
-
         View emptyView = logView.findViewById(R.id.log_empty_view);
 
-        logCursorAdapter = new LogCursorAdapter(getContext(), cursor, 0);
-
         logListView.setEmptyView(emptyView);
-        logListView.setAdapter(logCursorAdapter);
+
+        class LogBackgroundCursor extends AsyncTask<Void, Void, Boolean> {
+
+            @Override
+            protected Boolean doInBackground(Void... params) {
+                //Create cursor
+                Cursor cursor = db.query(LOG_TABLE_NAME, null,
+                        null, null, null, null, null);
+                //Create cursor adapter object and pass cursor there
+                logCursorAdapter = new LogCursorAdapter(getContext(), cursor, 0);
+                return true;
+            }
+
+            @Override
+            protected void onPostExecute(Boolean aBoolean) {
+                super.onPostExecute(aBoolean);
+                //Set adapter to the grid view
+                logListView.setAdapter(logCursorAdapter);
+            }
+        }
+
+        new LogBackgroundCursor().execute();
 
 
         setHasOptionsMenu(true);
