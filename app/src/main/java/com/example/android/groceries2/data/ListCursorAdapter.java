@@ -2,14 +2,18 @@ package com.example.android.groceries2.data;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.CursorAdapter;
 import android.widget.TextView;
+
 import com.example.android.groceries2.R;
+
 import java.text.DecimalFormat;
+
 import static com.example.android.groceries2.MainActivity.db;
 import static com.example.android.groceries2.data.GroceriesDbHelper.ID_COLUMN;
 import static com.example.android.groceries2.data.GroceriesDbHelper.ITEMS_TABLE_NAME;

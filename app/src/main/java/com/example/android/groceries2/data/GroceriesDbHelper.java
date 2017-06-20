@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+
 import com.example.android.groceries2.R;
 
 import static com.example.android.groceries2.MainActivity.db;
@@ -55,7 +56,7 @@ public class GroceriesDbHelper extends SQLiteOpenHelper {
             ID_COLUMN + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
             NAME_COLUMN + " TEXT NOT NULL UNIQUE, " +
             PRICE_COLUMN + " REAL NOT NULL DEFAULT 0, " +
-            MEASURE_COLUMN + " INTEGER NOT NULL DEFAULT 0, " +
+            MEASURE_COLUMN + " INTEGER NOT NULL, " +
             CHECKED_COLUMN + " INTEGER DEFAULT 0);";
     //table drop command
     public static final String ITEMS_TABLE_DROP_COMMAND = "DROP TABLE " + ITEMS_TABLE_NAME + ";";
@@ -148,7 +149,6 @@ public class GroceriesDbHelper extends SQLiteOpenHelper {
         contentValues.put(VALUES_IS_ACTIVE_COLUMN, "0");
         db.insert(VALUES_TABLE_NAME, null, contentValues);
 
-
         //Create init list table for the cursor
         db.execSQL(LIST_INIT_TABLE_CREATE_COMMAND);
     }
@@ -208,7 +208,6 @@ public class GroceriesDbHelper extends SQLiteOpenHelper {
     public String getCurrentListTableName(SQLiteDatabase db) {
         return LIST_TABLE_NAME_part_1 + getListsCount(db);
     }
-
 
 
     /*Creates new List table

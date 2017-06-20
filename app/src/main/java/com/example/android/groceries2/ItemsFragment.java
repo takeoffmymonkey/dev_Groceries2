@@ -172,7 +172,7 @@ public class ItemsFragment extends Fragment {
                     ContentValues contentValues = new ContentValues();
                     contentValues.put(NAME_COLUMN, names[i]);
                     contentValues.put(PRICE_COLUMN, prices[i]);
-                    contentValues.put(MEASURE_COLUMN, measures[i]);
+                    contentValues.put(MEASURE_COLUMN, measures[i] + 1);
                     db.insert(ITEMS_TABLE_NAME, null, contentValues);
                 }
 
