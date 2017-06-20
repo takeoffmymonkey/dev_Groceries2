@@ -118,8 +118,18 @@ public class ListFragment extends Fragment {
 
     public static void refreshListCursor() {
 
-        Cursor cursor = db.query(dbHelper.getCurrentListTableName(db), null, null, null, null, null, null);
-        listCursorAdapter.changeCursor(cursor);
+        //check if there is an active list table
+        if (!dbHelper.getListActiveState(db)) {
+            //no list is active
+            //Set cursor to the init table
+            Cursor cursor = db.query("List_0", null, null, null, null, null, null);
+            listCursorAdapter.changeCursor(cursor);
+        } else {
+            //There is an acitive list table
+            Cursor cursor = db.query(dbHelper.getCurrentListTableName(db), null, null, null, null, null, null);
+            listCursorAdapter.changeCursor(cursor);
+        }
+
 
     }
 

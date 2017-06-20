@@ -8,8 +8,11 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.widget.Toast;
 
 import com.example.android.groceries2.ItemsFragment;
+import com.example.android.groceries2.ListFragment;
+import com.example.android.groceries2.LogFragment;
 import com.example.android.groceries2.R;
 
+import static android.icu.lang.UCharacter.GraphemeClusterBreak.L;
 import static com.example.android.groceries2.MainActivity.db;
 
 
@@ -183,7 +186,7 @@ public class GroceriesDbHelper extends SQLiteOpenHelper {
 
 
     /*Returns latest list version active state*/
-    boolean getListActiveState(SQLiteDatabase db) {
+    public boolean getListActiveState(SQLiteDatabase db) {
         int stateInt;
         Cursor cursor = db.query(VALUES_TABLE_NAME, null, null, null, null, null, null);
         cursor.moveToFirst();
@@ -350,9 +353,15 @@ public class GroceriesDbHelper extends SQLiteOpenHelper {
             //mark list as inactive
             setListActiveState(db, false);
 
+
+            //Update cursors
+            ListFragment.refreshListCursor();
+            LogFragment.refreshLogCursor();
+            ItemsFragment.refreshItemsCursor();
+
+            //Inform user
             Toast.makeText(context, "List marked as complete", Toast.LENGTH_SHORT).show();
         }
-        //Inform user
 
         return true;
     }
