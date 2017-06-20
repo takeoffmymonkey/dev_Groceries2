@@ -100,6 +100,7 @@ public class ListFragment extends Fragment {
             case R.id.settings_option_delete_list:
                 Toast.makeText(getContext(), dbHelper.deleteListTable(db), Toast.LENGTH_SHORT).show();
                 refreshListCursor();
+                ListFragment.refreshListCursor();
                 LogFragment.refreshLogCursor();
                 return true;
         }
@@ -109,10 +110,9 @@ public class ListFragment extends Fragment {
 
     public static void refreshListCursor() {
 
-        if (dbHelper.getListsCount(db) > 0) {
-            Cursor cursor = db.query(dbHelper.getCurrentListTableName(db), null, null, null, null, null, null);
-            listCursorAdapter.changeCursor(cursor);
-        }
+        Cursor cursor = db.query(dbHelper.getCurrentListTableName(db), null, null, null, null, null, null);
+        listCursorAdapter.changeCursor(cursor);
+
     }
 
 }

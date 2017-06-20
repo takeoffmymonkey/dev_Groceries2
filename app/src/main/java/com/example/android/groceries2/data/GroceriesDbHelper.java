@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import com.example.android.groceries2.ItemsFragment;
 import com.example.android.groceries2.R;
 
 import static com.example.android.groceries2.MainActivity.db;
@@ -288,6 +289,9 @@ public class GroceriesDbHelper extends SQLiteOpenHelper {
             db.update(ITEMS_TABLE_NAME, contentValues,
                     CHECKED_COLUMN + "=?",
                     new String[]{"1"});
+
+            //Update cursor of ItemsFragment
+            ItemsFragment.refreshItemsCursor();
 
             //Return success message
             return currentListTableName + "deleted";
