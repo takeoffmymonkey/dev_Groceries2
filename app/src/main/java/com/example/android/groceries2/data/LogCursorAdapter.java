@@ -1,15 +1,21 @@
 package com.example.android.groceries2.data;
 
+import com.example.android.groceries2.ListActivity;
+
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CursorAdapter;
 import android.widget.TextView;
+
 import com.example.android.groceries2.R;
+
 import java.text.SimpleDateFormat;
 import java.util.Date;
+
 import static com.example.android.groceries2.data.GroceriesDbHelper.LOG_DATE_COMPLETE_COLUMN;
 import static com.example.android.groceries2.data.GroceriesDbHelper.LOG_DATE_CREATED_COLUMN;
 import static com.example.android.groceries2.data.GroceriesDbHelper.NAME_COLUMN;
@@ -33,7 +39,17 @@ public class LogCursorAdapter extends CursorAdapter {
 
     //This method binds data from cursors' row to the given item layout.
     @Override
-    public void bindView(View view, Context context, Cursor cursor) {
+    public void bindView(final View view, Context context, Cursor cursor) {
+
+        view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //Create object for intent
+                Intent intent = new Intent(view.getContext(), ListActivity.class);
+                //Create editor activity
+                view.getContext().startActivity(intent);
+            }
+        });
 
         //Date formatting object
         SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy (hh:mm:ss)");
