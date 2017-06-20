@@ -3,6 +3,7 @@ package com.example.android.groceries2;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
@@ -15,6 +16,7 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
+
 import static com.example.android.groceries2.MainActivity.db;
 import static com.example.android.groceries2.data.GroceriesDbHelper.ID_COLUMN;
 import static com.example.android.groceries2.data.GroceriesDbHelper.MEASURE_COLUMN;
@@ -160,33 +162,54 @@ public class EditorActivity extends AppCompatActivity {
     //Save item, but get the init name to compare with new one
     //0 - add mode
     //!0 - edit mode
-    private void saveItem(String exName, float exPrice, int itemId) {
+    private void saveItem(String exName, float exPrice, final int itemId) {
 
         //Get new name
-        String newName = nameEditText.getText().toString().trim();
+        final String newName = nameEditText.getText().toString().trim();
         //Get new price as string
-        String newPriceString = priceEditText.getText().toString().trim();
+        final String newPriceString = priceEditText.getText().toString().trim();
         //Convert newPriceString to float
-        Float newPrice = Float.parseFloat(newPriceString);
+        final Float newPrice = Float.parseFloat(newPriceString);
         //Get new measurement
+
+
+        class SaveItemBackground extends AsyncTask<Integer, Void, Boolean> {
+            @Override
+            protected Boolean doInBackground(Integer... params) {
+                switch (params[0]) {
+                    case 0:
+                        ContentValues contentValuesAddItem = new ContentValues();
+                        contentValuesAddItem.put(NAME_COLUMN, newName);
+                        contentValuesAddItem.put(PRICE_COLUMN, newPrice);
+                        contentValuesAddItem.put(MEASURE_COLUMN, measurement);
+                        db.insert(ITEMS_TABLE_NAME, null, contentValuesAddItem);
+                        break;
+                    case 1:
+                        ContentValues contentValuesEditItem = new ContentValues();
+                        contentValuesEditItem.put(NAME_COLUMN, newName);
+                        contentValuesEditItem.put(PRICE_COLUMN, newPrice);
+                        contentValuesEditItem.put(MEASURE_COLUMN, measurement);
+                        db.update(ITEMS_TABLE_NAME, contentValuesEditItem, ID_COLUMN + "=?",
+                                new String[]{Integer.toString(itemId)});
+                        break;
+                }
+                return true;
+            }
+
+            @Override
+            protected void onPostExecute(Boolean aBoolean) {
+                super.onPostExecute(aBoolean);
+            }
+        }
 
         if (itemId == 0) {
             //add item mode
-            ContentValues contentValues = new ContentValues();
-            contentValues.put(NAME_COLUMN, newName);
-            contentValues.put(PRICE_COLUMN, newPrice);
-            contentValues.put(MEASURE_COLUMN, measurement);
-            db.insert(ITEMS_TABLE_NAME, null, contentValues);
+            new SaveItemBackground().execute(0);
             Toast.makeText(this, "New item added", Toast.LENGTH_SHORT).show();
 
         } else {
             //edit mode
-            ContentValues contentValues = new ContentValues();
-            contentValues.put(NAME_COLUMN, newName);
-            contentValues.put(PRICE_COLUMN, newPrice);
-            contentValues.put(MEASURE_COLUMN, measurement);
-            db.update(ITEMS_TABLE_NAME, contentValues, ID_COLUMN + "=?",
-                    new String[]{Integer.toString(itemId)});
+            new SaveItemBackground().execute(1);
             Toast.makeText(this, "Item updated", Toast.LENGTH_SHORT).show();
         }
 
@@ -194,5 +217,6 @@ public class EditorActivity extends AppCompatActivity {
         startActivity(intent);
 
     }
+
 
 }
