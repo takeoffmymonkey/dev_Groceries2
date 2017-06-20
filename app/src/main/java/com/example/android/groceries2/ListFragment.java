@@ -49,6 +49,14 @@ public class ListFragment extends Fragment {
         FloatingActionButton fabCompleteList =
                 (FloatingActionButton) listView.findViewById(R.id.fab_complete_list);
 
+        //Set approve list action to fab
+        fabCompleteList.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dbHelper.approveCurrentList(db);
+            }
+        });
+
 
         // Find the ListView which will be populated with the pet data
         ListView listListView = (ListView) listView.findViewById(R.id.list_list);

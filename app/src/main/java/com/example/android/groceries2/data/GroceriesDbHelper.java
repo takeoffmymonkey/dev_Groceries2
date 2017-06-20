@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.widget.Toast;
 
 import com.example.android.groceries2.ItemsFragment;
 import com.example.android.groceries2.R;
@@ -285,7 +286,6 @@ public class GroceriesDbHelper extends SQLiteOpenHelper {
             //Put new value to it
             contentValues.put(CHECKED_COLUMN, 0);
             //Update table
-            // TODO: 016 16 Jun 17 what if none is checked?
             db.update(ITEMS_TABLE_NAME, contentValues,
                     CHECKED_COLUMN + "=?",
                     new String[]{"1"});
@@ -301,7 +301,61 @@ public class GroceriesDbHelper extends SQLiteOpenHelper {
             return "No list to delete";
         }
 
-
     }
+
+
+    /*Mark current list as complete:
+    * Set status to inactive
+    * Uncheck all checked in Items_table
+    * Check all in list_?
+    * Update log table
+    * update all
+    * */
+    public boolean approveCurrentList(SQLiteDatabase db) {
+
+        //Check status of current list
+        if (getListActiveState(db)) {
+            //List is active
+
+            //Uncheck all items in Item table
+            //Create contentValues var
+            ContentValues contentValuesItems = new ContentValues();
+            //Put new value to it
+            contentValuesItems.put(CHECKED_COLUMN, 0);
+            //Update table
+            db.update(ITEMS_TABLE_NAME, contentValuesItems,
+                    CHECKED_COLUMN + "=?",
+                    new String[]{"1"});
+
+            //Check all items in List_? table
+            //Create contentValues var
+            ContentValues contentValuesList = new ContentValues();
+            //Put new value to it
+            contentValuesList.put(CHECKED_COLUMN, 1);
+            //Update table
+            db.update(getCurrentListTableName(db), contentValuesList,
+                    CHECKED_COLUMN + "=?",
+                    new String[]{"0"});
+
+            //Update log table:
+            //Create contentValuesLog
+            ContentValues contentValuesLog = new ContentValues();
+            //Put there complete date of current list in ms
+            contentValuesLog.put(LOG_DATE_COMPLETE_COLUMN, System.currentTimeMillis());
+            //update table
+            db.update(LOG_TABLE_NAME, contentValuesLog,
+                    NAME_COLUMN + "=?",
+                    new String[]{getCurrentListTableName(db)});
+
+            //mark list as inactive
+            setListActiveState(db, false);
+
+            Toast.makeText(context, "List marked as complete", Toast.LENGTH_SHORT).show();
+        }
+        //Inform user
+
+        return true;
+    }
+
 
 }
