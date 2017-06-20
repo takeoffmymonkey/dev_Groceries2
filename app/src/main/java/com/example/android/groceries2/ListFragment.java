@@ -117,6 +117,30 @@ public class ListFragment extends Fragment {
     }
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     public static void refreshListCursor() {
 
         class NewListCursor extends AsyncTask<Integer, Void, Cursor> {
@@ -149,7 +173,7 @@ public class ListFragment extends Fragment {
             }
         }
 
-        new NewListCursor().execute(1);
+        new NewListCursor().execute(0);
 
     }
 

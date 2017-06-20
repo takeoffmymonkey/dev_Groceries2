@@ -102,21 +102,34 @@ public class ItemsFragment extends Fragment {
 
 
         //Find the gridView to hold items
-        GridView itemsGridView = (GridView) itemsView.findViewById(R.id.items_list);
+        final GridView itemsGridView = (GridView) itemsView.findViewById(R.id.items_list);
 
         //Find empty view when nothing to show
         View emptyView = itemsView.findViewById(R.id.items_empty_view);
         //Set it to gridView
         itemsGridView.setEmptyView(emptyView);
 
-        //Create cursor
-        Cursor cursor = db.query(ITEMS_TABLE_NAME, null, null, null, null, null, null);
 
-        //Create cursor adapter object and pass cursor there
-        itemsCursorAdapter = new ItemsCursorAdapter(getContext(), cursor, 0);
+        class ItemsBackgroundCursor extends AsyncTask<Void, Void, Boolean> {
 
-        //Set adapter to the grid view
-        itemsGridView.setAdapter(itemsCursorAdapter);
+            @Override
+            protected Boolean doInBackground(Void... params) {
+                //Create cursor
+                Cursor cursor = db.query(ITEMS_TABLE_NAME, null, null, null, null, null, null);
+                //Create cursor adapter object and pass cursor there
+                itemsCursorAdapter = new ItemsCursorAdapter(getContext(), cursor, 0);
+                return true;
+            }
+
+            @Override
+            protected void onPostExecute(Boolean aBoolean) {
+                super.onPostExecute(aBoolean);
+                //Set adapter to the grid view
+                itemsGridView.setAdapter(itemsCursorAdapter);
+            }
+        }
+
+        new ItemsBackgroundCursor().execute();
 
         //This fragment has options menu
         setHasOptionsMenu(true);
@@ -171,11 +184,6 @@ public class ItemsFragment extends Fragment {
 
 
     class ItemsBackgroundTasks extends AsyncTask<Integer, Void, Boolean> {
-
-        //Actions to perform in main thread before background execusion
-        @Override
-        protected void onPreExecute() {
-        }
 
         //Actions to perform on background thread
         @Override
@@ -244,11 +252,6 @@ public class ItemsFragment extends Fragment {
     public static void refreshItemsCursor() {
 
         class NewItemsCursor extends AsyncTask<Integer, Void, Cursor> {
-
-            //Actions to perform in main thread before background execusion
-            @Override
-            protected void onPreExecute() {
-            }
 
             //Actions to perform on background thread
             @Override
