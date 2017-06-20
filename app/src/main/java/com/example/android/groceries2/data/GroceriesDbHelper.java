@@ -6,13 +6,10 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.widget.Toast;
-
 import com.example.android.groceries2.ItemsFragment;
 import com.example.android.groceries2.ListFragment;
 import com.example.android.groceries2.LogFragment;
 import com.example.android.groceries2.R;
-
-import static android.icu.lang.UCharacter.GraphemeClusterBreak.L;
 import static com.example.android.groceries2.MainActivity.db;
 
 
@@ -166,7 +163,7 @@ public class GroceriesDbHelper extends SQLiteOpenHelper {
 
 
     /*Returns latest list version #*/
-    public int getListsCount(SQLiteDatabase db) {
+    public int getListsCount() {
         int listCount;
         Cursor cursor = db.query(VALUES_TABLE_NAME, null, null, null, null, null, null);
         cursor.moveToFirst();
@@ -177,7 +174,7 @@ public class GroceriesDbHelper extends SQLiteOpenHelper {
 
 
     /*Update latest list version #*/
-    private void setListsCount(SQLiteDatabase db, int newCount) {
+    private void setListsCount(int newCount) {
         ContentValues contentValues = new ContentValues();
         contentValues.put(VALUES_LIST_VERSION_COLUMN, newCount);
         db.update(VALUES_TABLE_NAME, contentValues,
@@ -186,7 +183,7 @@ public class GroceriesDbHelper extends SQLiteOpenHelper {
 
 
     /*Returns latest list version active state*/
-    public boolean getListActiveState(SQLiteDatabase db) {
+    public boolean getListActiveState() {
         int stateInt;
         Cursor cursor = db.query(VALUES_TABLE_NAME, null, null, null, null, null, null);
         cursor.moveToFirst();
@@ -198,7 +195,7 @@ public class GroceriesDbHelper extends SQLiteOpenHelper {
 
 
     /*Sets latest list version active state*/
-    private void setListActiveState(SQLiteDatabase db, boolean newState) {
+    private void setListActiveState(boolean newState) {
         ContentValues contentValues = new ContentValues();
         int stateInt;
         if (newState) stateInt = 1;
@@ -210,8 +207,8 @@ public class GroceriesDbHelper extends SQLiteOpenHelper {
 
 
     /*Get currentListName*/
-    public String getCurrentListTableName(SQLiteDatabase db) {
-        return LIST_TABLE_NAME_part_1 + getListsCount(db);
+    public String getCurrentListTableName() {
+        return LIST_TABLE_NAME_part_1 + getListsCount();
     }
 
 
@@ -219,9 +216,9 @@ public class GroceriesDbHelper extends SQLiteOpenHelper {
     updates count of lists,
     sets it as active,
     updates LOG_table */
-    void createListTable(SQLiteDatabase db) {
+    void createListTable() {
         //Create int for new version
-        int newVersion = getListsCount(db) + 1;
+        int newVersion = getListsCount() + 1;
 
         //Create string for CREATE TABLE command
         String LIST_TABLE_CREATE_COMMAND = "CREATE TABLE " + LIST_TABLE_NAME_part_1 + newVersion +
@@ -236,10 +233,10 @@ public class GroceriesDbHelper extends SQLiteOpenHelper {
         db.execSQL(LIST_TABLE_CREATE_COMMAND);
 
         //Set new version of latest list table
-        setListsCount(db, newVersion);
+        setListsCount(newVersion);
 
         //Set latest list table to active state
-        setListActiveState(db, true);
+        setListActiveState(true);
 
         //Update LOG_table
         //Create contentValues var to store values of new list record of the LOG_TABLE
@@ -258,9 +255,9 @@ public class GroceriesDbHelper extends SQLiteOpenHelper {
     deactivates active field in values,
     unchecks all items in Item table
     updates LOG_table */
-    public String deleteListTable(SQLiteDatabase db) {
+    public String deleteListTable() {
         //Get current list version
-        int currentVersion = getListsCount(db);
+        int currentVersion = getListsCount();
 
         String currentListTableName = LIST_TABLE_NAME_part_1 + currentVersion;
 
@@ -278,10 +275,10 @@ public class GroceriesDbHelper extends SQLiteOpenHelper {
                     new String[]{currentListTableName});
 
             //Set new version of latest list table
-            setListsCount(db, currentVersion - 1);
+            setListsCount(currentVersion - 1);
 
             //Set latest list table to active state
-            setListActiveState(db, false);
+            setListActiveState(false);
 
             //Uncheck all items in Item table
             //Create contentValues var
@@ -314,10 +311,10 @@ public class GroceriesDbHelper extends SQLiteOpenHelper {
     * Update log table
     * update all
     * */
-    public boolean approveCurrentList(SQLiteDatabase db) {
+    public boolean approveCurrentList() {
 
         //Check status of current list
-        if (getListActiveState(db)) {
+        if (getListActiveState()) {
             //List is active
 
             //Uncheck all items in Item table
@@ -336,7 +333,7 @@ public class GroceriesDbHelper extends SQLiteOpenHelper {
             //Put new value to it
             contentValuesList.put(CHECKED_COLUMN, 1);
             //Update table
-            db.update(getCurrentListTableName(db), contentValuesList,
+            db.update(getCurrentListTableName(), contentValuesList,
                     CHECKED_COLUMN + "=?",
                     new String[]{"0"});
 
@@ -348,10 +345,10 @@ public class GroceriesDbHelper extends SQLiteOpenHelper {
             //update table
             db.update(LOG_TABLE_NAME, contentValuesLog,
                     NAME_COLUMN + "=?",
-                    new String[]{getCurrentListTableName(db)});
+                    new String[]{getCurrentListTableName()});
 
             //mark list as inactive
-            setListActiveState(db, false);
+            setListActiveState(false);
 
 
             //Update cursors
@@ -364,6 +361,14 @@ public class GroceriesDbHelper extends SQLiteOpenHelper {
         }
 
         return true;
+    }
+
+
+    /*Updates Items_table with saved items*/
+    public void populateItemsList() {
+
+
+
     }
 
 

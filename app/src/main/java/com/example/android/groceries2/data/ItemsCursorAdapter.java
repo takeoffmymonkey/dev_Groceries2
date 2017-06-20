@@ -136,17 +136,17 @@ public class ItemsCursorAdapter extends CursorAdapter {
                                             contentValuesListTable.put(PRICE_COLUMN, rowPriceInt);
 
                                             //Check if there activeListTable
-                                            if (!dbHelper.getListActiveState(db)) {
+                                            if (!dbHelper.getListActiveState()) {
                                                 //No active List table:
                                                 //Create active List table
-                                                dbHelper.createListTable(db);
+                                                dbHelper.createListTable();
                                                 //Insert new item into List table
-                                                db.insert(dbHelper.getCurrentListTableName(db),
+                                                db.insert(dbHelper.getCurrentListTableName(),
                                                         null, contentValuesListTable);
 
                                             } else {
                                                 //There is active table
-                                                db.insert(dbHelper.getCurrentListTableName(db),
+                                                db.insert(dbHelper.getCurrentListTableName(),
                                                         null, contentValuesListTable);
                                             }
 
@@ -211,7 +211,7 @@ public class ItemsCursorAdapter extends CursorAdapter {
 
                     //Remove item from List table:
                     //Get currentListTableName
-                    String currentListTableName = dbHelper.getCurrentListTableName(db);
+                    String currentListTableName = dbHelper.getCurrentListTableName();
                     db.delete(currentListTableName,
                             LIST_ITEM_COLUMN + "=?",
                             new String[]{Integer.toString(rowIdInt)});
@@ -225,7 +225,7 @@ public class ItemsCursorAdapter extends CursorAdapter {
                     if (listTableCursor.getCount() == 0) {
                         //List table is empty
                         //Delete the table
-                        dbHelper.deleteListTable(db);
+                        dbHelper.deleteListTable();
                     }
 
                     //Close the cursor
