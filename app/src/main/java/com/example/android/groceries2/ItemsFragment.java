@@ -16,6 +16,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.GridView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.example.android.groceries2.data.ItemsCursorAdapter;
@@ -38,6 +39,8 @@ public class ItemsFragment extends Fragment {
     //Create ItemsCursorAdapter link
     static ItemsCursorAdapter itemsCursorAdapter;
 
+    ProgressBar progressBar;
+
     //Required empty constructor
     public ItemsFragment() {
     }
@@ -48,9 +51,12 @@ public class ItemsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable final ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
 
-
         //Create the view object and inflate in with tab_items layout
         View itemsView = inflater.inflate(R.layout.tab_items, container, false);
+
+
+        progressBar = (ProgressBar) itemsView.findViewById(R.id.items_progress_bar);
+        progressBar.setVisibility(View.GONE);
 
         //Create floating action button for adding 1 item when list is empty
         FloatingActionButton fabAddInit = (FloatingActionButton)
@@ -136,43 +142,10 @@ public class ItemsFragment extends Fragment {
         switch (item.getItemId()) {
             // Respond to a click on the "Insert dummy data" menu option
             case R.id.settings_option_populate_list:
-                //TODO: 019 19 Jun 17 move this to dbHelper
-                //Get array of items' names from resources
-                String[] names = getResources().getStringArray(R.array.array_auto_name_list);
-                //Get array of items' measures from resources
-                int[] measures = getResources().getIntArray(R.array.array_auto_measure_list);
-                //Create array of items' prices
-                float[] prices = {
-                        78.95f, //Филе кур.
-                        7.45f, // Батон 450
-                        6.35f, // Хлебцы (Своя) 100
-                        5.4f, // Мария (Своя) 170
-                        16.99f, // Мария (Прем) 200
-                        33.95f, // Сыр диетич. 185
-                        35.99f, // Сыр топл. (Прем) 200
-                        8.85f, // Лактония 400
-                        10.46f, // Закваска (Фанни) 450
-                        17.7f, // Закваска (Ягот) 900
-                        29.95f, // Бананы
-                        9.89f, // Кабачки
-                        14.95f, // Огурцы
-                        12.69f, // Морковь
-                        10.45f, // Овсянка (Своя) 500
-                        20.6f, // Овсянка (Карап) 200
-                        20.69f, // Хлопья греч. (Сто) 400
-                        44.53f, // Хлопья греч. (Ново) 800
-                        9.95f, // Зубная щетка
-                        24.73f}; // Беруши
 
-                for (int i = 0; i < prices.length; i++) {
-                    ContentValues contentValues = new ContentValues();
-                    contentValues.put(NAME_COLUMN, names[i]);
-                    contentValues.put(PRICE_COLUMN, prices[i]);
-                    contentValues.put(MEASURE_COLUMN, measures[i] + 1);
-                    db.insert(ITEMS_TABLE_NAME, null, contentValues);
-                }
+                progressBar.setVisibility(View.VISIBLE);
 
-                refreshItemsCursor();
+                new ItemsBackgroundTasks().execute(0);
 
                 return true;
 
@@ -184,14 +157,11 @@ public class ItemsFragment extends Fragment {
 
             // Respond to a click on the "Delete all entries" menu option
             case R.id.settings_option_delete_all_items:
-
-
-                db.execSQL(ITEMS_TABLE_DROP_COMMAND);
-                db.execSQL(ITEMS_TABLE_CREATE_COMMAND);
+                progressBar.setVisibility(View.VISIBLE);
+                new ItemsBackgroundTasks().execute(1);
 
                 Toast.makeText(getActivity(), "All items successfully deleted!", Toast.LENGTH_SHORT)
                         .show();
-                refreshItemsCursor();
 
                 return true;
         }
@@ -200,6 +170,77 @@ public class ItemsFragment extends Fragment {
     }
 
 
+    class ItemsBackgroundTasks extends AsyncTask<Integer, Void, Boolean> {
+
+        //Actions to perform in main thread before background execusion
+        @Override
+        protected void onPreExecute() {
+        }
+
+        //Actions to perform on background thread
+        @Override
+        protected Boolean doInBackground(Integer... params) {
+            switch (params[0]) {
+
+                case 0: // Populate list
+                    //Get array of items' names from resources
+                    String[] names = getResources().getStringArray(R.array.array_auto_name_list);
+                    //Get array of items' measures from resources
+                    int[] measures = getResources().getIntArray(R.array.array_auto_measure_list);
+                    //Create array of items' prices
+                    float[] prices = {
+                            78.95f, //Филе кур.
+                            7.45f, // Батон 450
+                            6.35f, // Хлебцы (Своя) 100
+                            5.4f, // Мария (Своя) 170
+                            16.99f, // Мария (Прем) 200
+                            33.95f, // Сыр диетич. 185
+                            35.99f, // Сыр топл. (Прем) 200
+                            8.85f, // Лактония 400
+                            10.46f, // Закваска (Фанни) 450
+                            17.7f, // Закваска (Ягот) 900
+                            29.95f, // Бананы
+                            9.89f, // Кабачки
+                            14.95f, // Огурцы
+                            12.69f, // Морковь
+                            10.45f, // Овсянка (Своя) 500
+                            20.6f, // Овсянка (Карап) 200
+                            20.69f, // Хлопья греч. (Сто) 400
+                            44.53f, // Хлопья греч. (Ново) 800
+                            9.95f, // Зубная щетка
+                            24.73f}; // Беруши
+
+                    for (int i = 0; i < prices.length; i++) {
+                        ContentValues contentValues = new ContentValues();
+                        contentValues.put(NAME_COLUMN, names[i]);
+                        contentValues.put(PRICE_COLUMN, prices[i]);
+                        contentValues.put(MEASURE_COLUMN, measures[i] + 1);
+                        db.insert(ITEMS_TABLE_NAME, null, contentValues);
+                    }
+
+                    refreshItemsCursor();
+
+                    break;
+
+                case 1: // Delete list
+
+                    db.execSQL(ITEMS_TABLE_DROP_COMMAND);
+                    db.execSQL(ITEMS_TABLE_CREATE_COMMAND);
+                    refreshItemsCursor();
+                    break;
+            }
+            return true;
+        }
+
+        @Override
+        protected void onPostExecute(Boolean aBoolean) {
+            super.onPostExecute(aBoolean);
+            progressBar.setVisibility(View.GONE);
+        }
+    }
+
+
+    /*Refresh cursor using inner class*/
     public static void refreshItemsCursor() {
 
         class NewItemsCursor extends AsyncTask<Integer, Void, Cursor> {

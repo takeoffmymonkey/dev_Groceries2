@@ -10,6 +10,8 @@ import com.example.android.groceries2.ItemsFragment;
 import com.example.android.groceries2.ListFragment;
 import com.example.android.groceries2.LogFragment;
 import com.example.android.groceries2.R;
+
+import static com.example.android.groceries2.ItemsFragment.refreshItemsCursor;
 import static com.example.android.groceries2.MainActivity.db;
 
 
@@ -291,7 +293,7 @@ public class GroceriesDbHelper extends SQLiteOpenHelper {
                     new String[]{"1"});
 
             //Update cursor of ItemsFragment
-            ItemsFragment.refreshItemsCursor();
+            refreshItemsCursor();
 
             //Return success message
             return currentListTableName + "deleted";
@@ -354,7 +356,7 @@ public class GroceriesDbHelper extends SQLiteOpenHelper {
             //Update cursors
             ListFragment.refreshListCursor();
             LogFragment.refreshLogCursor();
-            ItemsFragment.refreshItemsCursor();
+            refreshItemsCursor();
 
             //Inform user
             Toast.makeText(context, "List marked as complete", Toast.LENGTH_SHORT).show();
@@ -362,14 +364,5 @@ public class GroceriesDbHelper extends SQLiteOpenHelper {
 
         return true;
     }
-
-
-    /*Updates Items_table with saved items*/
-    public void populateItemsList() {
-
-
-
-    }
-
 
 }
