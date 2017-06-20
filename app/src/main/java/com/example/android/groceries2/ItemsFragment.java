@@ -22,9 +22,7 @@ import android.widget.Toast;
 
 import com.example.android.groceries2.data.ItemsCursorAdapter;
 
-import static com.example.android.groceries2.ItemsFragment.refreshItemsCursor;
 import static com.example.android.groceries2.MainActivity.db;
-import static com.example.android.groceries2.data.GroceriesDbHelper.CHECKED_COLUMN;
 import static com.example.android.groceries2.data.GroceriesDbHelper.ITEMS_TABLE_CREATE_COMMAND;
 import static com.example.android.groceries2.data.GroceriesDbHelper.ITEMS_TABLE_DROP_COMMAND;
 import static com.example.android.groceries2.data.GroceriesDbHelper.ITEMS_TABLE_NAME;
@@ -176,15 +174,7 @@ public class ItemsFragment extends Fragment {
                     db.insert(ITEMS_TABLE_NAME, null, contentValues);
                 }
 
-                Cursor cursor = db.query(ITEMS_TABLE_NAME, null, null, null, null, null, null);
-
-                itemsCursorAdapter.changeCursor(cursor);
-
-                return true;
-            // Respond to a click on the "Delete all entries" menu option
-
-            case R.id.settings_option_check_item:
-                new UpdateItem().execute(1);
+                refreshItemsCursor();
 
                 return true;
 
@@ -194,6 +184,7 @@ public class ItemsFragment extends Fragment {
                 startActivity(intent);
                 return true;
 
+            // Respond to a click on the "Delete all entries" menu option
             case R.id.settings_option_delete_all_items:
 
 
@@ -202,9 +193,8 @@ public class ItemsFragment extends Fragment {
 
                 Toast.makeText(getActivity(), "All items successfully deleted!", Toast.LENGTH_SHORT)
                         .show();
-                cursor = db.query(ITEMS_TABLE_NAME, null, null, null, null, null, null);
+                refreshItemsCursor();
 
-                itemsCursorAdapter.changeCursor(cursor);
                 return true;
         }
 
@@ -212,44 +202,31 @@ public class ItemsFragment extends Fragment {
     }
 
 
-    private class UpdateItem extends AsyncTask<Integer, Void, Boolean> {
+    public static void refreshItemsCursor() {
 
-        //Actions to perform in main thread before background execusion
-        @Override
-        protected void onPreExecute() {
+        class NewItemsCursor extends AsyncTask<Integer, Void, Cursor> {
 
-
-        }
-
-        //Actions to perform on background thread
-        @Override
-        protected Boolean doInBackground(Integer... params) {
-            int i = params[0];
-
-            ContentValues values = new ContentValues();
-            values.put(CHECKED_COLUMN, 1);
-            try {
-                db.update(ITEMS_TABLE_NAME, values, "_id = ?", new String[]{Integer.toString(i)});
-                return true;
-            } catch (SQLiteException e) {
-                return false;
+            //Actions to perform in main thread before background execusion
+            @Override
+            protected void onPreExecute() {
             }
 
+            //Actions to perform on background thread
+            @Override
+            protected Cursor doInBackground(Integer... params) {
+                Cursor cursor = db.query(ITEMS_TABLE_NAME, null, null, null, null, null, null);
+                return cursor;
+
+            }
+
+            @Override
+            protected void onPostExecute(Cursor cursor) {
+                itemsCursorAdapter.changeCursor(cursor);
+            }
         }
 
+        new NewItemsCursor().execute(1);
 
-        @Override
-        protected void onPostExecute(Boolean success) {
-            if (success) {
-                refreshItemsCursor();
-            } else Toast.makeText(getActivity(), "SQL error", Toast.LENGTH_SHORT).show();
-        }
-    }
-
-
-    public static void refreshItemsCursor() {
-        Cursor cursor = db.query(ITEMS_TABLE_NAME, null, null, null, null, null, null);
-        itemsCursorAdapter.changeCursor(cursor);
     }
 
 

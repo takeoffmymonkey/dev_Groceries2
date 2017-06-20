@@ -2,6 +2,7 @@ package com.example.android.groceries2;
 
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
@@ -118,18 +119,37 @@ public class ListFragment extends Fragment {
 
     public static void refreshListCursor() {
 
-        //check if there is an active list table
-        if (!dbHelper.getListActiveState(db)) {
-            //no list is active
-            //Set cursor to the init table
-            Cursor cursor = db.query("List_0", null, null, null, null, null, null);
-            listCursorAdapter.changeCursor(cursor);
-        } else {
-            //There is an acitive list table
-            Cursor cursor = db.query(dbHelper.getCurrentListTableName(db), null, null, null, null, null, null);
-            listCursorAdapter.changeCursor(cursor);
+        class NewListCursor extends AsyncTask<Integer, Void, Cursor> {
+
+            //Actions to perform in main thread before background execusion
+            @Override
+            protected void onPreExecute() {
+            }
+
+            //Actions to perform on background thread
+            @Override
+            protected Cursor doInBackground(Integer... params) {
+                //check if there is an active list table
+                if (!dbHelper.getListActiveState(db)) {
+                    //no list is active
+                    //Set cursor to the init table
+                    Cursor cursor = db.query("List_0", null, null, null, null, null, null);
+                    return cursor;
+                } else {
+                    //There is an acitive list table
+                    Cursor cursor = db.query(dbHelper.getCurrentListTableName(db), null, null, null, null, null, null);
+                    return cursor;
+                }
+
+            }
+
+            @Override
+            protected void onPostExecute(Cursor cursor) {
+                listCursorAdapter.changeCursor(cursor);
+            }
         }
 
+        new NewListCursor().execute(1);
 
     }
 

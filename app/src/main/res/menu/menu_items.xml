@@ -15,11 +15,6 @@
         app:showAsAction="never" />
 
     <item
-        android:id="@+id/settings_option_check_item"
-        android:title="Check 1st item"
-        app:showAsAction="never" />
-
-    <item
         android:id="@+id/settings_option_add_item"
         android:title="Add item"
         app:showAsAction="never" />

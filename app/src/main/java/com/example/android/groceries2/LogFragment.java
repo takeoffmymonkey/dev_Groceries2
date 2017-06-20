@@ -2,6 +2,7 @@ package com.example.android.groceries2;
 
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -94,8 +95,30 @@ public class LogFragment extends Fragment {
 
 
     public static void refreshLogCursor() {
-        Cursor cursor = db.query(LOG_TABLE_NAME, null, null, null, null, null, null);
-        logCursorAdapter.changeCursor(cursor);
+
+        class NewLogCursor extends AsyncTask<Integer, Void, Cursor> {
+
+            //Actions to perform in main thread before background execusion
+            @Override
+            protected void onPreExecute() {
+            }
+
+            //Actions to perform on background thread
+            @Override
+            protected Cursor doInBackground(Integer... params) {
+                Cursor cursor = db.query(LOG_TABLE_NAME, null, null, null, null, null, null);
+                return cursor;
+
+            }
+
+            @Override
+            protected void onPostExecute(Cursor cursor) {
+                logCursorAdapter.changeCursor(cursor);
+            }
+        }
+
+        new NewLogCursor().execute(1);
+
     }
 
 }
