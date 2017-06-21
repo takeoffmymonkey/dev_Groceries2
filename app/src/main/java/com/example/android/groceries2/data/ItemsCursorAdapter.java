@@ -87,7 +87,7 @@ public class ItemsCursorAdapter extends CursorAdapter {
 
                 //Check if the row was checked
                 if (freshItemsTableCursor.getInt(freshItemsTableCursor.getColumnIndexOrThrow(CHECKED_COLUMN)) == 0) {
-                     //Row wasn't checked
+                    //Row wasn't checked
                     //Create alert dialog:
                     //Create alert dialog object
                     AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
@@ -230,7 +230,7 @@ public class ItemsCursorAdapter extends CursorAdapter {
                     if (listTableCursor.getCount() == 0) {
                         //List table is empty
                         //Delete the table
-                        dbHelper.deleteListTable();
+                        dbHelper.deleteListTable(dbHelper.getListsCount());
                     }
 
                     //Close the cursor

@@ -43,14 +43,19 @@ public class LogCursorAdapter extends CursorAdapter {
     @Override
     public void bindView(final View view, Context context, Cursor cursor) {
 
-        final String rowId = cursor.getString(cursor.getColumnIndexOrThrow(NAME_COLUMN));
+        final String listName = cursor.getString(cursor.getColumnIndexOrThrow(NAME_COLUMN));
+
+        String[] tokens = listName.split("_");
+        final int listVersion = Integer.parseInt(tokens[1]);
 
         view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //Create object for intent
                 Intent intent = new Intent(view.getContext(), ListActivity.class);
-                intent.putExtra("listName", rowId);
+                intent.putExtra("listName", listName);
+                intent.putExtra("listVersion", listVersion);
+
                 //Create editor activity
                 view.getContext().startActivity(intent);
             }

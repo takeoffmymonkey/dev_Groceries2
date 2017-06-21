@@ -265,27 +265,25 @@ public class GroceriesDbHelper extends SQLiteOpenHelper {
     deactivates active field in values,
     unchecks all items in Item table
     updates LOG_table */
-    public String deleteListTable() {
-        //Get current list version
-        int currentVersion = getListsCount();
+    public String deleteListTable(int version) {
 
-        String currentListTableName = LIST_TABLE_NAME_part_1 + currentVersion;
+        String listTableName = LIST_TABLE_NAME_part_1 + version;
 
         //Should be at least 1 to delete
-        if (currentVersion > 0) {
+        if (version > 0) {
 
             //Create string for DROP TABLE command
-            String LIST_TABLE_DROP_COMMAND = "DROP TABLE " + currentListTableName + ";";
+            String LIST_TABLE_DROP_COMMAND = "DROP TABLE " + listTableName + ";";
 
             //Drop current table
             db.execSQL(LIST_TABLE_DROP_COMMAND);
 
             //Delete current list from LOG_table
             db.delete(LOG_TABLE_NAME, NAME_COLUMN + "=?",
-                    new String[]{currentListTableName});
+                    new String[]{listTableName});
 
             //Set new version of latest list table
-            setListsCount(currentVersion - 1);
+            //setListsCount(getListsCount() - 1);
 
             //Set latest list table to active state
             setListActiveState(false);
@@ -304,7 +302,7 @@ public class GroceriesDbHelper extends SQLiteOpenHelper {
             refreshItemsCursor();
 
             //Return success message
-            return currentListTableName + "deleted";
+            return listTableName + "deleted";
 
         } else {
             //Return failure message

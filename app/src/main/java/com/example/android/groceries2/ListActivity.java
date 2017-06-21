@@ -1,6 +1,8 @@
 package com.example.android.groceries2;
 
 
+import android.app.Activity;
+import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -12,6 +14,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.android.groceries2.data.ListCursorAdapter;
 import com.example.android.groceries2.data.ListLogCursorAdapter;
@@ -30,6 +33,7 @@ import static com.example.android.groceries2.data.GroceriesDbHelper.LOG_TABLE_NA
 import static com.example.android.groceries2.data.GroceriesDbHelper.LOG_TOTAL_COLUMN;
 import static com.example.android.groceries2.data.GroceriesDbHelper.MEASURE_COLUMN;
 import static com.example.android.groceries2.data.GroceriesDbHelper.NAME_COLUMN;
+import static java.security.AccessController.getContext;
 
 
 /**
@@ -61,9 +65,12 @@ public class ListActivity extends AppCompatActivity {
                 findViewById(R.id.fab_delete_list);
 
 
-        //Get listName from intent
+        //Get listNameString from intent
         String listName;
+
+
         listName = getIntent().getStringExtra("listName");
+        final int listVersion = getIntent().getIntExtra("listVersion", 0);
 
         //Get data from log table
         Cursor cursorLog = db.query(LOG_TABLE_NAME,
@@ -125,6 +132,17 @@ public class ListActivity extends AppCompatActivity {
 
         //Refresh log cursor so there is no list if pressed back
         LogFragment.refreshLogCursor();
+
+
+        fabDeleteList.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dbHelper.deleteListTable(listVersion);
+                Intent intent = new Intent(ListActivity.this, MainActivity.class);
+                startActivity(intent);
+                Toast.makeText(ListActivity.this, "List deleted", Toast.LENGTH_SHORT).show();
+            }
+        });
 
     }
 
