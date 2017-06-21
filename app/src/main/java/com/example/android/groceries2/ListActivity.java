@@ -66,10 +66,7 @@ public class ListActivity extends AppCompatActivity {
 
 
         //Get listNameString from intent
-        String listName;
-
-
-        listName = getIntent().getStringExtra("listName");
+        final String listName = getIntent().getStringExtra("listName");
         final int listVersion = getIntent().getIntExtra("listVersion", 0);
 
         //Get data from log table
@@ -140,7 +137,7 @@ public class ListActivity extends AppCompatActivity {
                 dbHelper.deleteListTable(listVersion);
                 Intent intent = new Intent(ListActivity.this, MainActivity.class);
                 startActivity(intent);
-                Toast.makeText(ListActivity.this, "List deleted", Toast.LENGTH_SHORT).show();
+                Toast.makeText(ListActivity.this, listName + " deleted", Toast.LENGTH_SHORT).show();
             }
         });
 

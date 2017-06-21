@@ -192,6 +192,8 @@ public class GroceriesDbHelper extends SQLiteOpenHelper {
             Log.e("WARNING: ", "Wrong argument to set in setLatestListVersion: " + newCount);
         }
 
+        Log.e("WARNING: ", "Set version: " + newCount + "Get version: " + getLatestListVersion());
+
     }
 
 
@@ -289,6 +291,12 @@ public class GroceriesDbHelper extends SQLiteOpenHelper {
             //Check if this is the latest list
             if (version == getLatestListVersion()) {
                 //This is the latest list
+
+                //Check if previous version wasn't delete
+
+
+
+
                 //Set new version of latest list table
                 setLatestListVersion(getLatestListVersion() - 1);
 
@@ -305,16 +313,12 @@ public class GroceriesDbHelper extends SQLiteOpenHelper {
                         CHECKED_COLUMN + "=?",
                         new String[]{"1"});
 
-                //Update cursor of ItemsFragment
-                refreshItemsCursor();
-
-                //Set new version of latest list table
-                setLatestListVersion(getLatestListVersion() - 1);
-
-                //Set latest list table to active state
-                setLatestListActiveState(false);
-
             }
+
+            //Update cursors
+            ListFragment.refreshListCursor();
+            LogFragment.refreshLogCursor();
+            ItemsFragment.refreshItemsCursor();
 
             //Return success message
             return listTableName + "deleted";
@@ -377,7 +381,7 @@ public class GroceriesDbHelper extends SQLiteOpenHelper {
             //Update cursors
             ListFragment.refreshListCursor();
             LogFragment.refreshLogCursor();
-            refreshItemsCursor();
+            ItemsFragment.refreshItemsCursor();
 
         }
 
