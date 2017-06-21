@@ -93,13 +93,16 @@ public class GroceriesDbHelper extends SQLiteOpenHelper {
     /*LOG table*/
     public static final String LOG_TABLE_NAME = "LOG_table";
     //creation date column
-    static final String LOG_DATE_CREATED_COLUMN = "created";
+    static public final String LOG_DATE_CREATED_COLUMN = "created";
     //completion date column
-    static final String LOG_DATE_COMPLETE_COLUMN = "complete";
+    static public final String LOG_DATE_COMPLETE_COLUMN = "complete";
+    //completion date column
+    static public final String LOG_TOTAL_COLUMN = "total";
     //table create command
-    public static final String LOG_TABLE_CREATE_COMMAND = "CREATE TABLE " + LOG_TABLE_NAME + " (" +
+    static public final String LOG_TABLE_CREATE_COMMAND = "CREATE TABLE " + LOG_TABLE_NAME + " (" +
             ID_COLUMN + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
             NAME_COLUMN + " TEXT NOT NULL UNIQUE, " +
+            LOG_TOTAL_COLUMN + " REAL DEFAULT 0, " +
             LOG_DATE_CREATED_COLUMN + " INTEGER NOT NULL UNIQUE, " +
             LOG_DATE_COMPLETE_COLUMN + " INTEGER UNIQUE);";
     //Create string for DROP TABLE command

@@ -16,6 +16,8 @@ import com.example.android.groceries2.R;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import static android.R.id.list;
+import static com.example.android.groceries2.data.GroceriesDbHelper.ID_COLUMN;
 import static com.example.android.groceries2.data.GroceriesDbHelper.LOG_DATE_COMPLETE_COLUMN;
 import static com.example.android.groceries2.data.GroceriesDbHelper.LOG_DATE_CREATED_COLUMN;
 import static com.example.android.groceries2.data.GroceriesDbHelper.NAME_COLUMN;
@@ -41,11 +43,14 @@ public class LogCursorAdapter extends CursorAdapter {
     @Override
     public void bindView(final View view, Context context, Cursor cursor) {
 
+        final String rowId = cursor.getString(cursor.getColumnIndexOrThrow(NAME_COLUMN));
+
         view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //Create object for intent
                 Intent intent = new Intent(view.getContext(), ListActivity.class);
+                intent.putExtra("listName", rowId);
                 //Create editor activity
                 view.getContext().startActivity(intent);
             }

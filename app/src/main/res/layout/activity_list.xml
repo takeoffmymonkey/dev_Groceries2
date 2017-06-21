@@ -90,10 +90,17 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:layout_marginLeft="4dp"
-        android:layout_marginRight="4dp"
+        android:layout_margin="4dp"
         android:background="@android:color/darker_gray" />
 
+
+    <ListView
+        android:id="@+id/list_in_activity_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+
+    </ListView>
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab_delete_list"
