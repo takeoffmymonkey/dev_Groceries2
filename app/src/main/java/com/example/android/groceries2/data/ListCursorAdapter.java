@@ -160,9 +160,7 @@ public class ListCursorAdapter extends CursorAdapter {
 
                     //Update table
                     contentValues.put(CHECKED_COLUMN, 0);
-                    db.update(dbHelper.getCurrentListTableName(), contentValues,
-                            ID_COLUMN + "=?",
-                            new String[]{Integer.toString(rowIdInt)});
+
                 }
 
                 //Close cursor

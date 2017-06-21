@@ -8,15 +8,20 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.TextView;
+
+import com.example.android.groceries2.data.ListCursorAdapter;
+import com.example.android.groceries2.data.ListLogCursorAdapter;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import static android.R.id.list;
 import static com.example.android.groceries2.MainActivity.db;
+import static com.example.android.groceries2.MainActivity.dbHelper;
 import static com.example.android.groceries2.data.GroceriesDbHelper.ID_COLUMN;
 import static com.example.android.groceries2.data.GroceriesDbHelper.ITEMS_TABLE_NAME;
 import static com.example.android.groceries2.data.GroceriesDbHelper.LOG_DATE_COMPLETE_COLUMN;
@@ -106,6 +111,23 @@ public class ListActivity extends AppCompatActivity {
 
         //Close cursor
         cursorLog.close();
+
+
+        //Create cursor for adapter
+        Cursor cursor = db.query(listName, null,
+                null, null, null, null, null);
+
+        Log.e("WARNING: ", listName);
+        Log.e("WARNING: ", Integer.toString(cursor.getCount()));
+
+        //Create cursor adapter
+        ListLogCursorAdapter cursorAdapter = new ListLogCursorAdapter(this, cursor, 0);
+        //Set adapter to list view
+        listView.setAdapter(cursorAdapter);
+
+
+        //Refresh log cursor so there is no list if pressed back
+        LogFragment.refreshLogCursor();
 
     }
 
