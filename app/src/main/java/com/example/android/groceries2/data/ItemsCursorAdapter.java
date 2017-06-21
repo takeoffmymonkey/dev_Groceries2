@@ -7,7 +7,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Color;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,14 +19,12 @@ import com.example.android.groceries2.ItemsFragment;
 import com.example.android.groceries2.ListFragment;
 import com.example.android.groceries2.R;
 
-import static android.os.Build.ID;
 import static com.example.android.groceries2.MainActivity.db;
 import static com.example.android.groceries2.MainActivity.dbHelper;
 import static com.example.android.groceries2.data.GroceriesDbHelper.CHECKED_COLUMN;
 import static com.example.android.groceries2.data.GroceriesDbHelper.ITEMS_TABLE_NAME;
 import static com.example.android.groceries2.data.GroceriesDbHelper.LIST_AMOUNT_COLUMN;
 import static com.example.android.groceries2.data.GroceriesDbHelper.LIST_ITEM_COLUMN;
-import static com.example.android.groceries2.data.GroceriesDbHelper.MEASURE_COLUMN;
 import static com.example.android.groceries2.data.GroceriesDbHelper.NAME_COLUMN;
 import static com.example.android.groceries2.data.GroceriesDbHelper.ID_COLUMN;
 import static com.example.android.groceries2.data.GroceriesDbHelper.PRICE_COLUMN;
@@ -139,17 +136,17 @@ public class ItemsCursorAdapter extends CursorAdapter {
                                             contentValuesListTable.put(PRICE_COLUMN, rowPriceInt);
 
                                             //Check if there activeListTable
-                                            if (!dbHelper.getListActiveState()) {
+                                            if (!dbHelper.getLatestListActiveState()) {
                                                 //No active List table:
                                                 //Create active List table
                                                 dbHelper.createListTable();
                                                 //Insert new item into List table
-                                                db.insert(dbHelper.getCurrentListTableName(),
+                                                db.insert(dbHelper.getLatestListTableName(),
                                                         null, contentValuesListTable);
 
                                             } else {
                                                 //There is active table
-                                                db.insert(dbHelper.getCurrentListTableName(),
+                                                db.insert(dbHelper.getLatestListTableName(),
                                                         null, contentValuesListTable);
                                             }
 
@@ -216,7 +213,7 @@ public class ItemsCursorAdapter extends CursorAdapter {
 
                     //Remove item from List table:
                     //Get currentListTableName
-                    String currentListTableName = dbHelper.getCurrentListTableName();
+                    String currentListTableName = dbHelper.getLatestListTableName();
                     db.delete(currentListTableName,
                             LIST_ITEM_COLUMN + "=?",
                             new String[]{Integer.toString(rowIdInt)});
@@ -230,7 +227,7 @@ public class ItemsCursorAdapter extends CursorAdapter {
                     if (listTableCursor.getCount() == 0) {
                         //List table is empty
                         //Delete the table
-                        dbHelper.deleteListTable(dbHelper.getListsCount());
+                        dbHelper.deleteListTable(dbHelper.getLatestListVersion());
                     }
 
                     //Close the cursor

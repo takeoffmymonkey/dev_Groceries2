@@ -4,8 +4,6 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.graphics.Color;
-import android.os.AsyncTask;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,7 +15,6 @@ import com.example.android.groceries2.ListFragment;
 import com.example.android.groceries2.R;
 
 import java.text.DecimalFormat;
-import java.util.Set;
 
 import static com.example.android.groceries2.MainActivity.db;
 import static com.example.android.groceries2.MainActivity.dbHelper;
@@ -129,7 +126,7 @@ public class ListCursorAdapter extends CursorAdapter {
             @Override
             public void onClick(View v) {
 
-                final Cursor freshListTableCursor = db.query(dbHelper.getCurrentListTableName(),
+                final Cursor freshListTableCursor = db.query(dbHelper.getLatestListTableName(),
                         new String[]{CHECKED_COLUMN},
                         ID_COLUMN + "=?", new String[]{Integer.toString(rowIdInt)},
                         null, null, null);
@@ -148,7 +145,7 @@ public class ListCursorAdapter extends CursorAdapter {
 
                     //Update table
                     contentValues.put(CHECKED_COLUMN, 1);
-                    db.update(dbHelper.getCurrentListTableName(), contentValues,
+                    db.update(dbHelper.getLatestListTableName(), contentValues,
                             ID_COLUMN + "=?",
                             new String[]{Integer.toString(rowIdInt)});
 

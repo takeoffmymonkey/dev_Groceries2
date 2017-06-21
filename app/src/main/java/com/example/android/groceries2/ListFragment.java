@@ -1,7 +1,6 @@
 package com.example.android.groceries2;
 
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -19,10 +18,8 @@ import android.widget.Toast;
 import com.example.android.groceries2.data.ListCursorAdapter;
 
 
-import static com.example.android.groceries2.ItemsFragment.itemsCursorAdapter;
 import static com.example.android.groceries2.MainActivity.db;
 import static com.example.android.groceries2.MainActivity.dbHelper;
-import static com.example.android.groceries2.data.GroceriesDbHelper.ITEMS_TABLE_NAME;
 
 
 /**
@@ -70,7 +67,7 @@ public class ListFragment extends Fragment {
 
         listListView.setEmptyView(emptyView);
 
-        Cursor cursor = db.query(dbHelper.getCurrentListTableName(), null,
+        Cursor cursor = db.query(dbHelper.getLatestListTableName(), null,
                 null, null, null, null, null);
 
         listCursorAdapter = new ListCursorAdapter(getContext(), cursor, 0);
@@ -109,7 +106,7 @@ public class ListFragment extends Fragment {
                 return true;
             // Respond to a click on the "Delete all entries" menu option
             case R.id.settings_option_delete_list:
-                Toast.makeText(getContext(), dbHelper.deleteListTable(dbHelper.getListsCount()), Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), dbHelper.deleteListTable(dbHelper.getLatestListVersion()), Toast.LENGTH_SHORT).show();
                 refreshListCursor();
                 ListFragment.refreshListCursor();
                 LogFragment.refreshLogCursor();
@@ -132,14 +129,14 @@ public class ListFragment extends Fragment {
             @Override
             protected Cursor doInBackground(Integer... params) {
                 //check if there is an active list table
-                if (!dbHelper.getListActiveState()) {
+                if (!dbHelper.getLatestListActiveState()) {
                     //no list is active
                     //Set cursor to the init table
                     Cursor cursor = db.query("List_0", null, null, null, null, null, null);
                     return cursor;
                 } else {
                     //There is an acitive list table
-                    Cursor cursor = db.query(dbHelper.getCurrentListTableName(), null, null, null, null, null, null);
+                    Cursor cursor = db.query(dbHelper.getLatestListTableName(), null, null, null, null, null, null);
                     return cursor;
                 }
 
