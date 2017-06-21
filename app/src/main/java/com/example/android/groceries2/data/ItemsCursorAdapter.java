@@ -125,8 +125,8 @@ public class ItemsCursorAdapter extends CursorAdapter {
                                             //Prepare new values for List table
                                             //Read the value (amount) of the dialog
                                             // TODO: 016 16 Jun 17 invalid int bug 
-                                            int amount = Integer
-                                                    .parseInt(editNumber.getText().toString());
+                                            float amount = Float
+                                                    .parseFloat(editNumber.getText().toString());
 
                                             //Create contentValuesListTable var
                                             ContentValues contentValuesListTable

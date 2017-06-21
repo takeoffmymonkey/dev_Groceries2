@@ -117,9 +117,6 @@ public class ListActivity extends AppCompatActivity {
         Cursor cursor = db.query(listName, null,
                 null, null, null, null, null);
 
-        Log.e("WARNING: ", listName);
-        Log.e("WARNING: ", Integer.toString(cursor.getCount()));
-
         //Create cursor adapter
         ListLogCursorAdapter cursorAdapter = new ListLogCursorAdapter(this, cursor, 0);
         //Set adapter to list view
