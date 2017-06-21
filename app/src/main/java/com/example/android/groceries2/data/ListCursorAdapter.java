@@ -1,7 +1,9 @@
 package com.example.android.groceries2.data;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -11,11 +13,15 @@ import android.widget.CheckBox;
 import android.widget.CursorAdapter;
 import android.widget.TextView;
 
+import com.example.android.groceries2.ListFragment;
 import com.example.android.groceries2.R;
 
 import java.text.DecimalFormat;
+import java.util.Set;
 
 import static com.example.android.groceries2.MainActivity.db;
+import static com.example.android.groceries2.MainActivity.dbHelper;
+import static com.example.android.groceries2.data.GroceriesDbHelper.CHECKED_COLUMN;
 import static com.example.android.groceries2.data.GroceriesDbHelper.ID_COLUMN;
 import static com.example.android.groceries2.data.GroceriesDbHelper.ITEMS_TABLE_NAME;
 import static com.example.android.groceries2.data.GroceriesDbHelper.LIST_AMOUNT_COLUMN;
@@ -44,7 +50,7 @@ public class ListCursorAdapter extends CursorAdapter {
 
     //This method binds data from cursors' row to the given item layout.
     @Override
-    public void bindView(View view, Context context, Cursor cursor) {
+    public void bindView(final View view, Context context, Cursor cursor) {
 
         //Get LIST_ITEM_COLUMN value of the item in List table
         int itemCode = cursor.getInt(cursor.getColumnIndexOrThrow(LIST_ITEM_COLUMN));
@@ -107,6 +113,65 @@ public class ListCursorAdapter extends CursorAdapter {
         DecimalFormat decimalFormat = new DecimalFormat("#.##");
         //Set itemPriceTextView to the product of item's amount and price
         itemPriceTextView.setText("~" + decimalFormat.format(itemPrice * itemAmount) + " грн");
+
+
+        //Get ID_COLUMN of current row in int
+        final int rowIdInt = cursor.getInt(cursor.getColumnIndexOrThrow(ID_COLUMN));
+
+        //Set color of the view (according to CHECKED_COLUMN state of the row)
+        if (cursor.getInt(cursor.getColumnIndexOrThrow(CHECKED_COLUMN)) == 1)
+            view.setBackgroundColor(Color.GREEN);
+        else view.setBackgroundColor(Color.WHITE);
+
+
+        //Set onClickListener
+        view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                final Cursor freshListTableCursor = db.query(dbHelper.getCurrentListTableName(),
+                        new String[]{CHECKED_COLUMN},
+                        ID_COLUMN + "=?", new String[]{Integer.toString(rowIdInt)},
+                        null, null, null);
+
+                //Move cursor to 1st row
+                freshListTableCursor.moveToFirst();
+
+                //Create ContentValues
+                ContentValues contentValues = new ContentValues();
+
+                //Check if the row was checked
+                if (freshListTableCursor.getInt(freshListTableCursor.getColumnIndexOrThrow(CHECKED_COLUMN)) == 0) {
+                    //Row wasn't checked
+                    //Set color
+                    view.setBackgroundColor(Color.GREEN);
+
+                    //Update table
+                    contentValues.put(CHECKED_COLUMN, 1);
+                    db.update(dbHelper.getCurrentListTableName(), contentValues,
+                            ID_COLUMN + "=?",
+                            new String[]{Integer.toString(rowIdInt)});
+
+
+                } else {
+                    //Row was checked
+                    //Set color
+                    view.setBackgroundColor(Color.WHITE);
+
+                    //Update table
+                    contentValues.put(CHECKED_COLUMN, 0);
+                    db.update(dbHelper.getCurrentListTableName(), contentValues,
+                            ID_COLUMN + "=?",
+                            new String[]{Integer.toString(rowIdInt)});
+                }
+
+                //Close cursor
+                freshListTableCursor.close();
+
+                //Update cursor
+                ListFragment.refreshListCursor();
+            }
+        });
 
     }
 }
