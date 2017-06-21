@@ -6,10 +6,13 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.widget.Toast;
+
 import com.example.android.groceries2.ItemsFragment;
 import com.example.android.groceries2.ListFragment;
 import com.example.android.groceries2.LogFragment;
 import com.example.android.groceries2.R;
+
+import java.util.Set;
 
 import static com.example.android.groceries2.ItemsFragment.refreshItemsCursor;
 import static com.example.android.groceries2.MainActivity.db;
@@ -94,11 +97,13 @@ public class GroceriesDbHelper extends SQLiteOpenHelper {
     //completion date column
     static final String LOG_DATE_COMPLETE_COLUMN = "complete";
     //table create command
-    private static final String LOG_TABLE_CREATE_COMMAND = "CREATE TABLE " + LOG_TABLE_NAME + " (" +
+    public static final String LOG_TABLE_CREATE_COMMAND = "CREATE TABLE " + LOG_TABLE_NAME + " (" +
             ID_COLUMN + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
             NAME_COLUMN + " TEXT NOT NULL UNIQUE, " +
             LOG_DATE_CREATED_COLUMN + " INTEGER NOT NULL UNIQUE, " +
             LOG_DATE_COMPLETE_COLUMN + " INTEGER UNIQUE);";
+    //Create string for DROP TABLE command
+    public static final String LOG_TABLE_DROP_COMMAND = "DROP TABLE " + LOG_TABLE_NAME + ";";
 
 
     /*LIST table*/
@@ -358,11 +363,54 @@ public class GroceriesDbHelper extends SQLiteOpenHelper {
             LogFragment.refreshLogCursor();
             refreshItemsCursor();
 
-            //Inform user
-            Toast.makeText(context, "List marked as complete", Toast.LENGTH_SHORT).show();
         }
 
         return true;
     }
 
+
+    /*Deletes all items and lists:
+    * Drop items table
+    * Create items table
+    * Refresh items adapter
+    * Drop log table
+    * Create log table
+    * Delete all lists, except list_0
+    * Set list active to false
+    * Set current list to 0
+    * Refresh list adapter
+    *
+    * */
+    public void deleteAllItemsAndLists() {
+
+        //Drop items table
+        db.execSQL(ITEMS_TABLE_DROP_COMMAND);
+        //Create items table
+        db.execSQL(ITEMS_TABLE_CREATE_COMMAND);
+        //Refresh items adapter
+        ItemsFragment.refreshItemsCursor();
+
+        //Drop log table
+        db.execSQL(LOG_TABLE_DROP_COMMAND);
+        //Create log table
+        db.execSQL(LOG_TABLE_CREATE_COMMAND);
+
+
+        //Delete all lists, except list_0
+        //Get current number of lists
+        int count = getListsCount();
+        //Delete all
+        for (int i = 1; i <= count; i++) {
+            db.execSQL("DROP TABLE " + "List_" + i + ";");
+        }
+
+        //Set current list to 0
+        setListsCount(0);
+        //Set list active to false
+        setListActiveState(false);
+        //Refresh list adapter
+        ListFragment.refreshListCursor();
+
+
+    }
 }

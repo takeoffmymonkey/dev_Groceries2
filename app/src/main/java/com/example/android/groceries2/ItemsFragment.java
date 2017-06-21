@@ -1,8 +1,11 @@
 package com.example.android.groceries2;
 
+import android.app.AlertDialog;
 import android.content.ContentValues;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -21,10 +24,16 @@ import android.widget.Toast;
 
 import com.example.android.groceries2.data.ItemsCursorAdapter;
 
+import static android.webkit.ConsoleMessage.MessageLevel.LOG;
 import static com.example.android.groceries2.MainActivity.db;
+import static com.example.android.groceries2.MainActivity.dbHelper;
+import static com.example.android.groceries2.data.GroceriesDbHelper.CHECKED_COLUMN;
+import static com.example.android.groceries2.data.GroceriesDbHelper.ID_COLUMN;
 import static com.example.android.groceries2.data.GroceriesDbHelper.ITEMS_TABLE_CREATE_COMMAND;
 import static com.example.android.groceries2.data.GroceriesDbHelper.ITEMS_TABLE_DROP_COMMAND;
 import static com.example.android.groceries2.data.GroceriesDbHelper.ITEMS_TABLE_NAME;
+import static com.example.android.groceries2.data.GroceriesDbHelper.LOG_TABLE_CREATE_COMMAND;
+import static com.example.android.groceries2.data.GroceriesDbHelper.LOG_TABLE_DROP_COMMAND;
 import static com.example.android.groceries2.data.GroceriesDbHelper.MEASURE_COLUMN;
 import static com.example.android.groceries2.data.GroceriesDbHelper.NAME_COLUMN;
 import static com.example.android.groceries2.data.GroceriesDbHelper.PRICE_COLUMN;
@@ -170,11 +179,59 @@ public class ItemsFragment extends Fragment {
 
             // Respond to a click on the "Delete all entries" menu option
             case R.id.settings_option_delete_all_items:
-                progressBar.setVisibility(View.VISIBLE);
-                new ItemsBackgroundTasks().execute(1);
 
-                Toast.makeText(getActivity(), "All items successfully deleted!", Toast.LENGTH_SHORT)
-                        .show();
+                //Check if there are items to delete
+                //Create a cursor and ask for ID 1
+                Cursor cursorCheckItemsTable = db.query(ITEMS_TABLE_NAME,
+                        new String[]{ID_COLUMN},
+                        ID_COLUMN + "=?", new String[]{Integer.toString(1)},
+                        null, null, null);
+
+                if (cursorCheckItemsTable.getCount() > 0){
+                    //table has at least 1 item
+                    cursorCheckItemsTable.close();
+
+                    //Create alert dialog object
+                    AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                    //Set title of the dialog
+                    builder.setTitle("WARNING!")
+                            //Set custom view of the dialog
+                            .setMessage("This will delete all lists as well!")
+                            //Set ability to press back
+                            .setCancelable(true)
+                            //Set Ok button with click listener
+                            .setPositiveButton("Ok",
+                                    new DialogInterface.OnClickListener() {
+                                        public void onClick(DialogInterface dialog, int id) {
+                                            progressBar.setVisibility(View.VISIBLE);
+                                            new ItemsBackgroundTasks().execute(1);
+                                            //Close the dialog window
+                                            dialog.cancel();
+                                            Toast.makeText(getActivity(), "All items successfully deleted!", Toast.LENGTH_SHORT)
+                                                    .show();
+                                        }
+                                    })
+
+                            //Set cancel button with click listener
+                            .setNegativeButton("Cancel",
+                                    new DialogInterface.OnClickListener() {
+                                        public void onClick(DialogInterface dialog, int id) {
+                                            //Close the dialog window
+                                            dialog.cancel();
+                                        }
+                                    });
+
+                    AlertDialog alert = builder.create();
+                    alert.show();
+
+
+                } else {
+                    //close cursor
+                    cursorCheckItemsTable.close();
+                    //Inform user
+                    Toast.makeText(getContext(), "No items to delete!", Toast.LENGTH_SHORT).show();
+                }
+
 
                 return true;
         }
@@ -231,10 +288,7 @@ public class ItemsFragment extends Fragment {
                     break;
 
                 case 1: // Delete list
-
-                    db.execSQL(ITEMS_TABLE_DROP_COMMAND);
-                    db.execSQL(ITEMS_TABLE_CREATE_COMMAND);
-                    refreshItemsCursor();
+                    dbHelper.deleteAllItemsAndLists();
                     break;
             }
             return true;

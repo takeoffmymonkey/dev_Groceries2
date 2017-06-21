@@ -55,6 +55,8 @@ public class ListFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 dbHelper.approveCurrentList();
+                //Inform user
+                Toast.makeText(listView.getContext(), "List marked as complete", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -115,30 +117,6 @@ public class ListFragment extends Fragment {
         }
         return super.onOptionsItemSelected(item);
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
     public static void refreshListCursor() {

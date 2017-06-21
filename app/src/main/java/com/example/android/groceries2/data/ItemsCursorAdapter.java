@@ -63,7 +63,7 @@ public class ItemsCursorAdapter extends CursorAdapter {
 
         //Set color of the view (according to CHECKED_COLUMN state of the row)
         if (cursor.getInt(cursor.getColumnIndexOrThrow(CHECKED_COLUMN)) == 1)
-            view.setBackgroundColor(Color.GRAY);
+            view.setBackgroundColor(Color.GREEN);
         else view.setBackgroundColor(Color.WHITE);
 
         //Get ID_COLUMN of current row in int
@@ -108,6 +108,9 @@ public class ItemsCursorAdapter extends CursorAdapter {
                             .setPositiveButton("Ok",
                                     new DialogInterface.OnClickListener() {
                                         public void onClick(DialogInterface dialog, int id) {
+
+                                            //Set bg to gray
+                                            view.setBackgroundColor(Color.GREEN);
 
                                             //Create contentValuesItemsTable var to store CHECKED_COLUMN value
                                             ContentValues contentValuesItemsTable
@@ -197,6 +200,8 @@ public class ItemsCursorAdapter extends CursorAdapter {
 
                     //Row was checked
 
+                    //Set bg to white
+                    view.setBackgroundColor(Color.WHITE);
                     //Uncheck it in Items_table:
                     //Create contentValuesItemsTable var to store CHECKED_COLUMN value
                     ContentValues contentValuesItemsTable

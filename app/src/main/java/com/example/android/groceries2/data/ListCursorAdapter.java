@@ -2,6 +2,7 @@ package com.example.android.groceries2.data;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.os.AsyncTask;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -48,17 +49,20 @@ public class ListCursorAdapter extends CursorAdapter {
         //Get LIST_ITEM_COLUMN value of the item in List table
         int itemCode = cursor.getInt(cursor.getColumnIndexOrThrow(LIST_ITEM_COLUMN));
 
+
         //Get cursor with NAME_COLUMN and ITEMS_MEASURE_COLUMN columns for required ID
         Cursor itemsTableCursor = db.query(ITEMS_TABLE_NAME,
                 new String[]{NAME_COLUMN, MEASURE_COLUMN},
                 ID_COLUMN + "=?", new String[]{Integer.toString(itemCode)},
                 null, null, null);
 
+
         //Move cursor to 1st row
         itemsTableCursor.moveToFirst();
 
         //Save string with proper name
         String name = itemsTableCursor.getString(itemsTableCursor.getColumnIndexOrThrow(NAME_COLUMN));
+
 
         //Get code of the items measure
         int measureInItems = itemsTableCursor
