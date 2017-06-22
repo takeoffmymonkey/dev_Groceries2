@@ -5,6 +5,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -57,6 +58,11 @@ public class ListFragment extends Fragment {
                 ItemsFragment.refreshItemsCursor();
                 //Inform user
                 Toast.makeText(listView.getContext(), "List marked as complete", Toast.LENGTH_SHORT).show();
+
+                //Create Tablayout object that hold all tabs
+                TabLayout tabHost = (TabLayout) getActivity().findViewById(R.id.tabs);
+                //Make it open a proper tab
+                tabHost.getTabAt(2).select();
             }
         });
 
@@ -112,6 +118,12 @@ public class ListFragment extends Fragment {
                 ItemsFragment.refreshItemsCursor();
                 //Inform user
                 Toast.makeText(getContext(), "List marked as complete", Toast.LENGTH_SHORT).show();
+
+                //Create Tablayout object that hold all tabs
+                TabLayout tabHost = (TabLayout) getActivity().findViewById(R.id.tabs);
+                //Make it open a proper tab
+                tabHost.getTabAt(2).select();
+
                 return true;
             // Respond to a click on the "Delete all entries" menu option
             case R.id.settings_option_delete_list:
