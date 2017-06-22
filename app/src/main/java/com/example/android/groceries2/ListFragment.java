@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -128,7 +129,7 @@ public class ListFragment extends Fragment {
             //Actions to perform on background thread
             @Override
             protected Cursor doInBackground(Integer... params) {
-
+                Log.e("WARNING: ", "IN refreshListCursor, active list name: " + dbHelper.getActiveListName());
                 Cursor cursor = db.query(dbHelper.getActiveListName(), null, null, null, null, null, null);
                 return cursor;
             }

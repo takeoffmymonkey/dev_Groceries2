@@ -7,6 +7,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Color;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -132,8 +133,8 @@ public class ItemsCursorAdapter extends CursorAdapter {
                                             //Put new value into contentValuesItemsTable
                                             contentValuesListTable.put(PRICE_COLUMN, rowPriceInt);
 
-                                            //Check if there activeListTable
-                                            if (!dbHelper.getLatestListActiveState()) {
+                                            //Check if there activeListTable (other than List_0)
+                                            if (dbHelper.getActiveListVersion() == 0) {
                                                 //No active List table:
                                                 //Create active List table
                                                 dbHelper.createListTable();
@@ -150,6 +151,7 @@ public class ItemsCursorAdapter extends CursorAdapter {
 
                                             freshItemsTableCursor.close();
                                             ItemsFragment.refreshItemsCursor();
+                                            Log.e ("WARNING: ", "CALLING refreshListCursor");
                                             ListFragment.refreshListCursor();
 
                                             //Close the dialog window
