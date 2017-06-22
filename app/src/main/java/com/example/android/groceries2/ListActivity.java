@@ -120,6 +120,9 @@ public class ListActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 dbHelper.deleteListTable(listVersion);
+                ItemsFragment.refreshItemsCursor();
+                ListFragment.refreshListCursor();
+                LogFragment.refreshLogCursor();
                 Intent intent = new Intent(ListActivity.this, MainActivity.class);
                 startActivity(intent);
                 Toast.makeText(ListActivity.this, listName + " deleted", Toast.LENGTH_SHORT).show();

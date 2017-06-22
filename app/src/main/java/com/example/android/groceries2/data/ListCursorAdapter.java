@@ -149,6 +149,8 @@ public class ListCursorAdapter extends CursorAdapter {
                             ID_COLUMN + "=?",
                             new String[]{Integer.toString(rowIdInt)});
 
+                    //Update cursor
+                    ListFragment.refreshListCursor();
 
                 } else {
                     //Row was checked
@@ -157,14 +159,17 @@ public class ListCursorAdapter extends CursorAdapter {
 
                     //Update table
                     contentValues.put(CHECKED_COLUMN, 0);
+                    db.update(dbHelper.getLatestListName(), contentValues,
+                            ID_COLUMN + "=?",
+                            new String[]{Integer.toString(rowIdInt)});
 
+                    //Update cursor
+                    ListFragment.refreshListCursor();
                 }
 
                 //Close cursor
                 freshListTableCursor.close();
 
-                //Update cursor
-                ListFragment.refreshListCursor();
             }
         });
 

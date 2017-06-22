@@ -150,8 +150,9 @@ public class ItemsCursorAdapter extends CursorAdapter {
 
 
                                             freshItemsTableCursor.close();
-                                            Log.e("WARNING: ", "CALLING refreshListCursor");
 
+                                            ItemsFragment.refreshItemsCursor();
+                                            ListFragment.refreshListCursor();
 
                                             //Close the dialog window
                                             dialog.cancel();
@@ -189,8 +190,6 @@ public class ItemsCursorAdapter extends CursorAdapter {
 
 
                 } else {
-
-
                     //Row was checked
 
                     //Set bg to white
@@ -230,6 +229,7 @@ public class ItemsCursorAdapter extends CursorAdapter {
                     listTableCursor.close();
 
                     freshItemsTableCursor.close();
+
                     ItemsFragment.refreshItemsCursor();
                     ListFragment.refreshListCursor();
 

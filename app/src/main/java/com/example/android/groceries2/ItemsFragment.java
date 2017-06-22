@@ -87,21 +87,6 @@ public class ItemsFragment extends Fragment {
             }
         });
 
-/*        //Create floating action button for approving the list
-        FloatingActionButton fabApproveList =
-                (FloatingActionButton) itemsView.findViewById(R.id.fab_approve_list);
-        //Set click listener on it
-        fabApproveList.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //Create Tablayout object that hold all tabs
-                TabLayout tabHost = (TabLayout) getActivity().findViewById(R.id.tabs);
-                //Make it open a proper tab
-                tabHost.getTabAt(1).select();
-            }
-        });*/
-
-
         //Find the gridView to hold items
         final GridView itemsGridView = (GridView) itemsView.findViewById(R.id.items_list);
 
@@ -281,6 +266,8 @@ public class ItemsFragment extends Fragment {
 
                 case 1: // Delete list
                     dbHelper.deleteAllItemsAndLists();
+                    ItemsFragment.refreshItemsCursor();
+                    ListFragment.refreshListCursor();
                     break;
             }
             return true;

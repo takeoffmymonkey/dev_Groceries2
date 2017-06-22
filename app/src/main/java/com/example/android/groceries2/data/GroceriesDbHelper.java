@@ -127,11 +127,9 @@ public class GroceriesDbHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         //Create ITEMS_table
         db.execSQL(ITEMS_TABLE_CREATE_COMMAND);
-        Log.e("WARNING: ", "Created ITEMS TABLE");
 
         //Create LOG_table
         db.execSQL(LOG_TABLE_CREATE_COMMAND);
-        Log.e("WARNING: ", "Created LOG TABLE");
 
         //Create MEASURE_table
         db.execSQL(MEASURE_TABLE_CREATE_COMMAND);
@@ -144,11 +142,10 @@ public class GroceriesDbHelper extends SQLiteOpenHelper {
             contentValues.put(MEASURE_COLUMN, i);
             db.insert(MEASURE_TABLE_NAME, null, contentValues);
         }
-        Log.e("WARNING: ", "Created MEASURE TABLE");
 
         //Create init list table for the cursor
         db.execSQL(LIST_INIT_TABLE_CREATE_COMMAND);
-        Log.e("WARNING: ", "Created LIST INIT TABLE");
+
     }
 
 
@@ -180,7 +177,6 @@ public class GroceriesDbHelper extends SQLiteOpenHelper {
             //Close cursor
             cursor.close();
 
-            Log.e("WARNING: ", "RETURNING LATEST VERSION: " + latestVersion);
             //Return version
             return latestVersion;
 
@@ -190,7 +186,6 @@ public class GroceriesDbHelper extends SQLiteOpenHelper {
             //Close cursor
             cursor.close();
 
-            Log.e("WARNING: ", "RETURNING LATEST VERSION: " + 0);
             //Return 0
             return 0;
         }
@@ -218,7 +213,6 @@ public class GroceriesDbHelper extends SQLiteOpenHelper {
             //Close cursor
             cursor.close();
 
-            Log.e("WARNING: ", "RETURNING LATEST NAME: " + latestVersionName);
             //Return value
             return latestVersionName;
 
@@ -228,7 +222,6 @@ public class GroceriesDbHelper extends SQLiteOpenHelper {
             //Close cursor
             cursor.close();
 
-            Log.e("WARNING: ", "RETURNING LATEST NAME: " + "List_0");
             //Return default list
             return "List_0";
         }
@@ -258,7 +251,6 @@ public class GroceriesDbHelper extends SQLiteOpenHelper {
             //Close cursor
             cursor.close();
 
-            Log.e("WARNING: ", "RETURNING ACTIVE VERSION: " + activeVersion);
             //return value
             return activeVersion;
 
@@ -268,7 +260,6 @@ public class GroceriesDbHelper extends SQLiteOpenHelper {
             //Close cursor
             cursor.close();
 
-            Log.e("WARNING: ", "RETURNING ACTIVE VERSION: " + 0);
             //Return 0
             return 0;
         }
@@ -287,8 +278,6 @@ public class GroceriesDbHelper extends SQLiteOpenHelper {
                 LOG_ACTIVE_COLUMN + "=?", new String[]{"1"},
                 null, null, null);
 
-        Log.e("WARNING: ", "ROWS IN CURSOR FOR ACTIVE IN LOG: " + cursor.getCount());
-
         //Check if there are lists at all
         if (cursor.getCount() > 0) {
             //There are lists
@@ -300,7 +289,6 @@ public class GroceriesDbHelper extends SQLiteOpenHelper {
             //Close cursor
             cursor.close();
 
-            Log.e("WARNING: ", "RETURNING ACTIVE NAME: " + latestVersionName);
             //Return value
             return latestVersionName;
 
@@ -310,7 +298,6 @@ public class GroceriesDbHelper extends SQLiteOpenHelper {
             //Close cursor
             cursor.close();
 
-            Log.e("WARNING: ", "NO ACTIVE LISTS. RETURNING ACTIVE NAME: " + "List_0");
             //Return default
             return "List_0";
         }
@@ -330,7 +317,6 @@ public class GroceriesDbHelper extends SQLiteOpenHelper {
             contentValues.put(LOG_ACTIVE_COLUMN, 0);
             db.update(LOG_TABLE_NAME, contentValues,
                     LOG_ACTIVE_COLUMN + "=?", new String[]{"1"});
-            Log.e("WARNING: ", "UPDATING LOG TABLE ACTIVE COLUMN TO 0");
 
         } else {
             //Version is not 0
@@ -350,15 +336,12 @@ public class GroceriesDbHelper extends SQLiteOpenHelper {
                 contentValues.put(LOG_ACTIVE_COLUMN, 0);
                 db.update(LOG_TABLE_NAME, contentValues,
                         LOG_ACTIVE_COLUMN + "=?", new String[]{"1"});
-                Log.e("WARNING: ", "UPDATING LOG TABLE ACTIVE COLUMN TO 0");
 
                 //Set list required list to active state
                 ContentValues contentValues2 = new ContentValues();
                 contentValues2.put(LOG_ACTIVE_COLUMN, 1);
                 db.update(LOG_TABLE_NAME, contentValues2,
                         LOG_CODE_COLUMN + "=?", new String[]{Integer.toString(version)});
-                Log.e("WARNING: ", "UPDATING LOG TABLE ACTIVE COLUMN TO 1 FOR VERSION: " + version);
-
 
                 //Close cursor
                 cursor.close();
@@ -394,8 +377,6 @@ public class GroceriesDbHelper extends SQLiteOpenHelper {
         //Create new table
         db.execSQL(LIST_TABLE_CREATE_COMMAND);
 
-        Log.e("WARNING: ", "CREATED NEW LIST TABLE WITH VERSION: " + newVersion);
-
         //Update LOG_table
         //Create contentValues var to store values of new list record of the LOG_TABLE
         ContentValues contentValues = new ContentValues();
@@ -407,15 +388,10 @@ public class GroceriesDbHelper extends SQLiteOpenHelper {
         contentValues.put(LOG_DATE_CREATED_COLUMN, System.currentTimeMillis());
         //Update LOG_TABLE with new list record
         db.insert(LOG_TABLE_NAME, null, contentValues);//add new record to LOG_table
-        Log.e("WARNING: ", "ADD NEW ROW TO LOG TABLE WITH VERSION: " + newVersion);
-
 
         //Set latest list table to active state
         setActiveListVersion(newVersion);
 
-        //Update cursors
-        ListFragment.refreshListCursor();
-        ItemsFragment.refreshItemsCursor();
     }
 
 
@@ -440,8 +416,6 @@ public class GroceriesDbHelper extends SQLiteOpenHelper {
 
             //Drop current table
             db.execSQL(LIST_TABLE_DROP_COMMAND);
-            Log.e("WARNING: ", "DROPPED TABLE : " + "List_" + version);
-
 
             //Check if list was active
             if (getActiveListVersion() == version) {
@@ -456,21 +430,12 @@ public class GroceriesDbHelper extends SQLiteOpenHelper {
                 db.update(ITEMS_TABLE_NAME, contentValues,
                         CHECKED_COLUMN + "=?",
                         new String[]{"1"});
-                Log.e("WARNING: ", "REMOVE CHECKING FROM ALL ITEMS IN ITEMS TABLE");
 
             }
 
             //Delete current list from LOG_table
             db.delete(LOG_TABLE_NAME, LOG_CODE_COLUMN + "=?",
                     new String[]{Integer.toString(version)});
-
-            Log.e("WARNING: ", "DELETE ROW FROM LOG TABLE WITH VERSION: " + version);
-
-            //Update cursors
-            ListFragment.refreshListCursor();
-            LogFragment.refreshLogCursor();
-            ItemsFragment.refreshItemsCursor();
-
 
         } else {
             //List not found
@@ -499,10 +464,6 @@ public class GroceriesDbHelper extends SQLiteOpenHelper {
             db.update(ITEMS_TABLE_NAME, contentValuesItems,
                     CHECKED_COLUMN + "=?",
                     new String[]{"1"});
-            Log.e("WARNING: ", "REMOVE CHECKING FROM ALL ITEMS IN ITEMS TABLE");
-            //Refresh items cursor
-            ItemsFragment.refreshItemsCursor();
-
 
             //Check all items in List_? table
             //Create contentValues var
@@ -513,9 +474,6 @@ public class GroceriesDbHelper extends SQLiteOpenHelper {
             db.update(getLatestListName(), contentValuesList,
                     CHECKED_COLUMN + "=?",
                     new String[]{"0"});
-            Log.e("WARNING: ", "CHECK ALL ITEMS IN ITEMS IN LIST: " + getLatestListName());
-            //Refresh list cursor
-            ListFragment.refreshListCursor();
 
             //Update log table:
             //Create contentValuesLog
@@ -528,9 +486,6 @@ public class GroceriesDbHelper extends SQLiteOpenHelper {
             db.update(LOG_TABLE_NAME, contentValuesLog,
                     NAME_COLUMN + "=?",
                     new String[]{getLatestListName()});
-            Log.e("WARNING: ", "UPDADE LOG TABLE: " + getLatestListName() + " SET ACTIVE 0");
-            //Refresh log cursor
-            LogFragment.refreshLogCursor();
 
         }
 
@@ -543,17 +498,11 @@ public class GroceriesDbHelper extends SQLiteOpenHelper {
 
         //Resetting active version to 0
         setActiveListVersion(0);
-        Log.e("WARNING: ", "SET ACTIVE VERSION: 0, SET TO:" + getActiveListVersion());
 
         //Drop items table
         db.execSQL(ITEMS_TABLE_DROP_COMMAND);
-        Log.e("WARNING: ", "DROP ITEMS TABLE");
         //Create items table
         db.execSQL(ITEMS_TABLE_CREATE_COMMAND);
-        Log.e("WARNING: ", "CREATE ITEMS TABLE");
-        //Refresh items cursor
-        ItemsFragment.refreshItemsCursor();
-
 
         //Delete all lists, except list_0
         //Get current number of lists
@@ -561,20 +510,12 @@ public class GroceriesDbHelper extends SQLiteOpenHelper {
         //Delete all
         for (int i = 1; i <= count; i++) {
             db.execSQL("DROP TABLE " + "List_" + i + ";");
-            Log.e("WARNING: ", "DROP TABLE LIST_" + i);
         }
-        //Refresh list cursor
-        ListFragment.refreshListCursor();
 
         //Drop log table
         db.execSQL(LOG_TABLE_DROP_COMMAND);
-        Log.e("WARNING: ", "DROP LOG TABLE");
         //Create log table
         db.execSQL(LOG_TABLE_CREATE_COMMAND);
-        Log.e("WARNING: ", "DROP LOG TABLE");
-        //Refresh log cursor
-        LogFragment.refreshLogCursor();
-
 
     }
 }

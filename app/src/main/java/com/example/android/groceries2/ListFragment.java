@@ -52,6 +52,9 @@ public class ListFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 dbHelper.approveCurrentList();
+                ListFragment.refreshListCursor();
+                LogFragment.refreshLogCursor();
+                ItemsFragment.refreshItemsCursor();
                 //Inform user
                 Toast.makeText(listView.getContext(), "List marked as complete", Toast.LENGTH_SHORT).show();
             }
@@ -103,6 +106,12 @@ public class ListFragment extends Fragment {
         switch (item.getItemId()) {
             // Respond to a click on the "Insert dummy data" menu option
             case R.id.settings_option_mark_as_complete:
+                dbHelper.approveCurrentList();
+                ListFragment.refreshListCursor();
+                LogFragment.refreshLogCursor();
+                ItemsFragment.refreshItemsCursor();
+                //Inform user
+                Toast.makeText(getContext(), "List marked as complete", Toast.LENGTH_SHORT).show();
                 return true;
             // Respond to a click on the "Delete all entries" menu option
             case R.id.settings_option_delete_list:
