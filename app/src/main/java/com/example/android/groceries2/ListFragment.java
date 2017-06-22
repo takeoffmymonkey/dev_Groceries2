@@ -59,10 +59,7 @@ public class ListFragment extends Fragment {
                 //Inform user
                 Toast.makeText(listView.getContext(), "List marked as complete", Toast.LENGTH_SHORT).show();
 
-                //Create Tablayout object that hold all tabs
-                TabLayout tabHost = (TabLayout) getActivity().findViewById(R.id.tabs);
-                //Make it open a proper tab
-                tabHost.getTabAt(2).select();
+                MainActivity.selectTab(2);
             }
         });
 
@@ -119,10 +116,7 @@ public class ListFragment extends Fragment {
                 //Inform user
                 Toast.makeText(getContext(), "List marked as complete", Toast.LENGTH_SHORT).show();
 
-                //Create Tablayout object that hold all tabs
-                TabLayout tabHost = (TabLayout) getActivity().findViewById(R.id.tabs);
-                //Make it open a proper tab
-                tabHost.getTabAt(2).select();
+                MainActivity.selectTab(2);
 
                 return true;
             // Respond to a click on the "Delete all entries" menu option

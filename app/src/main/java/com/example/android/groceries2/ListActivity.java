@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.TabLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ListView;
@@ -120,11 +121,16 @@ public class ListActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 dbHelper.deleteListTable(listVersion);
+
                 ItemsFragment.refreshItemsCursor();
                 ListFragment.refreshListCursor();
                 LogFragment.refreshLogCursor();
+
                 Intent intent = new Intent(ListActivity.this, MainActivity.class);
                 startActivity(intent);
+
+                MainActivity.selectTab(2);
+
                 Toast.makeText(ListActivity.this, listName + " deleted", Toast.LENGTH_SHORT).show();
             }
         });

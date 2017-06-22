@@ -23,6 +23,8 @@ public class MainActivity extends AppCompatActivity {
     //Global Link to db object
     public static SQLiteDatabase db;
 
+    //Create tab layout object for tabs
+    static TabLayout tabLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,13 +47,18 @@ public class MainActivity extends AppCompatActivity {
         //Set a PagerAdapter that will supply views for this pager as needed
         viewPager.setAdapter(adapter);
 
-        //Create tab layout object for tabs
-        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
+        tabLayout = (TabLayout) findViewById(R.id.tabs);
+
         //Link tab layout with view pager
         tabLayout.setupWithViewPager(viewPager);
 
     }
 
+    //Selects proper tab
+    public static void selectTab(int number) {
+        //Make it open a proper tab
+        tabLayout.getTabAt(number).select();
+    }
 
     @Override
     protected void onDestroy() {
