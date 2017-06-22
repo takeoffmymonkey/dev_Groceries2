@@ -21,6 +21,7 @@ import static com.example.android.groceries2.ItemsFragment.refreshItemsCursor;
 import static com.example.android.groceries2.MainActivity.db;
 import static com.example.android.groceries2.MainActivity.dbHelper;
 import static com.example.android.groceries2.data.GroceriesDbHelper.ITEMS_TABLE_NAME;
+import static com.example.android.groceries2.data.GroceriesDbHelper.LOG_CODE_COLUMN;
 import static com.example.android.groceries2.data.GroceriesDbHelper.LOG_TABLE_NAME;
 import static com.example.android.groceries2.data.GroceriesDbHelper.MEASURE_COLUMN;
 import static com.example.android.groceries2.data.GroceriesDbHelper.NAME_COLUMN;
@@ -69,7 +70,7 @@ public class LogFragment extends Fragment {
             protected Boolean doInBackground(Void... params) {
                 //Create cursor
                 Cursor cursor = db.query(LOG_TABLE_NAME, null,
-                        null, null, null, null, null);
+                        null, null, null, null, LOG_CODE_COLUMN + " DESC");
                 //Create cursor adapter object and pass cursor there
                 logCursorAdapter = new LogCursorAdapter(getContext(), cursor, 0);
                 return true;
@@ -151,7 +152,8 @@ public class LogFragment extends Fragment {
             //Actions to perform on background thread
             @Override
             protected Cursor doInBackground(Integer... params) {
-                Cursor cursor = db.query(LOG_TABLE_NAME, null, null, null, null, null, null);
+                Cursor cursor = db.query(LOG_TABLE_NAME, null, null, null, null, null,
+                        LOG_CODE_COLUMN + " DESC");
                 return cursor;
 
             }
