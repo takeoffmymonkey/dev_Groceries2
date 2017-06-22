@@ -412,10 +412,10 @@ public class GroceriesDbHelper extends SQLiteOpenHelper {
         //Set latest list table to active state
         setActiveListVersion(newVersion);
 
-/*        //Update cursors
+        //Update cursors
         ListFragment.refreshListCursor();
         LogFragment.refreshLogCursor();
-        ItemsFragment.refreshItemsCursor();*/
+        ItemsFragment.refreshItemsCursor();
     }
 
 
@@ -466,10 +466,10 @@ public class GroceriesDbHelper extends SQLiteOpenHelper {
 
             Log.e("WARNING: ", "DELETE ROW FROM LOG TABLE WITH VERSION: " + version);
 
-/*            //Update cursors
+            //Update cursors
             ListFragment.refreshListCursor();
             LogFragment.refreshLogCursor();
-            ItemsFragment.refreshItemsCursor();*/
+            ItemsFragment.refreshItemsCursor();
 
 
         } else {
@@ -526,10 +526,10 @@ public class GroceriesDbHelper extends SQLiteOpenHelper {
                     new String[]{getLatestListName()});
             Log.e("WARNING: ", "UPDADE LOG TABLE: " + getLatestListName() + " SET ACTIVE 0");
 
-/*            //Update cursors
+            //Update cursors
             ListFragment.refreshListCursor();
             LogFragment.refreshLogCursor();
-            ItemsFragment.refreshItemsCursor();*/
+            ItemsFragment.refreshItemsCursor();
 
         }
 
@@ -570,9 +570,9 @@ public class GroceriesDbHelper extends SQLiteOpenHelper {
 
 
         //Update cursors
-/*        ListFragment.refreshListCursor();
+        ListFragment.refreshListCursor();
         LogFragment.refreshLogCursor();
-        ItemsFragment.refreshItemsCursor();*/
+        ItemsFragment.refreshItemsCursor();
 
 
     }
