@@ -12,6 +12,7 @@ import com.example.android.groceries2.ListFragment;
 import com.example.android.groceries2.LogFragment;
 import com.example.android.groceries2.R;
 
+import static android.R.attr.version;
 import static com.example.android.groceries2.MainActivity.db;
 
 
@@ -349,7 +350,7 @@ public class GroceriesDbHelper extends SQLiteOpenHelper {
             } else {
 
                 //List not found
-                Log.e("WARNING: ", "setActiveListVersion(): No such version: " + version);
+                Log.w("WARNING: ", "setActiveListVersion(): No such version: " + version);
 
                 //Close cursor
                 cursor.close();
@@ -439,7 +440,7 @@ public class GroceriesDbHelper extends SQLiteOpenHelper {
 
         } else {
             //List not found
-            Log.e("WARNING: ", "deleteListTable(): No such version: " + version);
+            Log.w("WARNING: ", "deleteListTable(): No such version: " + version);
 
             //Close cursor
             cursor.close();
@@ -493,23 +494,40 @@ public class GroceriesDbHelper extends SQLiteOpenHelper {
     }
 
 
-    /*Deletes all items and lists*/
-    public void deleteAllItemsAndLists() {
+    /*Deletes all items and lists
+    * 0 - delete lists only
+    * 1 - delete lists and items */
+    public void deleteAll(int command) {
 
         //Resetting active version to 0
         setActiveListVersion(0);
 
-        //Drop items table
-        db.execSQL(ITEMS_TABLE_DROP_COMMAND);
-        //Create items table
-        db.execSQL(ITEMS_TABLE_CREATE_COMMAND);
+        //Get cursor with code column
+        Cursor cursor = db.query(LOG_TABLE_NAME,
+                new String[]{LOG_CODE_COLUMN},
+                null, null, null, null, null);
 
-        //Delete all lists, except list_0
-        //Get current number of lists
-        int count = getLatestListVersion();
-        //Delete all
-        for (int i = 1; i <= count; i++) {
-            db.execSQL("DROP TABLE " + "List_" + i + ";");
+        //var to store # of rows
+        int cursorCount = cursor.getCount();
+
+        //Check if there are rows
+        if (cursorCount > 0) {
+
+            //Move cursor to first row
+            cursor.moveToFirst();
+
+            //Delete all list tables
+            for (int i = 0; i < cursorCount; i++) {
+
+                //Retrieve list's code
+                int a = cursor.getInt(cursor.getColumnIndex(LOG_CODE_COLUMN));
+                //Drop corresponding table
+                db.execSQL("DROP TABLE " + "List_" + a + ";");
+                //Move cursor to next row
+                cursor.moveToNext();
+                //Log
+                Log.w("INFO: ", "List_" + a + " deleted");
+            }
         }
 
         //Drop log table
@@ -517,5 +535,32 @@ public class GroceriesDbHelper extends SQLiteOpenHelper {
         //Create log table
         db.execSQL(LOG_TABLE_CREATE_COMMAND);
 
+
+        //Check if to delete items table
+        if (command == 1) {
+            //Need to delete items table
+
+            //Drop items table
+            db.execSQL(ITEMS_TABLE_DROP_COMMAND);
+            //Create items table
+            db.execSQL(ITEMS_TABLE_CREATE_COMMAND);
+
+        } else {
+            //No need to delete items table
+            //Need to uncheck everything that was checked
+
+            //Create content values
+            ContentValues contentValues = new ContentValues();
+            contentValues.put(CHECKED_COLUMN, "0");
+
+            //update items table
+            db.update(ITEMS_TABLE_NAME, contentValues,
+                    CHECKED_COLUMN + "=?",
+                    new String[]{"1"});
+
+        }
+
+
     }
+
 }

@@ -265,7 +265,7 @@ public class ItemsFragment extends Fragment {
                     break;
 
                 case 1: // Delete list
-                    dbHelper.deleteAllItemsAndLists();
+                    dbHelper.deleteAll(1);
                     ItemsFragment.refreshItemsCursor();
                     ListFragment.refreshListCursor();
                     break;

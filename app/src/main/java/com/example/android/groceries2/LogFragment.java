@@ -1,5 +1,6 @@
 package com.example.android.groceries2;
 
+import android.content.ContentValues;
 import android.database.Cursor;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -12,11 +13,18 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 
 import com.example.android.groceries2.data.LogCursorAdapter;
 
+import static com.example.android.groceries2.ItemsFragment.refreshItemsCursor;
 import static com.example.android.groceries2.MainActivity.db;
+import static com.example.android.groceries2.MainActivity.dbHelper;
+import static com.example.android.groceries2.data.GroceriesDbHelper.ITEMS_TABLE_NAME;
 import static com.example.android.groceries2.data.GroceriesDbHelper.LOG_TABLE_NAME;
+import static com.example.android.groceries2.data.GroceriesDbHelper.MEASURE_COLUMN;
+import static com.example.android.groceries2.data.GroceriesDbHelper.NAME_COLUMN;
+import static com.example.android.groceries2.data.GroceriesDbHelper.PRICE_COLUMN;
 
 /**
  * Created by takeoff on 002 02 Jun 17.
@@ -29,6 +37,8 @@ public class LogFragment extends Fragment {
     static LogCursorAdapter logCursorAdapter;
 
 
+    ProgressBar progressBar;
+
     public LogFragment() {
     }
 
@@ -40,6 +50,9 @@ public class LogFragment extends Fragment {
 
 
         logView = inflater.inflate(R.layout.tab_log, container, false);
+
+        progressBar = (ProgressBar) logView.findViewById(R.id.log_progress_bar);
+        progressBar.setVisibility(View.GONE);
 
 
         // Find the ListView which will be populated with the pet data
@@ -93,11 +106,36 @@ public class LogFragment extends Fragment {
         switch (item.getItemId()) {
             // Respond to a click on the "Insert dummy data" menu option
             case R.id.settings_option_delete_all_lists:
+                progressBar.setVisibility(View.VISIBLE);
+
+                new LogBackgroundTasks().execute();
                 return true;
+
+
             // Respond to a click on the "Delete all entries" menu option
 
         }
         return super.onOptionsItemSelected(item);
+    }
+
+
+    class LogBackgroundTasks extends AsyncTask<Integer, Void, Boolean> {
+
+        //Actions to perform on background thread
+        @Override
+        protected Boolean doInBackground(Integer... params) {
+            dbHelper.deleteAll(0);
+            LogFragment.refreshLogCursor();
+            ListFragment.refreshListCursor();
+            return true;
+        }
+
+
+        @Override
+        protected void onPostExecute(Boolean aBoolean) {
+            super.onPostExecute(aBoolean);
+            progressBar.setVisibility(View.GONE);
+        }
     }
 
 
