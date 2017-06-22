@@ -52,6 +52,12 @@ public class MainActivity extends AppCompatActivity {
         //Link tab layout with view pager
         tabLayout.setupWithViewPager(viewPager);
 
+        int tab = getIntent().getIntExtra("tab", 0);
+
+        if (tab != 0) {
+            selectTab(tab);
+        }
+
     }
 
     //Selects proper tab

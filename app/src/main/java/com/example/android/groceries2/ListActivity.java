@@ -127,9 +127,8 @@ public class ListActivity extends AppCompatActivity {
                 LogFragment.refreshLogCursor();
 
                 Intent intent = new Intent(ListActivity.this, MainActivity.class);
+                intent.putExtra("tab", 2);
                 startActivity(intent);
-
-                MainActivity.selectTab(2);
 
                 Toast.makeText(ListActivity.this, listName + " deleted", Toast.LENGTH_SHORT).show();
             }
