@@ -8,9 +8,6 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.ProgressBar;
-
 
 import com.example.android.groceries2.data.CategoryAdapter;
 import com.example.android.groceries2.data.GroceriesDbHelper;

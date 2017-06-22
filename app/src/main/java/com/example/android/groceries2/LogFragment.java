@@ -1,7 +1,6 @@
 package com.example.android.groceries2;
 
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -14,16 +13,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 
-
-import com.example.android.groceries2.data.GroceriesDbHelper;
-import com.example.android.groceries2.data.ItemsCursorAdapter;
 import com.example.android.groceries2.data.LogCursorAdapter;
 
-
-import static com.example.android.groceries2.ItemsFragment.itemsCursorAdapter;
-import static com.example.android.groceries2.ListFragment.listCursorAdapter;
 import static com.example.android.groceries2.MainActivity.db;
-import static com.example.android.groceries2.data.GroceriesDbHelper.ITEMS_TABLE_NAME;
 import static com.example.android.groceries2.data.GroceriesDbHelper.LOG_TABLE_NAME;
 
 /**

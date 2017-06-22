@@ -17,7 +17,6 @@ import android.widget.Toast;
 
 import com.example.android.groceries2.data.ListCursorAdapter;
 
-
 import static com.example.android.groceries2.MainActivity.db;
 import static com.example.android.groceries2.MainActivity.dbHelper;
 
@@ -67,7 +66,7 @@ public class ListFragment extends Fragment {
 
         listListView.setEmptyView(emptyView);
 
-        Cursor cursor = db.query(dbHelper.getLatestListTableName(), null,
+        Cursor cursor = db.query(dbHelper.getLatestListName(), null,
                 null, null, null, null, null);
 
         listCursorAdapter = new ListCursorAdapter(getContext(), cursor, 0);
@@ -106,7 +105,8 @@ public class ListFragment extends Fragment {
                 return true;
             // Respond to a click on the "Delete all entries" menu option
             case R.id.settings_option_delete_list:
-                Toast.makeText(getContext(), dbHelper.deleteListTable(dbHelper.getLatestListVersion()), Toast.LENGTH_SHORT).show();
+                dbHelper.deleteListTable(dbHelper.getLatestListVersion());
+                Toast.makeText(getContext(), "List deleted", Toast.LENGTH_SHORT).show();
                 refreshListCursor();
                 ListFragment.refreshListCursor();
                 LogFragment.refreshLogCursor();
@@ -128,18 +128,9 @@ public class ListFragment extends Fragment {
             //Actions to perform on background thread
             @Override
             protected Cursor doInBackground(Integer... params) {
-                //check if there is an active list table
-                if (!dbHelper.getLatestListActiveState()) {
-                    //no list is active
-                    //Set cursor to the init table
-                    Cursor cursor = db.query("List_0", null, null, null, null, null, null);
-                    return cursor;
-                } else {
-                    //There is an acitive list table
-                    Cursor cursor = db.query(dbHelper.getLatestListTableName(), null, null, null, null, null, null);
-                    return cursor;
-                }
 
+                Cursor cursor = db.query(dbHelper.getActiveListName(), null, null, null, null, null, null);
+                return cursor;
             }
 
             @Override

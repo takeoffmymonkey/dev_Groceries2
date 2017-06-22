@@ -2,23 +2,15 @@ package com.example.android.groceries2.data;
 
 import android.content.Context;
 import android.database.Cursor;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CheckBox;
 import android.widget.CursorAdapter;
 import android.widget.TextView;
 
-import com.example.android.groceries2.LogFragment;
 import com.example.android.groceries2.R;
 
-import org.w3c.dom.Text;
-
-import java.util.Set;
-
 import static com.example.android.groceries2.MainActivity.db;
-import static com.example.android.groceries2.R.id.list_item_amount;
 import static com.example.android.groceries2.data.GroceriesDbHelper.ID_COLUMN;
 import static com.example.android.groceries2.data.GroceriesDbHelper.ITEMS_TABLE_NAME;
 import static com.example.android.groceries2.data.GroceriesDbHelper.LIST_AMOUNT_COLUMN;
@@ -51,7 +43,7 @@ public class ListLogCursorAdapter extends CursorAdapter {
         TextView itemPriceTextView = (TextView) view.findViewById(R.id.activity_list_item_price);
         //Set price
         itemPriceTextView.setText(Float.toString(cursor.getFloat(cursor.getColumnIndex(PRICE_COLUMN)))
-        + " UAH");
+                + " UAH");
 
 
         //Create checkBox object

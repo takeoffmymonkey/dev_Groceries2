@@ -119,9 +119,6 @@ public class ItemsCursorAdapter extends CursorAdapter {
                                                     ID_COLUMN + "=?",
                                                     new String[]{Integer.toString(rowIdInt)});
 
-                                            //Prepare new values for List table
-                                            //Read the value (amount) of the dialog
-                                            // TODO: 016 16 Jun 17 invalid int bug 
                                             float amount = Float
                                                     .parseFloat(editNumber.getText().toString());
 
@@ -141,12 +138,12 @@ public class ItemsCursorAdapter extends CursorAdapter {
                                                 //Create active List table
                                                 dbHelper.createListTable();
                                                 //Insert new item into List table
-                                                db.insert(dbHelper.getLatestListTableName(),
+                                                db.insert(dbHelper.getLatestListName(),
                                                         null, contentValuesListTable);
 
                                             } else {
                                                 //There is active table
-                                                db.insert(dbHelper.getLatestListTableName(),
+                                                db.insert(dbHelper.getLatestListName(),
                                                         null, contentValuesListTable);
                                             }
 
@@ -213,7 +210,7 @@ public class ItemsCursorAdapter extends CursorAdapter {
 
                     //Remove item from List table:
                     //Get currentListTableName
-                    String currentListTableName = dbHelper.getLatestListTableName();
+                    String currentListTableName = dbHelper.getLatestListName();
                     db.delete(currentListTableName,
                             LIST_ITEM_COLUMN + "=?",
                             new String[]{Integer.toString(rowIdInt)});

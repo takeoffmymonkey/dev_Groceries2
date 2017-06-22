@@ -126,7 +126,7 @@ public class ListCursorAdapter extends CursorAdapter {
             @Override
             public void onClick(View v) {
 
-                final Cursor freshListTableCursor = db.query(dbHelper.getLatestListTableName(),
+                final Cursor freshListTableCursor = db.query(dbHelper.getLatestListName(),
                         new String[]{CHECKED_COLUMN},
                         ID_COLUMN + "=?", new String[]{Integer.toString(rowIdInt)},
                         null, null, null);
@@ -145,7 +145,7 @@ public class ListCursorAdapter extends CursorAdapter {
 
                     //Update table
                     contentValues.put(CHECKED_COLUMN, 1);
-                    db.update(dbHelper.getLatestListTableName(), contentValues,
+                    db.update(dbHelper.getLatestListName(), contentValues,
                             ID_COLUMN + "=?",
                             new String[]{Integer.toString(rowIdInt)});
 

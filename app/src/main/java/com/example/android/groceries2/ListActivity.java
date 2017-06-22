@@ -1,40 +1,29 @@
 package com.example.android.groceries2;
 
 
-import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.TabLayout;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.android.groceries2.data.ListCursorAdapter;
 import com.example.android.groceries2.data.ListLogCursorAdapter;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import static android.R.id.list;
 import static com.example.android.groceries2.MainActivity.db;
 import static com.example.android.groceries2.MainActivity.dbHelper;
-import static com.example.android.groceries2.data.GroceriesDbHelper.ID_COLUMN;
-import static com.example.android.groceries2.data.GroceriesDbHelper.ITEMS_TABLE_NAME;
 import static com.example.android.groceries2.data.GroceriesDbHelper.LOG_DATE_COMPLETE_COLUMN;
 import static com.example.android.groceries2.data.GroceriesDbHelper.LOG_DATE_CREATED_COLUMN;
 import static com.example.android.groceries2.data.GroceriesDbHelper.LOG_TABLE_NAME;
 import static com.example.android.groceries2.data.GroceriesDbHelper.LOG_TOTAL_COLUMN;
-import static com.example.android.groceries2.data.GroceriesDbHelper.MEASURE_COLUMN;
 import static com.example.android.groceries2.data.GroceriesDbHelper.NAME_COLUMN;
-import static java.security.AccessController.getContext;
-
 
 /**
  * Created by takeoff on 006 06 Jun 17.

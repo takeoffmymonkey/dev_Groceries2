@@ -5,13 +5,11 @@ import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
-import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -24,16 +22,10 @@ import android.widget.Toast;
 
 import com.example.android.groceries2.data.ItemsCursorAdapter;
 
-import static android.webkit.ConsoleMessage.MessageLevel.LOG;
 import static com.example.android.groceries2.MainActivity.db;
 import static com.example.android.groceries2.MainActivity.dbHelper;
-import static com.example.android.groceries2.data.GroceriesDbHelper.CHECKED_COLUMN;
 import static com.example.android.groceries2.data.GroceriesDbHelper.ID_COLUMN;
-import static com.example.android.groceries2.data.GroceriesDbHelper.ITEMS_TABLE_CREATE_COMMAND;
-import static com.example.android.groceries2.data.GroceriesDbHelper.ITEMS_TABLE_DROP_COMMAND;
 import static com.example.android.groceries2.data.GroceriesDbHelper.ITEMS_TABLE_NAME;
-import static com.example.android.groceries2.data.GroceriesDbHelper.LOG_TABLE_CREATE_COMMAND;
-import static com.example.android.groceries2.data.GroceriesDbHelper.LOG_TABLE_DROP_COMMAND;
 import static com.example.android.groceries2.data.GroceriesDbHelper.MEASURE_COLUMN;
 import static com.example.android.groceries2.data.GroceriesDbHelper.NAME_COLUMN;
 import static com.example.android.groceries2.data.GroceriesDbHelper.PRICE_COLUMN;
@@ -187,7 +179,7 @@ public class ItemsFragment extends Fragment {
                         ID_COLUMN + "=?", new String[]{Integer.toString(1)},
                         null, null, null);
 
-                if (cursorCheckItemsTable.getCount() > 0){
+                if (cursorCheckItemsTable.getCount() > 0) {
                     //table has at least 1 item
                     cursorCheckItemsTable.close();
 
