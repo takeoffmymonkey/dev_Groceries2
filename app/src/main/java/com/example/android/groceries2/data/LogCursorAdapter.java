@@ -81,7 +81,7 @@ public class LogCursorAdapter extends CursorAdapter {
         //Create text view for completion date info
         TextView logItemCompleteDate = (TextView) view.findViewById(R.id.log_item_date_complete);
         //If there is no record
-        if (cursor.getString(cursor.getColumnIndexOrThrow(LOG_DATE_COMPLETE_COLUMN)) == null) {
+        if (cursor.getInt(cursor.getColumnIndexOrThrow(LOG_DATE_COMPLETE_COLUMN)) == 0) {
             //Set text to incomplete
             logItemCompleteDate.setText("Complete: incomplete");
         } else {

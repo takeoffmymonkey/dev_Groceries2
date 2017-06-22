@@ -96,7 +96,7 @@ public class ListActivity extends AppCompatActivity {
 
 
             //Check if complete column is null
-            if (cursorLog.getString(cursorLog.getColumnIndexOrThrow(LOG_DATE_COMPLETE_COLUMN)) == null) {
+            if (cursorLog.getInt(cursorLog.getColumnIndexOrThrow(LOG_DATE_COMPLETE_COLUMN)) == 0) {
                 //Set text to incomplete
                 complete.setText("Incomplete");
             } else {

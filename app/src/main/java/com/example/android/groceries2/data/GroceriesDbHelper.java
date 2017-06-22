@@ -102,7 +102,7 @@ public class GroceriesDbHelper extends SQLiteOpenHelper {
             NAME_COLUMN + " TEXT NOT NULL UNIQUE, " +
             LOG_TOTAL_COLUMN + " REAL DEFAULT 0, " +
             LOG_DATE_CREATED_COLUMN + " INTEGER NOT NULL UNIQUE, " +
-            LOG_DATE_COMPLETE_COLUMN + " INTEGER UNIQUE);";
+            LOG_DATE_COMPLETE_COLUMN + " INTEGER DEFAULT 0);";
     //Create string for DROP TABLE command
     public static final String LOG_TABLE_DROP_COMMAND = "DROP TABLE " + LOG_TABLE_NAME + ";";
 
