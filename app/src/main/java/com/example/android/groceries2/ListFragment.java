@@ -106,9 +106,8 @@ public class ListFragment extends Fragment {
                 return true;
             // Respond to a click on the "Delete all entries" menu option
             case R.id.settings_option_delete_list:
-                dbHelper.deleteListTable(dbHelper.getLatestListVersion());
+                dbHelper.deleteListTable(dbHelper.getActiveListVersion());
                 Toast.makeText(getContext(), "List deleted", Toast.LENGTH_SHORT).show();
-                refreshListCursor();
                 ListFragment.refreshListCursor();
                 LogFragment.refreshLogCursor();
                 return true;

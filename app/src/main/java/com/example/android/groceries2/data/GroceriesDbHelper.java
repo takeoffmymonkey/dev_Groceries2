@@ -409,12 +409,12 @@ public class GroceriesDbHelper extends SQLiteOpenHelper {
         db.insert(LOG_TABLE_NAME, null, contentValues);//add new record to LOG_table
         Log.e("WARNING: ", "ADD NEW ROW TO LOG TABLE WITH VERSION: " + newVersion);
 
+
         //Set latest list table to active state
         setActiveListVersion(newVersion);
 
         //Update cursors
         ListFragment.refreshListCursor();
-        LogFragment.refreshLogCursor();
         ItemsFragment.refreshItemsCursor();
     }
 
@@ -500,6 +500,8 @@ public class GroceriesDbHelper extends SQLiteOpenHelper {
                     CHECKED_COLUMN + "=?",
                     new String[]{"1"});
             Log.e("WARNING: ", "REMOVE CHECKING FROM ALL ITEMS IN ITEMS TABLE");
+            //Refresh items cursor
+            ItemsFragment.refreshItemsCursor();
 
 
             //Check all items in List_? table
@@ -512,6 +514,8 @@ public class GroceriesDbHelper extends SQLiteOpenHelper {
                     CHECKED_COLUMN + "=?",
                     new String[]{"0"});
             Log.e("WARNING: ", "CHECK ALL ITEMS IN ITEMS IN LIST: " + getLatestListName());
+            //Refresh list cursor
+            ListFragment.refreshListCursor();
 
             //Update log table:
             //Create contentValuesLog
@@ -525,11 +529,8 @@ public class GroceriesDbHelper extends SQLiteOpenHelper {
                     NAME_COLUMN + "=?",
                     new String[]{getLatestListName()});
             Log.e("WARNING: ", "UPDADE LOG TABLE: " + getLatestListName() + " SET ACTIVE 0");
-
-            //Update cursors
-            ListFragment.refreshListCursor();
+            //Refresh log cursor
             LogFragment.refreshLogCursor();
-            ItemsFragment.refreshItemsCursor();
 
         }
 
@@ -550,6 +551,8 @@ public class GroceriesDbHelper extends SQLiteOpenHelper {
         //Create items table
         db.execSQL(ITEMS_TABLE_CREATE_COMMAND);
         Log.e("WARNING: ", "CREATE ITEMS TABLE");
+        //Refresh items cursor
+        ItemsFragment.refreshItemsCursor();
 
 
         //Delete all lists, except list_0
@@ -560,6 +563,8 @@ public class GroceriesDbHelper extends SQLiteOpenHelper {
             db.execSQL("DROP TABLE " + "List_" + i + ";");
             Log.e("WARNING: ", "DROP TABLE LIST_" + i);
         }
+        //Refresh list cursor
+        ListFragment.refreshListCursor();
 
         //Drop log table
         db.execSQL(LOG_TABLE_DROP_COMMAND);
@@ -567,12 +572,8 @@ public class GroceriesDbHelper extends SQLiteOpenHelper {
         //Create log table
         db.execSQL(LOG_TABLE_CREATE_COMMAND);
         Log.e("WARNING: ", "DROP LOG TABLE");
-
-
-        //Update cursors
-        ListFragment.refreshListCursor();
+        //Refresh log cursor
         LogFragment.refreshLogCursor();
-        ItemsFragment.refreshItemsCursor();
 
 
     }

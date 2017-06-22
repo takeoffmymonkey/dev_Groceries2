@@ -116,10 +116,6 @@ public class ListActivity extends AppCompatActivity {
         listView.setAdapter(cursorAdapter);
 
 
-        //Refresh log cursor so there is no list if pressed back
-        LogFragment.refreshLogCursor();
-
-
         fabDeleteList.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

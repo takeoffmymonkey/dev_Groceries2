@@ -150,9 +150,8 @@ public class ItemsCursorAdapter extends CursorAdapter {
 
 
                                             freshItemsTableCursor.close();
-                                            ItemsFragment.refreshItemsCursor();
-                                            Log.e ("WARNING: ", "CALLING refreshListCursor");
-                                            ListFragment.refreshListCursor();
+                                            Log.e("WARNING: ", "CALLING refreshListCursor");
+
 
                                             //Close the dialog window
                                             dialog.cancel();
@@ -179,8 +178,6 @@ public class ItemsCursorAdapter extends CursorAdapter {
                                         public void onClick(DialogInterface dialog, int id) {
 
                                             freshItemsTableCursor.close();
-                                            ItemsFragment.refreshItemsCursor();
-                                            ListFragment.refreshListCursor();
 
                                             //Close the dialog window
                                             dialog.cancel();
@@ -226,7 +223,7 @@ public class ItemsCursorAdapter extends CursorAdapter {
                     if (listTableCursor.getCount() == 0) {
                         //List table is empty
                         //Delete the table
-                        dbHelper.deleteListTable(dbHelper.getLatestListVersion());
+                        dbHelper.deleteListTable(dbHelper.getActiveListVersion());
                     }
 
                     //Close the cursor
