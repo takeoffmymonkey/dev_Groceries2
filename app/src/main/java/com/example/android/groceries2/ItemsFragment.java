@@ -63,9 +63,10 @@ public class ItemsFragment extends Fragment {
 
         //Total text view
         itemsTotalTextView = (TextView) itemsView.findViewById(R.id.items_total);
+        //Get total value
+        float total = dbHelper.getTotal(activeListVersion);
         //Set text
-        itemsTotalTextView.setText("Total: " + Float.toString(dbHelper.getTotal(activeListVersion))
-                + " UAH");
+        itemsTotalTextView.setText("Total: " + MainActivity.formatPrice(total));
 
         progressBar = (ProgressBar) itemsView.findViewById(R.id.items_progress_bar);
         progressBar.setVisibility(View.GONE);

@@ -9,12 +9,9 @@ import android.util.Log;
 
 import com.example.android.groceries2.ItemsFragment;
 import com.example.android.groceries2.ListFragment;
-import com.example.android.groceries2.LogFragment;
+import com.example.android.groceries2.MainActivity;
 import com.example.android.groceries2.R;
 
-import java.text.DecimalFormat;
-
-import static android.R.attr.version;
 import static com.example.android.groceries2.MainActivity.db;
 
 
@@ -676,15 +673,12 @@ public class GroceriesDbHelper extends SQLiteOpenHelper {
                         LOG_CODE_COLUMN + "=?",
                         new String[]{Integer.toString(listVersion)});
 
-                //Create proper decimal format object
-                DecimalFormat decimalFormat = new DecimalFormat("#.##");
 
-                //Create string for total
-                String formattedTotal = decimalFormat.format(newTotal);
+                String formattedTotal = MainActivity.formatPrice(newTotal);
 
                 //update text views
-                ItemsFragment.itemsTotalTextView.setText("Total: " + formattedTotal + " UAH");
-                ListFragment.listTotalTextView.setText("Total: " + formattedTotal + " UAH");
+                ItemsFragment.itemsTotalTextView.setText("Total: " + formattedTotal);
+                ListFragment.listTotalTextView.setText("Total: " + formattedTotal);
 
             }
 

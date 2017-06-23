@@ -5,9 +5,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -53,9 +51,10 @@ public class ListFragment extends Fragment {
 
         //Total text view
         listTotalTextView = (TextView) listView.findViewById(R.id.list_total);
+        //Get total value
+        float total = dbHelper.getTotal(activeListVersion);
         //Set text
-        listTotalTextView.setText("Total: " + Float.toString(dbHelper.getTotal(activeListVersion))
-                + " UAH");
+        listTotalTextView.setText("Total: " + MainActivity.formatPrice(total));
 
         FloatingActionButton fabCompleteList =
                 (FloatingActionButton) listView.findViewById(R.id.fab_complete_list);

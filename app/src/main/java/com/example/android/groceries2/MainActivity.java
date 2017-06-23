@@ -12,6 +12,10 @@ import android.os.Bundle;
 import com.example.android.groceries2.data.CategoryAdapter;
 import com.example.android.groceries2.data.GroceriesDbHelper;
 
+import java.text.NumberFormat;
+import java.util.Currency;
+import java.util.Locale;
+
 import static com.example.android.groceries2.data.GroceriesDbHelper.DB_NAME;
 import static com.example.android.groceries2.data.GroceriesDbHelper.DB_VERSION;
 
@@ -25,6 +29,7 @@ public class MainActivity extends AppCompatActivity {
 
     //Create tab layout object for tabs
     static TabLayout tabLayout;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,5 +76,15 @@ public class MainActivity extends AppCompatActivity {
         super.onDestroy();
         //Close any open database object
         dbHelper.close();
+    }
+
+
+    public static String formatPrice(float price) {
+
+        Locale locale = new Locale("uk", "UA");
+
+        NumberFormat formatter = NumberFormat.getCurrencyInstance(locale);
+
+        return formatter.format(price);
     }
 }

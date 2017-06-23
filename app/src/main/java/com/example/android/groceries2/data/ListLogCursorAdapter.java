@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.CursorAdapter;
 import android.widget.TextView;
 
+import com.example.android.groceries2.MainActivity;
 import com.example.android.groceries2.R;
 
 import static com.example.android.groceries2.MainActivity.db;
@@ -42,9 +43,8 @@ public class ListLogCursorAdapter extends CursorAdapter {
         //Create itemPrice textView object
         TextView itemPriceTextView = (TextView) view.findViewById(R.id.activity_list_item_price);
         //Set price
-        itemPriceTextView.setText(Float.toString(cursor.getFloat(cursor.getColumnIndex(PRICE_COLUMN)))
-                + " UAH");
-
+        itemPriceTextView.setText(MainActivity.formatPrice(cursor
+                .getFloat(cursor.getColumnIndex(PRICE_COLUMN))));
 
         //Create checkBox object
         TextView itemInt = (TextView) view.findViewById(R.id.activity_list_item_checkbox);

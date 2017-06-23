@@ -7,14 +7,12 @@ import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CheckBox;
 import android.widget.CursorAdapter;
 import android.widget.TextView;
 
 import com.example.android.groceries2.ListFragment;
+import com.example.android.groceries2.MainActivity;
 import com.example.android.groceries2.R;
-
-import java.text.DecimalFormat;
 
 import static com.example.android.groceries2.MainActivity.db;
 import static com.example.android.groceries2.MainActivity.dbHelper;
@@ -106,10 +104,8 @@ public class ListCursorAdapter extends CursorAdapter {
         TextView itemPriceTextView = (TextView) view.findViewById(R.id.list_item_price);
         //Get itemPrice value from cursor
         float itemPrice = cursor.getFloat(cursor.getColumnIndexOrThrow(PRICE_COLUMN));
-        //Create proper decimal format object
-        DecimalFormat decimalFormat = new DecimalFormat("#.##");
         //Set itemPriceTextView to the product of item's amount and price
-        itemPriceTextView.setText("~" + decimalFormat.format(itemPrice) + " UAH");
+        itemPriceTextView.setText(MainActivity.formatPrice(itemPrice));
 
 
         //Get ID_COLUMN of current row in int
