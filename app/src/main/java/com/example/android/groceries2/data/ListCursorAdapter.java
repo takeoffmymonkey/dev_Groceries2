@@ -90,10 +90,10 @@ public class ListCursorAdapter extends CursorAdapter {
         //Close measureTableCursor cursor
         measureTableCursor.close();
 
-        //Create checkBox object
-        CheckBox itemNameCheckBox = (CheckBox) view.findViewById(R.id.list_item_checkbox);
+        //Create text view object
+        TextView itemNameTextView = (TextView) view.findViewById(R.id.list_item_name);
         //Set its text
-        itemNameCheckBox.setText(name);
+        itemNameTextView.setText(name);
 
         //Create itemAmount textView object
         TextView itemAmountTextView = (TextView) view.findViewById(R.id.list_item_amount);
@@ -126,7 +126,9 @@ public class ListCursorAdapter extends CursorAdapter {
             @Override
             public void onClick(View v) {
 
-                final Cursor freshListTableCursor = db.query(dbHelper.getLatestListName(),
+                String activeListName = dbHelper.getLatestListName();
+
+                final Cursor freshListTableCursor = db.query(activeListName,
                         new String[]{CHECKED_COLUMN},
                         ID_COLUMN + "=?", new String[]{Integer.toString(rowIdInt)},
                         null, null, null);
@@ -145,7 +147,7 @@ public class ListCursorAdapter extends CursorAdapter {
 
                     //Update table
                     contentValues.put(CHECKED_COLUMN, 1);
-                    db.update(dbHelper.getLatestListName(), contentValues,
+                    db.update(activeListName, contentValues,
                             ID_COLUMN + "=?",
                             new String[]{Integer.toString(rowIdInt)});
 
@@ -159,7 +161,7 @@ public class ListCursorAdapter extends CursorAdapter {
 
                     //Update table
                     contentValues.put(CHECKED_COLUMN, 0);
-                    db.update(dbHelper.getLatestListName(), contentValues,
+                    db.update(activeListName, contentValues,
                             ID_COLUMN + "=?",
                             new String[]{Integer.toString(rowIdInt)});
 

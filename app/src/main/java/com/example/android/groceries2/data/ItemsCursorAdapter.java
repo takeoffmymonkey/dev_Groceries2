@@ -144,7 +144,7 @@ public class ItemsCursorAdapter extends CursorAdapter {
 
                                             } else {
                                                 //There is active table
-                                                db.insert(dbHelper.getLatestListName(),
+                                                db.insert(dbHelper.getActiveListName(),
                                                         null, contentValuesListTable);
                                             }
 
@@ -194,6 +194,7 @@ public class ItemsCursorAdapter extends CursorAdapter {
 
                     //Set bg to white
                     view.setBackgroundColor(Color.WHITE);
+
                     //Uncheck it in Items_table:
                     //Create contentValuesItemsTable var to store CHECKED_COLUMN value
                     ContentValues contentValuesItemsTable
@@ -208,7 +209,10 @@ public class ItemsCursorAdapter extends CursorAdapter {
 
                     //Remove item from List table:
                     //Get currentListTableName
-                    String currentListTableName = dbHelper.getLatestListName();
+                    String currentListTableName = dbHelper.getActiveListName();
+                    //Get currentListTableVersion
+                    int currentListTableVersion = dbHelper.getActiveListVersion();
+
                     db.delete(currentListTableName,
                             LIST_ITEM_COLUMN + "=?",
                             new String[]{Integer.toString(rowIdInt)});
@@ -222,7 +226,7 @@ public class ItemsCursorAdapter extends CursorAdapter {
                     if (listTableCursor.getCount() == 0) {
                         //List table is empty
                         //Delete the table
-                        dbHelper.deleteListTable(dbHelper.getActiveListVersion());
+                        dbHelper.deleteListTable(currentListTableVersion);
                     }
 
                     //Close the cursor
