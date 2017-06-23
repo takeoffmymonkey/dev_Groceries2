@@ -15,6 +15,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.android.groceries2.data.ListCursorAdapter;
@@ -44,6 +45,11 @@ public class ListFragment extends Fragment {
                              @Nullable Bundle savedInstanceState) {
 
         listView = inflater.inflate(R.layout.tab_list, container, false);
+
+        //Total text view
+        TextView totalTextView = (TextView) listView.findViewById(R.id.list_total);
+        //Set text
+        totalTextView.setText("Total: 0.0 UAH");
 
         FloatingActionButton fabCompleteList =
                 (FloatingActionButton) listView.findViewById(R.id.fab_complete_list);

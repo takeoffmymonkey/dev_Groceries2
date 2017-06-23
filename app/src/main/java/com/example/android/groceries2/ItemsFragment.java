@@ -18,6 +18,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.GridView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.android.groceries2.data.ItemsCursorAdapter;
@@ -55,6 +56,10 @@ public class ItemsFragment extends Fragment {
         //Create the view object and inflate in with tab_items layout
         View itemsView = inflater.inflate(R.layout.tab_items, container, false);
 
+        //Total text view
+        TextView totalTextView = (TextView) itemsView.findViewById(R.id.items_total);
+        //Set text
+        totalTextView.setText("Total: 0.0 UAH");
 
         progressBar = (ProgressBar) itemsView.findViewById(R.id.items_progress_bar);
         progressBar.setVisibility(View.GONE);
