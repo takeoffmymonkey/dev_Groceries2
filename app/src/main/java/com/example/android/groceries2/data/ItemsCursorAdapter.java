@@ -68,7 +68,7 @@ public class ItemsCursorAdapter extends CursorAdapter {
         final int rowIdInt = cursor.getInt(cursor.getColumnIndexOrThrow(ID_COLUMN));
 
         //Get PRICE_COLUMN of current row in int
-        final float rowPriceInt = cursor.getFloat(cursor.getColumnIndexOrThrow(PRICE_COLUMN));
+        final float rowPriceFloat = cursor.getFloat(cursor.getColumnIndexOrThrow(PRICE_COLUMN));
 
         //Set click listener to the view
         view.setOnClickListener(new View.OnClickListener() {
@@ -131,28 +131,45 @@ public class ItemsCursorAdapter extends CursorAdapter {
                                             //Put new value into contentValuesItemsTable
                                             contentValuesListTable.put(LIST_AMOUNT_COLUMN, amount);
                                             //Put new value into contentValuesItemsTable
-                                            contentValuesListTable.put(PRICE_COLUMN, rowPriceInt * amount);
+                                            float itemTotalPrice = rowPriceFloat * amount;
+                                            contentValuesListTable.put(PRICE_COLUMN, itemTotalPrice);
+
+                                            //int for active version
+                                            int activeVersion = dbHelper.getActiveListVersion();
 
                                             //Check if there activeListTable (other than List_0)
-                                            if (dbHelper.getActiveListVersion() == 0) {
+                                            if (activeVersion == 0) {
                                                 //No active List table:
+
                                                 //Create active List table
                                                 dbHelper.createListTable();
+
                                                 //Insert new item into List table
                                                 db.insert(dbHelper.getLatestListName(),
                                                         null, contentValuesListTable);
 
+                                                //update total considering new version
+                                                dbHelper.updateTotal(activeVersion + 1, 1, itemTotalPrice);
+
+
                                             } else {
                                                 //There is active table
-                                                db.insert(dbHelper.getActiveListName(),
+
+                                                //Insert new item into List table
+                                                db.insert("List_" + activeVersion,
                                                         null, contentValuesListTable);
+
+                                                //update total
+                                                dbHelper.updateTotal(activeVersion, 1, itemTotalPrice);
                                             }
 
 
-                                            freshItemsTableCursor.close();
-
+                                            //refresh cursors
                                             ItemsFragment.refreshItemsCursor();
                                             ListFragment.refreshListCursor();
+
+                                            //close cursor
+                                            freshItemsTableCursor.close();
 
                                             //Close the dialog window
                                             dialog.cancel();
@@ -208,10 +225,10 @@ public class ItemsCursorAdapter extends CursorAdapter {
 
 
                     //Remove item from List table:
-                    //Get currentListTableName
-                    String currentListTableName = dbHelper.getActiveListName();
                     //Get currentListTableVersion
                     int currentListTableVersion = dbHelper.getActiveListVersion();
+                    //Get currentListTableName
+                    String currentListTableName = "List_" + currentListTableVersion;
 
                     db.delete(currentListTableName,
                             LIST_ITEM_COLUMN + "=?",
@@ -228,6 +245,7 @@ public class ItemsCursorAdapter extends CursorAdapter {
                         //Delete the table
                         dbHelper.deleteListTable(currentListTableVersion);
                     }
+
 
                     //Close the cursor
                     listTableCursor.close();

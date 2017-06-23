@@ -34,6 +34,8 @@ public class ListFragment extends Fragment {
 
     static ListCursorAdapter listCursorAdapter;
 
+    public static TextView listTotalTextView;
+
     public ListFragment() {
 
     }
@@ -46,10 +48,14 @@ public class ListFragment extends Fragment {
 
         listView = inflater.inflate(R.layout.tab_list, container, false);
 
+        //int with active version
+        int activeListVersion = dbHelper.getActiveListVersion();
+
         //Total text view
-        TextView totalTextView = (TextView) listView.findViewById(R.id.list_total);
+        listTotalTextView = (TextView) listView.findViewById(R.id.list_total);
         //Set text
-        totalTextView.setText("Total: 0.0 UAH");
+        listTotalTextView.setText("Total: " + Float.toString(dbHelper.getTotal(activeListVersion))
+                + " UAH");
 
         FloatingActionButton fabCompleteList =
                 (FloatingActionButton) listView.findViewById(R.id.fab_complete_list);
@@ -79,7 +85,7 @@ public class ListFragment extends Fragment {
 
         listListView.setEmptyView(emptyView);
 
-        Cursor cursor = db.query(dbHelper.getActiveListName(), null,
+        Cursor cursor = db.query("List_" + activeListVersion, null,
                 null, null, null, null, null);
 
         listCursorAdapter = new ListCursorAdapter(getContext(), cursor, 0);

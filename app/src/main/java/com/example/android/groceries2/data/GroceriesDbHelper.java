@@ -12,6 +12,8 @@ import com.example.android.groceries2.ListFragment;
 import com.example.android.groceries2.LogFragment;
 import com.example.android.groceries2.R;
 
+import java.text.DecimalFormat;
+
 import static android.R.attr.version;
 import static com.example.android.groceries2.MainActivity.db;
 
@@ -560,6 +562,133 @@ public class GroceriesDbHelper extends SQLiteOpenHelper {
 
         }
 
+
+    }
+
+
+    /*Returns total for required list table*/
+    public static float getTotal(int listTableVersion) {
+
+        if (listTableVersion == 0) {
+            //version 0 requested
+
+            //Return 0
+            return 0.0f;
+
+        } else {
+            //version other than 0
+
+            //get cursor from log table
+            Cursor cursor = db.query(LOG_TABLE_NAME,
+                    new String[]{LOG_CODE_COLUMN, LOG_TOTAL_COLUMN},
+                    LOG_CODE_COLUMN + "=?", new String[]{Integer.toString(listTableVersion)},
+                    null, null, null);
+
+            //Check if row is found, should be only one
+            if (cursor.getCount() == 1) {
+                //row is found
+
+                //move cursor to correct position
+                cursor.moveToFirst();
+
+                //Create var
+                float total;
+                //Get value
+                total = cursor.getFloat(cursor.getColumnIndex(LOG_TOTAL_COLUMN));
+
+                //Close cursor
+                cursor.close();
+
+                //return value
+                return total;
+
+            } else {
+                //row is not found
+
+                //Log warning
+                Log.w("WARNING: ", "getTotal(): no such list version: " + listTableVersion);
+
+                //Close cursor
+                cursor.close();
+
+                //return not found
+                return -1;
+            }
+
+        }
+
+    }
+
+
+    /*Updates total
+    * action 0 - minus
+    * action 1 - plus*/
+    public static void updateTotal(int listVersion, int action, float change) {
+
+        //Check if version is 0
+        if (listVersion == 0) {
+            //Version is 0
+
+            //Log warning
+            Log.w("WARNING: ", "setTotal(): can't set new total for List_0");
+
+        } else {
+            //list version is not 0
+
+            //get total for it
+            float currentTotal = getTotal(listVersion);
+
+            //check if there is such version (-1 means no such version)
+            if (currentTotal == -1) {
+                //no such version
+
+            } else {
+                //there is such version
+
+                //var for new total
+                float newTotal = 0.0f;
+
+                //Check what action to perform
+                switch (action) {
+
+                    case 0:
+                        //"minus" action
+
+                        //update var
+                        newTotal = currentTotal - change;
+
+                        break;
+
+                    case 1:
+                        //"plus" action
+
+                        //update var
+                        newTotal = currentTotal + change;
+
+                        break;
+                }
+
+
+                //update table
+                ContentValues contentValues = new ContentValues();
+                contentValues.put(LOG_TOTAL_COLUMN, newTotal);
+                db.update(LOG_TABLE_NAME, contentValues,
+                        LOG_CODE_COLUMN + "=?",
+                        new String[]{Integer.toString(listVersion)});
+
+                //Create proper decimal format object
+                DecimalFormat decimalFormat = new DecimalFormat("#.##");
+
+                //Create string for total
+                String formattedTotal = decimalFormat.format(newTotal);
+
+                //update text views
+                ItemsFragment.itemsTotalTextView.setText("Total: " + formattedTotal + " UAH");
+                ListFragment.listTotalTextView.setText("Total: " + formattedTotal + " UAH");
+
+            }
+
+        }
 
     }
 

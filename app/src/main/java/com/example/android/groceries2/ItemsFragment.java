@@ -43,6 +43,8 @@ public class ItemsFragment extends Fragment {
 
     ProgressBar progressBar;
 
+    public static TextView itemsTotalTextView;
+
     //Required empty constructor
     public ItemsFragment() {
     }
@@ -56,10 +58,14 @@ public class ItemsFragment extends Fragment {
         //Create the view object and inflate in with tab_items layout
         View itemsView = inflater.inflate(R.layout.tab_items, container, false);
 
+        //int with active version
+        int activeListVersion = dbHelper.getActiveListVersion();
+
         //Total text view
-        TextView totalTextView = (TextView) itemsView.findViewById(R.id.items_total);
+        itemsTotalTextView = (TextView) itemsView.findViewById(R.id.items_total);
         //Set text
-        totalTextView.setText("Total: 0.0 UAH");
+        itemsTotalTextView.setText("Total: " + Float.toString(dbHelper.getTotal(activeListVersion))
+                + " UAH");
 
         progressBar = (ProgressBar) itemsView.findViewById(R.id.items_progress_bar);
         progressBar.setVisibility(View.GONE);
