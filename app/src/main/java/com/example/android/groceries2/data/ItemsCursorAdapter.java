@@ -131,7 +131,7 @@ public class ItemsCursorAdapter extends CursorAdapter {
                                             //Put new value into contentValuesItemsTable
                                             contentValuesListTable.put(LIST_AMOUNT_COLUMN, amount);
                                             //Put new value into contentValuesItemsTable
-                                            contentValuesListTable.put(PRICE_COLUMN, rowPriceInt);
+                                            contentValuesListTable.put(PRICE_COLUMN, rowPriceInt * amount);
 
                                             //Check if there activeListTable (other than List_0)
                                             if (dbHelper.getActiveListVersion() == 0) {

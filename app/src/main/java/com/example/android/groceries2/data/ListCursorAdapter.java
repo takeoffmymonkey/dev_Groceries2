@@ -109,7 +109,7 @@ public class ListCursorAdapter extends CursorAdapter {
         //Create proper decimal format object
         DecimalFormat decimalFormat = new DecimalFormat("#.##");
         //Set itemPriceTextView to the product of item's amount and price
-        itemPriceTextView.setText("~" + decimalFormat.format(itemPrice * itemAmount) + " грн");
+        itemPriceTextView.setText("~" + decimalFormat.format(itemPrice) + " UAH");
 
 
         //Get ID_COLUMN of current row in int

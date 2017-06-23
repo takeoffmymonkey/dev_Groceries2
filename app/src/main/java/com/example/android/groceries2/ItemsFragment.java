@@ -95,6 +95,7 @@ public class ItemsFragment extends Fragment {
         //Find the gridView to hold items
         final GridView itemsGridView = (GridView) itemsView.findViewById(R.id.items_list);
 
+
         //Find empty view when nothing to show
         View emptyView = itemsView.findViewById(R.id.items_empty_view);
         //Set it to gridView
