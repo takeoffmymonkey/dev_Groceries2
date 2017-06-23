@@ -26,6 +26,9 @@ import static com.example.android.groceries2.data.GroceriesDbHelper.CHECKED_COLU
 import static com.example.android.groceries2.data.GroceriesDbHelper.ITEMS_TABLE_NAME;
 import static com.example.android.groceries2.data.GroceriesDbHelper.LIST_AMOUNT_COLUMN;
 import static com.example.android.groceries2.data.GroceriesDbHelper.LIST_ITEM_COLUMN;
+import static com.example.android.groceries2.data.GroceriesDbHelper.LOG_CODE_COLUMN;
+import static com.example.android.groceries2.data.GroceriesDbHelper.LOG_TABLE_NAME;
+import static com.example.android.groceries2.data.GroceriesDbHelper.LOG_TOTAL_COLUMN;
 import static com.example.android.groceries2.data.GroceriesDbHelper.NAME_COLUMN;
 import static com.example.android.groceries2.data.GroceriesDbHelper.ID_COLUMN;
 import static com.example.android.groceries2.data.GroceriesDbHelper.PRICE_COLUMN;
@@ -224,12 +227,28 @@ public class ItemsCursorAdapter extends CursorAdapter {
                             new String[]{Integer.toString(rowIdInt)});
 
 
-                    //Remove item from List table:
                     //Get currentListTableVersion
                     int currentListTableVersion = dbHelper.getActiveListVersion();
                     //Get currentListTableName
                     String currentListTableName = "List_" + currentListTableVersion;
 
+                    //Get totalPrice of the item
+                    Cursor cursorItemsTotalPrice = db.query(currentListTableName,
+                            new String[]{PRICE_COLUMN},
+                            ID_COLUMN + "=?", new String[]{Integer.toString(rowIdInt)},
+                            null, null, null);
+                    //move to 1st row
+                    cursorItemsTotalPrice.moveToFirst();
+                    //get float of price
+                    float itemTotalPrice = cursorItemsTotalPrice.getFloat(cursorItemsTotalPrice.
+                            getColumnIndex(PRICE_COLUMN));
+                    //close cursor
+                    cursorItemsTotalPrice.close();
+                    //Update total
+                    dbHelper.updateTotal(currentListTableVersion, 0, itemTotalPrice);
+
+
+                    //Remove item from List table
                     db.delete(currentListTableName,
                             LIST_ITEM_COLUMN + "=?",
                             new String[]{Integer.toString(rowIdInt)});
@@ -257,14 +276,11 @@ public class ItemsCursorAdapter extends CursorAdapter {
 
                 }
 
-
             }
 
 
         });
 
-
     }
-
 
 }
