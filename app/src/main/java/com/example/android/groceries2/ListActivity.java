@@ -124,10 +124,6 @@ public class ListActivity extends AppCompatActivity {
             public void onClick(View v) {
                 dbHelper.deleteListTable(listVersion);
 
-                ItemsFragment.refreshItemsCursor();
-                ListFragment.refreshListCursor();
-                LogFragment.refreshLogCursor();
-
                 Intent intent = new Intent(ListActivity.this, MainActivity.class);
                 intent.putExtra("tab", 2);
                 startActivity(intent);

@@ -73,7 +73,7 @@ public class ListFragment extends Fragment {
 
         listListView.setEmptyView(emptyView);
 
-        Cursor cursor = db.query(dbHelper.getLatestListName(), null,
+        Cursor cursor = db.query(dbHelper.getActiveListName(), null,
                 null, null, null, null, null);
 
         listCursorAdapter = new ListCursorAdapter(getContext(), cursor, 0);
@@ -143,7 +143,6 @@ public class ListFragment extends Fragment {
             //Actions to perform on background thread
             @Override
             protected Cursor doInBackground(Integer... params) {
-                Log.e("WARNING: ", "IN refreshListCursor, active list name: " + dbHelper.getActiveListName());
                 Cursor cursor = db.query(dbHelper.getActiveListName(), null, null, null, null, null, null);
                 return cursor;
             }
