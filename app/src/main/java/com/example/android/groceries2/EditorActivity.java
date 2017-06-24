@@ -1,8 +1,11 @@
 package com.example.android.groceries2;
 
+import android.app.AlertDialog;
 import android.content.ContentValues;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -18,6 +21,8 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import static com.example.android.groceries2.MainActivity.db;
+import static com.example.android.groceries2.MainActivity.dbHelper;
+import static com.example.android.groceries2.data.GroceriesDbHelper.CHECKED_COLUMN;
 import static com.example.android.groceries2.data.GroceriesDbHelper.ID_COLUMN;
 import static com.example.android.groceries2.data.GroceriesDbHelper.MEASURE_COLUMN;
 import static com.example.android.groceries2.data.GroceriesDbHelper.PRICE_COLUMN;
@@ -187,35 +192,83 @@ public class EditorActivity extends AppCompatActivity {
 
         //Get new name
         String newName = nameEditText.getText().toString().trim();
-        //Get new price as string
-        String newPriceString = priceEditText.getText().toString().trim();
-        //Convert newPriceString to float
-        Float newPrice = Float.parseFloat(newPriceString);
-        //Get new measurement
 
-        if (itemId == 0) {
-            //add item mode
-            ContentValues contentValues = new ContentValues();
-            contentValues.put(NAME_COLUMN, newName);
-            contentValues.put(PRICE_COLUMN, newPrice);
-            contentValues.put(MEASURE_COLUMN, measurement);
-            db.insert(ITEMS_TABLE_NAME, null, contentValues);
-            Toast.makeText(this, "New item added", Toast.LENGTH_SHORT).show();
+        //Name field should not be empty
+        if (newName.equals("")) {
+            //It is empty
+
+            //Calling warning message
+            warningMessage("Name");
+
+            //Set text back (if it was there)
+            nameEditText.setText(exName);
 
         } else {
-            //edit mode
-            ContentValues contentValues = new ContentValues();
-            contentValues.put(NAME_COLUMN, newName);
-            contentValues.put(PRICE_COLUMN, newPrice);
-            contentValues.put(MEASURE_COLUMN, measurement);
-            db.update(ITEMS_TABLE_NAME, contentValues, ID_COLUMN + "=?",
-                    new String[]{Integer.toString(itemId)});
-            Toast.makeText(this, "Item updated", Toast.LENGTH_SHORT).show();
+            //it is not empty
+
+            //Get new price as string
+            String newPriceString = priceEditText.getText().toString().trim();
+
+            //price should not be empty
+            if (newPriceString.equals("")) {
+                newPriceString = "0.0";
+            }
+
+            //Convert newPriceString to float
+            Float newPrice = Float.parseFloat(newPriceString);
+            //Get new measurement
+
+            if (itemId == 0) {
+                //add item mode
+                ContentValues contentValues = new ContentValues();
+                contentValues.put(NAME_COLUMN, newName);
+                contentValues.put(PRICE_COLUMN, newPrice);
+                contentValues.put(MEASURE_COLUMN, measurement);
+                db.insert(ITEMS_TABLE_NAME, null, contentValues);
+                Toast.makeText(this, "New item added", Toast.LENGTH_SHORT).show();
+
+            } else {
+                //edit mode
+                ContentValues contentValues = new ContentValues();
+                contentValues.put(NAME_COLUMN, newName);
+                contentValues.put(PRICE_COLUMN, newPrice);
+                contentValues.put(MEASURE_COLUMN, measurement);
+                db.update(ITEMS_TABLE_NAME, contentValues, ID_COLUMN + "=?",
+                        new String[]{Integer.toString(itemId)});
+                Toast.makeText(this, "Item updated", Toast.LENGTH_SHORT).show();
+            }
+
+            Intent intent = new Intent(this, MainActivity.class);
+            startActivity(intent);
+
+
         }
 
-        Intent intent = new Intent(this, MainActivity.class);
-        startActivity(intent);
 
     }
 
+
+    private void warningMessage(String input) {
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        //Set title of the dialog
+        builder.setTitle("Incorrect input.")
+                //Set message
+                .setMessage(input + " field should not be empty.")
+                //Set ability to press back
+                .setCancelable(true)
+                //Set Ok button with click listener
+                .setPositiveButton("Ok",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                //Close the dialog window
+                                dialog.cancel();
+                            }
+                        });
+
+        AlertDialog alert = builder.create();
+        alert.show();
+
+
+    }
 }

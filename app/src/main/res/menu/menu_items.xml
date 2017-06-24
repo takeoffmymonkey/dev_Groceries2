@@ -4,24 +4,23 @@
 
 
     <item
-        android:id="@+id/settings_preferences"
-        android:icon="@mipmap/ic_settings_white_24dp"
-        android:title="Prefernces"
-        app:showAsAction="always" />
-
-    <item
-        android:id="@+id/settings_option_populate_list"
+        android:id="@+id/settings_items_populate_list"
         android:title="Populate list"
         app:showAsAction="never" />
 
     <item
-        android:id="@+id/settings_option_add_item"
+        android:id="@+id/settings_items_add_item"
         android:title="Add item"
         app:showAsAction="never" />
 
     <item
-        android:id="@+id/settings_option_delete_all_items"
+        android:id="@+id/settings_items_delete_all_items"
         android:title="Delete all items"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/settings_items_settings"
+        android:title="Global settings"
         app:showAsAction="never" />
 
 

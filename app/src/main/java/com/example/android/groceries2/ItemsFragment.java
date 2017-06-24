@@ -153,7 +153,7 @@ public class ItemsFragment extends Fragment {
         // User clicked on a menu option in the app bar overflow menu
         switch (item.getItemId()) {
             // Respond to a click on the "Insert dummy data" menu option
-            case R.id.settings_option_populate_list:
+            case R.id.settings_items_populate_list:
 
                 progressBar.setVisibility(View.VISIBLE);
 
@@ -162,13 +162,13 @@ public class ItemsFragment extends Fragment {
                 return true;
 
 
-            case R.id.settings_option_add_item:
+            case R.id.settings_items_add_item:
                 Intent intent = new Intent(getActivity(), EditorActivity.class);
                 startActivity(intent);
                 return true;
 
             // Respond to a click on the "Delete all entries" menu option
-            case R.id.settings_option_delete_all_items:
+            case R.id.settings_items_delete_all_items:
 
                 //Check if there are items to delete
                 //Create a cursor and ask for ID 1

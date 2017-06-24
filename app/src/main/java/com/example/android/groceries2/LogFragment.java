@@ -1,6 +1,5 @@
 package com.example.android.groceries2;
 
-import android.content.ContentValues;
 import android.database.Cursor;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -17,15 +16,10 @@ import android.widget.ProgressBar;
 
 import com.example.android.groceries2.data.LogCursorAdapter;
 
-import static com.example.android.groceries2.ItemsFragment.refreshItemsCursor;
 import static com.example.android.groceries2.MainActivity.db;
 import static com.example.android.groceries2.MainActivity.dbHelper;
-import static com.example.android.groceries2.data.GroceriesDbHelper.ITEMS_TABLE_NAME;
 import static com.example.android.groceries2.data.GroceriesDbHelper.LOG_CODE_COLUMN;
 import static com.example.android.groceries2.data.GroceriesDbHelper.LOG_TABLE_NAME;
-import static com.example.android.groceries2.data.GroceriesDbHelper.MEASURE_COLUMN;
-import static com.example.android.groceries2.data.GroceriesDbHelper.NAME_COLUMN;
-import static com.example.android.groceries2.data.GroceriesDbHelper.PRICE_COLUMN;
 
 /**
  * Created by takeoff on 002 02 Jun 17.
@@ -106,7 +100,7 @@ public class LogFragment extends Fragment {
         // User clicked on a menu option in the app bar overflow menu
         switch (item.getItemId()) {
             // Respond to a click on the "Insert dummy data" menu option
-            case R.id.settings_option_delete_all_lists:
+            case R.id.settings_log_delete_all_lists:
                 progressBar.setVisibility(View.VISIBLE);
 
                 new LogBackgroundTasks().execute();

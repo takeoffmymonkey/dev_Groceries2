@@ -81,6 +81,9 @@ public class MainActivity extends AppCompatActivity {
 
     public static String formatPrice(float price) {
 
+        //in case minus 0 is returned
+        price = Math.abs(price);
+
         Locale locale = new Locale("uk", "UA");
 
         NumberFormat formatter = NumberFormat.getCurrencyInstance(locale);

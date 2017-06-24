@@ -119,7 +119,7 @@ public class ListFragment extends Fragment {
         // User clicked on a menu option in the app bar overflow menu
         switch (item.getItemId()) {
             // Respond to a click on the "Insert dummy data" menu option
-            case R.id.settings_option_mark_as_complete:
+            case R.id.settings_list_mark_as_complete:
                 dbHelper.approveCurrentList();
                 ListFragment.refreshListCursor();
                 LogFragment.refreshLogCursor();
@@ -131,7 +131,7 @@ public class ListFragment extends Fragment {
 
                 return true;
             // Respond to a click on the "Delete all entries" menu option
-            case R.id.settings_option_delete_list:
+            case R.id.settings_list_delete_list:
                 dbHelper.deleteListTable(dbHelper.getActiveListVersion());
                 Toast.makeText(getContext(), "List deleted", Toast.LENGTH_SHORT).show();
                 ListFragment.refreshListCursor();

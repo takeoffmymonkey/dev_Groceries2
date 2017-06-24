@@ -80,7 +80,8 @@ public class ListActivity extends AppCompatActivity {
             SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy (hh:mm:ss)");
 
             //String for storing creation date
-            long dateCreatedInMs = cursorLog.getLong(cursorLog.getColumnIndexOrThrow(LOG_DATE_CREATED_COLUMN));
+            long dateCreatedInMs = cursorLog.getLong(cursorLog
+                    .getColumnIndexOrThrow(LOG_DATE_CREATED_COLUMN));
             //Convert date to string with proper formatting
             String dateCreatedString = formatter.format(new Date(dateCreatedInMs));
             //Set text to as has been formatted
@@ -93,7 +94,8 @@ public class ListActivity extends AppCompatActivity {
                 complete.setText("Incomplete");
             } else {
                 //Get date from LOG_DATE_COMPLETE_COLUMN in ms
-                long dateCompleteInMs = cursorLog.getLong(cursorLog.getColumnIndexOrThrow(LOG_DATE_COMPLETE_COLUMN));
+                long dateCompleteInMs = cursorLog.getLong(cursorLog
+                        .getColumnIndexOrThrow(LOG_DATE_COMPLETE_COLUMN));
                 //Convert date to string with proper formatting
                 String dateCompleteString = formatter.format(new Date(dateCompleteInMs));
                 //Set text to as has been formatted
@@ -101,7 +103,8 @@ public class ListActivity extends AppCompatActivity {
             }
 
             //Set text of total
-            total.setText(Float.toString(cursorLog.getFloat(cursorLog.getColumnIndex(LOG_TOTAL_COLUMN))));
+            total.setText(MainActivity.formatPrice(cursorLog.getFloat(cursorLog
+                    .getColumnIndex(LOG_TOTAL_COLUMN))));
 
         }
 
