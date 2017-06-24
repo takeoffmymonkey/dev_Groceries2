@@ -147,12 +147,14 @@ public class ItemsCursorAdapter extends CursorAdapter {
                                                 //Create active List table
                                                 dbHelper.createListTable();
 
+                                                int newActiveVersion = dbHelper.getActiveListVersion();
+
                                                 //Insert new item into List table
-                                                db.insert(dbHelper.getLatestListName(),
+                                                db.insert("List_" + newActiveVersion,
                                                         null, contentValuesListTable);
 
                                                 //update total considering new version
-                                                dbHelper.updateTotal(dbHelper.getActiveListVersion(),
+                                                dbHelper.updateTotal(newActiveVersion,
                                                         1, itemTotalPrice);
 
 
@@ -227,17 +229,21 @@ public class ItemsCursorAdapter extends CursorAdapter {
                             ID_COLUMN + "=?",
                             new String[]{Integer.toString(rowIdInt)});
 
-
                     //Get currentListTableVersion
                     int currentListTableVersion = dbHelper.getActiveListVersion();
                     //Get currentListTableName
                     String currentListTableName = "List_" + currentListTableVersion;
 
+                    Log.e("WARNING: ", "currentListTableVersion: " + currentListTableVersion);
+
                     //Get totalPrice of the item
                     Cursor cursorItemsTotalPrice = db.query(currentListTableName,
                             new String[]{PRICE_COLUMN},
-                            ID_COLUMN + "=?", new String[]{Integer.toString(rowIdInt)},
+                            LIST_ITEM_COLUMN + "=?", new String[]{Integer.toString(rowIdInt)},
                             null, null, null);
+
+                    Log.e("WARNING: ", "cursor len: " + cursorItemsTotalPrice.getCount());
+
                     //move to 1st row
                     cursorItemsTotalPrice.moveToFirst();
                     //get float of price
