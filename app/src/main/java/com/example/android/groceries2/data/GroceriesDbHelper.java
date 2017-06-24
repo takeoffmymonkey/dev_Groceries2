@@ -566,8 +566,12 @@ public class GroceriesDbHelper extends SQLiteOpenHelper {
     /*Returns total for required list table*/
     public static float getTotal(int listTableVersion) {
 
+        Log.e("WARNING: ", "getTotal() input version:" + listTableVersion);
+
         if (listTableVersion == 0) {
             //version 0 requested
+
+            Log.e("WARNING: ", "getTotal() output:" + 0.0f);
 
             //Return 0
             return 0.0f;
@@ -596,6 +600,8 @@ public class GroceriesDbHelper extends SQLiteOpenHelper {
                 //Close cursor
                 cursor.close();
 
+                Log.e("WARNING: ", "getTotal() output:" + total);
+
                 //return value
                 return total;
 
@@ -608,6 +614,7 @@ public class GroceriesDbHelper extends SQLiteOpenHelper {
                 //Close cursor
                 cursor.close();
 
+                Log.e("WARNING: ", "getTotal() output:" + "-1");
                 //return not found
                 return -1;
             }
@@ -622,6 +629,10 @@ public class GroceriesDbHelper extends SQLiteOpenHelper {
     * action 1 - plus*/
     public static void updateTotal(int listVersion, int action, float change) {
 
+        Log.e("WARNING: ", "updateTotal() input:"
+                + " version: " + listVersion
+                + ", action: " + action + ", change: " + change);
+
         //Check if version is 0
         if (listVersion == 0) {
             //Version is 0
@@ -634,6 +645,8 @@ public class GroceriesDbHelper extends SQLiteOpenHelper {
 
             //get total for it
             float currentTotal = getTotal(listVersion);
+
+            Log.e("WARNING: ", "updateTotal(): received total from getTotal():" + currentTotal);
 
             //check if there is such version (-1 means no such version)
             if (currentTotal == -1) {
@@ -675,6 +688,8 @@ public class GroceriesDbHelper extends SQLiteOpenHelper {
 
 
                 String formattedTotal = MainActivity.formatPrice(newTotal);
+
+                Log.e("WARNING: ", "updateTotal(): " + "returning newTotal: " + newTotal);
 
                 //update text views
                 ItemsFragment.itemsTotalTextView.setText("Total: " + formattedTotal);

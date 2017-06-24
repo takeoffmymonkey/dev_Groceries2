@@ -152,7 +152,8 @@ public class ItemsCursorAdapter extends CursorAdapter {
                                                         null, contentValuesListTable);
 
                                                 //update total considering new version
-                                                dbHelper.updateTotal(activeVersion + 1, 1, itemTotalPrice);
+                                                dbHelper.updateTotal(dbHelper.getActiveListVersion(),
+                                                        1, itemTotalPrice);
 
 
                                             } else {
