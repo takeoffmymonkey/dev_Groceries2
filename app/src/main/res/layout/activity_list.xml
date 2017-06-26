@@ -18,6 +18,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
+                android:textStyle="bold"
                 android:text="Name:" />
 
             <TextView
@@ -39,6 +40,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
+                android:textStyle="bold"
                 android:text="Created:" />
 
             <TextView
@@ -60,6 +62,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
+                android:textStyle="bold"
                 android:text="Complete:" />
 
             <TextView
@@ -81,6 +84,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
+                android:textStyle="bold"
                 android:text="Total:" />
 
             <TextView

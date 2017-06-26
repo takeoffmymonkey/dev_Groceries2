@@ -3,6 +3,8 @@ package com.example.android.groceries2;
 
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
@@ -57,9 +59,6 @@ public class ListActivity extends AppCompatActivity {
                 findViewById(R.id.fab_delete_list);
 
 
-
-
-
         //Get listNameString from intent
         final String listName = getIntent().getStringExtra("listName");
         final int listVersion = getIntent().getIntExtra("listVersion", 0);
@@ -94,7 +93,10 @@ public class ListActivity extends AppCompatActivity {
             //Check if complete column is null
             if (cursorLog.getInt(cursorLog.getColumnIndexOrThrow(LOG_DATE_COMPLETE_COLUMN)) == 0) {
                 //Set text to incomplete
-                complete.setText("Incomplete");
+                complete.setText("incomplete");
+                complete.setTextColor(Color.argb(255, 30, 177, 108));
+                complete.setTypeface(null, Typeface.BOLD_ITALIC);
+
             } else {
                 //Get date from LOG_DATE_COMPLETE_COLUMN in ms
                 long dateCompleteInMs = cursorLog.getLong(cursorLog

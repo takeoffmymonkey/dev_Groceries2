@@ -5,6 +5,8 @@ import com.example.android.groceries2.ListActivity;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Color;
+import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -63,12 +65,12 @@ public class LogCursorAdapter extends CursorAdapter {
         SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy (hh:mm:ss)");
 
         //Create text view for name of the list
-        TextView logItemName = (TextView) view.findViewById(R.id.log_item);
+        TextView logItemName = (TextView) view.findViewById(R.id.log_item_value);
         //Set its text to NAME_COLUMN of LOG_table
         logItemName.setText(cursor.getString(cursor.getColumnIndexOrThrow(NAME_COLUMN)));
 
         //Create text view for creation date info
-        TextView logItemCreateDate = (TextView) view.findViewById(R.id.log_item_date_created);
+        TextView logItemCreateDate = (TextView) view.findViewById(R.id.log_item_date_created_value);
         //Get date from LOG_DATE_CREATED_COLUMN in ms
         long dateCreatedInMs = cursor.getLong(cursor.getColumnIndexOrThrow(LOG_DATE_CREATED_COLUMN));
         //Convert date to string with proper formatting
@@ -77,11 +79,14 @@ public class LogCursorAdapter extends CursorAdapter {
         logItemCreateDate.setText("Created: " + dateCreatedString);
 
         //Create text view for completion date info
-        TextView logItemCompleteDate = (TextView) view.findViewById(R.id.log_item_date_complete);
+        TextView logItemCompleteDate = (TextView) view.findViewById(R.id.log_item_date_complete_value);
         //If there is no record
         if (cursor.getInt(cursor.getColumnIndexOrThrow(LOG_DATE_COMPLETE_COLUMN)) == 0) {
             //Set text to incomplete
-            logItemCompleteDate.setText("Complete: incomplete");
+            logItemCompleteDate.setText("incomplete");
+            logItemCompleteDate.setTextColor(Color.argb(255, 30, 177, 108));
+            logItemCompleteDate.setTypeface(null, Typeface.BOLD_ITALIC);
+
         } else {
             //Get date from LOG_DATE_COMPLETE_COLUMN in ms
             long dateCompleteInMs = cursor.getLong(cursor.getColumnIndexOrThrow(LOG_DATE_COMPLETE_COLUMN));
