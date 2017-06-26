@@ -88,6 +88,10 @@ public class ItemsCursorAdapter extends CursorAdapter {
                 //Move cursor to 1st row
                 freshItemsTableCursor.moveToFirst();
 
+                //Name of the item
+                final String itemName = freshItemsTableCursor.getString(freshItemsTableCursor
+                        .getColumnIndex(NAME_COLUMN));
+
                 //Check if the row was checked
                 if (freshItemsTableCursor.getInt(freshItemsTableCursor.getColumnIndexOrThrow(CHECKED_COLUMN)) == 0) {
                     //Row wasn't checked
@@ -100,9 +104,7 @@ public class ItemsCursorAdapter extends CursorAdapter {
                     View editItemDialogView = inflater.inflate(R.layout.dialog_edit_item, null);
                     //Create edit text object linked to to editor_price id
 
-                    //Name of the item
-                    final String itemName = freshItemsTableCursor.getString(freshItemsTableCursor
-                            .getColumnIndex(NAME_COLUMN));
+
 
                     final EditText editNumber = (EditText) editItemDialogView
                             .findViewById(R.id.dialog_edit_price_number_field);
@@ -285,9 +287,14 @@ public class ItemsCursorAdapter extends CursorAdapter {
                     //Close the cursor
                     listTableCursor.close();
 
-                    freshItemsTableCursor.close();
 
-                    ItemsFragment.refreshItemsCursor(null, null, 0);
+
+                    ItemsFragment.refreshItemsCursor(context, itemName
+                            + " removed from the list", 2);
+
+                    freshItemsTableCursor.close();
+                    //refresh cursors
+
                     ListFragment.refreshListCursor(null, null, 0);
 
                 }
