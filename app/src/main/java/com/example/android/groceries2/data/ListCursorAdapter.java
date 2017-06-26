@@ -121,7 +121,12 @@ public class ListCursorAdapter extends CursorAdapter {
                 //set appropriate text
                 itemAmountTextView.setText("" + itemAmountRound + " pack");
 
+            } else {
+                //It is round but not 1
+                itemAmountTextView.setText(itemAmountRound + " " + measure);
+
             }
+
 
         } else {
             //it is not round

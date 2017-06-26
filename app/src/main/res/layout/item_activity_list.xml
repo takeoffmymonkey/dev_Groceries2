@@ -8,8 +8,7 @@
         android:id="@+id/activity_list_item_checkbox"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="8dp"
-        android:text="Bread" />
+        android:layout_marginLeft="8dp" />
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -20,15 +19,13 @@
             android:id="@+id/activity_list_item_amount"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="8dp"
-            android:text="3 item(s)" />
+            android:layout_marginLeft="8dp" />
 
         <TextView
             android:id="@+id/activity_list_item_price"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="8dp"
-            android:text="~145.67 UAH" />
+            android:layout_marginLeft="8dp" />
 
     </LinearLayout>
 
