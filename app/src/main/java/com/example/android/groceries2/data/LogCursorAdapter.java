@@ -76,7 +76,7 @@ public class LogCursorAdapter extends CursorAdapter {
         //Convert date to string with proper formatting
         String dateCreatedString = formatter.format(new Date(dateCreatedInMs));
         //Set text to as has been formatted
-        logItemCreateDate.setText("Created: " + dateCreatedString);
+        logItemCreateDate.setText(dateCreatedString);
 
         //Create text view for completion date info
         TextView logItemCompleteDate = (TextView) view.findViewById(R.id.log_item_date_complete_value);
@@ -93,7 +93,7 @@ public class LogCursorAdapter extends CursorAdapter {
             //Convert date to string with proper formatting
             String dateCompleteString = formatter.format(new Date(dateCompleteInMs));
             //Set text to as has been formatted
-            logItemCompleteDate.setText("Complete: " + dateCompleteString);
+            logItemCompleteDate.setText(dateCompleteString);
         }
 
     }

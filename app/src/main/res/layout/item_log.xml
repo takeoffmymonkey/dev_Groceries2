@@ -44,7 +44,7 @@
             android:layout_height="wrap_content"
             android:layout_marginRight="4dp"
             android:layout_marginLeft="4dp"
-            android:layout_marginTop="4dp"
+            android:layout_marginTop="2dp"
             android:text="Created:"
             android:textStyle="bold" />
 
@@ -54,7 +54,7 @@
             android:layout_height="wrap_content"
             android:layout_marginRight="4dp"
             android:layout_marginLeft="4dp"
-            android:layout_marginTop="4dp"
+            android:layout_marginTop="2dp"
             android:text="23/06/2017 (05:20:02)" />
 
     </LinearLayout>
@@ -69,7 +69,10 @@
             android:id="@+id/log_item_date_complete"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="4dp"
+            android:layout_marginRight="4dp"
+            android:layout_marginLeft="4dp"
+            android:layout_marginTop="2dp"
+            android:layout_marginBottom="4dp"
             android:text="Complete:"
             android:textStyle="bold" />
 
@@ -77,7 +80,10 @@
             android:id="@+id/log_item_date_complete_value"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="4dp"
+            android:layout_marginRight="4dp"
+            android:layout_marginLeft="4dp"
+            android:layout_marginTop="2dp"
+            android:layout_marginBottom="4dp"
             android:text="23/06/2017 (05:20:02)" />
 
     </LinearLayout>
