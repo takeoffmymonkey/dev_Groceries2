@@ -79,7 +79,7 @@ public class ItemsCursorAdapter extends CursorAdapter {
             public void onClick(View v) {
 
                 final Cursor freshItemsTableCursor = db.query(ITEMS_TABLE_NAME,
-                        new String[]{CHECKED_COLUMN},
+                        new String[]{CHECKED_COLUMN, NAME_COLUMN},
                         ID_COLUMN + "=?", new String[]{Integer.toString(rowIdInt)},
                         null, null, null);
 
@@ -100,7 +100,9 @@ public class ItemsCursorAdapter extends CursorAdapter {
                     final EditText editNumber = (EditText) editItemDialogView
                             .findViewById(R.id.dialog_edit_price_number_field);
                     //Set title of the dialog
-                    builder.setTitle("Please set items amount")
+                    builder.setTitle("Please set amount of "
+                            + freshItemsTableCursor.getString(freshItemsTableCursor
+                            .getColumnIndex(NAME_COLUMN)))
                             //Set custom view of the dialog
                             .setView(editItemDialogView)
                             //Set ability to press back
