@@ -2,11 +2,13 @@ package com.example.android.groceries2;
 
 import android.app.AlertDialog;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
@@ -50,6 +52,8 @@ public class ItemsFragment extends Fragment {
 
     public static FloatingActionButton fabAddItem;
 
+
+    static String toast;
 
     //Required empty constructor
     public ItemsFragment() {
@@ -146,7 +150,7 @@ public class ItemsFragment extends Fragment {
 
                 progressBar.setVisibility(View.VISIBLE);
 
-                new ItemsBackgroundTasks().execute(0);
+                new ItemsBackgroundTasks(getContext(), "New items added").execute(0);
 
                 return true;
 
@@ -183,11 +187,11 @@ public class ItemsFragment extends Fragment {
                                     new DialogInterface.OnClickListener() {
                                         public void onClick(DialogInterface dialog, int id) {
                                             progressBar.setVisibility(View.VISIBLE);
-                                            new ItemsBackgroundTasks().execute(1);
+                                            new ItemsBackgroundTasks(getContext(), "All items successfully deleted!")
+                                                    .execute(1);
                                             //Close the dialog window
                                             dialog.cancel();
-                                            Toast.makeText(getActivity(), "All items successfully deleted!", Toast.LENGTH_SHORT)
-                                                    .show();
+
                                         }
                                     })
 
@@ -208,7 +212,7 @@ public class ItemsFragment extends Fragment {
                     //close cursor
                     cursorCheckItemsTable.close();
                     //Inform user
-                    Toast.makeText(getContext(), "No items to delete!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), "No items to delete!", Toast.LENGTH_LONG).show();
                 }
 
 
@@ -220,6 +224,21 @@ public class ItemsFragment extends Fragment {
 
 
     class ItemsBackgroundTasks extends AsyncTask<Integer, Void, Boolean> {
+
+        Context context;
+
+        String toast;
+
+        public ItemsBackgroundTasks() {
+            super();
+        }
+
+        public ItemsBackgroundTasks(Context context, String toast) {
+            super();
+
+            this.context = context;
+            this.toast = toast;
+        }
 
         //Actions to perform on background thread
         @Override
@@ -262,14 +281,14 @@ public class ItemsFragment extends Fragment {
                         db.insert(ITEMS_TABLE_NAME, null, contentValues);
                     }
 
-                    refreshItemsCursor();
+                    refreshItemsCursor(null, null, 0);
 
                     break;
 
                 case 1: // Delete list
                     dbHelper.deleteAll(1);
-                    ItemsFragment.refreshItemsCursor();
-                    ListFragment.refreshListCursor();
+                    ItemsFragment.refreshItemsCursor(null, null, 0);
+                    ListFragment.refreshListCursor(null, null, 0);
                     break;
             }
             return true;
@@ -279,14 +298,39 @@ public class ItemsFragment extends Fragment {
         protected void onPostExecute(Boolean aBoolean) {
             super.onPostExecute(aBoolean);
             progressBar.setVisibility(View.GONE);
+
+            if (toast != null) {
+                Toast.makeText(context, toast, Toast.LENGTH_SHORT).show();
+            }
+
+
         }
     }
 
 
     /*Refresh cursor using inner class*/
-    public static void refreshItemsCursor() {
+    public static void refreshItemsCursor(@Nullable Context context,
+                                          @Nullable String toast, @Nullable final int length) {
+
 
         class NewItemsCursor extends AsyncTask<Integer, Void, Cursor> {
+
+            Context context;
+            String toast;
+            int length;
+
+            public NewItemsCursor() {
+                super();
+            }
+
+
+            public NewItemsCursor(Context context, String toast, int length) {
+                super();
+                this.context = context;
+                this.toast = toast;
+                this.length = length;
+            }
+
 
             //Actions to perform on background thread
             @Override
@@ -312,10 +356,34 @@ public class ItemsFragment extends Fragment {
                 }
 
                 itemsCursorAdapter.changeCursor(cursor);
+
+
+                if (toast != null) {
+
+                    if (length == 2) {
+
+                        final Toast toastObj = Toast.makeText(context, toast, Toast.LENGTH_SHORT);
+                        toastObj.show();
+
+                        Handler handler = new Handler();
+                        handler.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                toastObj.cancel();
+                            }
+                        }, 1000);
+
+                    } else {
+                        Toast.makeText(context, toast, length).show();
+                    }
+
+
+                }
+
             }
         }
 
-        new NewItemsCursor().execute(1);
+        new NewItemsCursor(context, toast, length).execute(1);
 
     }
 

@@ -1,5 +1,6 @@
 package com.example.android.groceries2;
 
+import android.content.Context;
 import android.database.Cursor;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -14,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.android.groceries2.data.LogCursorAdapter;
 
@@ -127,8 +129,8 @@ public class LogFragment extends Fragment {
         @Override
         protected Boolean doInBackground(Integer... params) {
             dbHelper.deleteAll(0);
-            LogFragment.refreshLogCursor();
-            ListFragment.refreshListCursor();
+            LogFragment.refreshLogCursor(null, null, 0);
+            ListFragment.refreshListCursor(null, null, 0);
             return true;
         }
 
@@ -141,9 +143,26 @@ public class LogFragment extends Fragment {
     }
 
 
-    public static void refreshLogCursor() {
+    public static void refreshLogCursor(@Nullable Context context,
+                                        @Nullable String toast, @Nullable final int length) {
 
         class NewLogCursor extends AsyncTask<Integer, Void, Cursor> {
+
+            Context context;
+            String toast;
+            int length;
+
+            public NewLogCursor() {
+                super();
+            }
+
+
+            public NewLogCursor(Context context, String toast, int length) {
+                super();
+                this.context = context;
+                this.toast = toast;
+                this.length = length;
+            }
 
             //Actions to perform in main thread before background execusion
             @Override
@@ -162,10 +181,13 @@ public class LogFragment extends Fragment {
             @Override
             protected void onPostExecute(Cursor cursor) {
                 logCursorAdapter.changeCursor(cursor);
+                if (toast != null) {
+                    Toast.makeText(context, toast, length).show();
+                }
             }
         }
 
-        new NewLogCursor().execute(1);
+        new NewLogCursor(context, toast, length).execute(1);
 
     }
 

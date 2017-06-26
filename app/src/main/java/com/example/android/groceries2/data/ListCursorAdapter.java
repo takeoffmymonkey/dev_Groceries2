@@ -182,7 +182,7 @@ public class ListCursorAdapter extends CursorAdapter {
                             new String[]{Integer.toString(rowIdInt)});
 
                     //Update cursor
-                    ListFragment.refreshListCursor();
+                    ListFragment.refreshListCursor(null, null, 0);
 
                 } else {
                     //Row was checked
@@ -196,7 +196,7 @@ public class ListCursorAdapter extends CursorAdapter {
                             new String[]{Integer.toString(rowIdInt)});
 
                     //Update cursor
-                    ListFragment.refreshListCursor();
+                    ListFragment.refreshListCursor(null, null, 0);
                 }
 
                 //Close cursor

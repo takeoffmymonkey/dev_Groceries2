@@ -14,10 +14,12 @@ import android.view.ViewGroup;
 import android.widget.CursorAdapter;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.android.groceries2.EditorActivity;
 import com.example.android.groceries2.ItemsFragment;
 import com.example.android.groceries2.ListFragment;
+import com.example.android.groceries2.MainActivity;
 import com.example.android.groceries2.R;
 
 import static com.example.android.groceries2.MainActivity.db;
@@ -97,12 +99,16 @@ public class ItemsCursorAdapter extends CursorAdapter {
                     //Create view object containing dialog_edit_item layout
                     View editItemDialogView = inflater.inflate(R.layout.dialog_edit_item, null);
                     //Create edit text object linked to to editor_price id
+
+                    //Name of the item
+                    final String itemName = freshItemsTableCursor.getString(freshItemsTableCursor
+                            .getColumnIndex(NAME_COLUMN));
+
                     final EditText editNumber = (EditText) editItemDialogView
                             .findViewById(R.id.dialog_edit_price_number_field);
                     //Set title of the dialog
                     builder.setTitle("Please set amount of "
-                            + freshItemsTableCursor.getString(freshItemsTableCursor
-                            .getColumnIndex(NAME_COLUMN)))
+                            + itemName)
                             //Set custom view of the dialog
                             .setView(editItemDialogView)
                             //Set ability to press back
@@ -173,8 +179,9 @@ public class ItemsCursorAdapter extends CursorAdapter {
 
 
                                             //refresh cursors
-                                            ItemsFragment.refreshItemsCursor();
-                                            ListFragment.refreshListCursor();
+                                            ItemsFragment.refreshItemsCursor(context, itemName
+                                                    + " added to the list", 2);
+                                            ListFragment.refreshListCursor(null, null, 0);
 
                                             //close cursor
                                             freshItemsTableCursor.close();
@@ -280,8 +287,8 @@ public class ItemsCursorAdapter extends CursorAdapter {
 
                     freshItemsTableCursor.close();
 
-                    ItemsFragment.refreshItemsCursor();
-                    ListFragment.refreshListCursor();
+                    ItemsFragment.refreshItemsCursor(null, null, 0);
+                    ListFragment.refreshListCursor(null, null, 0);
 
                 }
 

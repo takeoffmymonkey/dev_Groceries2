@@ -1,5 +1,6 @@
 package com.example.android.groceries2;
 
+import android.content.Context;
 import android.database.Cursor;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -74,9 +75,9 @@ public class ListFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 dbHelper.approveCurrentList();
-                ListFragment.refreshListCursor();
-                LogFragment.refreshLogCursor();
-                ItemsFragment.refreshItemsCursor();
+                ListFragment.refreshListCursor(null, null, 0);
+                LogFragment.refreshLogCursor(null, null, 0);
+                ItemsFragment.refreshItemsCursor(null, null, 0);
                 //Inform user
                 Toast.makeText(listView.getContext(), "List marked as complete", Toast.LENGTH_SHORT).show();
 
@@ -139,9 +140,9 @@ public class ListFragment extends Fragment {
             // Respond to a click on the "Insert dummy data" menu option
             case R.id.settings_list_mark_as_complete:
                 dbHelper.approveCurrentList();
-                ListFragment.refreshListCursor();
-                LogFragment.refreshLogCursor();
-                ItemsFragment.refreshItemsCursor();
+                ListFragment.refreshListCursor(null, null, 0);
+                LogFragment.refreshLogCursor(null, null, 0);
+                ItemsFragment.refreshItemsCursor(null, null, 0);
                 //Inform user
                 Toast.makeText(getContext(), "List marked as complete", Toast.LENGTH_SHORT).show();
 
@@ -152,17 +153,34 @@ public class ListFragment extends Fragment {
             case R.id.settings_list_delete_list:
                 dbHelper.deleteListTable(dbHelper.getActiveListVersion());
                 Toast.makeText(getContext(), "List deleted", Toast.LENGTH_SHORT).show();
-                ListFragment.refreshListCursor();
-                LogFragment.refreshLogCursor();
+                ListFragment.refreshListCursor(null, null, 0);
+                LogFragment.refreshLogCursor(null, null, 0);
                 return true;
         }
         return super.onOptionsItemSelected(item);
     }
 
 
-    public static void refreshListCursor() {
+    public static void refreshListCursor(@Nullable Context context,
+                                         @Nullable String toast, @Nullable final int length) {
 
         class NewListCursor extends AsyncTask<Integer, Void, Cursor> {
+
+            Context context;
+            String toast;
+            int length;
+
+            public NewListCursor() {
+                super();
+            }
+
+
+            public NewListCursor(Context context, String toast, int length) {
+                super();
+                this.context = context;
+                this.toast = toast;
+                this.length = length;
+            }
 
             //Actions to perform in main thread before background execusion
             @Override
@@ -185,11 +203,16 @@ public class ListFragment extends Fragment {
                     fabCompleteList.setVisibility(View.VISIBLE);
                     listTotalTextView.setVisibility(View.VISIBLE);
                 }
+
                 listCursorAdapter.changeCursor(cursor);
+
+                if (toast != null) {
+                    Toast.makeText(context, toast, length).show();
+                }
             }
         }
 
-        new NewListCursor().execute(0);
+        new NewListCursor(context, toast, length).execute(0);
 
     }
 
