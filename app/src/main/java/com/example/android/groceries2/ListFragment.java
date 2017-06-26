@@ -34,6 +34,8 @@ public class ListFragment extends Fragment {
 
     public static TextView listTotalTextView;
 
+    public static FloatingActionButton fabCompleteList;
+
     public ListFragment() {
 
     }
@@ -56,7 +58,7 @@ public class ListFragment extends Fragment {
         //Set text
         listTotalTextView.setText("Total: " + MainActivity.formatPrice(total));
 
-        FloatingActionButton fabCompleteList =
+        fabCompleteList =
                 (FloatingActionButton) listView.findViewById(R.id.fab_complete_list);
 
         //Set approve list action to fab
@@ -86,6 +88,14 @@ public class ListFragment extends Fragment {
 
         Cursor cursor = db.query("List_" + activeListVersion, null,
                 null, null, null, null, null);
+
+        if (cursor.getCount() == 0) {
+            fabCompleteList.setVisibility(View.GONE);
+            listTotalTextView.setVisibility(View.GONE);
+        } else {
+            fabCompleteList.setVisibility(View.VISIBLE);
+            listTotalTextView.setVisibility(View.VISIBLE);
+        }
 
         listCursorAdapter = new ListCursorAdapter(getContext(), cursor, 0);
 
@@ -160,6 +170,13 @@ public class ListFragment extends Fragment {
 
             @Override
             protected void onPostExecute(Cursor cursor) {
+                if (cursor.getCount() == 0) {
+                    fabCompleteList.setVisibility(View.GONE);
+                    listTotalTextView.setVisibility(View.GONE);
+                } else {
+                    fabCompleteList.setVisibility(View.VISIBLE);
+                    listTotalTextView.setVisibility(View.VISIBLE);
+                }
                 listCursorAdapter.changeCursor(cursor);
             }
         }

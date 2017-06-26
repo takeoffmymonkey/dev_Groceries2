@@ -46,14 +46,6 @@
             android:layout_below="@+id/empty_text"
             android:layout_centerHorizontal="true" />
 
-        <android.support.design.widget.FloatingActionButton
-            android:id="@+id/fab_add_item_to_db_init"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_centerInParent="true"
-            android:layout_margin="16dp"
-            android:src="@mipmap/ic_add_white_24dp" />
     </RelativeLayout>
 
     <android.support.design.widget.FloatingActionButton

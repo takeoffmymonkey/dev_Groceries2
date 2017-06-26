@@ -23,6 +23,9 @@ import android.widget.Toast;
 
 import com.example.android.groceries2.data.ItemsCursorAdapter;
 
+import static android.R.id.list;
+import static com.example.android.groceries2.ListFragment.fabCompleteList;
+import static com.example.android.groceries2.ListFragment.listTotalTextView;
 import static com.example.android.groceries2.MainActivity.db;
 import static com.example.android.groceries2.MainActivity.dbHelper;
 import static com.example.android.groceries2.data.GroceriesDbHelper.ID_COLUMN;
@@ -41,9 +44,12 @@ public class ItemsFragment extends Fragment {
     //Create ItemsCursorAdapter link
     static ItemsCursorAdapter itemsCursorAdapter;
 
-    ProgressBar progressBar;
+    public static ProgressBar progressBar;
 
     public static TextView itemsTotalTextView;
+
+    public static FloatingActionButton fabAddItem;
+
 
     //Required empty constructor
     public ItemsFragment() {
@@ -71,22 +77,9 @@ public class ItemsFragment extends Fragment {
         progressBar = (ProgressBar) itemsView.findViewById(R.id.items_progress_bar);
         progressBar.setVisibility(View.GONE);
 
-        //Create floating action button for adding 1 item when list is empty
-        FloatingActionButton fabAddInit = (FloatingActionButton)
-                itemsView.findViewById(R.id.fab_add_item_to_db_init);
-        //Set click listener on it
-        fabAddInit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //Create object for intent
-                Intent intent = new Intent(getActivity(), EditorActivity.class);
-                //Create editor activity
-                startActivity(intent);
-            }
-        });
 
         //Create floating action button for adding 1 item
-        FloatingActionButton fabAddItem =
+        fabAddItem =
                 (FloatingActionButton) itemsView.findViewById(R.id.fab_add_item_to_db);
         //Set click listener on it
         fabAddItem.setOnClickListener(new View.OnClickListener() {
@@ -108,27 +101,17 @@ public class ItemsFragment extends Fragment {
         //Set it to gridView
         itemsGridView.setEmptyView(emptyView);
 
-
-        class ItemsBackgroundCursor extends AsyncTask<Void, Void, Boolean> {
-
-            @Override
-            protected Boolean doInBackground(Void... params) {
-                //Create cursor
-                Cursor cursor = db.query(ITEMS_TABLE_NAME, null, null, null, null, null, null);
-                //Create cursor adapter object and pass cursor there
-                itemsCursorAdapter = new ItemsCursorAdapter(getContext(), cursor, 0);
-                return true;
-            }
-
-            @Override
-            protected void onPostExecute(Boolean aBoolean) {
-                super.onPostExecute(aBoolean);
-                //Set adapter to the grid view
-                itemsGridView.setAdapter(itemsCursorAdapter);
-            }
+        Cursor cursor = db.query(ITEMS_TABLE_NAME, null, null, null, null, null, null);
+        if (cursor.getCount() == 0) {
+            itemsTotalTextView.setVisibility(View.GONE);
+        } else {
+            itemsTotalTextView.setVisibility(View.VISIBLE);
+            fabAddItem.setVisibility(View.VISIBLE);
         }
+        //Create cursor adapter object and pass cursor there
+        itemsCursorAdapter = new ItemsCursorAdapter(getContext(), cursor, 0);
 
-        new ItemsBackgroundCursor().execute();
+        itemsGridView.setAdapter(itemsCursorAdapter);
 
         //This fragment has options menu
         setHasOptionsMenu(true);
@@ -309,6 +292,19 @@ public class ItemsFragment extends Fragment {
 
             @Override
             protected void onPostExecute(Cursor cursor) {
+                if (cursor.getCount() == 0) {
+
+                    itemsTotalTextView.setVisibility(View.GONE);
+
+                    listTotalTextView.setVisibility(View.GONE);
+                    fabCompleteList.setVisibility(View.GONE);
+
+                } else {
+
+                    itemsTotalTextView.setVisibility(View.VISIBLE);
+
+                }
+
                 itemsCursorAdapter.changeCursor(cursor);
             }
         }
