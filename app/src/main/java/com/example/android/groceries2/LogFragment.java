@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.example.android.groceries2.data.LogCursorAdapter;
 
@@ -57,6 +58,12 @@ public class LogFragment extends Fragment {
         View emptyView = logView.findViewById(R.id.log_empty_view);
 
         logListView.setEmptyView(emptyView);
+
+        TextView logEmptyText = (TextView) logView.findViewById(R.id.log_empty_text);
+        logEmptyText.setText("No created lists");
+
+        TextView logEmptyTextSub = (TextView) logView.findViewById(R.id.log_empty_text_sub);
+        logEmptyTextSub.setText("Please form a list in ITEMS");
 
         class LogBackgroundCursor extends AsyncTask<Void, Void, Boolean> {
 

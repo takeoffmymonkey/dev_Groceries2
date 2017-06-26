@@ -58,6 +58,14 @@ public class ListFragment extends Fragment {
         //Set text
         listTotalTextView.setText("Total: " + MainActivity.formatPrice(total));
 
+
+        TextView listEmptyText = (TextView) listView.findViewById(R.id.list_empty_text);
+        listEmptyText.setText("No selected items");
+
+
+        TextView listEmptyTextSub = (TextView) listView.findViewById(R.id.list_empty_text_sub);
+        listEmptyTextSub.setText("Please form a list in ITEMS");
+
         fabCompleteList =
                 (FloatingActionButton) listView.findViewById(R.id.fab_complete_list);
 

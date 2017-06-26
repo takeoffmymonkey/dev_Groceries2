@@ -18,12 +18,12 @@
     <!-- Empty view for the list -->
     <RelativeLayout
         android:id="@+id/items_empty_view"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_centerInParent="true">
 
         <ImageView
-            android:id="@+id/empty_basket"
+            android:id="@+id/items_empty_basket"
             android:layout_width="150dp"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
@@ -31,19 +31,18 @@
             android:src="@drawable/empty_basket" />
 
         <TextView
-            android:id="@+id/empty_text"
+            android:id="@+id/items_empty_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/empty_basket"
+            android:layout_below="@+id/items_empty_basket"
             android:layout_centerHorizontal="true"
-            android:text="test"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
         <TextView
-            android:id="@+id/empty_text_sub"
+            android:id="@+id/items_empty_text_sub"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/empty_text"
+            android:layout_below="@+id/items_empty_text"
             android:layout_centerHorizontal="true" />
 
     </RelativeLayout>

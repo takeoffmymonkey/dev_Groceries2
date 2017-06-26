@@ -78,6 +78,12 @@ public class ItemsFragment extends Fragment {
         progressBar.setVisibility(View.GONE);
 
 
+        TextView itemsEmptyText = (TextView) itemsView.findViewById(R.id.items_empty_text);
+        itemsEmptyText.setText("No items added");
+
+        TextView itemsEmptyTextSub = (TextView) itemsView.findViewById(R.id.items_empty_text_sub);
+        itemsEmptyTextSub.setText("Please add an item");
+
         //Create floating action button for adding 1 item
         fabAddItem =
                 (FloatingActionButton) itemsView.findViewById(R.id.fab_add_item_to_db);

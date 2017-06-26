@@ -57,6 +57,9 @@ public class ListActivity extends AppCompatActivity {
                 findViewById(R.id.fab_delete_list);
 
 
+
+
+
         //Get listNameString from intent
         final String listName = getIntent().getStringExtra("listName");
         final int listVersion = getIntent().getIntExtra("listVersion", 0);
