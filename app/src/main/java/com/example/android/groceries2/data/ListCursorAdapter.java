@@ -96,9 +96,9 @@ public class ListCursorAdapter extends CursorAdapter {
         //Create itemAmount textView object
         TextView itemAmountTextView = (TextView) view.findViewById(R.id.list_item_amount);
         //Get itemAmount value from cursor
-        int itemAmount = cursor.getInt(cursor.getColumnIndexOrThrow(LIST_AMOUNT_COLUMN));
+        float itemAmount = cursor.getFloat(cursor.getColumnIndexOrThrow(LIST_AMOUNT_COLUMN));
         //Set itemAmount + measure as text to itemAmount textView
-        itemAmountTextView.setText(Integer.toString(itemAmount) + " " + measure);
+        itemAmountTextView.setText(Float.toString(itemAmount) + " " + measure);
 
         //Create itemPrice textView object
         TextView itemPriceTextView = (TextView) view.findViewById(R.id.list_item_price);
