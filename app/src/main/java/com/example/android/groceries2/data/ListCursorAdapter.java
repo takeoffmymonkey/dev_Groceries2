@@ -98,7 +98,36 @@ public class ListCursorAdapter extends CursorAdapter {
         //Get itemAmount value from cursor
         float itemAmount = cursor.getFloat(cursor.getColumnIndexOrThrow(LIST_AMOUNT_COLUMN));
         //Set itemAmount + measure as text to itemAmount textView
-        itemAmountTextView.setText(Float.toString(itemAmount) + " " + measure);
+
+        //Get the rounded value
+        int itemAmountRound = Math.round(itemAmount);
+
+        //Check if it is round
+        if (itemAmount == itemAmountRound) {
+            //It is round
+
+            //Check if it is 1 item
+            if (measure.equals("items") && itemAmountRound == 1) {
+                //it is 1 item
+
+                //set appropriate text
+                itemAmountTextView.setText("" + itemAmountRound + " item");
+
+            }
+            //Check if it is 1 pack
+            else if (measure.equals("packs") && itemAmountRound == 1) {
+                //it is 1 item
+
+                //set appropriate text
+                itemAmountTextView.setText("" + itemAmountRound + " pack");
+
+            }
+
+        } else {
+            //it is not round
+            itemAmountTextView.setText(Float.toString(itemAmount) + " " + measure);
+        }
+
 
         //Create itemPrice textView object
         TextView itemPriceTextView = (TextView) view.findViewById(R.id.list_item_price);
