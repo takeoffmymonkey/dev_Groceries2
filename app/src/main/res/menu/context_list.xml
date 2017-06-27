@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/context_list_edit_item"
+        android:title="Edit item" />
+
+    <item
+        android:id="@+id/context_list_edit_amount"
+        android:title="Edit amount" />
+
+    <item
+        android:id="@+id/context_list_remove_from_list"
+        android:title="Remove from list" />
+
+
+</menu>

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="8dp"
+        android:text="Amount:"
+        android:layout_gravity="center"/>
+
+
+    <NumberPicker
+        android:id="@+id/dialog_picker_1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+    </NumberPicker>
+
+    <TextView
+        android:id="@+id/dialog_dot"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="8dp"
+        android:text="."
+        android:layout_gravity="center"/>
+
+    <NumberPicker
+        android:id="@+id/dialog_picker_2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+    </NumberPicker>
+
+
+
+    <TextView
+        android:id="@+id/dialog_measure"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="8dp"
+        android:text="Kg"
+        android:layout_gravity="center"/>
+
+</LinearLayout>
