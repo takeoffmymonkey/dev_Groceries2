@@ -75,7 +75,9 @@
             android:id="@+id/items_progress_bar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:indeterminate="true" />
+            android:indeterminate="true"
+            android:background ="@xml/progress_back"
+            android:indeterminateDrawable="@drawable/progress_face"/>
     </RelativeLayout>
 
 </RelativeLayout>
