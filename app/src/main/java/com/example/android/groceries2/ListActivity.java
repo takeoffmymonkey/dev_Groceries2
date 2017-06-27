@@ -155,7 +155,8 @@ public class ListActivity extends AppCompatActivity {
                                         intent.putExtra("tab", 2);
                                         startActivity(intent);
 
-                                        Toast.makeText(ListActivity.this, listName + " deleted", Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(ListActivity.this, listName + " deleted",
+                                                Toast.LENGTH_SHORT).show();
                                         dialog.cancel();
 
                                     }

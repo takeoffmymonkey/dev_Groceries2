@@ -15,6 +15,7 @@ import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.CursorAdapter;
 import android.widget.EditText;
+import android.widget.NumberPicker;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -108,9 +109,14 @@ public class ItemsCursorAdapter extends CursorAdapter {
                     View editItemDialogView = inflater.inflate(R.layout.dialog_edit_item, null);
                     //Create edit text object linked to to editor_price id
 
+                    final NumberPicker numberPicker = (NumberPicker) editItemDialogView
+                            .findViewById(R.id.dialog_numberPicker);
+                    numberPicker.setMaxValue(999);
+                    numberPicker.setMinValue(0);
+                    numberPicker.setValue(1);
 
-                    final EditText editNumber = (EditText) editItemDialogView
-                            .findViewById(R.id.dialog_edit_price_number_field);
+                    /*final EditText editNumber = (EditText) editItemDialogView
+                            .findViewById(R.id.dialog_edit_price_number_field);*/
 
                     //Set title of the dialog
                     builder.setTitle("Please set amount of "
@@ -137,8 +143,10 @@ public class ItemsCursorAdapter extends CursorAdapter {
                                                     ID_COLUMN + "=?",
                                                     new String[]{Integer.toString(rowIdInt)});
 
-                                            float amount = Float
-                                                    .parseFloat(editNumber.getText().toString());
+                                            int amountPicker = numberPicker.getValue();
+
+                                            /*float amount = Float
+                                                    .parseFloat(editNumber.getText().toString());*/
 
                                             //Create contentValuesListTable var
                                             ContentValues contentValuesListTable
@@ -146,9 +154,9 @@ public class ItemsCursorAdapter extends CursorAdapter {
                                             //Put new value into contentValuesItemsTable
                                             contentValuesListTable.put(LIST_ITEM_COLUMN, rowIdInt);
                                             //Put new value into contentValuesItemsTable
-                                            contentValuesListTable.put(LIST_AMOUNT_COLUMN, amount);
+                                            contentValuesListTable.put(LIST_AMOUNT_COLUMN, amountPicker);
                                             //Put new value into contentValuesItemsTable
-                                            float itemTotalPrice = rowPriceFloat * amount;
+                                            float itemTotalPrice = rowPriceFloat * amountPicker;
                                             contentValuesListTable.put(PRICE_COLUMN, itemTotalPrice);
 
                                             //int for active version
