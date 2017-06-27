@@ -11,18 +11,13 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.CursorAdapter;
-import android.widget.EditText;
 import android.widget.NumberPicker;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.android.groceries2.EditorActivity;
 import com.example.android.groceries2.ItemsFragment;
 import com.example.android.groceries2.ListFragment;
-import com.example.android.groceries2.MainActivity;
 import com.example.android.groceries2.R;
 
 import static com.example.android.groceries2.MainActivity.db;
@@ -31,9 +26,8 @@ import static com.example.android.groceries2.data.GroceriesDbHelper.CHECKED_COLU
 import static com.example.android.groceries2.data.GroceriesDbHelper.ITEMS_TABLE_NAME;
 import static com.example.android.groceries2.data.GroceriesDbHelper.LIST_AMOUNT_COLUMN;
 import static com.example.android.groceries2.data.GroceriesDbHelper.LIST_ITEM_COLUMN;
-import static com.example.android.groceries2.data.GroceriesDbHelper.LOG_CODE_COLUMN;
-import static com.example.android.groceries2.data.GroceriesDbHelper.LOG_TABLE_NAME;
-import static com.example.android.groceries2.data.GroceriesDbHelper.LOG_TOTAL_COLUMN;
+import static com.example.android.groceries2.data.GroceriesDbHelper.MEASURE_COLUMN;
+import static com.example.android.groceries2.data.GroceriesDbHelper.MEASURE_TABLE_NAME;
 import static com.example.android.groceries2.data.GroceriesDbHelper.NAME_COLUMN;
 import static com.example.android.groceries2.data.GroceriesDbHelper.ID_COLUMN;
 import static com.example.android.groceries2.data.GroceriesDbHelper.PRICE_COLUMN;
@@ -85,7 +79,7 @@ public class ItemsCursorAdapter extends CursorAdapter {
             public void onClick(View v) {
 
                 final Cursor freshItemsTableCursor = db.query(ITEMS_TABLE_NAME,
-                        new String[]{CHECKED_COLUMN, NAME_COLUMN},
+                        new String[]{CHECKED_COLUMN, NAME_COLUMN, MEASURE_COLUMN},
                         ID_COLUMN + "=?", new String[]{Integer.toString(rowIdInt)},
                         null, null, null);
 
@@ -105,18 +99,44 @@ public class ItemsCursorAdapter extends CursorAdapter {
                     AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
                     //Create inflater object
                     final LayoutInflater inflater = LayoutInflater.from(view.getContext());
-                    //Create view object containing dialog_edit_item layout
-                    View editItemDialogView = inflater.inflate(R.layout.dialog_edit_item, null);
+                    //Create view object containing dialog_item_amount layout
+                    View editItemDialogView = inflater.inflate(R.layout.dialog_item_amount, null);
                     //Create edit text object linked to to editor_price id
 
-                    final NumberPicker numberPicker = (NumberPicker) editItemDialogView
-                            .findViewById(R.id.dialog_numberPicker);
-                    numberPicker.setMaxValue(999);
-                    numberPicker.setMinValue(0);
-                    numberPicker.setValue(1);
+                    final NumberPicker numberPicker1 = (NumberPicker) editItemDialogView
+                            .findViewById(R.id.dialog_picker_1);
+                    numberPicker1.setMaxValue(999);
+                    numberPicker1.setMinValue(0);
+                    numberPicker1.setValue(1);
 
-                    /*final EditText editNumber = (EditText) editItemDialogView
-                            .findViewById(R.id.dialog_edit_price_number_field);*/
+
+                    final NumberPicker numberPicker2 = (NumberPicker) editItemDialogView
+                            .findViewById(R.id.dialog_picker_2);
+                    numberPicker2.setMaxValue(99);
+                    numberPicker2.setMinValue(0);
+
+                    final TextView dialogMeasure = (TextView) editItemDialogView
+                            .findViewById(R.id.dialog_measure);
+
+                    int measureInItems = freshItemsTableCursor
+                            .getInt(freshItemsTableCursor.getColumnIndex(MEASURE_COLUMN));
+
+
+                    Cursor cursorForMeasure = db.query(MEASURE_TABLE_NAME,
+                            new String[]{MEASURE_COLUMN},
+                            ID_COLUMN + "=?", new String[]{Integer.toString(measureInItems)},
+                            null, null, null);
+
+                    cursorForMeasure.moveToFirst();
+
+                    String measureInMeasure = cursorForMeasure
+                            .getString(cursorForMeasure.getColumnIndex(MEASURE_COLUMN));
+
+                    cursorForMeasure.close();
+
+                    dialogMeasure.setText(measureInMeasure);
+
+
 
                     //Set title of the dialog
                     builder.setTitle("Please set amount of "
@@ -143,7 +163,9 @@ public class ItemsCursorAdapter extends CursorAdapter {
                                                     ID_COLUMN + "=?",
                                                     new String[]{Integer.toString(rowIdInt)});
 
-                                            int amountPicker = numberPicker.getValue();
+                                            int amountPicker1 = numberPicker1.getValue();
+
+                                            int amountPicker2 = numberPicker2.getValue();
 
                                             /*float amount = Float
                                                     .parseFloat(editNumber.getText().toString());*/
@@ -154,9 +176,9 @@ public class ItemsCursorAdapter extends CursorAdapter {
                                             //Put new value into contentValuesItemsTable
                                             contentValuesListTable.put(LIST_ITEM_COLUMN, rowIdInt);
                                             //Put new value into contentValuesItemsTable
-                                            contentValuesListTable.put(LIST_AMOUNT_COLUMN, amountPicker);
+                                            contentValuesListTable.put(LIST_AMOUNT_COLUMN, amountPicker1);
                                             //Put new value into contentValuesItemsTable
-                                            float itemTotalPrice = rowPriceFloat * amountPicker;
+                                            float itemTotalPrice = rowPriceFloat * amountPicker1;
                                             contentValuesListTable.put(PRICE_COLUMN, itemTotalPrice);
 
                                             //int for active version
