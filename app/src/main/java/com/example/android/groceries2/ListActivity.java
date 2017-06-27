@@ -139,7 +139,7 @@ public class ListActivity extends AppCompatActivity {
                 //Create alert dialog object
                 AlertDialog.Builder builder = new AlertDialog.Builder(ListActivity.this);
                 //Set title of the dialog
-                builder.setTitle("Deleting the list")
+                builder.setTitle("Delete list")
                         //Set custom view of the dialog
                         .setMessage("Are you sure you want to delete this list?")
                         //Set ability to press back

@@ -1,6 +1,9 @@
 package com.example.android.groceries2;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.database.Cursor;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -110,13 +113,44 @@ public class LogFragment extends Fragment {
         switch (item.getItemId()) {
             // Respond to a click on the "Insert dummy data" menu option
             case R.id.settings_log_delete_all_lists:
-                progressBar.setVisibility(View.VISIBLE);
 
-                new LogBackgroundTasks().execute();
-                return true;
+                //Create alert dialog object
+                AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                //Set title of the dialog
+                builder.setTitle("Delete all lists")
+                        //Set custom view of the dialog
+                        .setMessage("Are you sure you want to delete all lists?")
+                        //Set ability to press back
+                        .setCancelable(true)
+                        //Set Ok button with click listener
+                        .setPositiveButton("Delete all",
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int id) {
+
+                                        progressBar.setVisibility(View.VISIBLE);
+
+                                        new LogBackgroundTasks().execute();
 
 
-            // Respond to a click on the "Delete all entries" menu option
+                                        dialog.cancel();
+
+                                    }
+                                })
+
+                        //Set cancel button with click listener
+                        .setNegativeButton("Cancel",
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int id) {
+                                        //Close the dialog window
+                                        dialog.cancel();
+                                    }
+                                });
+
+                AlertDialog alert = builder.create();
+                alert.show();
+
+
+                // Respond to a click on the "Delete all entries" menu option
 
         }
         return super.onOptionsItemSelected(item);
