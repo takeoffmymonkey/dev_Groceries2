@@ -137,7 +137,6 @@ public class ItemsCursorAdapter extends CursorAdapter {
                     dialogMeasure.setText(measureInMeasure);
 
 
-
                     //Set title of the dialog
                     builder.setTitle("Please set amount of "
                             + itemName)
@@ -167,8 +166,11 @@ public class ItemsCursorAdapter extends CursorAdapter {
 
                                             int amountPicker2 = numberPicker2.getValue();
 
-                                            /*float amount = Float
-                                                    .parseFloat(editNumber.getText().toString());*/
+                                            String amountString = Integer.toString(amountPicker1) +
+                                                    "." + Integer.toString(amountPicker2);
+
+                                            float amount = Float
+                                                    .parseFloat(amountString);
 
                                             //Create contentValuesListTable var
                                             ContentValues contentValuesListTable
@@ -176,9 +178,9 @@ public class ItemsCursorAdapter extends CursorAdapter {
                                             //Put new value into contentValuesItemsTable
                                             contentValuesListTable.put(LIST_ITEM_COLUMN, rowIdInt);
                                             //Put new value into contentValuesItemsTable
-                                            contentValuesListTable.put(LIST_AMOUNT_COLUMN, amountPicker1);
+                                            contentValuesListTable.put(LIST_AMOUNT_COLUMN, amount);
                                             //Put new value into contentValuesItemsTable
-                                            float itemTotalPrice = rowPriceFloat * amountPicker1;
+                                            float itemTotalPrice = rowPriceFloat * amount;
                                             contentValuesListTable.put(PRICE_COLUMN, itemTotalPrice);
 
                                             //int for active version
