@@ -129,9 +129,10 @@ public class LogFragment extends Fragment {
 
                                         progressBar.setVisibility(View.VISIBLE);
 
-                                        new LogBackgroundTasks().execute();
+                                        new LogBackgroundTasks(getContext(),"Lists deleted",
+                                                Toast.LENGTH_SHORT).execute();
 
-
+                                        //Toast.makeText(getContext(), "Lists deleted", Toast.LENGTH_SHORT).show();
                                         dialog.cancel();
 
                                     }
@@ -159,6 +160,24 @@ public class LogFragment extends Fragment {
 
     class LogBackgroundTasks extends AsyncTask<Integer, Void, Boolean> {
 
+        Context context;
+        String toast;
+        int length;
+
+
+        public LogBackgroundTasks() {
+            super();
+        }
+
+
+        public LogBackgroundTasks(Context context, String toast, int length) {
+            super();
+            this.context = context;
+            this.toast = toast;
+            this.length = length;
+        }
+
+
         //Actions to perform on background thread
         @Override
         protected Boolean doInBackground(Integer... params) {
@@ -173,6 +192,10 @@ public class LogFragment extends Fragment {
         protected void onPostExecute(Boolean aBoolean) {
             super.onPostExecute(aBoolean);
             progressBar.setVisibility(View.GONE);
+
+            if (toast != null) {
+                Toast.makeText(context, toast, length).show();
+            }
         }
     }
 
