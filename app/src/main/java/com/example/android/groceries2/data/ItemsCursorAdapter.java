@@ -59,12 +59,17 @@ public class ItemsCursorAdapter extends CursorAdapter {
         //Create text view object for item's name
         TextView itemNameTextView = (TextView) view.findViewById(R.id.item_name);
 
+
+        final int lightPrimaryColor = view.getResources().getColor(R.color.colorPrimaryLight);
+
+
+
         //Set its name to NAME_COLUMN
         itemNameTextView.setText(cursor.getString(cursor.getColumnIndexOrThrow(NAME_COLUMN)));
 
         //Set color of the view (according to CHECKED_COLUMN state of the row)
         if (cursor.getInt(cursor.getColumnIndexOrThrow(CHECKED_COLUMN)) == 1)
-            view.setBackgroundColor(Color.GREEN);
+            view.setBackgroundColor(lightPrimaryColor);
         else view.setBackgroundColor(Color.WHITE);
 
         //Get ID_COLUMN of current row in int
@@ -149,8 +154,8 @@ public class ItemsCursorAdapter extends CursorAdapter {
                                     new DialogInterface.OnClickListener() {
                                         public void onClick(DialogInterface dialog, int id) {
 
-                                            //Set bg to gray
-                                            view.setBackgroundColor(Color.GREEN);
+                                            //Set bg to green
+                                            view.setBackgroundColor(lightPrimaryColor);
 
                                             //Create contentValuesItemsTable var to store CHECKED_COLUMN value
                                             ContentValues contentValuesItemsTable
