@@ -12,12 +12,14 @@ import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -104,7 +106,6 @@ public class ItemsFragment extends Fragment {
 
         //Find the gridView to hold items
         final GridView itemsGridView = (GridView) itemsView.findViewById(R.id.items_list);
-
 
         //Find empty view when nothing to show
         View emptyView = itemsView.findViewById(R.id.items_empty_view);

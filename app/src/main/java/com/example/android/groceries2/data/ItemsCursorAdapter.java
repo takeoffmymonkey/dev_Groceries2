@@ -60,6 +60,7 @@ public class ItemsCursorAdapter extends CursorAdapter {
     @Override
     public void bindView(final View view, final Context context, final Cursor cursor) {
 
+
         //Create text view object for item's name
         TextView itemNameTextView = (TextView) view.findViewById(R.id.item_name);
 
@@ -203,7 +204,6 @@ public class ItemsCursorAdapter extends CursorAdapter {
                                             //Create intent object
                                             Intent intent = new Intent(view.getContext(), EditorActivity.class);
                                             intent.putExtra("ID", rowIdInt);
-                                            // TODO: 016 16 Jun 17 pass items' data to editor
                                             //Start new activity
                                             view.getContext().startActivity(intent);
                                             //Close the dialog window
@@ -304,6 +304,23 @@ public class ItemsCursorAdapter extends CursorAdapter {
             }
 
 
+        });
+
+
+        //Set item to long-clickable
+        view.setLongClickable(true);
+
+        view.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                //Redirect user to Editor activity
+                //Create intent object
+                Intent intent = new Intent(view.getContext(), EditorActivity.class);
+                intent.putExtra("ID", rowIdInt);
+                //Start new activity
+                view.getContext().startActivity(intent);
+                return true;
+            }
         });
 
     }
