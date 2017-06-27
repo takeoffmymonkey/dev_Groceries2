@@ -4,6 +4,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
+
     <!-- Tabs -->
     <android.support.design.widget.TabLayout
         android:id="@+id/tabs"

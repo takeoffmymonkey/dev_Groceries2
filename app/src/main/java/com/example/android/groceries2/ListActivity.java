@@ -1,6 +1,8 @@
 package com.example.android.groceries2;
 
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Color;
@@ -22,6 +24,7 @@ import com.example.android.groceries2.data.ListLogCursorAdapter;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import static com.example.android.groceries2.ItemsFragment.progressBar;
 import static com.example.android.groceries2.MainActivity.db;
 import static com.example.android.groceries2.MainActivity.dbHelper;
 import static com.example.android.groceries2.data.GroceriesDbHelper.LOG_DATE_COMPLETE_COLUMN;
@@ -29,6 +32,7 @@ import static com.example.android.groceries2.data.GroceriesDbHelper.LOG_DATE_CRE
 import static com.example.android.groceries2.data.GroceriesDbHelper.LOG_TABLE_NAME;
 import static com.example.android.groceries2.data.GroceriesDbHelper.LOG_TOTAL_COLUMN;
 import static com.example.android.groceries2.data.GroceriesDbHelper.NAME_COLUMN;
+import static java.security.AccessController.getContext;
 
 /**
  * Created by takeoff on 006 06 Jun 17.
@@ -130,13 +134,46 @@ public class ListActivity extends AppCompatActivity {
         fabDeleteList.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                dbHelper.deleteListTable(listVersion);
 
-                Intent intent = new Intent(ListActivity.this, MainActivity.class);
-                intent.putExtra("tab", 2);
-                startActivity(intent);
 
-                Toast.makeText(ListActivity.this, listName + " deleted", Toast.LENGTH_SHORT).show();
+                //Create alert dialog object
+                AlertDialog.Builder builder = new AlertDialog.Builder(ListActivity.this);
+                //Set title of the dialog
+                builder.setTitle("Deleting the list")
+                        //Set custom view of the dialog
+                        .setMessage("Are you sure you want to delete this list?")
+                        //Set ability to press back
+                        .setCancelable(true)
+                        //Set Ok button with click listener
+                        .setPositiveButton("Delete",
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int id) {
+
+                                        dbHelper.deleteListTable(listVersion);
+
+                                        Intent intent = new Intent(ListActivity.this, MainActivity.class);
+                                        intent.putExtra("tab", 2);
+                                        startActivity(intent);
+
+                                        Toast.makeText(ListActivity.this, listName + " deleted", Toast.LENGTH_SHORT).show();
+                                        dialog.cancel();
+
+                                    }
+                                })
+
+                        //Set cancel button with click listener
+                        .setNegativeButton("Cancel",
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int id) {
+                                        //Close the dialog window
+                                        dialog.cancel();
+                                    }
+                                });
+
+                AlertDialog alert = builder.create();
+                alert.show();
+
+
             }
         });
 
