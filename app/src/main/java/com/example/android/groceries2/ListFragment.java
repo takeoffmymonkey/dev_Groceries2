@@ -2,6 +2,7 @@ package com.example.android.groceries2;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -18,6 +19,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.android.groceries2.data.ListCursorAdapter;
+import com.example.android.groceries2.data.LogCursorAdapter;
 
 import static com.example.android.groceries2.MainActivity.db;
 import static com.example.android.groceries2.MainActivity.dbHelper;
