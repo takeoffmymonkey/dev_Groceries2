@@ -18,6 +18,7 @@ import android.widget.TextView;
 import com.example.android.groceries2.EditorActivity;
 import com.example.android.groceries2.ItemsFragment;
 import com.example.android.groceries2.ListFragment;
+import com.example.android.groceries2.MainActivity;
 import com.example.android.groceries2.R;
 
 import static com.example.android.groceries2.MainActivity.db;
@@ -59,17 +60,12 @@ public class ItemsCursorAdapter extends CursorAdapter {
         //Create text view object for item's name
         TextView itemNameTextView = (TextView) view.findViewById(R.id.item_name);
 
-
-        final int lightPrimaryColor = view.getResources().getColor(R.color.colorPrimaryLight);
-
-
-
         //Set its name to NAME_COLUMN
         itemNameTextView.setText(cursor.getString(cursor.getColumnIndexOrThrow(NAME_COLUMN)));
 
         //Set color of the view (according to CHECKED_COLUMN state of the row)
         if (cursor.getInt(cursor.getColumnIndexOrThrow(CHECKED_COLUMN)) == 1)
-            view.setBackgroundColor(lightPrimaryColor);
+            view.setBackgroundColor(MainActivity.primaryLightColor);
         else view.setBackgroundColor(Color.WHITE);
 
         //Get ID_COLUMN of current row in int
@@ -155,7 +151,7 @@ public class ItemsCursorAdapter extends CursorAdapter {
                                         public void onClick(DialogInterface dialog, int id) {
 
                                             //Set bg to green
-                                            view.setBackgroundColor(lightPrimaryColor);
+                                            view.setBackgroundColor(MainActivity.primaryLightColor);
 
                                             //Create contentValuesItemsTable var to store CHECKED_COLUMN value
                                             ContentValues contentValuesItemsTable

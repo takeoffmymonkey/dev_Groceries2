@@ -33,6 +33,8 @@ public class CategoryAdapter extends FragmentPagerAdapter {
     }
 
 
+
+
     //Number of pages
     @Override
     public int getCount() {
@@ -50,4 +52,6 @@ public class CategoryAdapter extends FragmentPagerAdapter {
             return "Log";
         }
     }
+
+
 }

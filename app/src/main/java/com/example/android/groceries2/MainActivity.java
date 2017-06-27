@@ -31,11 +31,31 @@ public class MainActivity extends AppCompatActivity {
     static TabLayout tabLayout;
 
 
+    public static int primaryColor;
+    public static int primaryDarkColor;
+    public static int primaryLightColor;
+    public static int accentColor;
+    public static int primaryTextColor;
+    public static int secondaryTextColor;
+    public static int dividerColor;
+    public static int iconsColor;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //Set view for main activity class
         setContentView(R.layout.activity_main);
+
+
+        primaryColor = getResources().getColor(R.color.colorPrimary);
+        primaryDarkColor = getResources().getColor(R.color.colorPrimaryDark);
+        primaryLightColor = getResources().getColor(R.color.colorPrimaryLight);
+        accentColor = getResources().getColor(R.color.colorAccent);
+        primaryTextColor = getResources().getColor(R.color.colorPrimaryText);
+        secondaryTextColor = getResources().getColor(R.color.colorSecondaryText);
+        dividerColor = getResources().getColor(R.color.colorDivider);
+        iconsColor = getResources().getColor(R.color.colorIcons);
 
         //Create dbHelper object
         dbHelper = new GroceriesDbHelper(this, DB_NAME,
@@ -53,6 +73,9 @@ public class MainActivity extends AppCompatActivity {
         viewPager.setAdapter(adapter);
 
         tabLayout = (TabLayout) findViewById(R.id.tabs);
+
+        //tabLayout.setTabTextColors(iconsColor, primaryTextColor);
+
 
         //Link tab layout with view pager
         tabLayout.setupWithViewPager(viewPager);
@@ -90,4 +113,6 @@ public class MainActivity extends AppCompatActivity {
 
         return formatter.format(price);
     }
+
+
 }
