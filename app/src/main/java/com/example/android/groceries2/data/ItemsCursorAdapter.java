@@ -11,6 +11,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.CursorAdapter;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -88,6 +90,7 @@ public class ItemsCursorAdapter extends CursorAdapter {
                 //Move cursor to 1st row
                 freshItemsTableCursor.moveToFirst();
 
+
                 //Name of the item
                 final String itemName = freshItemsTableCursor.getString(freshItemsTableCursor
                         .getColumnIndex(NAME_COLUMN));
@@ -105,9 +108,9 @@ public class ItemsCursorAdapter extends CursorAdapter {
                     //Create edit text object linked to to editor_price id
 
 
-
                     final EditText editNumber = (EditText) editItemDialogView
                             .findViewById(R.id.dialog_edit_price_number_field);
+
                     //Set title of the dialog
                     builder.setTitle("Please set amount of "
                             + itemName)
@@ -286,7 +289,6 @@ public class ItemsCursorAdapter extends CursorAdapter {
 
                     //Close the cursor
                     listTableCursor.close();
-
 
 
                     ItemsFragment.refreshItemsCursor(context, itemName

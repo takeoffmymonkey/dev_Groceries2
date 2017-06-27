@@ -21,7 +21,8 @@
             android:name=".EditorActivity"
             android:label="Add/edit item"
             android:parentActivityName=".MainActivity"
-            android:theme="@style/EditorTheme">
+            android:theme="@style/EditorTheme"
+            android:windowSoftInputMode="stateVisible">
             <!-- Parent activity meta-data to support 4.0 and lower -->
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
