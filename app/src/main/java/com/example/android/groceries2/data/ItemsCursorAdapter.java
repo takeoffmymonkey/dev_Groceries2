@@ -133,7 +133,13 @@ public class ItemsCursorAdapter extends CursorAdapter {
 
                     cursorForMeasure.close();
 
-                    dialogMeasure.setText(measureInMeasure);
+                    if (measureInMeasure.equals("packs")) {
+                        dialogMeasure.setText("pack(s)");
+                    } else if (measureInMeasure.equals("items")) {
+                        dialogMeasure.setText("item(s)");
+                    } else {
+                        dialogMeasure.setText(measureInMeasure);
+                    }
 
 
                     //Set title of the dialog
