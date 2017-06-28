@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.util.Log;
@@ -71,7 +72,7 @@ public class ItemsFragment extends Fragment {
                              @Nullable Bundle savedInstanceState) {
 
         //Create the view object and inflate in with tab_items layout
-        View itemsView = inflater.inflate(R.layout.tab_items, container, false);
+        final View itemsView = inflater.inflate(R.layout.tab_items, container, false);
 
         //int with active version
         int activeListVersion = dbHelper.getActiveListVersion();
@@ -82,6 +83,7 @@ public class ItemsFragment extends Fragment {
         float total = dbHelper.getTotal(activeListVersion);
         //Set text
         itemsTotalTextView.setText("Total: " + MainActivity.formatPrice(total));
+
 
         progressBar = (ProgressBar) itemsView.findViewById(R.id.items_progress_bar);
         progressBar.setVisibility(View.GONE);
@@ -136,6 +138,29 @@ public class ItemsFragment extends Fragment {
         else{
             itemsGridView.setNumColumns(5);
         }
+
+
+
+
+        itemsTotalTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+
+                final Snackbar snackBar = Snackbar.make(itemsView, "Replace with your own action",
+                        Snackbar.LENGTH_INDEFINITE);
+
+                snackBar.setAction("Close", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        snackBar.dismiss();
+                    }
+                });
+                snackBar.show();
+
+            }
+        });
+
 
         //This fragment has options menu
         setHasOptionsMenu(true);

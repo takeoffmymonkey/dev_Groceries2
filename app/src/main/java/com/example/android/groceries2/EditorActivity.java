@@ -13,15 +13,18 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
+import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import static android.R.id.input;
 import static com.example.android.groceries2.MainActivity.db;
 import static com.example.android.groceries2.MainActivity.dbHelper;
 import static com.example.android.groceries2.data.GroceriesDbHelper.CHECKED_COLUMN;
@@ -51,6 +54,8 @@ public class EditorActivity extends AppCompatActivity {
 
     private Spinner measurementSpinner;
 
+    private ImageView icon;
+
     private int itemId = 0;
 
 
@@ -69,6 +74,7 @@ public class EditorActivity extends AppCompatActivity {
         nameEditText = (EditText) findViewById(R.id.editor_name);
         priceEditText = (EditText) findViewById(R.id.dialog_edit_price_number_field);
         measurementSpinner = (Spinner) findViewById(R.id.editor_measurement);
+        icon = (ImageView) findViewById(R.id.item_icon);
 
         // Setup OnTouchListeners on all the input fields, so we can determine if the user
         // has touched or modified them. This will let us know if there are unsaved changes
@@ -87,6 +93,43 @@ public class EditorActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 saveItem(name, price, itemId);
+            }
+        });
+
+
+        icon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(EditorActivity.this);
+
+                final LayoutInflater inflater = LayoutInflater.from(EditorActivity.this);
+                //Create view object containing dialog_item_amount layout
+                View iconSelectView = inflater.inflate(R.layout.dialog_item_icon, null);
+
+                //Set title of the dialog
+                builder.setTitle("Set icon")
+                        //Set message
+                        .setView(iconSelectView)
+                        //Set ability to press back
+                        .setCancelable(true)
+                        //Set Ok button with click listener
+                        .setPositiveButton("Ok",
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int id) {
+                                        //Close the dialog window
+                                        dialog.cancel();
+                                    }
+                                })
+                        .setNegativeButton("Cancel",
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int id) {
+                                        //Close the dialog window
+                                        dialog.cancel();
+                                    }
+                                });
+
+                AlertDialog alert = builder.create();
+                alert.show();
             }
         });
 
@@ -238,7 +281,6 @@ public class EditorActivity extends AppCompatActivity {
                         new String[]{Integer.toString(itemId)});
                 Toast.makeText(this, "Item updated", Toast.LENGTH_SHORT).show();
             }
-
 
 
             Intent intent = new Intent(this, MainActivity.class);
