@@ -5,6 +5,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.database.Cursor;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -12,6 +13,7 @@ import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.GridLayoutManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -54,6 +56,7 @@ public class ItemsFragment extends Fragment {
 
     public static FloatingActionButton fabAddItem;
 
+    GridView itemsGridView;
 
     static String toast;
 
@@ -106,7 +109,7 @@ public class ItemsFragment extends Fragment {
         });
 
         //Find the gridView to hold items
-        final GridView itemsGridView = (GridView) itemsView.findViewById(R.id.items_list);
+        itemsGridView = (GridView) itemsView.findViewById(R.id.items_list);
 
         //Find empty view when nothing to show
         View emptyView = itemsView.findViewById(R.id.items_empty_view);
@@ -124,6 +127,15 @@ public class ItemsFragment extends Fragment {
         itemsCursorAdapter = new ItemsCursorAdapter(getContext(), cursor, 0);
 
         itemsGridView.setAdapter(itemsCursorAdapter);
+
+
+
+        if(getActivity().getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT){
+            itemsGridView.setNumColumns(3);
+        }
+        else{
+            itemsGridView.setNumColumns(5);
+        }
 
         //This fragment has options menu
         setHasOptionsMenu(true);
@@ -391,6 +403,13 @@ public class ItemsFragment extends Fragment {
     }
 
 
+
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        itemsGridView.setNumColumns(newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE ? 3 : 2);
+        super.onConfigurationChanged(newConfig);
+    }
 
 
 }
