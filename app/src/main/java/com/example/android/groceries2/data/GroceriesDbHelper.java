@@ -103,9 +103,9 @@ public class GroceriesDbHelper extends SQLiteOpenHelper {
     //List table name 1st part
     private static final String LIST_TABLE_NAME_part_1 = "List_";
     //List table item column
-    static final String LIST_ITEM_COLUMN = "item";
+    public static final String LIST_ITEM_COLUMN = "item";
     //List table amount column
-    static final String LIST_AMOUNT_COLUMN = "amount";
+    public static final String LIST_AMOUNT_COLUMN = "amount";
     //Create string for CREATE TABLE command
     private String LIST_INIT_TABLE_CREATE_COMMAND = "CREATE TABLE " + LIST_TABLE_NAME_part_1 + "0" +
             " (" +

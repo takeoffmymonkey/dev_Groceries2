@@ -7,6 +7,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.database.Cursor;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
@@ -14,6 +15,7 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.GridLayoutManager;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -37,6 +39,8 @@ import static com.example.android.groceries2.MainActivity.db;
 import static com.example.android.groceries2.MainActivity.dbHelper;
 import static com.example.android.groceries2.data.GroceriesDbHelper.ID_COLUMN;
 import static com.example.android.groceries2.data.GroceriesDbHelper.ITEMS_TABLE_NAME;
+import static com.example.android.groceries2.data.GroceriesDbHelper.LIST_AMOUNT_COLUMN;
+import static com.example.android.groceries2.data.GroceriesDbHelper.LIST_ITEM_COLUMN;
 import static com.example.android.groceries2.data.GroceriesDbHelper.MEASURE_COLUMN;
 import static com.example.android.groceries2.data.GroceriesDbHelper.NAME_COLUMN;
 import static com.example.android.groceries2.data.GroceriesDbHelper.PRICE_COLUMN;
@@ -59,7 +63,9 @@ public class ItemsFragment extends Fragment {
 
     GridView itemsGridView;
 
-    static String toast;
+    public static boolean snackOn = false;
+
+    public static Snackbar snackBar;
 
     //Required empty constructor
     public ItemsFragment() {
@@ -131,15 +137,11 @@ public class ItemsFragment extends Fragment {
         itemsGridView.setAdapter(itemsCursorAdapter);
 
 
-
-        if(getActivity().getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT){
+        if (getActivity().getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
             itemsGridView.setNumColumns(3);
-        }
-        else{
+        } else {
             itemsGridView.setNumColumns(5);
         }
-
-
 
 
         itemsTotalTextView.setOnClickListener(new View.OnClickListener() {
@@ -147,16 +149,80 @@ public class ItemsFragment extends Fragment {
             public void onClick(View v) {
 
 
-                final Snackbar snackBar = Snackbar.make(itemsView, "Replace with your own action",
-                        Snackbar.LENGTH_INDEFINITE);
+                Cursor cursorActiveList = db.query(dbHelper.getActiveListName(), null, null,
+                        null, null, null, null);
 
-                snackBar.setAction("Close", new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        snackBar.dismiss();
+                int rows = cursorActiveList.getCount();
+                int lines = rows + 2;
+
+                if (rows > 0) {
+
+                    cursorActiveList.moveToFirst();
+
+                    StringBuilder sb = new StringBuilder();
+
+                    float total = 0f;
+
+                    for (int i = 0; i < rows; i++) {
+
+
+                        int name = cursorActiveList.getInt(cursorActiveList
+                                .getColumnIndex(LIST_ITEM_COLUMN));
+
+                        float amount = cursorActiveList.getFloat(cursorActiveList
+                                .getColumnIndex(LIST_AMOUNT_COLUMN));
+
+
+                        String amountString;
+
+                        if (amount == Math.round(amount)) {
+                            amountString = Integer.toString(Math.round(amount));
+                        } else {
+                            amountString = Float.toString(amount);
+                        }
+
+                        float price = cursorActiveList.getFloat(cursorActiveList
+                                .getColumnIndex(PRICE_COLUMN));
+
+                        total += price;
+
+                        sb.append(name + " (" + amountString + ")" + " = " +
+                                MainActivity.formatPrice(price) + "\n");
+
+                        cursorActiveList.moveToNext();
                     }
-                });
-                snackBar.show();
+
+                    sb.append("= = = =" + "\n");
+                    sb.append("Total: " + MainActivity.formatPrice(total));
+
+
+                    final Snackbar snackBar = Snackbar.make(itemsView, sb,
+                            Snackbar.LENGTH_INDEFINITE);
+
+
+                    View snackbarView = snackBar.getView();
+                    TextView textView = (TextView) snackbarView.findViewById(android.support.design.R.id.snackbar_text);
+                    textView.setMaxLines(lines);
+
+                    //snackbarView.setBackgroundColor(MainActivity.primaryTextColor);
+                    //snackbarView.setBackgroundColor(Color.DKGRAY);
+
+                    snackBar.setAction("Close", new View.OnClickListener() {
+
+                        @Override
+                        public void onClick(View v) {
+                            snackBar.dismiss();
+                        }
+
+
+                    });
+
+                    snackBar.show();
+
+                    setSnackOnState(true, snackBar);
+                }
+
+                cursorActiveList.close();
 
             }
         });
@@ -202,6 +268,11 @@ public class ItemsFragment extends Fragment {
 
             // Respond to a click on the "Delete all entries" menu option
             case R.id.settings_items_delete_all_items:
+
+                if (ItemsFragment.snackOn && ItemsFragment.snackBar != null) {
+                    ItemsFragment.snackBar.dismiss();
+                    ItemsFragment.setSnackOnState(false, null);
+                }
 
                 //Check if there are items to delete
                 //Create a cursor and ask for ID 1
@@ -345,6 +416,7 @@ public class ItemsFragment extends Fragment {
 
 
         }
+
     }
 
 
@@ -428,12 +500,20 @@ public class ItemsFragment extends Fragment {
     }
 
 
-
-
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         itemsGridView.setNumColumns(newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE ? 3 : 2);
         super.onConfigurationChanged(newConfig);
+    }
+
+
+    public static void setSnackOnState(boolean state, Snackbar snackbar) {
+        snackOn = state;
+        snackBar = snackbar;
+    }
+
+    public boolean getSnackOnState() {
+        return snackOn;
     }
 
 

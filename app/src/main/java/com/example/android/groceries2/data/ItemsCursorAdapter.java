@@ -80,6 +80,11 @@ public class ItemsCursorAdapter extends CursorAdapter {
             @Override
             public void onClick(View v) {
 
+                if (ItemsFragment.snackOn && ItemsFragment.snackBar != null) {
+                    ItemsFragment.snackBar.dismiss();
+                    ItemsFragment.setSnackOnState(false, null);
+                }
+
                 final Cursor freshItemsTableCursor = db.query(ITEMS_TABLE_NAME,
                         new String[]{CHECKED_COLUMN, NAME_COLUMN, MEASURE_COLUMN},
                         ID_COLUMN + "=?", new String[]{Integer.toString(rowIdInt)},

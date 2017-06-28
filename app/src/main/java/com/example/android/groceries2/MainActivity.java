@@ -18,6 +18,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.android.groceries2.data.CategoryAdapter;
 import com.example.android.groceries2.data.GroceriesDbHelper;
@@ -91,6 +92,33 @@ public class MainActivity extends AppCompatActivity {
 
         //Link tab layout with view pager
         tabLayout.setupWithViewPager(viewPager);
+
+
+        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+                if (ItemsFragment.snackOn && ItemsFragment.snackBar != null) {
+                    ItemsFragment.snackBar.dismiss();
+                    ItemsFragment.setSnackOnState(false, null);
+                }
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                if (ItemsFragment.snackOn && ItemsFragment.snackBar != null) {
+                    ItemsFragment.snackBar.dismiss();
+                    ItemsFragment.setSnackOnState(false, null);
+                }
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+                if (ItemsFragment.snackOn && ItemsFragment.snackBar != null) {
+                    ItemsFragment.snackBar.dismiss();
+                    ItemsFragment.setSnackOnState(false, null);
+                }
+            }
+        });
 
         int tab = getIntent().getIntExtra("tab", 0);
 

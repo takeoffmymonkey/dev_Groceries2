@@ -57,6 +57,8 @@
         android:layout_margin="16dp"
         android:src="@mipmap/ic_add_white_24dp" />
 
+
+
     <TextView
         android:id="@+id/items_total"
         android:layout_width="match_parent"
