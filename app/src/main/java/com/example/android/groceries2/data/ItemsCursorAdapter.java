@@ -218,8 +218,7 @@ public class ItemsCursorAdapter extends CursorAdapter {
 
 
                                             //refresh cursors
-                                            ItemsFragment.refreshItemsCursor(context, itemName
-                                                    + " added to the list", 2);
+                                            ItemsFragment.refreshItemsCursor(null, null, 0);
                                             ListFragment.refreshListCursor(null, null, 0);
 
                                             //close cursor
@@ -325,8 +324,7 @@ public class ItemsCursorAdapter extends CursorAdapter {
                     listTableCursor.close();
 
 
-                    ItemsFragment.refreshItemsCursor(context, itemName
-                            + " removed from the list", 2);
+                    ItemsFragment.refreshItemsCursor(null, null, 0);
 
                     freshItemsTableCursor.close();
                     //refresh cursors
