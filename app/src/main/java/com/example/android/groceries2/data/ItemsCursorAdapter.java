@@ -23,6 +23,7 @@ import com.example.android.groceries2.R;
 
 import static com.example.android.groceries2.MainActivity.db;
 import static com.example.android.groceries2.MainActivity.dbHelper;
+import static com.example.android.groceries2.MainActivity.nums;
 import static com.example.android.groceries2.data.GroceriesDbHelper.CHECKED_COLUMN;
 import static com.example.android.groceries2.data.GroceriesDbHelper.ITEMS_TABLE_NAME;
 import static com.example.android.groceries2.data.GroceriesDbHelper.LIST_AMOUNT_COLUMN;
@@ -104,17 +105,14 @@ public class ItemsCursorAdapter extends CursorAdapter {
                     View editItemDialogView = inflater.inflate(R.layout.dialog_item_amount, null);
                     //Create edit text object linked to to editor_price id
 
-                    final NumberPicker numberPicker1 = (NumberPicker) editItemDialogView
+                    final NumberPicker numberPicker = (NumberPicker) editItemDialogView
                             .findViewById(R.id.dialog_picker_1);
-                    numberPicker1.setMaxValue(999);
-                    numberPicker1.setMinValue(0);
-                    numberPicker1.setValue(1);
 
 
-                    final NumberPicker numberPicker2 = (NumberPicker) editItemDialogView
-                            .findViewById(R.id.dialog_picker_2);
-                    numberPicker2.setMaxValue(99);
-                    numberPicker2.setMinValue(0);
+                    numberPicker.setDisplayedValues(nums);
+                    numberPicker.setMinValue(0);
+                    numberPicker.setMaxValue(nums.length - 1);
+                    numberPicker.setValue(9);
 
                     final TextView dialogMeasure = (TextView) editItemDialogView
                             .findViewById(R.id.dialog_measure);
@@ -163,15 +161,11 @@ public class ItemsCursorAdapter extends CursorAdapter {
                                                     ID_COLUMN + "=?",
                                                     new String[]{Integer.toString(rowIdInt)});
 
-                                            int amountPicker1 = numberPicker1.getValue();
+                                            int amountPicker = numberPicker.getValue();
 
-                                            int amountPicker2 = numberPicker2.getValue();
-
-                                            String amountString = Integer.toString(amountPicker1) +
-                                                    "." + Integer.toString(amountPicker2);
 
                                             float amount = Float
-                                                    .parseFloat(amountString);
+                                                    .parseFloat(nums[amountPicker]);
 
                                             //Create contentValuesListTable var
                                             ContentValues contentValuesListTable

@@ -3,12 +3,21 @@ This is MainActivity
  */
 package com.example.android.groceries2;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.TextView;
 
 import com.example.android.groceries2.data.CategoryAdapter;
 import com.example.android.groceries2.data.GroceriesDbHelper;
@@ -40,6 +49,8 @@ public class MainActivity extends AppCompatActivity {
     public static int secondaryTextColor;
     public static int dividerColor;
     public static int iconsColor;
+
+    public static String nums[];
 
 
     @Override
@@ -86,6 +97,30 @@ public class MainActivity extends AppCompatActivity {
         if (tab != 0) {
             selectTab(tab);
         }
+
+
+        String[] numsTemp = new String[1008];
+
+        numsTemp[0] = "0.1";
+        numsTemp[1] = "0.2";
+        numsTemp[2] = "0.3";
+        numsTemp[3] = "0.4";
+        numsTemp[4] = "0.5";
+        numsTemp[5] = "0.6";
+        numsTemp[6] = "0.7";
+        numsTemp[7] = "0.8";
+        numsTemp[8] = "0.9";
+
+        int count = 1;
+
+        for (int i = 9; i < numsTemp.length; i++) {
+
+            numsTemp[i] = Integer.toString(count);
+            count++;
+        }
+
+
+        nums = numsTemp;
 
     }
 

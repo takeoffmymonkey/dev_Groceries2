@@ -7,39 +7,22 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_gravity="center"
         android:padding="8dp"
-        android:text="Amount:"
-        android:layout_gravity="center"/>
+        android:text="Amount:" />
 
 
     <NumberPicker
         android:id="@+id/dialog_picker_1"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
-    </NumberPicker>
-
-    <TextView
-        android:id="@+id/dialog_dot"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:padding="8dp"
-        android:text="."
-        android:layout_gravity="center"/>
-
-    <NumberPicker
-        android:id="@+id/dialog_picker_2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
-    </NumberPicker>
-
-
+        android:layout_height="wrap_content" />
 
     <TextView
         android:id="@+id/dialog_measure"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_gravity="center"
         android:padding="8dp"
-        android:text="Kg"
-        android:layout_gravity="center"/>
+        android:text="Kg" />
 
 </LinearLayout>
