@@ -205,7 +205,7 @@ public class ItemsFragment extends Fragment {
                     textView.setMaxLines(lines);
 
                     //snackbarView.setBackgroundColor(MainActivity.primaryTextColor);
-                    //snackbarView.setBackgroundColor(Color.DKGRAY);
+                    snackbarView.setBackgroundColor(Color.DKGRAY);
 
                     snackBar.setAction("Close", new View.OnClickListener() {
 
@@ -392,6 +392,7 @@ public class ItemsFragment extends Fragment {
                         db.insert(ITEMS_TABLE_NAME, null, contentValues);
                     }
 
+
                     refreshItemsCursor(null, null, 0);
 
                     break;
@@ -408,6 +409,9 @@ public class ItemsFragment extends Fragment {
         @Override
         protected void onPostExecute(Boolean aBoolean) {
             super.onPostExecute(aBoolean);
+
+            itemsTotalTextView.setText("Total: " + MainActivity.formatPrice(0.00f));
+
             progressBar.setVisibility(View.GONE);
 
             if (toast != null) {

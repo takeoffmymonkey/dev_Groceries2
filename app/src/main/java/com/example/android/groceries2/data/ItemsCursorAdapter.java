@@ -83,6 +83,7 @@ public class ItemsCursorAdapter extends CursorAdapter {
                 if (ItemsFragment.snackOn && ItemsFragment.snackBar != null) {
                     ItemsFragment.snackBar.dismiss();
                     ItemsFragment.setSnackOnState(false, null);
+                    return;
                 }
 
                 final Cursor freshItemsTableCursor = db.query(ITEMS_TABLE_NAME,

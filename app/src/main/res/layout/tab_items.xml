@@ -65,8 +65,9 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:gravity="center"
-        android:background="@color/colorDarkerGray"
-        android:textStyle="bold"
+        android:background="@color/colorDarkGray"
+        android:textColor="@color/colorIcons"
+        android:text="Total: 123.34 UAH"
         />
 
     <RelativeLayout
