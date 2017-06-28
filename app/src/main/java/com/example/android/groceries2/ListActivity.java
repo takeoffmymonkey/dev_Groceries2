@@ -152,6 +152,7 @@ public class ListActivity extends AppCompatActivity {
                                         dbHelper.deleteListTable(listVersion);
 
                                         Intent intent = new Intent(ListActivity.this, MainActivity.class);
+                                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                         intent.putExtra("tab", 2);
                                         startActivity(intent);
 
@@ -189,6 +190,7 @@ public class ListActivity extends AppCompatActivity {
             case android.R.id.home:
                 Intent intent = new Intent(ListActivity.this, MainActivity.class);
                 intent.putExtra("tab", 2);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(intent);
                 return true;
         }

@@ -3,6 +3,7 @@ This is MainActivity
  */
 package com.example.android.groceries2;
 
+import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
@@ -100,7 +101,6 @@ public class MainActivity extends AppCompatActivity {
         //Close any open database object
         dbHelper.close();
     }
-
 
     public static String formatPrice(float price) {
 

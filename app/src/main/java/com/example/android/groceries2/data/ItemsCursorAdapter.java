@@ -237,6 +237,7 @@ public class ItemsCursorAdapter extends CursorAdapter {
                                             //Create intent object
                                             Intent intent = new Intent(view.getContext(), EditorActivity.class);
                                             intent.putExtra("ID", rowIdInt);
+                                            intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
                                             //Start new activity
                                             view.getContext().startActivity(intent);
                                             //Close the dialog window
@@ -350,6 +351,7 @@ public class ItemsCursorAdapter extends CursorAdapter {
                 //Create intent object
                 Intent intent = new Intent(view.getContext(), EditorActivity.class);
                 intent.putExtra("ID", rowIdInt);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
                 //Start new activity
                 view.getContext().startActivity(intent);
                 return true;

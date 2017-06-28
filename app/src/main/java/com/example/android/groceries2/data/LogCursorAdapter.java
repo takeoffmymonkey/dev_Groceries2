@@ -58,7 +58,7 @@ public class LogCursorAdapter extends CursorAdapter {
                 Intent intent = new Intent(view.getContext(), ListActivity.class);
                 intent.putExtra("listName", listName);
                 intent.putExtra("listVersion", listVersion);
-
+                intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
                 //Create editor activity
                 view.getContext().startActivity(intent);
             }
@@ -83,7 +83,7 @@ public class LogCursorAdapter extends CursorAdapter {
 
         //Create text view for completion date info
         TextView logItemCompleteDate = (TextView) view.findViewById(R.id.log_item_date_complete_value);
-        ColorStateList oldColors =  logItemCompleteDate.getTextColors();
+        ColorStateList oldColors = logItemCompleteDate.getTextColors();
 
         //If there is no record
         if (cursor.getInt(cursor.getColumnIndexOrThrow(LOG_DATE_COMPLETE_COLUMN)) == 0) {

@@ -99,6 +99,7 @@ public class ItemsFragment extends Fragment {
             public void onClick(View v) {
                 //Create object for intent
                 Intent intent = new Intent(getActivity(), EditorActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
                 //Create editor activity
                 startActivity(intent);
             }
@@ -158,6 +159,7 @@ public class ItemsFragment extends Fragment {
 
             case R.id.settings_items_add_item:
                 Intent intent = new Intent(getActivity(), EditorActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
                 startActivity(intent);
                 return true;
 
