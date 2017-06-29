@@ -99,10 +99,14 @@ public class ListFragment extends Fragment {
             @Override
             public void onClick(View v) {
 
-                Intent sendIntent = new Intent(Intent.ACTION_SEND);
-                sendIntent.setType("text/plain");
-                sendIntent.putExtra(Intent.EXTRA_TEXT, MainActivity.getActiveListAsString());
-                sendIntent.putExtra(Intent.EXTRA_SUBJECT, "Groceries app: You've got new list!");
+                Intent intent = new Intent(Intent.ACTION_SEND);
+                intent.setType("text/plain");
+                intent.putExtra(Intent.EXTRA_TEXT, MainActivity.getActiveListAsString());
+                intent.putExtra(Intent.EXTRA_SUBJECT, "Groceries app: You've got new list!");
+
+                //For ability to always choose intent receiver
+                Intent sendIntent = Intent.createChooser(intent, "Send list");
+
                 startActivity(sendIntent);
             }
 
