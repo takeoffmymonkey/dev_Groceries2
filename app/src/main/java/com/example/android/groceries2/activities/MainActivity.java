@@ -3,22 +3,26 @@ This is MainActivity
  */
 package com.example.android.groceries2.activities;
 
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 
-import com.example.android.groceries2.fragments.ItemsFragment;
 import com.example.android.groceries2.R;
 import com.example.android.groceries2.adapters.CategoryAdapter;
 import com.example.android.groceries2.db.GroceriesDbHelper;
+import com.example.android.groceries2.fragments.ItemsFragment;
 
 import java.text.NumberFormat;
 import java.util.Locale;
 
 import static com.example.android.groceries2.db.GroceriesDbHelper.DB_NAME;
 import static com.example.android.groceries2.db.GroceriesDbHelper.DB_VERSION;
+import static com.example.android.groceries2.db.GroceriesDbHelper.LIST_AMOUNT_COLUMN;
+import static com.example.android.groceries2.db.GroceriesDbHelper.LIST_ITEM_COLUMN;
+import static com.example.android.groceries2.db.GroceriesDbHelper.PRICE_COLUMN;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -165,6 +169,68 @@ public class MainActivity extends AppCompatActivity {
         NumberFormat formatter = NumberFormat.getCurrencyInstance(locale);
 
         return formatter.format(price);
+    }
+
+
+    public static String getActiveListAsString() {
+
+
+        Cursor cursorActiveList = db.query(dbHelper.getActiveListName(), null, null,
+                null, null, null, null);
+
+        int rows = cursorActiveList.getCount();
+
+        if (rows > 0) {
+
+            cursorActiveList.moveToFirst();
+
+            StringBuilder sb = new StringBuilder();
+
+            float total = 0f;
+
+            for (int i = 0; i < rows; i++) {
+
+
+                int name = cursorActiveList.getInt(cursorActiveList
+                        .getColumnIndex(LIST_ITEM_COLUMN));
+
+                float amount = cursorActiveList.getFloat(cursorActiveList
+                        .getColumnIndex(LIST_AMOUNT_COLUMN));
+
+
+                String amountString;
+
+                if (amount == Math.round(amount)) {
+                    amountString = Integer.toString(Math.round(amount));
+                } else {
+                    amountString = Float.toString(amount);
+                }
+
+                float price = cursorActiveList.getFloat(cursorActiveList
+                        .getColumnIndex(PRICE_COLUMN));
+
+                total += price;
+
+                sb.append(name + " (" + amountString + ")" + " = " +
+                        MainActivity.formatPrice(price) + "\n");
+
+                cursorActiveList.moveToNext();
+            }
+
+            sb.append("= = = =" + "\n");
+            sb.append("Total: " + MainActivity.formatPrice(total));
+
+            String sendMessage = sb.toString();
+
+            cursorActiveList.close();
+
+            return sendMessage;
+
+        }
+
+        cursorActiveList.close();
+
+        return null;
     }
 
 

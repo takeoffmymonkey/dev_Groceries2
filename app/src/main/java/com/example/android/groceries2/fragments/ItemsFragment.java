@@ -31,18 +31,16 @@ import com.example.android.groceries2.activities.EditorActivity;
 import com.example.android.groceries2.activities.MainActivity;
 import com.example.android.groceries2.adapters.ItemsCursorAdapter;
 
-import static com.example.android.groceries2.fragments.ListFragment.fabCompleteList;
-import static com.example.android.groceries2.fragments.ListFragment.fabSendList;
-import static com.example.android.groceries2.fragments.ListFragment.listTotalTextView;
 import static com.example.android.groceries2.activities.MainActivity.db;
 import static com.example.android.groceries2.activities.MainActivity.dbHelper;
 import static com.example.android.groceries2.db.GroceriesDbHelper.ID_COLUMN;
 import static com.example.android.groceries2.db.GroceriesDbHelper.ITEMS_TABLE_NAME;
-import static com.example.android.groceries2.db.GroceriesDbHelper.LIST_AMOUNT_COLUMN;
-import static com.example.android.groceries2.db.GroceriesDbHelper.LIST_ITEM_COLUMN;
 import static com.example.android.groceries2.db.GroceriesDbHelper.MEASURE_COLUMN;
 import static com.example.android.groceries2.db.GroceriesDbHelper.NAME_COLUMN;
 import static com.example.android.groceries2.db.GroceriesDbHelper.PRICE_COLUMN;
+import static com.example.android.groceries2.fragments.ListFragment.fabCompleteList;
+import static com.example.android.groceries2.fragments.ListFragment.fabSendList;
+import static com.example.android.groceries2.fragments.ListFragment.listTotalTextView;
 
 
 /**
@@ -154,76 +152,36 @@ public class ItemsFragment extends Fragment {
                 int rows = cursorActiveList.getCount();
                 int lines = rows + 2;
 
-                if (rows > 0) {
-
-                    cursorActiveList.moveToFirst();
-
-                    StringBuilder sb = new StringBuilder();
-
-                    float total = 0f;
-
-                    for (int i = 0; i < rows; i++) {
-
-
-                        int name = cursorActiveList.getInt(cursorActiveList
-                                .getColumnIndex(LIST_ITEM_COLUMN));
-
-                        float amount = cursorActiveList.getFloat(cursorActiveList
-                                .getColumnIndex(LIST_AMOUNT_COLUMN));
-
-
-                        String amountString;
-
-                        if (amount == Math.round(amount)) {
-                            amountString = Integer.toString(Math.round(amount));
-                        } else {
-                            amountString = Float.toString(amount);
-                        }
-
-                        float price = cursorActiveList.getFloat(cursorActiveList
-                                .getColumnIndex(PRICE_COLUMN));
-
-                        total += price;
-
-                        sb.append(name + " (" + amountString + ")" + " = " +
-                                MainActivity.formatPrice(price) + "\n");
-
-                        cursorActiveList.moveToNext();
-                    }
-
-                    sb.append("= = = =" + "\n");
-                    sb.append("Total: " + MainActivity.formatPrice(total));
-
-
-                    final Snackbar snackBar = Snackbar.make(itemsView, sb,
-                            Snackbar.LENGTH_INDEFINITE);
-
-
-                    View snackbarView = snackBar.getView();
-                    TextView textView = (TextView) snackbarView.findViewById(android.support.design.R.id.snackbar_text);
-                    textView.setMaxLines(lines);
-
-                    //snackbarView.setBackgroundColor(MainActivity.primaryTextColor);
-                    snackbarView.setBackgroundColor(Color.DKGRAY);
-
-                    snackBar.setAction("Close", new View.OnClickListener() {
-
-                        @Override
-                        public void onClick(View v) {
-                            snackBar.dismiss();
-                        }
-
-
-                    });
-
-                    snackBar.show();
-
-                    setSnackOnState(true, snackBar);
-                }
-
                 cursorActiveList.close();
 
+
+                final Snackbar snackBar = Snackbar.make(itemsView,
+                        MainActivity.getActiveListAsString(),
+                        Snackbar.LENGTH_INDEFINITE);
+
+
+                View snackbarView = snackBar.getView();
+                TextView textView = (TextView) snackbarView.findViewById(android.support.design.R.id.snackbar_text);
+                textView.setMaxLines(lines);
+
+                //snackbarView.setBackgroundColor(MainActivity.primaryTextColor);
+                snackbarView.setBackgroundColor(Color.DKGRAY);
+
+                snackBar.setAction("Close", new View.OnClickListener() {
+
+                    @Override
+                    public void onClick(View v) {
+                        snackBar.dismiss();
+                    }
+
+
+                });
+
+                snackBar.show();
+
+                setSnackOnState(true, snackBar);
             }
+
         });
 
 
