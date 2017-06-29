@@ -1,4 +1,4 @@
-package com.example.android.groceries2;
+package com.example.android.groceries2.activities;
 
 
 import android.app.AlertDialog;
@@ -10,8 +10,6 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.TabLayout;
-import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.view.View;
@@ -19,20 +17,19 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.android.groceries2.data.ListLogCursorAdapter;
+import com.example.android.groceries2.R;
+import com.example.android.groceries2.adapters.ListLogCursorAdapter;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import static com.example.android.groceries2.ItemsFragment.progressBar;
-import static com.example.android.groceries2.MainActivity.db;
-import static com.example.android.groceries2.MainActivity.dbHelper;
-import static com.example.android.groceries2.data.GroceriesDbHelper.LOG_DATE_COMPLETE_COLUMN;
-import static com.example.android.groceries2.data.GroceriesDbHelper.LOG_DATE_CREATED_COLUMN;
-import static com.example.android.groceries2.data.GroceriesDbHelper.LOG_TABLE_NAME;
-import static com.example.android.groceries2.data.GroceriesDbHelper.LOG_TOTAL_COLUMN;
-import static com.example.android.groceries2.data.GroceriesDbHelper.NAME_COLUMN;
-import static java.security.AccessController.getContext;
+import static com.example.android.groceries2.activities.MainActivity.db;
+import static com.example.android.groceries2.activities.MainActivity.dbHelper;
+import static com.example.android.groceries2.db.GroceriesDbHelper.LOG_DATE_COMPLETE_COLUMN;
+import static com.example.android.groceries2.db.GroceriesDbHelper.LOG_DATE_CREATED_COLUMN;
+import static com.example.android.groceries2.db.GroceriesDbHelper.LOG_TABLE_NAME;
+import static com.example.android.groceries2.db.GroceriesDbHelper.LOG_TOTAL_COLUMN;
+import static com.example.android.groceries2.db.GroceriesDbHelper.NAME_COLUMN;
 
 /**
  * Created by takeoff on 006 06 Jun 17.

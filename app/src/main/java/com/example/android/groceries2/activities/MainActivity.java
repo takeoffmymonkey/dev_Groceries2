@@ -1,34 +1,24 @@
 /*
 This is MainActivity
  */
-package com.example.android.groceries2;
+package com.example.android.groceries2.activities;
 
-import android.app.AlertDialog;
-import android.app.Dialog;
-import android.content.DialogInterface;
-import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.design.widget.TabLayout;
-import android.support.v4.app.DialogFragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.TextView;
-import android.widget.Toast;
 
-import com.example.android.groceries2.data.CategoryAdapter;
-import com.example.android.groceries2.data.GroceriesDbHelper;
+import com.example.android.groceries2.fragments.ItemsFragment;
+import com.example.android.groceries2.R;
+import com.example.android.groceries2.adapters.CategoryAdapter;
+import com.example.android.groceries2.db.GroceriesDbHelper;
 
 import java.text.NumberFormat;
-import java.util.Currency;
 import java.util.Locale;
 
-import static com.example.android.groceries2.data.GroceriesDbHelper.DB_NAME;
-import static com.example.android.groceries2.data.GroceriesDbHelper.DB_VERSION;
+import static com.example.android.groceries2.db.GroceriesDbHelper.DB_NAME;
+import static com.example.android.groceries2.db.GroceriesDbHelper.DB_VERSION;
 
 
 public class MainActivity extends AppCompatActivity {

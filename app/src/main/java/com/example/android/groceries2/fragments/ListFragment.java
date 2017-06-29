@@ -1,13 +1,14 @@
-package com.example.android.groceries2;
+package com.example.android.groceries2.fragments;
 
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
-import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -18,11 +19,13 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.android.groceries2.data.ListCursorAdapter;
-import com.example.android.groceries2.data.LogCursorAdapter;
+import com.example.android.groceries2.R;
+import com.example.android.groceries2.activities.MainActivity;
+import com.example.android.groceries2.adapters.ListCursorAdapter;
 
-import static com.example.android.groceries2.MainActivity.db;
-import static com.example.android.groceries2.MainActivity.dbHelper;
+import static android.content.Intent.ACTION_SEND;
+import static com.example.android.groceries2.activities.MainActivity.db;
+import static com.example.android.groceries2.activities.MainActivity.dbHelper;
 
 
 /**
@@ -38,6 +41,8 @@ public class ListFragment extends Fragment {
     public static TextView listTotalTextView;
 
     public static FloatingActionButton fabCompleteList;
+
+    public static FloatingActionButton fabSendList;
 
     public ListFragment() {
 
@@ -88,6 +93,24 @@ public class ListFragment extends Fragment {
         });
 
 
+        fabSendList =
+                (FloatingActionButton) listView.findViewById(R.id.fab_send_list);
+
+        //Set approve list action to fab
+        fabSendList.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+
+                Intent sendIntent = new Intent(Intent.ACTION_SEND);
+                sendIntent.setType("text/plain");
+                sendIntent.putExtra(Intent.EXTRA_TEXT, "Hello");
+                sendIntent.putExtra(Intent.EXTRA_SUBJECT, "Groceries app: You've got new list!");
+                startActivity(sendIntent);
+            }
+        });
+
+
         // Find the ListView which will be populated with the pet data
         ListView listListView = (ListView) listView.findViewById(R.id.list_list);
 
@@ -102,9 +125,11 @@ public class ListFragment extends Fragment {
 
         if (cursor.getCount() == 0) {
             fabCompleteList.setVisibility(View.GONE);
+            fabSendList.setVisibility(View.GONE);
             listTotalTextView.setVisibility(View.GONE);
         } else {
             fabCompleteList.setVisibility(View.VISIBLE);
+            fabSendList.setVisibility(View.VISIBLE);
             listTotalTextView.setVisibility(View.VISIBLE);
         }
 
@@ -200,9 +225,11 @@ public class ListFragment extends Fragment {
             protected void onPostExecute(Cursor cursor) {
                 if (cursor.getCount() == 0) {
                     fabCompleteList.setVisibility(View.GONE);
+                    fabSendList.setVisibility(View.GONE);
                     listTotalTextView.setVisibility(View.GONE);
                 } else {
                     fabCompleteList.setVisibility(View.VISIBLE);
+                    fabSendList.setVisibility(View.VISIBLE);
                     listTotalTextView.setVisibility(View.VISIBLE);
                 }
 

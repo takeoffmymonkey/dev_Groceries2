@@ -1,9 +1,8 @@
-package com.example.android.groceries2;
+package com.example.android.groceries2.fragments;
 
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.database.Cursor;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -20,12 +19,13 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.android.groceries2.data.LogCursorAdapter;
+import com.example.android.groceries2.R;
+import com.example.android.groceries2.adapters.LogCursorAdapter;
 
-import static com.example.android.groceries2.MainActivity.db;
-import static com.example.android.groceries2.MainActivity.dbHelper;
-import static com.example.android.groceries2.data.GroceriesDbHelper.LOG_CODE_COLUMN;
-import static com.example.android.groceries2.data.GroceriesDbHelper.LOG_TABLE_NAME;
+import static com.example.android.groceries2.activities.MainActivity.db;
+import static com.example.android.groceries2.activities.MainActivity.dbHelper;
+import static com.example.android.groceries2.db.GroceriesDbHelper.LOG_CODE_COLUMN;
+import static com.example.android.groceries2.db.GroceriesDbHelper.LOG_TABLE_NAME;
 
 /**
  * Created by takeoff on 002 02 Jun 17.

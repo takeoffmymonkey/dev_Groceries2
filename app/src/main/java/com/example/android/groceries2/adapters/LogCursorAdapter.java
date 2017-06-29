@@ -1,6 +1,6 @@
-package com.example.android.groceries2.data;
+package com.example.android.groceries2.adapters;
 
-import com.example.android.groceries2.ListActivity;
+import com.example.android.groceries2.activities.ListActivity;
 
 import android.content.Context;
 import android.content.Intent;
@@ -19,9 +19,9 @@ import com.example.android.groceries2.R;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import static com.example.android.groceries2.data.GroceriesDbHelper.LOG_DATE_COMPLETE_COLUMN;
-import static com.example.android.groceries2.data.GroceriesDbHelper.LOG_DATE_CREATED_COLUMN;
-import static com.example.android.groceries2.data.GroceriesDbHelper.NAME_COLUMN;
+import static com.example.android.groceries2.db.GroceriesDbHelper.LOG_DATE_COMPLETE_COLUMN;
+import static com.example.android.groceries2.db.GroceriesDbHelper.LOG_DATE_CREATED_COLUMN;
+import static com.example.android.groceries2.db.GroceriesDbHelper.NAME_COLUMN;
 
 /**
  * Created by takeoff on 013 13 Jun 17.

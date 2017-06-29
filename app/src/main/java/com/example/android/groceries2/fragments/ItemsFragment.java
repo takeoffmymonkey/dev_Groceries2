@@ -1,4 +1,4 @@
-package com.example.android.groceries2;
+package com.example.android.groceries2.fragments;
 
 import android.app.AlertDialog;
 import android.content.ContentValues;
@@ -15,35 +15,34 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.widget.GridLayoutManager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.android.groceries2.data.ItemsCursorAdapter;
+import com.example.android.groceries2.R;
+import com.example.android.groceries2.activities.EditorActivity;
+import com.example.android.groceries2.activities.MainActivity;
+import com.example.android.groceries2.adapters.ItemsCursorAdapter;
 
-import static android.R.id.list;
-import static com.example.android.groceries2.ListFragment.fabCompleteList;
-import static com.example.android.groceries2.ListFragment.listTotalTextView;
-import static com.example.android.groceries2.MainActivity.db;
-import static com.example.android.groceries2.MainActivity.dbHelper;
-import static com.example.android.groceries2.data.GroceriesDbHelper.ID_COLUMN;
-import static com.example.android.groceries2.data.GroceriesDbHelper.ITEMS_TABLE_NAME;
-import static com.example.android.groceries2.data.GroceriesDbHelper.LIST_AMOUNT_COLUMN;
-import static com.example.android.groceries2.data.GroceriesDbHelper.LIST_ITEM_COLUMN;
-import static com.example.android.groceries2.data.GroceriesDbHelper.MEASURE_COLUMN;
-import static com.example.android.groceries2.data.GroceriesDbHelper.NAME_COLUMN;
-import static com.example.android.groceries2.data.GroceriesDbHelper.PRICE_COLUMN;
+import static com.example.android.groceries2.fragments.ListFragment.fabCompleteList;
+import static com.example.android.groceries2.fragments.ListFragment.fabSendList;
+import static com.example.android.groceries2.fragments.ListFragment.listTotalTextView;
+import static com.example.android.groceries2.activities.MainActivity.db;
+import static com.example.android.groceries2.activities.MainActivity.dbHelper;
+import static com.example.android.groceries2.db.GroceriesDbHelper.ID_COLUMN;
+import static com.example.android.groceries2.db.GroceriesDbHelper.ITEMS_TABLE_NAME;
+import static com.example.android.groceries2.db.GroceriesDbHelper.LIST_AMOUNT_COLUMN;
+import static com.example.android.groceries2.db.GroceriesDbHelper.LIST_ITEM_COLUMN;
+import static com.example.android.groceries2.db.GroceriesDbHelper.MEASURE_COLUMN;
+import static com.example.android.groceries2.db.GroceriesDbHelper.NAME_COLUMN;
+import static com.example.android.groceries2.db.GroceriesDbHelper.PRICE_COLUMN;
 
 
 /**
@@ -464,6 +463,7 @@ public class ItemsFragment extends Fragment {
 
                     listTotalTextView.setVisibility(View.GONE);
                     fabCompleteList.setVisibility(View.GONE);
+                    fabSendList.setVisibility(View.GONE);
 
                 } else {
 

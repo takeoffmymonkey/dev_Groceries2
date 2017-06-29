@@ -1,12 +1,10 @@
-package com.example.android.groceries2;
+package com.example.android.groceries2.activities;
 
 import android.app.AlertDialog;
 import android.content.ContentValues;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
-import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -16,7 +14,6 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
@@ -24,15 +21,14 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-import static android.R.id.input;
-import static com.example.android.groceries2.MainActivity.db;
-import static com.example.android.groceries2.MainActivity.dbHelper;
-import static com.example.android.groceries2.data.GroceriesDbHelper.CHECKED_COLUMN;
-import static com.example.android.groceries2.data.GroceriesDbHelper.ID_COLUMN;
-import static com.example.android.groceries2.data.GroceriesDbHelper.MEASURE_COLUMN;
-import static com.example.android.groceries2.data.GroceriesDbHelper.PRICE_COLUMN;
-import static com.example.android.groceries2.data.GroceriesDbHelper.ITEMS_TABLE_NAME;
-import static com.example.android.groceries2.data.GroceriesDbHelper.NAME_COLUMN;
+import com.example.android.groceries2.R;
+
+import static com.example.android.groceries2.activities.MainActivity.db;
+import static com.example.android.groceries2.db.GroceriesDbHelper.ID_COLUMN;
+import static com.example.android.groceries2.db.GroceriesDbHelper.MEASURE_COLUMN;
+import static com.example.android.groceries2.db.GroceriesDbHelper.PRICE_COLUMN;
+import static com.example.android.groceries2.db.GroceriesDbHelper.ITEMS_TABLE_NAME;
+import static com.example.android.groceries2.db.GroceriesDbHelper.NAME_COLUMN;
 
 /**
  * Created by takeoff on 006 06 Jun 17.

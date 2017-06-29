@@ -1,4 +1,4 @@
-package com.example.android.groceries2.data;
+package com.example.android.groceries2.db;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -7,12 +7,12 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
-import com.example.android.groceries2.ItemsFragment;
-import com.example.android.groceries2.ListFragment;
-import com.example.android.groceries2.MainActivity;
+import com.example.android.groceries2.fragments.ItemsFragment;
+import com.example.android.groceries2.fragments.ListFragment;
+import com.example.android.groceries2.activities.MainActivity;
 import com.example.android.groceries2.R;
 
-import static com.example.android.groceries2.MainActivity.db;
+import static com.example.android.groceries2.activities.MainActivity.db;
 
 
 /**
@@ -67,7 +67,7 @@ public class GroceriesDbHelper extends SQLiteOpenHelper {
 
 
     /*MEASURE table*/
-    static final String MEASURE_TABLE_NAME = "MEASURE_table";
+    public static final String MEASURE_TABLE_NAME = "MEASURE_table";
     //table create command
     static final String MEASURE_TABLE_CREATE_COMMAND = "CREATE TABLE " + MEASURE_TABLE_NAME + " (" +
             ID_COLUMN + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
@@ -360,7 +360,7 @@ public class GroceriesDbHelper extends SQLiteOpenHelper {
 
 
     /*Creates new List table*/
-    void createListTable() {
+    public void createListTable() {
 
         //Create int for new version
         int newVersion = getLatestListVersion() + 1;

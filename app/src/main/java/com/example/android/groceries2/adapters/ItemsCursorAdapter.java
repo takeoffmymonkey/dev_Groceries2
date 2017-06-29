@@ -1,4 +1,4 @@
-package com.example.android.groceries2.data;
+package com.example.android.groceries2.adapters;
 
 import android.app.AlertDialog;
 import android.content.ContentValues;
@@ -15,24 +15,24 @@ import android.widget.CursorAdapter;
 import android.widget.NumberPicker;
 import android.widget.TextView;
 
-import com.example.android.groceries2.EditorActivity;
-import com.example.android.groceries2.ItemsFragment;
-import com.example.android.groceries2.ListFragment;
-import com.example.android.groceries2.MainActivity;
+import com.example.android.groceries2.activities.EditorActivity;
+import com.example.android.groceries2.fragments.ItemsFragment;
+import com.example.android.groceries2.fragments.ListFragment;
+import com.example.android.groceries2.activities.MainActivity;
 import com.example.android.groceries2.R;
 
-import static com.example.android.groceries2.MainActivity.db;
-import static com.example.android.groceries2.MainActivity.dbHelper;
-import static com.example.android.groceries2.MainActivity.nums;
-import static com.example.android.groceries2.data.GroceriesDbHelper.CHECKED_COLUMN;
-import static com.example.android.groceries2.data.GroceriesDbHelper.ITEMS_TABLE_NAME;
-import static com.example.android.groceries2.data.GroceriesDbHelper.LIST_AMOUNT_COLUMN;
-import static com.example.android.groceries2.data.GroceriesDbHelper.LIST_ITEM_COLUMN;
-import static com.example.android.groceries2.data.GroceriesDbHelper.MEASURE_COLUMN;
-import static com.example.android.groceries2.data.GroceriesDbHelper.MEASURE_TABLE_NAME;
-import static com.example.android.groceries2.data.GroceriesDbHelper.NAME_COLUMN;
-import static com.example.android.groceries2.data.GroceriesDbHelper.ID_COLUMN;
-import static com.example.android.groceries2.data.GroceriesDbHelper.PRICE_COLUMN;
+import static com.example.android.groceries2.activities.MainActivity.db;
+import static com.example.android.groceries2.activities.MainActivity.dbHelper;
+import static com.example.android.groceries2.activities.MainActivity.nums;
+import static com.example.android.groceries2.db.GroceriesDbHelper.CHECKED_COLUMN;
+import static com.example.android.groceries2.db.GroceriesDbHelper.ITEMS_TABLE_NAME;
+import static com.example.android.groceries2.db.GroceriesDbHelper.LIST_AMOUNT_COLUMN;
+import static com.example.android.groceries2.db.GroceriesDbHelper.LIST_ITEM_COLUMN;
+import static com.example.android.groceries2.db.GroceriesDbHelper.MEASURE_COLUMN;
+import static com.example.android.groceries2.db.GroceriesDbHelper.MEASURE_TABLE_NAME;
+import static com.example.android.groceries2.db.GroceriesDbHelper.NAME_COLUMN;
+import static com.example.android.groceries2.db.GroceriesDbHelper.ID_COLUMN;
+import static com.example.android.groceries2.db.GroceriesDbHelper.PRICE_COLUMN;
 
 /**
  * Created by takeoff on 009 09 Jun 17.
