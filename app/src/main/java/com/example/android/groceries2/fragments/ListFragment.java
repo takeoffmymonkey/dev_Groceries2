@@ -8,7 +8,6 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
-import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -23,9 +22,11 @@ import com.example.android.groceries2.R;
 import com.example.android.groceries2.activities.MainActivity;
 import com.example.android.groceries2.adapters.ListCursorAdapter;
 
-import static android.content.Intent.ACTION_SEND;
 import static com.example.android.groceries2.activities.MainActivity.db;
 import static com.example.android.groceries2.activities.MainActivity.dbHelper;
+import static com.example.android.groceries2.db.GroceriesDbHelper.LIST_AMOUNT_COLUMN;
+import static com.example.android.groceries2.db.GroceriesDbHelper.LIST_ITEM_COLUMN;
+import static com.example.android.groceries2.db.GroceriesDbHelper.PRICE_COLUMN;
 
 
 /**
@@ -102,11 +103,62 @@ public class ListFragment extends Fragment {
             public void onClick(View v) {
 
 
-                Intent sendIntent = new Intent(Intent.ACTION_SEND);
-                sendIntent.setType("text/plain");
-                sendIntent.putExtra(Intent.EXTRA_TEXT, "Hello");
-                sendIntent.putExtra(Intent.EXTRA_SUBJECT, "Groceries app: You've got new list!");
-                startActivity(sendIntent);
+                Cursor cursorActiveList = db.query(dbHelper.getActiveListName(), null, null,
+                        null, null, null, null);
+
+                int rows = cursorActiveList.getCount();
+                int lines = rows + 2;
+
+                if (rows > 0) {
+
+                    cursorActiveList.moveToFirst();
+
+                    StringBuilder sb = new StringBuilder();
+
+                    float total = 0f;
+
+                    for (int i = 0; i < rows; i++) {
+
+
+                        int name = cursorActiveList.getInt(cursorActiveList
+                                .getColumnIndex(LIST_ITEM_COLUMN));
+
+                        float amount = cursorActiveList.getFloat(cursorActiveList
+                                .getColumnIndex(LIST_AMOUNT_COLUMN));
+
+
+                        String amountString;
+
+                        if (amount == Math.round(amount)) {
+                            amountString = Integer.toString(Math.round(amount));
+                        } else {
+                            amountString = Float.toString(amount);
+                        }
+
+                        float price = cursorActiveList.getFloat(cursorActiveList
+                                .getColumnIndex(PRICE_COLUMN));
+
+                        total += price;
+
+                        sb.append(name + " (" + amountString + ")" + " = " +
+                                MainActivity.formatPrice(price) + "\n");
+
+                        cursorActiveList.moveToNext();
+                    }
+
+                    sb.append("= = = =" + "\n");
+                    sb.append("Total: " + MainActivity.formatPrice(total));
+
+                    String sendMessage = sb.toString();
+
+                    Intent sendIntent = new Intent(Intent.ACTION_SEND);
+                    sendIntent.setType("text/plain");
+                    sendIntent.putExtra(Intent.EXTRA_TEXT, sendMessage);
+                    sendIntent.putExtra(Intent.EXTRA_SUBJECT, "Groceries app: You've got new list!");
+                    startActivity(sendIntent);
+                }
+
+
             }
         });
 
@@ -123,17 +175,23 @@ public class ListFragment extends Fragment {
         Cursor cursor = db.query("List_" + activeListVersion, null,
                 null, null, null, null, null);
 
-        if (cursor.getCount() == 0) {
+        if (cursor.getCount() == 0)
+
+        {
             fabCompleteList.setVisibility(View.GONE);
             fabSendList.setVisibility(View.GONE);
             listTotalTextView.setVisibility(View.GONE);
-        } else {
+        } else
+
+        {
             fabCompleteList.setVisibility(View.VISIBLE);
             fabSendList.setVisibility(View.VISIBLE);
             listTotalTextView.setVisibility(View.VISIBLE);
         }
 
-        listCursorAdapter = new ListCursorAdapter(getContext(), cursor, 0);
+        listCursorAdapter = new
+
+                ListCursorAdapter(getContext(), cursor, 0);
 
         listListView.setAdapter(listCursorAdapter);
 
