@@ -15,6 +15,7 @@
         <GridLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_margin="8dp"
             android:columnCount="2">
 
             <TextView
@@ -94,7 +95,8 @@
         <ListView
             android:id="@+id/list_in_activity_list"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp">
 
         </ListView>
 
