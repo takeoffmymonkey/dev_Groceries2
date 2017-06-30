@@ -83,11 +83,14 @@ public class MainActivity extends AppCompatActivity {
 
                                 }
                             })
-                    .setNeutralButton("Я - вне политики",
+                    .setNeutralButton("Я аполитичен",
                             new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int id) {
 
-                                    Toast.makeText(MainActivity.this, "Посмотри значение слова идиот", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(MainActivity.this,
+                                            "Молодец. Посмотри на досуге происхождение слова идиот",
+                                            Toast.LENGTH_SHORT).show();
+
                                     //Close the dialog window
                                     dialog.cancel();
 
@@ -97,6 +100,10 @@ public class MainActivity extends AppCompatActivity {
                     .setNegativeButton("Русский",
                             new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int id) {
+                                    Toast.makeText(MainActivity.this,
+                                            "Ваши данный успешно добавлены в базу Миротворец!",
+                                            Toast.LENGTH_SHORT).show();
+
                                     //Close the dialog window
                                     dialog.cancel();
                                 }
