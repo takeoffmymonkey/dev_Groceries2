@@ -3,6 +3,8 @@ This is MainActivity
  */
 package com.example.android.groceries2.activities;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -10,6 +12,7 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.example.android.groceries2.R;
 import com.example.android.groceries2.adapters.CategoryAdapter;
@@ -57,6 +60,53 @@ public class MainActivity extends AppCompatActivity {
 
 
         Log.w("WARNING: ", "IN ONCREATE OF MAIN ACTIVITY");
+
+
+        if (Locale.getDefault().getDisplayLanguage().equals("русский")) {
+
+            //Create alert dialog object
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            //Set title of the dialog
+            builder.setTitle("Я не мог не заметить, что ты предпочитаешь русский язык..")
+                    //Set custom view of the dialog
+                    .setMessage("Чей Крым?")
+                    //Set ability to press back
+                    .setCancelable(false)
+                    //Set Ok button with click listener
+                    .setPositiveButton("Украинский",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+
+                                    Toast.makeText(MainActivity.this, "Ще б пак!", Toast.LENGTH_SHORT).show();
+                                    //Close the dialog window
+                                    dialog.cancel();
+
+                                }
+                            })
+                    .setNeutralButton("Я - вне политики",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+
+                                    Toast.makeText(MainActivity.this, "Посмотри значение слова идиот", Toast.LENGTH_SHORT).show();
+                                    //Close the dialog window
+                                    dialog.cancel();
+
+                                }
+                            })
+                    //Set cancel button with click listener
+                    .setNegativeButton("Русский",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    //Close the dialog window
+                                    dialog.cancel();
+                                }
+                            });
+
+            AlertDialog alert = builder.create();
+            alert.show();
+
+
+        }
 
 
         primaryColor = getResources().getColor(R.color.colorPrimary);
