@@ -1,25 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    tools:context=".activities.ListActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
+
+        <GridLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:columnCount="2">
 
             <TextView
                 android:id="@+id/list_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
-                android:textStyle="bold"
-                android:text="Name:" />
+                android:text="Name:"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/list_name_var"
@@ -28,20 +32,14 @@
                 android:layout_margin="8dp"
                 android:text="List_1" />
 
-        </LinearLayout>
-
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
 
             <TextView
                 android:id="@+id/list_created"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
-                android:textStyle="bold"
-                android:text="Created:" />
+                android:text="Created:"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/list_created_var"
@@ -50,20 +48,14 @@
                 android:layout_margin="8dp"
                 android:text="18/01/2014 (12:34:45)" />
 
-        </LinearLayout>
-
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
 
             <TextView
                 android:id="@+id/list_complete"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
-                android:textStyle="bold"
-                android:text="Complete:" />
+                android:text="Complete:"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/list_complete_var"
@@ -72,20 +64,14 @@
                 android:layout_margin="8dp"
                 android:text="18/01/2014 (12:34:45)" />
 
-        </LinearLayout>
-
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
 
             <TextView
                 android:id="@+id/list_total"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
-                android:textStyle="bold"
-                android:text="Total:" />
+                android:text="Total:"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/list_total_var"
@@ -94,7 +80,9 @@
                 android:layout_margin="8dp"
                 android:text="183.54 грн" />
 
-        </LinearLayout>
+
+        </GridLayout>
+
 
         <View
             android:layout_width="match_parent"
