@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 
 import com.example.android.groceries2.R;
 import com.example.android.groceries2.adapters.CategoryAdapter;
@@ -53,6 +54,9 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         //Set view for main activity class
         setContentView(R.layout.activity_main);
+
+
+        Log.w("WARNING: ", "IN ONCREATE OF MAIN ACTIVITY");
 
 
         primaryColor = getResources().getColor(R.color.colorPrimary);
@@ -234,4 +238,33 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        Log.w("WARNING: ", "IN ONSTART OF MAIN ACTIVITY");
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        Log.w("WARNING: ", "IN ONPAUSE OF MAIN ACTIVITY");
+    }
+
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        Log.w("WARNING: ", "IN ONRESTART OF MAIN ACTIVITY");
+    }
+
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        Log.w("WARNING: ", "IN ONSTOP OF MAIN ACTIVITY");
+    }
+
+
 }
+
+

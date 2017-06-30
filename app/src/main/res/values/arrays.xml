@@ -35,6 +35,30 @@
     </string-array>
 
 
+    <string-array name="array_auto_price_list">
+        <item>78.95</item>
+        <item>7.45</item>
+        <item>6.35</item>
+        <item>5.4</item>
+        <item>16.99</item>
+        <item>33.95</item>
+        <item>35.99</item>
+        <item>8.85</item>
+        <item>10.46</item>
+        <item>17.7</item>
+        <item>29.95</item>
+        <item>9.89</item>
+        <item>14.95</item>
+        <item>12.69</item>
+        <item>10.45</item>
+        <item>20.6</item>
+        <item>20.69</item>
+        <item>44.53</item>
+        <item>9.95</item>
+        <item>24.73</item>
+    </string-array>
+
+
     <integer-array name="array_auto_measure_list">
         <item>2</item>
         <item>0</item>
@@ -57,7 +81,6 @@
         <item>0</item>
         <item>0</item>
     </integer-array>
-
 
 
 </resources>

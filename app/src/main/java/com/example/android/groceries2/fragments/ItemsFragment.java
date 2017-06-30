@@ -15,6 +15,7 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -58,11 +59,17 @@ public class ItemsFragment extends Fragment {
 
     public static FloatingActionButton fabAddItem;
 
+    public String snackText;
+
+    public int lines;
+
     GridView itemsGridView;
 
     public static boolean snackOn = false;
 
     public static Snackbar snackBar;
+
+    public View itemsView;
 
     //Required empty constructor
     public ItemsFragment() {
@@ -74,8 +81,20 @@ public class ItemsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable final ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
 
+
+        if (savedInstanceState != null) {
+
+            snackText = savedInstanceState.getString("snackText");
+
+            snackOn = savedInstanceState.getBoolean("snackOn");
+
+            lines = savedInstanceState.getInt("lines");
+        }
+
+
         //Create the view object and inflate in with tab_items layout
-        final View itemsView = inflater.inflate(R.layout.tab_items, container, false);
+        itemsView = inflater.inflate(R.layout.tab_items, container, false);
+
 
         //int with active version
         int activeListVersion = dbHelper.getActiveListVersion();
@@ -150,40 +169,23 @@ public class ItemsFragment extends Fragment {
                         null, null, null, null);
 
                 int rows = cursorActiveList.getCount();
-                int lines = rows + 2;
+                lines = rows + 2;
 
                 cursorActiveList.close();
 
+                snackText = MainActivity.getActiveListAsString();
 
-                final Snackbar snackBar = Snackbar.make(itemsView,
-                        MainActivity.getActiveListAsString(),
-                        Snackbar.LENGTH_INDEFINITE);
+                showSnackBar(lines, snackText);
 
-
-                View snackbarView = snackBar.getView();
-                TextView textView = (TextView) snackbarView.findViewById(android.support.design.R.id.snackbar_text);
-                textView.setMaxLines(lines);
-
-                //snackbarView.setBackgroundColor(MainActivity.primaryTextColor);
-                snackbarView.setBackgroundColor(Color.DKGRAY);
-
-                snackBar.setAction("Close", new View.OnClickListener() {
-
-                    @Override
-                    public void onClick(View v) {
-                        snackBar.dismiss();
-                    }
-
-
-                });
-
-                snackBar.show();
-
-                setSnackOnState(true, snackBar);
             }
 
         });
 
+
+        if (snackOn) {
+            Log.e("WARNING: ", "NEED TO SHOW SNACK");
+            showSnackBar(lines, snackText);
+        }
 
         //This fragment has options menu
         setHasOptionsMenu(true);
@@ -319,32 +321,12 @@ public class ItemsFragment extends Fragment {
                     //Get array of items' measures from resources
                     int[] measures = getResources().getIntArray(R.array.array_auto_measure_list);
                     //Create array of items' prices
-                    float[] prices = {
-                            78.95f, //Филе кур.
-                            7.45f, // Батон 450
-                            6.35f, // Хлебцы (Своя) 100
-                            5.4f, // Мария (Своя) 170
-                            16.99f, // Мария (Прем) 200
-                            33.95f, // Сыр диетич. 185
-                            35.99f, // Сыр топл. (Прем) 200
-                            8.85f, // Лактония 400
-                            10.46f, // Закваска (Фанни) 450
-                            17.7f, // Закваска (Ягот) 900
-                            29.95f, // Бананы
-                            9.89f, // Кабачки
-                            14.95f, // Огурцы
-                            12.69f, // Морковь
-                            10.45f, // Овсянка (Своя) 500
-                            20.6f, // Овсянка (Карап) 200
-                            20.69f, // Хлопья греч. (Сто) 400
-                            44.53f, // Хлопья греч. (Ново) 800
-                            9.95f, // Зубная щетка
-                            24.73f}; // Беруши
+                    String[] prices = getResources().getStringArray(R.array.array_auto_price_list);
 
                     for (int i = 0; i < prices.length; i++) {
                         ContentValues contentValues = new ContentValues();
                         contentValues.put(NAME_COLUMN, names[i]);
-                        contentValues.put(PRICE_COLUMN, prices[i]);
+                        contentValues.put(PRICE_COLUMN, Float.parseFloat(prices[i]));
                         contentValues.put(MEASURE_COLUMN, measures[i] + 1);
                         db.insert(ITEMS_TABLE_NAME, null, contentValues);
                     }
@@ -476,6 +458,51 @@ public class ItemsFragment extends Fragment {
 
     public boolean getSnackOnState() {
         return snackOn;
+    }
+
+
+    void showSnackBar(int lines, String snackText) {
+        final Snackbar snackBar = Snackbar.make(itemsView,
+                snackText,
+                Snackbar.LENGTH_INDEFINITE);
+
+
+        View snackbarView = snackBar.getView();
+        TextView textView = (TextView) snackbarView.findViewById(android.support.design.R.id.snackbar_text);
+        textView.setMaxLines(lines);
+
+        //snackbarView.setBackgroundColor(MainActivity.primaryTextColor);
+        snackbarView.setBackgroundColor(Color.DKGRAY);
+
+        snackBar.setAction("Close", new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                snackBar.dismiss();
+                setSnackOnState(false, null);
+
+                Log.e("WARNING: ", "KILLING SNACK");
+            }
+
+
+        });
+
+        snackBar.show();
+
+        Log.e("WARNING: ", "SHOWING SNACK");
+
+        setSnackOnState(true, snackBar);
+
+    }
+
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putString("snackText", snackText);
+        outState.putBoolean("snackOn", getSnackOnState());
+        outState.putInt("lines", lines);
+
     }
 
 
