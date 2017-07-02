@@ -12,6 +12,8 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import android.widget.Toast;
 
 import com.example.android.groceries2.R;
@@ -50,6 +52,44 @@ public class MainActivity extends AppCompatActivity {
     public static int iconsColor;
 
     public static String nums[];
+
+
+    private String[] titles;
+    private ListView drawerList;
+
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        Log.w("WARNING: ", "IN ONSTART OF MAIN ACTIVITY");
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Log.w("WARNING: ", "IN ONRESUME OF MAIN ACTIVITY");
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        Log.w("WARNING: ", "IN ONPAUSE OF MAIN ACTIVITY");
+    }
+
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        Log.w("WARNING: ", "IN ONSTOP OF MAIN ACTIVITY");
+    }
+
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        Log.w("WARNING: ", "IN ONRESTART OF MAIN ACTIVITY");
+    }
+
 
 
     @Override
@@ -295,31 +335,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-        Log.w("WARNING: ", "IN ONSTART OF MAIN ACTIVITY");
-    }
 
-    @Override
-    protected void onPause() {
-        super.onPause();
-        Log.w("WARNING: ", "IN ONPAUSE OF MAIN ACTIVITY");
-    }
-
-
-    @Override
-    protected void onRestart() {
-        super.onRestart();
-        Log.w("WARNING: ", "IN ONRESTART OF MAIN ACTIVITY");
-    }
-
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        Log.w("WARNING: ", "IN ONSTOP OF MAIN ACTIVITY");
-    }
 
 
 }

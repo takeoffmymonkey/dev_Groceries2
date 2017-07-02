@@ -11,6 +11,7 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -62,6 +63,42 @@ public class EditorActivity extends AppCompatActivity {
         }
     };
 
+
+
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        Log.w("WARNING: ", "IN ONSTART OF EDITOR ACTIVITY");
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Log.w("WARNING: ", "IN ONRESUME OF EDITOR ACTIVITY");
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        Log.w("WARNING: ", "IN ONPAUSE OF EDITOR ACTIVITY");
+    }
+
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        Log.w("WARNING: ", "IN ONSTOP OF EDITOR ACTIVITY");
+    }
+
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        Log.w("WARNING: ", "IN ONRESTART OF EDITOR ACTIVITY");
+    }
+
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -71,6 +108,8 @@ public class EditorActivity extends AppCompatActivity {
         priceEditText = (EditText) findViewById(R.id.dialog_edit_price_number_field);
         measurementSpinner = (Spinner) findViewById(R.id.editor_measurement);
         icon = (ImageView) findViewById(R.id.item_icon);
+
+
 
         // Setup OnTouchListeners on all the input fields, so we can determine if the user
         // has touched or modified them. This will let us know if there are unsaved changes
@@ -129,12 +168,14 @@ public class EditorActivity extends AppCompatActivity {
             }
         });
 
+        getSupportActionBar().setTitle("Add new item");
 
         //Receive id of the item if bundled
         itemId = getIntent().getIntExtra("ID", 0);
 
         if (itemId != 0) {
 
+            getSupportActionBar().setTitle("Edit item");
 
             class Query extends AsyncTask<Void, Void, Boolean> {
 

@@ -71,16 +71,76 @@ public class ItemsFragment extends Fragment {
 
     public View itemsView;
 
-    //Required empty constructor
-    public ItemsFragment() {
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        Log.w("WARNING: ", "IN ONATTACH OF ITEMS FRAGMENT");
     }
 
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        Log.w("WARNING: ", "IN ONCREATE OF ITEMS FRAGMENT");
+    }
+
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        Log.w("WARNING: ", "IN ONACTIVITYCREATE OF ITEMS FRAGMENT");
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        Log.w("WARNING: ", "IN ONSTART OF ITEMS FRAGMENT");
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Log.w("WARNING: ", "IN ONRESUME OF ITEMS FRAGMENT");
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        Log.w("WARNING: ", "IN ONPAUSE OF ITEMS FRAGMENT");
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        Log.w("WARNING: ", "IN ONSTOP OF ITEMS FRAGMENT");
+    }
+
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        Log.w("WARNING: ", "IN ONDESTROYVIEW OF ITEMS FRAGMENT");
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        Log.w("WARNING: ", "IN ONDETACH OF ITEMS FRAGMENT");
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        Log.w("WARNING: ", "IN ONDESTROY OF ITEMS FRAGMENT");
+    }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable final ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
 
+        Log.w("WARNING: ", "IN ONCREATEVIEW OF ITEMS FRAGMENT");
 
         if (savedInstanceState != null) {
 

@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -42,8 +43,68 @@ public class ListFragment extends Fragment {
 
     public static FloatingActionButton fabSendList;
 
-    public ListFragment() {
 
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        Log.w("WARNING: ", "IN ONATTACH OF LIST FRAGMENT");
+    }
+
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        Log.w("WARNING: ", "IN ONCREATE OF LIST FRAGMENT");
+    }
+
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        Log.w("WARNING: ", "IN ONACTIVITYCREATE OF LIST FRAGMENT");
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        Log.w("WARNING: ", "IN ONSTART OF LIST FRAGMENT");
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Log.w("WARNING: ", "IN ONRESUME OF LIST FRAGMENT");
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        Log.w("WARNING: ", "IN ONPAUSE OF LIST FRAGMENT");
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        Log.w("WARNING: ", "IN ONSTOP OF LIST FRAGMENT");
+    }
+
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        Log.w("WARNING: ", "IN ONDESTROYVIEW OF LIST FRAGMENT");
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        Log.w("WARNING: ", "IN ONDETACH OF LIST FRAGMENT");
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        Log.w("WARNING: ", "IN ONDESTROY OF LIST FRAGMENT");
     }
 
 
@@ -51,6 +112,8 @@ public class ListFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
+
+        Log.w("WARNING: ", "IN ONCREATEVIEW OF LIST FRAGMENT");
 
         listView = inflater.inflate(R.layout.tab_list, container, false);
 
@@ -153,20 +216,11 @@ public class ListFragment extends Fragment {
 
 
     @Override
-    public void onPause() {
-        super.onPause();
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-    }
-
-    @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.menu_list, menu);
         super.onCreateOptionsMenu(menu, inflater);
     }
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -182,6 +236,19 @@ public class ListFragment extends Fragment {
                 Toast.makeText(getContext(), "List marked as complete", Toast.LENGTH_SHORT).show();
 
                 MainActivity.selectTab(2);
+
+                return true;
+
+            case R.id.settings_list_share_list:
+                Intent intent = new Intent(Intent.ACTION_SEND);
+                intent.setType("text/plain");
+                intent.putExtra(Intent.EXTRA_TEXT, MainActivity.getActiveListAsString());
+                intent.putExtra(Intent.EXTRA_SUBJECT, "Groceries app: You've got new list!");
+
+                //For ability to always choose intent receiver
+                Intent sendIntent = Intent.createChooser(intent, "Send list");
+
+                startActivity(sendIntent);
 
                 return true;
             // Respond to a click on the "Delete all entries" menu option

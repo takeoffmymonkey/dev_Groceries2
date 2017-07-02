@@ -8,6 +8,12 @@
         app:showAsAction="never" />
 
     <item
+        android:id="@+id/settings_list_share_list"
+        android:title="Share list"
+        android:actionProviderClass="android.widget.ShareActionProvider"
+        app:showAsAction="never" />
+
+    <item
         android:id="@+id/settings_list_delete_list"
         android:title="Delete list"
         app:showAsAction="never" />
