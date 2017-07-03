@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?><!-- Options menu for the CatalogActivity -->
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/settings_list_mark_as_complete"
+        android:title="Mark as complete"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/settings_list_share_list"
+        android:title="Share list"
+        android:actionProviderClass="android.widget.ShareActionProvider"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/settings_list_delete_list"
+        android:title="Delete list"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/settings_list_settings"
+        android:title="Global settings"
+        app:showAsAction="never" />
+
+</menu>
