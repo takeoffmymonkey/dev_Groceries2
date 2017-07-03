@@ -196,6 +196,7 @@ public class EditorActivity extends AppCompatActivity {
                     measure = cursor.getInt(cursor.getColumnIndex(MEASURE_COLUMN));
 
                     cursor.close();
+                    //test
                     return true;
                 }
 
