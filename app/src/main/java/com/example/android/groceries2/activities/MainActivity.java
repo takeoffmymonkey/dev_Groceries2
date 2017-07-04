@@ -16,6 +16,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.ListView;
+import android.widget.TabHost;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -26,6 +27,7 @@ import com.example.android.groceries2.db.GroceriesDbHelper;
 import java.text.NumberFormat;
 import java.util.Locale;
 
+import static android.R.id.tabhost;
 import static com.example.android.groceries2.db.GroceriesDbHelper.DB_NAME;
 import static com.example.android.groceries2.db.GroceriesDbHelper.DB_VERSION;
 import static com.example.android.groceries2.db.GroceriesDbHelper.LIST_AMOUNT_COLUMN;
@@ -191,6 +193,7 @@ public class MainActivity extends AppCompatActivity {
         viewPager.setAdapter(adapter);
 
         tabLayout = (TabLayout) findViewById(R.id.tabs);
+        tabLayout.setTabTextColors(iconsColor, iconsColor);
 
         //tabLayout.setTabTextColors(iconsColor, primaryTextColor);
 
@@ -255,6 +258,8 @@ public class MainActivity extends AppCompatActivity {
         nums = numsTemp;
 
     }
+
+
 
     //Selects proper tab
 

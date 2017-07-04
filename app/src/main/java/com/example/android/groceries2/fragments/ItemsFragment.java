@@ -208,6 +208,8 @@ public class ItemsFragment extends Fragment {
         }
 
 
+
+
         itemsTotalTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
