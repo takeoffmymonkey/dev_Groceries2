@@ -26,10 +26,10 @@ import com.example.android.groceries2.R;
 
 import static com.example.android.groceries2.activities.MainActivity.db;
 import static com.example.android.groceries2.db.GroceriesDbHelper.ID_COLUMN;
-import static com.example.android.groceries2.db.GroceriesDbHelper.MEASURE_COLUMN;
-import static com.example.android.groceries2.db.GroceriesDbHelper.PRICE_COLUMN;
 import static com.example.android.groceries2.db.GroceriesDbHelper.ITEMS_TABLE_NAME;
+import static com.example.android.groceries2.db.GroceriesDbHelper.MEASURE_COLUMN;
 import static com.example.android.groceries2.db.GroceriesDbHelper.NAME_COLUMN;
+import static com.example.android.groceries2.db.GroceriesDbHelper.PRICE_COLUMN;
 
 /**
  * Created by takeoff on 006 06 Jun 17.
@@ -62,8 +62,6 @@ public class EditorActivity extends AppCompatActivity {
             return false;
         }
     };
-
-
 
 
     @Override
@@ -108,7 +106,6 @@ public class EditorActivity extends AppCompatActivity {
         priceEditText = (EditText) findViewById(R.id.dialog_edit_price_number_field);
         measurementSpinner = (Spinner) findViewById(R.id.editor_measurement);
         icon = (ImageView) findViewById(R.id.item_icon);
-
 
 
         // Setup OnTouchListeners on all the input fields, so we can determine if the user
@@ -247,12 +244,6 @@ public class EditorActivity extends AppCompatActivity {
                         measurement = "2";
                     } else if (selection.equals(measures[2])) {
                         measurement = "3";
-                    } else if (selection.equals(measures[3])) {
-                        measurement = "4";
-                    } else if (selection.equals(measures[4])) {
-                        measurement = "5";
-                    } else if (selection.equals(measures[5])) {
-                        measurement = "6";
                     }
 
                 }

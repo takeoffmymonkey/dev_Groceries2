@@ -15,23 +15,23 @@ import android.widget.CursorAdapter;
 import android.widget.NumberPicker;
 import android.widget.TextView;
 
+import com.example.android.groceries2.R;
 import com.example.android.groceries2.activities.EditorActivity;
+import com.example.android.groceries2.activities.MainActivity;
 import com.example.android.groceries2.fragments.ItemsFragment;
 import com.example.android.groceries2.fragments.ListFragment;
-import com.example.android.groceries2.activities.MainActivity;
-import com.example.android.groceries2.R;
 
 import static com.example.android.groceries2.activities.MainActivity.db;
 import static com.example.android.groceries2.activities.MainActivity.dbHelper;
 import static com.example.android.groceries2.activities.MainActivity.nums;
 import static com.example.android.groceries2.db.GroceriesDbHelper.CHECKED_COLUMN;
+import static com.example.android.groceries2.db.GroceriesDbHelper.ID_COLUMN;
 import static com.example.android.groceries2.db.GroceriesDbHelper.ITEMS_TABLE_NAME;
 import static com.example.android.groceries2.db.GroceriesDbHelper.LIST_AMOUNT_COLUMN;
 import static com.example.android.groceries2.db.GroceriesDbHelper.LIST_ITEM_COLUMN;
 import static com.example.android.groceries2.db.GroceriesDbHelper.MEASURE_COLUMN;
 import static com.example.android.groceries2.db.GroceriesDbHelper.MEASURE_TABLE_NAME;
 import static com.example.android.groceries2.db.GroceriesDbHelper.NAME_COLUMN;
-import static com.example.android.groceries2.db.GroceriesDbHelper.ID_COLUMN;
 import static com.example.android.groceries2.db.GroceriesDbHelper.PRICE_COLUMN;
 
 /**
@@ -139,9 +139,7 @@ public class ItemsCursorAdapter extends CursorAdapter {
 
                     cursorForMeasure.close();
 
-                    if (measureInMeasure.equals("packs")) {
-                        dialogMeasure.setText("pack(s)");
-                    } else if (measureInMeasure.equals("items")) {
+                    if (measureInMeasure.equals("items")) {
                         dialogMeasure.setText("item(s)");
                     } else {
                         dialogMeasure.setText(measureInMeasure);

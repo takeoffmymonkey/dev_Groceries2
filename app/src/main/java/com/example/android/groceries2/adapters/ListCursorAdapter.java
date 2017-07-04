@@ -10,9 +10,9 @@ import android.view.ViewGroup;
 import android.widget.CursorAdapter;
 import android.widget.TextView;
 
-import com.example.android.groceries2.fragments.ListFragment;
-import com.example.android.groceries2.activities.MainActivity;
 import com.example.android.groceries2.R;
+import com.example.android.groceries2.activities.MainActivity;
+import com.example.android.groceries2.fragments.ListFragment;
 
 import static com.example.android.groceries2.activities.MainActivity.db;
 import static com.example.android.groceries2.activities.MainActivity.dbHelper;
@@ -112,14 +112,6 @@ public class ListCursorAdapter extends CursorAdapter {
 
                 //set appropriate text
                 itemAmountTextView.setText("" + itemAmountRound + " item");
-
-            }
-            //Check if it is 1 pack
-            else if (measure.equals("packs") && itemAmountRound == 1) {
-                //it is 1 item
-
-                //set appropriate text
-                itemAmountTextView.setText("" + itemAmountRound + " pack");
 
             } else {
                 //It is round but not 1
