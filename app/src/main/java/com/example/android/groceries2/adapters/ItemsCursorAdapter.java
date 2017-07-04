@@ -18,7 +18,7 @@ import android.widget.NumberPicker;
 import android.widget.TextView;
 
 import com.example.android.groceries2.R;
-import com.example.android.groceries2.activities.EditorActivity;
+import com.example.android.groceries2.activities.ItemEditorActivity;
 import com.example.android.groceries2.activities.MainActivity;
 import com.example.android.groceries2.fragments.ItemsFragment;
 import com.example.android.groceries2.fragments.ListFragment;
@@ -244,7 +244,7 @@ public class ItemsCursorAdapter extends CursorAdapter {
                                         public void onClick(DialogInterface dialog, int id) {
                                             //Redirect user to Editor activity
                                             //Create intent object
-                                            Intent intent = new Intent(view.getContext(), EditorActivity.class);
+                                            Intent intent = new Intent(view.getContext(), ItemEditorActivity.class);
                                             intent.putExtra("ID", rowIdInt);
                                             intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
                                             //Start new activity
@@ -357,7 +357,7 @@ public class ItemsCursorAdapter extends CursorAdapter {
             public boolean onLongClick(View v) {
                 //Redirect user to Editor activity
                 //Create intent object
-                Intent intent = new Intent(view.getContext(), EditorActivity.class);
+                Intent intent = new Intent(view.getContext(), ItemEditorActivity.class);
                 intent.putExtra("ID", rowIdInt);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
                 //Start new activity

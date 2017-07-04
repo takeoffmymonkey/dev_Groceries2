@@ -35,7 +35,7 @@ import static com.example.android.groceries2.db.GroceriesDbHelper.NAME_COLUMN;
  * Created by takeoff on 006 06 Jun 17.
  */
 
-public class ListActivity extends AppCompatActivity {
+public class ListInfoActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -134,7 +134,7 @@ public class ListActivity extends AppCompatActivity {
 
 
                 //Create alert dialog object
-                AlertDialog.Builder builder = new AlertDialog.Builder(ListActivity.this);
+                AlertDialog.Builder builder = new AlertDialog.Builder(ListInfoActivity.this);
                 //Set title of the dialog
                 builder.setTitle("Delete list")
                         //Set custom view of the dialog
@@ -148,12 +148,12 @@ public class ListActivity extends AppCompatActivity {
 
                                         dbHelper.deleteListTable(listVersion);
 
-                                        Intent intent = new Intent(ListActivity.this, MainActivity.class);
+                                        Intent intent = new Intent(ListInfoActivity.this, MainActivity.class);
                                         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                         intent.putExtra("tab", 2);
                                         startActivity(intent);
 
-                                        Toast.makeText(ListActivity.this, listName + " deleted",
+                                        Toast.makeText(ListInfoActivity.this, listName + " deleted",
                                                 Toast.LENGTH_SHORT).show();
                                         dialog.cancel();
 
@@ -185,7 +185,7 @@ public class ListActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             // Respond to the action bar's Up/Home button
             case android.R.id.home:
-                Intent intent = new Intent(ListActivity.this, MainActivity.class);
+                Intent intent = new Intent(ListInfoActivity.this, MainActivity.class);
                 intent.putExtra("tab", 2);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(intent);

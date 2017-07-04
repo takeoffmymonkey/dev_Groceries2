@@ -18,7 +18,7 @@
         </activity>
 
         <activity
-            android:name=".activities.EditorActivity"
+            android:name=".activities.ItemEditorActivity"
             android:label="Add/edit item"
             android:parentActivityName=".activities.MainActivity"
             android:theme="@style/EditorTheme"
@@ -31,7 +31,7 @@
 
 
         <activity
-            android:name=".activities.ListActivity"
+            android:name=".activities.ListInfoActivity"
             android:label="List info"
             android:parentActivityName=".activities.MainActivity"
             android:theme="@style/EditorTheme">

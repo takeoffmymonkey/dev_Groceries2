@@ -28,7 +28,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.android.groceries2.R;
-import com.example.android.groceries2.activities.EditorActivity;
+import com.example.android.groceries2.activities.ItemEditorActivity;
 import com.example.android.groceries2.activities.MainActivity;
 import com.example.android.groceries2.adapters.ItemsCursorAdapter;
 
@@ -185,7 +185,7 @@ public class ItemsFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 //Create object for intent
-                Intent intent = new Intent(getActivity(), EditorActivity.class);
+                Intent intent = new Intent(getActivity(), ItemEditorActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
                 //Create editor activity
                 startActivity(intent);
@@ -280,7 +280,7 @@ public class ItemsFragment extends Fragment {
 
 
             case R.id.settings_items_add_item:
-                Intent intent = new Intent(getActivity(), EditorActivity.class);
+                Intent intent = new Intent(getActivity(), ItemEditorActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
                 startActivity(intent);
                 return true;

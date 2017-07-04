@@ -35,7 +35,7 @@ import static com.example.android.groceries2.db.GroceriesDbHelper.PRICE_COLUMN;
  * Created by takeoff on 006 06 Jun 17.
  */
 
-public class EditorActivity extends AppCompatActivity {
+public class ItemEditorActivity extends AppCompatActivity {
 
     private String name;
 
@@ -132,9 +132,9 @@ public class EditorActivity extends AppCompatActivity {
         icon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(EditorActivity.this);
+                AlertDialog.Builder builder = new AlertDialog.Builder(ItemEditorActivity.this);
 
-                final LayoutInflater inflater = LayoutInflater.from(EditorActivity.this);
+                final LayoutInflater inflater = LayoutInflater.from(ItemEditorActivity.this);
                 //Create view object containing dialog_item_amount layout
                 View iconSelectView = inflater.inflate(R.layout.dialog_item_icon, null);
 

@@ -8,8 +8,8 @@ import android.view.ViewGroup;
 import android.widget.CursorAdapter;
 import android.widget.TextView;
 
-import com.example.android.groceries2.activities.MainActivity;
 import com.example.android.groceries2.R;
+import com.example.android.groceries2.activities.MainActivity;
 
 import static com.example.android.groceries2.activities.MainActivity.db;
 import static com.example.android.groceries2.db.GroceriesDbHelper.ID_COLUMN;
@@ -90,9 +90,36 @@ public class ListLogCursorAdapter extends CursorAdapter {
 
         //Create itemAmount textView object
         TextView itemAmountTextView = (TextView) view.findViewById(R.id.activity_list_item_amount);
-        //Set amount
-        itemAmountTextView.setText(Float.toString(cursor.getFloat(cursor.getColumnIndex(LIST_AMOUNT_COLUMN)))
-                + " " + measure);
+
+        float itemAmount = cursor.getFloat(cursor.getColumnIndexOrThrow(LIST_AMOUNT_COLUMN));
+        //Set itemAmount + measure as text to itemAmount textView
+
+
+        //Get the rounded value
+        int itemAmountRound = Math.round(itemAmount);
+
+        //Check if it is round
+        if (itemAmount == itemAmountRound) {
+            //It is round
+
+            //Check if it is 1 item
+            if (measure.equals("items") && itemAmountRound == 1) {
+                //it is 1 item
+
+                //set appropriate text
+                itemAmountTextView.setText("" + itemAmountRound + " item");
+
+            } else {
+                //It is round but not 1
+                itemAmountTextView.setText(itemAmountRound + " " + measure);
+
+            }
+
+
+        } else {
+            //it is not round
+            itemAmountTextView.setText(Float.toString(itemAmount) + " " + measure);
+        }
 
 
     }

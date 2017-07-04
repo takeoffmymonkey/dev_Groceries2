@@ -1,6 +1,6 @@
 package com.example.android.groceries2.adapters;
 
-import com.example.android.groceries2.activities.ListActivity;
+import com.example.android.groceries2.activities.ListInfoActivity;
 
 import android.content.Context;
 import android.content.Intent;
@@ -55,7 +55,7 @@ public class LogCursorAdapter extends CursorAdapter {
             @Override
             public void onClick(View v) {
                 //Create object for intent
-                Intent intent = new Intent(view.getContext(), ListActivity.class);
+                Intent intent = new Intent(view.getContext(), ListInfoActivity.class);
                 intent.putExtra("listName", listName);
                 intent.putExtra("listVersion", listVersion);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
