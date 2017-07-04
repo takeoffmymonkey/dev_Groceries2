@@ -235,7 +235,7 @@ public class ItemsFragment extends Fragment {
 
                 snackText = MainActivity.getActiveListAsString();
 
-                showSnackBar(lines, snackText);
+                showSnackBar(snackText);
 
             }
 
@@ -244,7 +244,7 @@ public class ItemsFragment extends Fragment {
 
         if (snackOn) {
             Log.e("WARNING: ", "NEED TO SHOW SNACK");
-            showSnackBar(lines, snackText);
+            showSnackBar(snackText);
         }
 
         //This fragment has options menu
@@ -521,7 +521,7 @@ public class ItemsFragment extends Fragment {
     }
 
 
-    void showSnackBar(int lines, String snackText) {
+    public void showSnackBar(String snackText) {
         final Snackbar snackBar = Snackbar.make(itemsView,
                 snackText,
                 Snackbar.LENGTH_INDEFINITE);
@@ -529,7 +529,7 @@ public class ItemsFragment extends Fragment {
 
         View snackbarView = snackBar.getView();
         TextView textView = (TextView) snackbarView.findViewById(android.support.design.R.id.snackbar_text);
-        textView.setMaxLines(lines);
+        textView.setMaxLines(MainActivity.snackLines);
 
         //snackbarView.setBackgroundColor(MainActivity.primaryTextColor);
         snackbarView.setBackgroundColor(Color.DKGRAY);

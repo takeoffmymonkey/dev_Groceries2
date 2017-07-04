@@ -27,6 +27,8 @@ import static com.example.android.groceries2.db.GroceriesDbHelper.DB_NAME;
 import static com.example.android.groceries2.db.GroceriesDbHelper.DB_VERSION;
 import static com.example.android.groceries2.db.GroceriesDbHelper.LIST_AMOUNT_COLUMN;
 import static com.example.android.groceries2.db.GroceriesDbHelper.LIST_ITEM_COLUMN;
+import static com.example.android.groceries2.db.GroceriesDbHelper.MEASURE_COLUMN;
+import static com.example.android.groceries2.db.GroceriesDbHelper.MEASURE_TABLE_NAME;
 import static com.example.android.groceries2.db.GroceriesDbHelper.PRICE_COLUMN;
 
 
@@ -56,6 +58,8 @@ public class MainActivity extends AppCompatActivity {
     private String[] titles;
     private ListView drawerList;
 
+
+    public static int snackLines;
 
     @Override
     protected void onStart() {
@@ -278,11 +282,18 @@ public class MainActivity extends AppCompatActivity {
 
         if (rows > 0) {
 
+            snackLines = rows + 2;
+
             cursorActiveList.moveToFirst();
 
             StringBuilder sb = new StringBuilder();
 
             float total = 0f;
+
+            Cursor measureTableCursor = db.query(MEASURE_TABLE_NAME, null, null,
+                    null, null, null, null);
+
+            measureTableCursor.moveToFirst();
 
             for (int i = 0; i < rows; i++) {
 
@@ -293,8 +304,17 @@ public class MainActivity extends AppCompatActivity {
                 float amount = cursorActiveList.getFloat(cursorActiveList
                         .getColumnIndex(LIST_AMOUNT_COLUMN));
 
+                int measure = cursorActiveList.getInt(cursorActiveList
+                        .getColumnIndex(MEASURE_COLUMN));
 
                 String amountString;
+
+                measureTableCursor.moveToPosition(measure - 1);
+
+                String measureString = measureTableCursor.getString
+                        (measureTableCursor.getColumnIndex(MEASURE_COLUMN));
+
+                if (measureString.equals("items")) measureString = "it.";
 
                 if (amount == Math.round(amount)) {
                     amountString = Integer.toString(Math.round(amount));
@@ -307,8 +327,18 @@ public class MainActivity extends AppCompatActivity {
 
                 total += price;
 
-                sb.append(name + " (" + amountString + ")" + " = " +
-                        MainActivity.formatPrice(price) + "\n");
+                String temp = name + " (" + amountString + measureString + ")" + " = " +
+                        MainActivity.formatPrice(price) + "\n";
+
+                float divider = temp.length() / 20;
+
+                if (divider > 1 && divider < 4) {
+                    if (divider > 3) snackLines += 3;
+                    else if (divider > 2) snackLines += 2;
+                    else snackLines++;
+                }
+
+                sb.append(temp);
 
                 cursorActiveList.moveToNext();
             }
@@ -318,12 +348,16 @@ public class MainActivity extends AppCompatActivity {
 
             String sendMessage = sb.toString();
 
+            measureTableCursor.close();
+
             cursorActiveList.close();
+
 
             return sendMessage;
 
         }
 
+        snackLines = 0;
         cursorActiveList.close();
 
         return null;
