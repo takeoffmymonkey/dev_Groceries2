@@ -12,7 +12,6 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -89,7 +88,6 @@ public class MainActivity extends AppCompatActivity {
         super.onRestart();
         Log.w("WARNING: ", "IN ONRESTART OF MAIN ACTIVITY");
     }
-
 
 
     @Override
@@ -222,32 +220,29 @@ public class MainActivity extends AppCompatActivity {
         }
 
 
-        String[] numsTemp = new String[1008];
+        String[] numsTemp = new String[1099];
 
-        numsTemp[0] = "0.1";
-        numsTemp[1] = "0.2";
-        numsTemp[2] = "0.3";
-        numsTemp[3] = "0.4";
-        numsTemp[4] = "0.5";
-        numsTemp[5] = "0.6";
-        numsTemp[6] = "0.7";
-        numsTemp[7] = "0.8";
-        numsTemp[8] = "0.9";
+        int first = 0;
+        int second = 1;
 
-        int count = 1;
+        for (int i = 0; i < numsTemp.length; i++) {
 
-        for (int i = 9; i < numsTemp.length; i++) {
-
-            numsTemp[i] = Integer.toString(count);
-            count++;
+            if (second == 10) {
+                first++;
+                second = 0;
+                numsTemp[i] = Integer.toString(first);
+            } else {
+                numsTemp[i] = Integer.toString(first) + "." + Integer.toString(second);
+                second++;
+            }
         }
-
 
         nums = numsTemp;
 
     }
 
     //Selects proper tab
+
     public static void selectTab(int number) {
         //Make it open a proper tab
         tabLayout.getTabAt(number).select();
@@ -333,9 +328,6 @@ public class MainActivity extends AppCompatActivity {
 
         return null;
     }
-
-
-
 
 
 }

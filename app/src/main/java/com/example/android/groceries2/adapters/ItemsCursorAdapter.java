@@ -7,11 +7,13 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Color;
+import android.text.InputType;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CursorAdapter;
+import android.widget.EditText;
 import android.widget.NumberPicker;
 import android.widget.TextView;
 
@@ -119,6 +121,8 @@ public class ItemsCursorAdapter extends CursorAdapter {
                     numberPicker.setMinValue(0);
                     numberPicker.setMaxValue(nums.length - 1);
                     numberPicker.setValue(9);
+                    EditText input = findInput(numberPicker);
+                    input.setRawInputType(InputType.TYPE_CLASS_NUMBER);
 
                     final TextView dialogMeasure = (TextView) editItemDialogView
                             .findViewById(R.id.dialog_measure);
@@ -170,6 +174,8 @@ public class ItemsCursorAdapter extends CursorAdapter {
                                             db.update(ITEMS_TABLE_NAME, contentValuesItemsTable,
                                                     ID_COLUMN + "=?",
                                                     new String[]{Integer.toString(rowIdInt)});
+
+                                            numberPicker.clearFocus();
 
                                             int amountPicker = numberPicker.getValue();
 
@@ -361,5 +367,19 @@ public class ItemsCursorAdapter extends CursorAdapter {
         });
 
     }
+
+    private EditText findInput(ViewGroup np) {
+        int count = np.getChildCount();
+        for (int i = 0; i < count; i++) {
+            final View child = np.getChildAt(i);
+            if (child instanceof ViewGroup) {
+                findInput((ViewGroup) child);
+            } else if (child instanceof EditText) {
+                return (EditText) child;
+            }
+        }
+        return null;
+    }
+
 
 }
