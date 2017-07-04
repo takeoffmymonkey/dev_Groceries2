@@ -18,12 +18,10 @@ import static com.example.android.groceries2.activities.MainActivity.db;
 import static com.example.android.groceries2.activities.MainActivity.dbHelper;
 import static com.example.android.groceries2.db.GroceriesDbHelper.CHECKED_COLUMN;
 import static com.example.android.groceries2.db.GroceriesDbHelper.ID_COLUMN;
-import static com.example.android.groceries2.db.GroceriesDbHelper.ITEMS_TABLE_NAME;
 import static com.example.android.groceries2.db.GroceriesDbHelper.LIST_AMOUNT_COLUMN;
 import static com.example.android.groceries2.db.GroceriesDbHelper.LIST_ITEM_COLUMN;
 import static com.example.android.groceries2.db.GroceriesDbHelper.MEASURE_COLUMN;
 import static com.example.android.groceries2.db.GroceriesDbHelper.MEASURE_TABLE_NAME;
-import static com.example.android.groceries2.db.GroceriesDbHelper.NAME_COLUMN;
 import static com.example.android.groceries2.db.GroceriesDbHelper.PRICE_COLUMN;
 
 /**
@@ -48,29 +46,13 @@ public class ListCursorAdapter extends CursorAdapter {
     public void bindView(final View view, Context context, Cursor cursor) {
 
         //Get LIST_ITEM_COLUMN value of the item in List table
-        int itemCode = cursor.getInt(cursor.getColumnIndexOrThrow(LIST_ITEM_COLUMN));
-
-
-        //Get cursor with NAME_COLUMN and ITEMS_MEASURE_COLUMN columns for required ID
-        Cursor itemsTableCursor = db.query(ITEMS_TABLE_NAME,
-                new String[]{NAME_COLUMN, MEASURE_COLUMN},
-                ID_COLUMN + "=?", new String[]{Integer.toString(itemCode)},
-                null, null, null);
-
-
-        //Move cursor to 1st row
-        itemsTableCursor.moveToFirst();
-
-        //Save string with proper name
-        String name = itemsTableCursor.getString(itemsTableCursor.getColumnIndexOrThrow(NAME_COLUMN));
+        String itemName = cursor.getString(cursor.getColumnIndexOrThrow(LIST_ITEM_COLUMN));
 
 
         //Get code of the items measure
-        int measureInItems = itemsTableCursor
-                .getInt(itemsTableCursor.getColumnIndexOrThrow(MEASURE_COLUMN));
+        int measureInItems = cursor
+                .getInt(cursor.getColumnIndexOrThrow(MEASURE_COLUMN));
 
-        //Close itemsTableCursor cursor
-        itemsTableCursor.close();
 
         //Get cursor with MEASURE_MEASURE_COLUMN text from Measure_table
         Cursor measureTableCursor = db.query(MEASURE_TABLE_NAME,
@@ -91,7 +73,7 @@ public class ListCursorAdapter extends CursorAdapter {
         //Create text view object
         TextView itemNameTextView = (TextView) view.findViewById(R.id.list_item_name);
         //Set its text
-        itemNameTextView.setText(name);
+        itemNameTextView.setText(itemName);
 
         //Create itemAmount textView object
         TextView itemAmountTextView = (TextView) view.findViewById(R.id.list_item_amount);

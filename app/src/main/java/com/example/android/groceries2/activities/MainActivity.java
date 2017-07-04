@@ -287,7 +287,7 @@ public class MainActivity extends AppCompatActivity {
             for (int i = 0; i < rows; i++) {
 
 
-                int name = cursorActiveList.getInt(cursorActiveList
+                String name = cursorActiveList.getString(cursorActiveList
                         .getColumnIndex(LIST_ITEM_COLUMN));
 
                 float amount = cursorActiveList.getFloat(cursorActiveList

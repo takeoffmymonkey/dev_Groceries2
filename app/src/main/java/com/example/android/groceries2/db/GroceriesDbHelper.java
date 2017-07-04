@@ -110,9 +110,10 @@ public class GroceriesDbHelper extends SQLiteOpenHelper {
     private String LIST_INIT_TABLE_CREATE_COMMAND = "CREATE TABLE " + LIST_TABLE_NAME_part_1 + "0" +
             " (" +
             ID_COLUMN + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-            LIST_ITEM_COLUMN + " INTEGER NOT NULL UNIQUE, " +
+            LIST_ITEM_COLUMN + " TEXT NOT NULL UNIQUE, " +
             LIST_AMOUNT_COLUMN + " REAL, " +
             PRICE_COLUMN + " REAL NOT NULL DEFAULT 0, " +
+            MEASURE_COLUMN + " INTEGER NOT NULL, " +
             CHECKED_COLUMN + " INTEGER DEFAULT 0);";
 
 
@@ -372,6 +373,7 @@ public class GroceriesDbHelper extends SQLiteOpenHelper {
                 LIST_ITEM_COLUMN + " INTEGER NOT NULL UNIQUE, " +
                 LIST_AMOUNT_COLUMN + " REAL, " +
                 PRICE_COLUMN + " REAL NOT NULL DEFAULT 0, " +
+                MEASURE_COLUMN + " INTEGER NOT NULL, " +
                 CHECKED_COLUMN + " INTEGER DEFAULT 0);";
 
         //Create new table

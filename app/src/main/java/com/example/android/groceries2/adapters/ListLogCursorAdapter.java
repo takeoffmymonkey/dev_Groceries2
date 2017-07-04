@@ -47,35 +47,26 @@ public class ListLogCursorAdapter extends CursorAdapter {
                 .getFloat(cursor.getColumnIndex(PRICE_COLUMN))));
 
         //Create checkBox object
-        TextView itemInt = (TextView) view.findViewById(R.id.activity_list_item_checkbox);
+        TextView itemName = (TextView) view.findViewById(R.id.activity_list_item_checkbox);
         //Get item's code
-        int itemCode = cursor.getInt(cursor.getColumnIndex(LIST_ITEM_COLUMN));
+        String itemNameString = cursor.getString(cursor.getColumnIndex(LIST_ITEM_COLUMN));
 
         //Get cursor with NAME_COLUMN and ITEMS_MEASURE_COLUMN columns for required ID
-        Cursor itemsTableCursor = db.query(ITEMS_TABLE_NAME,
-                new String[]{NAME_COLUMN, MEASURE_COLUMN},
-                ID_COLUMN + "=?", new String[]{Integer.toString(itemCode)},
-                null, null, null);
 
-        //Move cursor to 1st row
-        itemsTableCursor.moveToFirst();
 
-        //Save string with proper name
-        String name = itemsTableCursor.getString(itemsTableCursor.getColumnIndexOrThrow(NAME_COLUMN));
-        //Set name
-        itemInt.setText(name);
+        itemName.setText(itemNameString);
 
         //Get code of the items measure
-        int measureInItems = itemsTableCursor
-                .getInt(itemsTableCursor.getColumnIndexOrThrow(MEASURE_COLUMN));
+        int measureInt = cursor
+                .getInt(cursor.getColumnIndexOrThrow(MEASURE_COLUMN));
 
         //Close itemsTableCursor cursor
-        itemsTableCursor.close();
+
 
         //Get cursor with MEASURE_MEASURE_COLUMN text from Measure_table
         Cursor measureTableCursor = db.query(MEASURE_TABLE_NAME,
                 new String[]{MEASURE_COLUMN},
-                ID_COLUMN + "=?", new String[]{Integer.toString(measureInItems)},
+                ID_COLUMN + "=?", new String[]{Integer.toString(measureInt)},
                 null, null, null);
 
         //Move cursor to 1st row

@@ -23,6 +23,7 @@ import com.example.android.groceries2.activities.MainActivity;
 import com.example.android.groceries2.fragments.ItemsFragment;
 import com.example.android.groceries2.fragments.ListFragment;
 
+import static android.os.Build.VERSION_CODES.M;
 import static com.example.android.groceries2.activities.MainActivity.db;
 import static com.example.android.groceries2.activities.MainActivity.dbHelper;
 import static com.example.android.groceries2.activities.MainActivity.nums;
@@ -127,7 +128,7 @@ public class ItemsCursorAdapter extends CursorAdapter {
                     final TextView dialogMeasure = (TextView) editItemDialogView
                             .findViewById(R.id.dialog_measure);
 
-                    int measureInItems = freshItemsTableCursor
+                    final int measureInItems = freshItemsTableCursor
                             .getInt(freshItemsTableCursor.getColumnIndex(MEASURE_COLUMN));
 
 
@@ -187,9 +188,12 @@ public class ItemsCursorAdapter extends CursorAdapter {
                                             ContentValues contentValuesListTable
                                                     = new ContentValues();
                                             //Put new value into contentValuesItemsTable
-                                            contentValuesListTable.put(LIST_ITEM_COLUMN, rowIdInt);
+                                            contentValuesListTable.put(LIST_ITEM_COLUMN, itemName);
                                             //Put new value into contentValuesItemsTable
                                             contentValuesListTable.put(LIST_AMOUNT_COLUMN, amount);
+                                            //Put new value into contentValuesItemsTable
+                                            contentValuesListTable.put(MEASURE_COLUMN, measureInItems);
+
                                             //Put new value into contentValuesItemsTable
                                             float itemTotalPrice = rowPriceFloat * amount;
                                             contentValuesListTable.put(PRICE_COLUMN, itemTotalPrice);
@@ -296,7 +300,7 @@ public class ItemsCursorAdapter extends CursorAdapter {
                     //Get totalPrice of the item
                     Cursor cursorItemsTotalPrice = db.query(currentListTableName,
                             new String[]{PRICE_COLUMN},
-                            LIST_ITEM_COLUMN + "=?", new String[]{Integer.toString(rowIdInt)},
+                            LIST_ITEM_COLUMN + "=?", new String[]{itemName},
                             null, null, null);
 
                     Log.e("WARNING: ", "cursor len: " + cursorItemsTotalPrice.getCount());
@@ -315,7 +319,7 @@ public class ItemsCursorAdapter extends CursorAdapter {
                     //Remove item from List table
                     db.delete(currentListTableName,
                             LIST_ITEM_COLUMN + "=?",
-                            new String[]{Integer.toString(rowIdInt)});
+                            new String[]{itemName});
 
                     //Check if List table is empty now:
                     //Get proper cursor
