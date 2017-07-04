@@ -25,6 +25,8 @@ import com.example.android.groceries2.adapters.ListCursorAdapter;
 
 import static com.example.android.groceries2.activities.MainActivity.db;
 import static com.example.android.groceries2.activities.MainActivity.dbHelper;
+import static com.example.android.groceries2.activities.MainActivity.showSnackBar;
+import static com.example.android.groceries2.activities.MainActivity.snackLines;
 
 
 /**
@@ -207,6 +209,21 @@ public class ListFragment extends Fragment {
                 ListCursorAdapter(getContext(), cursor, 0);
 
         listListView.setAdapter(listCursorAdapter);
+
+
+        listTotalTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                String snackText = MainActivity.getActiveListAsString();
+
+                if (snackLines > 0)
+                    showSnackBar(listView, snackText);
+
+            }
+
+        });
+
 
         setHasOptionsMenu(true);
 

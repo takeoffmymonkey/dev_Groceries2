@@ -22,7 +22,6 @@ import android.widget.Toast;
 import com.example.android.groceries2.R;
 import com.example.android.groceries2.adapters.CategoryAdapter;
 import com.example.android.groceries2.db.GroceriesDbHelper;
-import com.example.android.groceries2.fragments.ItemsFragment;
 
 import java.text.NumberFormat;
 import java.util.Locale;
@@ -34,6 +33,7 @@ import static com.example.android.groceries2.db.GroceriesDbHelper.LIST_ITEM_COLU
 import static com.example.android.groceries2.db.GroceriesDbHelper.MEASURE_COLUMN;
 import static com.example.android.groceries2.db.GroceriesDbHelper.MEASURE_TABLE_NAME;
 import static com.example.android.groceries2.db.GroceriesDbHelper.PRICE_COLUMN;
+import static com.example.android.groceries2.fragments.ItemsFragment.itemsView;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -341,7 +341,7 @@ public class MainActivity extends AppCompatActivity {
                 String temp = name + " (" + amountString + measureString + ")" + " = " +
                         MainActivity.formatPrice(price) + "\n";
 
-                float divider = temp.length() / 20;
+                float divider = temp.length() / 20f;
 
                 if (divider > 1 && divider < 4) {
                     if (divider > 3) snackLines += 3;
@@ -385,10 +385,12 @@ public class MainActivity extends AppCompatActivity {
         TextView textView = (TextView) snackbarView.findViewById(android.support.design.R.id.snackbar_text);
         textView.setMaxLines(MainActivity.snackLines);
 
+
         //snackbarView.setBackgroundColor(MainActivity.primaryTextColor);
-        snackbarView.setBackgroundColor(Color.DKGRAY);
+        //snackbarView.setBackgroundColor(Color.DKGRAY);
 
         snackBar.setAction("Close", new View.OnClickListener() {
+
 
             @Override
             public void onClick(View v) {
@@ -401,6 +403,11 @@ public class MainActivity extends AppCompatActivity {
 
 
         });
+
+
+        snackbarView.setBackgroundColor(primaryDarkColor);
+        if (view != itemsView) snackBar.setActionTextColor(Color.WHITE);
+        else snackBar.setActionTextColor(Color.BLACK);
 
         snackBar.show();
 
