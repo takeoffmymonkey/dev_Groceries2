@@ -7,10 +7,10 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
+import com.example.android.groceries2.R;
+import com.example.android.groceries2.activities.MainActivity;
 import com.example.android.groceries2.fragments.ItemsFragment;
 import com.example.android.groceries2.fragments.ListFragment;
-import com.example.android.groceries2.activities.MainActivity;
-import com.example.android.groceries2.R;
 
 import static com.example.android.groceries2.activities.MainActivity.db;
 
@@ -496,58 +496,51 @@ public class GroceriesDbHelper extends SQLiteOpenHelper {
 
 
     /*Deletes all items and lists
-    * 0 - delete lists only
-    * 1 - delete lists and items */
+    * 0 - delete lists
+    * 1 - delete items
+    */
     public void deleteAll(int command) {
 
-        //Resetting active version to 0
-        setActiveListVersion(0);
+        //Check if to delete lists
+        if (command == 0) {
 
-        //Get cursor with code column
-        Cursor cursor = db.query(LOG_TABLE_NAME,
-                new String[]{LOG_CODE_COLUMN},
-                null, null, null, null, null);
+            //Resetting active version to 0
+            setActiveListVersion(0);
 
-        //var to store # of rows
-        int cursorCount = cursor.getCount();
+            //Get cursor with code column
+            Cursor cursor = db.query(LOG_TABLE_NAME,
+                    new String[]{LOG_CODE_COLUMN},
+                    null, null, null, null, null);
 
-        //Check if there are rows
-        if (cursorCount > 0) {
+            //var to store # of rows
+            int cursorCount = cursor.getCount();
 
-            //Move cursor to first row
-            cursor.moveToFirst();
+            //Check if there are rows
+            if (cursorCount > 0) {
 
-            //Delete all list tables
-            for (int i = 0; i < cursorCount; i++) {
+                //Move cursor to first row
+                cursor.moveToFirst();
 
-                //Retrieve list's code
-                int a = cursor.getInt(cursor.getColumnIndex(LOG_CODE_COLUMN));
-                //Drop corresponding table
-                db.execSQL("DROP TABLE " + "List_" + a + ";");
-                //Move cursor to next row
-                cursor.moveToNext();
-                //Log
-                Log.w("INFO: ", "List_" + a + " deleted");
+                //Delete all list tables
+                for (int i = 0; i < cursorCount; i++) {
+
+                    //Retrieve list's code
+                    int a = cursor.getInt(cursor.getColumnIndex(LOG_CODE_COLUMN));
+                    //Drop corresponding table
+                    db.execSQL("DROP TABLE " + "List_" + a + ";");
+                    //Move cursor to next row
+                    cursor.moveToNext();
+                    //Log
+                    Log.w("INFO: ", "List_" + a + " deleted");
+                }
             }
-        }
 
-        //Drop log table
-        db.execSQL(LOG_TABLE_DROP_COMMAND);
-        //Create log table
-        db.execSQL(LOG_TABLE_CREATE_COMMAND);
+            //Drop log table
+            db.execSQL(LOG_TABLE_DROP_COMMAND);
+            //Create log table
+            db.execSQL(LOG_TABLE_CREATE_COMMAND);
 
 
-        //Check if to delete items table
-        if (command == 1) {
-            //Need to delete items table
-
-            //Drop items table
-            db.execSQL(ITEMS_TABLE_DROP_COMMAND);
-            //Create items table
-            db.execSQL(ITEMS_TABLE_CREATE_COMMAND);
-
-        } else {
-            //No need to delete items table
             //Need to uncheck everything that was checked
 
             //Create content values
@@ -558,6 +551,19 @@ public class GroceriesDbHelper extends SQLiteOpenHelper {
             db.update(ITEMS_TABLE_NAME, contentValues,
                     CHECKED_COLUMN + "=?",
                     new String[]{"1"});
+
+        } else if (command == 1) {
+            //Need to delete items table
+
+            //Drop items table
+            db.execSQL(ITEMS_TABLE_DROP_COMMAND);
+            //Create items table
+            db.execSQL(ITEMS_TABLE_CREATE_COMMAND);
+
+            //Delete current list if there is
+            int currentActiveListVersion = getActiveListVersion();
+
+            if (currentActiveListVersion != 0) deleteListTable(currentActiveListVersion);
 
         }
 

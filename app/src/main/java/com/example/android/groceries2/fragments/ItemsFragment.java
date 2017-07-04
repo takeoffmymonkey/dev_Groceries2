@@ -309,7 +309,7 @@ public class ItemsFragment extends Fragment {
                     //Set title of the dialog
                     builder.setTitle("WARNING!")
                             //Set custom view of the dialog
-                            .setMessage("This will delete all lists as well!")
+                            .setMessage("You are about to delete all items!")
                             //Set ability to press back
                             .setCancelable(true)
                             //Set Ok button with click listener
