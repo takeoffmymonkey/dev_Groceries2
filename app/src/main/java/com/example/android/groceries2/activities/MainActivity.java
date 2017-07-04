@@ -196,6 +196,7 @@ public class MainActivity extends AppCompatActivity {
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
                 if (ItemsFragment.snackOn && ItemsFragment.snackBar != null) {
                     ItemsFragment.snackBar.dismiss();
+                    MainActivity.snackLines = 0;
                     ItemsFragment.setSnackOnState(false, null);
                 }
             }
@@ -204,6 +205,7 @@ public class MainActivity extends AppCompatActivity {
             public void onPageSelected(int position) {
                 if (ItemsFragment.snackOn && ItemsFragment.snackBar != null) {
                     ItemsFragment.snackBar.dismiss();
+                    MainActivity.snackLines = 0;
                     ItemsFragment.setSnackOnState(false, null);
                 }
             }
@@ -212,6 +214,7 @@ public class MainActivity extends AppCompatActivity {
             public void onPageScrollStateChanged(int state) {
                 if (ItemsFragment.snackOn && ItemsFragment.snackBar != null) {
                     ItemsFragment.snackBar.dismiss();
+                    MainActivity.snackLines = 0;
                     ItemsFragment.setSnackOnState(false, null);
                 }
             }

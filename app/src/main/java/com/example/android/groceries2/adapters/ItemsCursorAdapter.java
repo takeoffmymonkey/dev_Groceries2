@@ -85,6 +85,7 @@ public class ItemsCursorAdapter extends CursorAdapter {
 
                 if (ItemsFragment.snackOn && ItemsFragment.snackBar != null) {
                     ItemsFragment.snackBar.dismiss();
+                    MainActivity.snackLines = 0;
                     ItemsFragment.setSnackOnState(false, null);
                     return;
                 }

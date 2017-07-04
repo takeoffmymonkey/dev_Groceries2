@@ -225,17 +225,9 @@ public class ItemsFragment extends Fragment {
             public void onClick(View v) {
 
 
-                Cursor cursorActiveList = db.query(dbHelper.getActiveListName(), null, null,
-                        null, null, null, null);
-
-                int rows = cursorActiveList.getCount();
-                lines = rows + 2;
-
-                cursorActiveList.close();
-
                 snackText = MainActivity.getActiveListAsString();
 
-                showSnackBar(snackText);
+                if (MainActivity.snackLines > 0) showSnackBar(snackText);
 
             }
 
@@ -290,6 +282,7 @@ public class ItemsFragment extends Fragment {
 
                 if (ItemsFragment.snackOn && ItemsFragment.snackBar != null) {
                     ItemsFragment.snackBar.dismiss();
+                    MainActivity.snackLines = 0;
                     ItemsFragment.setSnackOnState(false, null);
                 }
 
@@ -540,6 +533,7 @@ public class ItemsFragment extends Fragment {
             public void onClick(View v) {
                 snackBar.dismiss();
                 setSnackOnState(false, null);
+                MainActivity.snackLines = 0;
 
                 Log.e("WARNING: ", "KILLING SNACK");
             }
