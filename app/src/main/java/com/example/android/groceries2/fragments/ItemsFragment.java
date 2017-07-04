@@ -7,13 +7,11 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.database.Cursor;
-import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -34,6 +32,8 @@ import com.example.android.groceries2.adapters.ItemsCursorAdapter;
 
 import static com.example.android.groceries2.activities.MainActivity.db;
 import static com.example.android.groceries2.activities.MainActivity.dbHelper;
+import static com.example.android.groceries2.activities.MainActivity.showSnackBar;
+import static com.example.android.groceries2.activities.MainActivity.snackOn;
 import static com.example.android.groceries2.db.GroceriesDbHelper.ID_COLUMN;
 import static com.example.android.groceries2.db.GroceriesDbHelper.ITEMS_TABLE_NAME;
 import static com.example.android.groceries2.db.GroceriesDbHelper.MEASURE_COLUMN;
@@ -65,11 +65,8 @@ public class ItemsFragment extends Fragment {
 
     GridView itemsGridView;
 
-    public static boolean snackOn = false;
 
-    public static Snackbar snackBar;
-
-    public View itemsView;
+    public static View itemsView;
 
 
     @Override
@@ -141,15 +138,6 @@ public class ItemsFragment extends Fragment {
                              @Nullable Bundle savedInstanceState) {
 
         Log.w("WARNING: ", "IN ONCREATEVIEW OF ITEMS FRAGMENT");
-
-        if (savedInstanceState != null) {
-
-            snackText = savedInstanceState.getString("snackText");
-
-            snackOn = savedInstanceState.getBoolean("snackOn");
-
-            lines = savedInstanceState.getInt("lines");
-        }
 
 
         //Create the view object and inflate in with tab_items layout
@@ -227,7 +215,7 @@ public class ItemsFragment extends Fragment {
 
                 snackText = MainActivity.getActiveListAsString();
 
-                if (MainActivity.snackLines > 0) showSnackBar(snackText);
+                if (MainActivity.snackLines > 0) showSnackBar(itemsView, snackText);
 
             }
 
@@ -236,7 +224,7 @@ public class ItemsFragment extends Fragment {
 
         if (snackOn) {
             Log.e("WARNING: ", "NEED TO SHOW SNACK");
-            showSnackBar(snackText);
+            showSnackBar(itemsView, snackText);
         }
 
         //This fragment has options menu
@@ -280,10 +268,10 @@ public class ItemsFragment extends Fragment {
             // Respond to a click on the "Delete all entries" menu option
             case R.id.settings_items_delete_all_items:
 
-                if (ItemsFragment.snackOn && ItemsFragment.snackBar != null) {
-                    ItemsFragment.snackBar.dismiss();
+                if (MainActivity.snackOn && MainActivity.snackBar != null) {
+                    MainActivity.snackBar.dismiss();
                     MainActivity.snackLines = 0;
-                    ItemsFragment.setSnackOnState(false, null);
+                    MainActivity.setSnackOnState(false, null);
                 }
 
                 //Check if there are items to delete
@@ -504,58 +492,9 @@ public class ItemsFragment extends Fragment {
     }
 
 
-    public static void setSnackOnState(boolean state, Snackbar snackbar) {
-        snackOn = state;
-        snackBar = snackbar;
-    }
-
-    public boolean getSnackOnState() {
-        return snackOn;
-    }
-
-
-    public void showSnackBar(String snackText) {
-        final Snackbar snackBar = Snackbar.make(itemsView,
-                snackText,
-                Snackbar.LENGTH_INDEFINITE);
-
-
-        View snackbarView = snackBar.getView();
-        TextView textView = (TextView) snackbarView.findViewById(android.support.design.R.id.snackbar_text);
-        textView.setMaxLines(MainActivity.snackLines);
-
-        //snackbarView.setBackgroundColor(MainActivity.primaryTextColor);
-        snackbarView.setBackgroundColor(Color.DKGRAY);
-
-        snackBar.setAction("Close", new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                snackBar.dismiss();
-                setSnackOnState(false, null);
-                MainActivity.snackLines = 0;
-
-                Log.e("WARNING: ", "KILLING SNACK");
-            }
-
-
-        });
-
-        snackBar.show();
-
-        Log.e("WARNING: ", "SHOWING SNACK");
-
-        setSnackOnState(true, snackBar);
-
-    }
-
-
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putString("snackText", snackText);
-        outState.putBoolean("snackOn", getSnackOnState());
-        outState.putInt("lines", lines);
 
     }
 

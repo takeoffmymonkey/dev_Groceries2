@@ -7,12 +7,16 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.View;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.android.groceries2.R;
@@ -60,6 +64,10 @@ public class MainActivity extends AppCompatActivity {
 
 
     public static int snackLines;
+
+    public static boolean snackOn = false;
+
+    public static Snackbar snackBar;
 
     @Override
     protected void onStart() {
@@ -194,28 +202,28 @@ public class MainActivity extends AppCompatActivity {
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-                if (ItemsFragment.snackOn && ItemsFragment.snackBar != null) {
-                    ItemsFragment.snackBar.dismiss();
+                if (snackOn && snackBar != null) {
+                    snackBar.dismiss();
                     MainActivity.snackLines = 0;
-                    ItemsFragment.setSnackOnState(false, null);
+                    setSnackOnState(false, null);
                 }
             }
 
             @Override
             public void onPageSelected(int position) {
-                if (ItemsFragment.snackOn && ItemsFragment.snackBar != null) {
-                    ItemsFragment.snackBar.dismiss();
+                if (snackOn && snackBar != null) {
+                    snackBar.dismiss();
                     MainActivity.snackLines = 0;
-                    ItemsFragment.setSnackOnState(false, null);
+                    setSnackOnState(false, null);
                 }
             }
 
             @Override
             public void onPageScrollStateChanged(int state) {
-                if (ItemsFragment.snackOn && ItemsFragment.snackBar != null) {
-                    ItemsFragment.snackBar.dismiss();
+                if (snackOn && snackBar != null) {
+                    snackBar.dismiss();
                     MainActivity.snackLines = 0;
-                    ItemsFragment.setSnackOnState(false, null);
+                    setSnackOnState(false, null);
                 }
             }
         });
@@ -364,6 +372,52 @@ public class MainActivity extends AppCompatActivity {
         cursorActiveList.close();
 
         return null;
+    }
+
+
+    public static void showSnackBar(View view, String snackText) {
+        final Snackbar snackBar = Snackbar.make(view,
+                snackText,
+                Snackbar.LENGTH_INDEFINITE);
+
+
+        View snackbarView = snackBar.getView();
+        TextView textView = (TextView) snackbarView.findViewById(android.support.design.R.id.snackbar_text);
+        textView.setMaxLines(MainActivity.snackLines);
+
+        //snackbarView.setBackgroundColor(MainActivity.primaryTextColor);
+        snackbarView.setBackgroundColor(Color.DKGRAY);
+
+        snackBar.setAction("Close", new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                snackBar.dismiss();
+                setSnackOnState(false, null);
+                MainActivity.snackLines = 0;
+
+                Log.e("WARNING: ", "KILLING SNACK");
+            }
+
+
+        });
+
+        snackBar.show();
+
+        Log.e("WARNING: ", "SHOWING SNACK");
+
+        setSnackOnState(true, snackBar);
+
+    }
+
+
+    public static void setSnackOnState(boolean state, Snackbar snackbar) {
+        snackOn = state;
+        snackBar = snackbar;
+    }
+
+    public boolean getSnackOnState() {
+        return snackOn;
     }
 
 
