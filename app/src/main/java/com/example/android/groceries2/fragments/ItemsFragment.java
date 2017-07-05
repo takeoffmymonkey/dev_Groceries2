@@ -1,7 +1,9 @@
 package com.example.android.groceries2.fragments;
 
+import android.app.AlertDialog;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.database.Cursor;
@@ -206,6 +208,8 @@ public class ItemsFragment extends Fragment {
         }
 
 
+
+
         itemsTotalTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -283,8 +287,39 @@ public class ItemsFragment extends Fragment {
                     //table has at least 1 item
                     cursorCheckItemsTable.close();
 
-                    ItemsDialogFragment dialog = ItemsDialogFragment.newInstance(1);
-                    dialog.show(getFragmentManager(), "foo");
+                    //Create alert dialog object
+                    AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                    //Set title of the dialog
+                    builder.setTitle("WARNING!")
+                            //Set custom view of the dialog
+                            .setMessage("You are about to delete all items!")
+                            //Set ability to press back
+                            .setCancelable(true)
+                            //Set Ok button with click listener
+                            .setPositiveButton("Ok",
+                                    new DialogInterface.OnClickListener() {
+                                        public void onClick(DialogInterface dialog, int id) {
+                                            progressBar.setVisibility(View.VISIBLE);
+                                            new ItemsBackgroundTasks(getContext(), "All items successfully deleted!")
+                                                    .execute(1);
+                                            //Close the dialog window
+                                            dialog.cancel();
+
+                                        }
+                                    })
+
+                            //Set cancel button with click listener
+                            .setNegativeButton("Cancel",
+                                    new DialogInterface.OnClickListener() {
+                                        public void onClick(DialogInterface dialog, int id) {
+                                            //Close the dialog window
+                                            dialog.cancel();
+                                        }
+                                    });
+
+                    AlertDialog alert = builder.create();
+                    alert.show();
+
 
                 } else {
                     //close cursor
@@ -301,7 +336,7 @@ public class ItemsFragment extends Fragment {
     }
 
 
-    public class ItemsBackgroundTasks extends AsyncTask<Integer, Void, Boolean> {
+    class ItemsBackgroundTasks extends AsyncTask<Integer, Void, Boolean> {
 
         Context context;
 
@@ -464,7 +499,6 @@ public class ItemsFragment extends Fragment {
         super.onSaveInstanceState(outState);
 
     }
-
 
 
 }

@@ -16,6 +16,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.ListView;
+import android.widget.TabHost;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -26,6 +27,7 @@ import com.example.android.groceries2.db.GroceriesDbHelper;
 import java.text.NumberFormat;
 import java.util.Locale;
 
+import static android.R.id.tabhost;
 import static com.example.android.groceries2.db.GroceriesDbHelper.DB_NAME;
 import static com.example.android.groceries2.db.GroceriesDbHelper.DB_VERSION;
 import static com.example.android.groceries2.db.GroceriesDbHelper.LIST_AMOUNT_COLUMN;
@@ -38,8 +40,6 @@ import static com.example.android.groceries2.fragments.ItemsFragment.itemsView;
 
 public class MainActivity extends AppCompatActivity {
 
-
-    //implements NoticeDialogFragment.NoticeDialogListener
     //Global link to dbHelper object
     public static GroceriesDbHelper dbHelper;
     //Global Link to db object
@@ -260,6 +260,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+
     //Selects proper tab
 
     public static void selectTab(int number) {
@@ -433,5 +434,3 @@ public class MainActivity extends AppCompatActivity {
 
 
 }
-
-
