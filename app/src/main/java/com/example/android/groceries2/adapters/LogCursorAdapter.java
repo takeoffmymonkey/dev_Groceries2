@@ -1,7 +1,5 @@
 package com.example.android.groceries2.adapters;
 
-import com.example.android.groceries2.activities.ListInfoActivity;
-
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.ColorStateList;
@@ -15,6 +13,8 @@ import android.widget.CursorAdapter;
 import android.widget.TextView;
 
 import com.example.android.groceries2.R;
+import com.example.android.groceries2.activities.ListInfoActivity;
+import com.example.android.groceries2.activities.MainActivity;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -83,6 +83,9 @@ public class LogCursorAdapter extends CursorAdapter {
 
         //Create text view for completion date info
         TextView logItemCompleteDate = (TextView) view.findViewById(R.id.log_item_date_complete_value);
+        logItemCompleteDate.setTextColor(MainActivity.secondaryTextColor);
+        logItemCompleteDate.setTypeface(logItemCompleteDate.getTypeface(), Typeface.NORMAL);
+
         ColorStateList oldColors = logItemCompleteDate.getTextColors();
 
         //If there is no record
@@ -90,10 +93,15 @@ public class LogCursorAdapter extends CursorAdapter {
 
             //Set text to incomplete
             logItemCompleteDate.setText("incomplete");
-            logItemCompleteDate.setTextColor(Color.argb(255, 30, 177, 108));
-            logItemCompleteDate.setTypeface(null, Typeface.BOLD_ITALIC);
+            logItemCompleteDate.setTextColor(MainActivity.primaryDarkColor);
+            logItemCompleteDate.setTypeface(logItemCompleteDate.getTypeface(), Typeface.BOLD_ITALIC);
 
         } else {
+
+            logItemCompleteDate.setTextColor(MainActivity.secondaryTextColor);
+            logItemCompleteDate.setTypeface(null, Typeface.NORMAL);
+
+
             //Get date from LOG_DATE_COMPLETE_COLUMN in ms
             logItemCompleteDate.setTextColor(oldColors);
             long dateCompleteInMs = cursor.getLong(cursor.getColumnIndexOrThrow(LOG_DATE_COMPLETE_COLUMN));
