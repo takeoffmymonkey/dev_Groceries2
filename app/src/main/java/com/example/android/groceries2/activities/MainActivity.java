@@ -431,22 +431,7 @@ public class MainActivity extends AppCompatActivity {
         return snackOn;
     }
 
-/*
-    @Override
-    public void onDialogPositiveClick(DialogFragment dialog) {
-        Toast.makeText(this, "dfs", Toast.LENGTH_SHORT).show();
-    }
 
-
-    @Override
-    public void onDialogNeutralClick(DialogFragment dialog) {
-
-    }
-
-    @Override
-    public void onDialogNegativeClick(DialogFragment dialog) {
-
-    }*/
 }
 
 

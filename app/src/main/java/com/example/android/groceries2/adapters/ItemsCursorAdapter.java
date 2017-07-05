@@ -7,23 +7,21 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Color;
-import android.text.InputType;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CursorAdapter;
-import android.widget.EditText;
 import android.widget.NumberPicker;
 import android.widget.TextView;
 
 import com.example.android.groceries2.R;
 import com.example.android.groceries2.activities.ItemEditorActivity;
 import com.example.android.groceries2.activities.MainActivity;
+import com.example.android.groceries2.fragments.ItemsDialogFragment;
 import com.example.android.groceries2.fragments.ItemsFragment;
 import com.example.android.groceries2.fragments.ListFragment;
 
-import static android.os.Build.VERSION_CODES.M;
 import static com.example.android.groceries2.activities.MainActivity.db;
 import static com.example.android.groceries2.activities.MainActivity.dbHelper;
 import static com.example.android.groceries2.activities.MainActivity.nums;
@@ -44,6 +42,12 @@ import static com.example.android.groceries2.db.GroceriesDbHelper.PRICE_COLUMN;
 
 public class ItemsCursorAdapter extends CursorAdapter {
 
+    public static int rowIdInt;
+
+    public static float rowPriceFloat;
+
+    public static View view;
+
     public ItemsCursorAdapter(Context context, Cursor c, int flags) {
         super(context, c, flags);
     }
@@ -60,6 +64,7 @@ public class ItemsCursorAdapter extends CursorAdapter {
     @Override
     public void bindView(final View view, final Context context, final Cursor cursor) {
 
+        this.view = view;
 
         //Create text view object for item's name
         TextView itemNameTextView = (TextView) view.findViewById(R.id.item_name);
@@ -73,10 +78,10 @@ public class ItemsCursorAdapter extends CursorAdapter {
         else view.setBackgroundColor(Color.WHITE);
 
         //Get ID_COLUMN of current row in int
-        final int rowIdInt = cursor.getInt(cursor.getColumnIndexOrThrow(ID_COLUMN));
+        rowIdInt = cursor.getInt(cursor.getColumnIndexOrThrow(ID_COLUMN));
 
         //Get PRICE_COLUMN of current row in int
-        final float rowPriceFloat = cursor.getFloat(cursor.getColumnIndexOrThrow(PRICE_COLUMN));
+        rowPriceFloat = cursor.getFloat(cursor.getColumnIndexOrThrow(PRICE_COLUMN));
 
         //Set click listener to the view
         view.setOnClickListener(new View.OnClickListener() {
@@ -108,6 +113,7 @@ public class ItemsCursorAdapter extends CursorAdapter {
                     //Row wasn't checked
                     //Create alert dialog:
                     //Create alert dialog object
+
                     AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
                     //Create inflater object
                     final LayoutInflater inflater = LayoutInflater.from(view.getContext());
@@ -123,8 +129,8 @@ public class ItemsCursorAdapter extends CursorAdapter {
                     numberPicker.setMinValue(0);
                     numberPicker.setMaxValue(nums.length - 1);
                     numberPicker.setValue(9);
-                    EditText input = findInput(numberPicker);
-                    input.setRawInputType(InputType.TYPE_CLASS_NUMBER);
+                    //EditText input = findInput(numberPicker);
+                    //input.setRawInputType(InputType.TYPE_CLASS_NUMBER);
 
                     final TextView dialogMeasure = (TextView) editItemDialogView
                             .findViewById(R.id.dialog_measure);
@@ -373,6 +379,7 @@ public class ItemsCursorAdapter extends CursorAdapter {
 
     }
 
+/*
     private EditText findInput(ViewGroup np) {
         int count = np.getChildCount();
         for (int i = 0; i < count; i++) {
@@ -385,6 +392,7 @@ public class ItemsCursorAdapter extends CursorAdapter {
         }
         return null;
     }
+*/
 
 
 }

@@ -1,20 +1,15 @@
 package com.example.android.groceries2.fragments;
 
-import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.ContentValues;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.database.Cursor;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -288,44 +283,8 @@ public class ItemsFragment extends Fragment {
                     //table has at least 1 item
                     cursorCheckItemsTable.close();
 
-                    ItemsDialogs dialog = ItemsDialogs.newInstance(2, "geeg");
-                    dialog.show(getFragmentManager(), "a string");
-
-
-
-                    /*//Create alert dialog object
-                    AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-                    //Set title of the dialog
-                    builder.setTitle("WARNING!")
-                            //Set custom view of the dialog
-                            .setMessage("You are about to delete all items!")
-                            //Set ability to press back
-                            .setCancelable(true)
-                            //Set Ok button with click listener
-                            .setPositiveButton("Ok",
-                                    new DialogInterface.OnClickListener() {
-                                        public void onClick(DialogInterface dialog, int id) {
-                                            progressBar.setVisibility(View.VISIBLE);
-                                            new ItemsBackgroundTasks(getContext(), "All items successfully deleted!")
-                                                    .execute(1);
-                                            //Close the dialog window
-                                            dialog.cancel();
-
-                                        }
-                                    })
-
-                            //Set cancel button with click listener
-                            .setNegativeButton("Cancel",
-                                    new DialogInterface.OnClickListener() {
-                                        public void onClick(DialogInterface dialog, int id) {
-                                            //Close the dialog window
-                                            dialog.cancel();
-                                        }
-                                    });
-
-                    AlertDialog alert = builder.create();
-                    alert.show();*/
-
+                    ItemsDialogFragment dialog = ItemsDialogFragment.newInstance(1);
+                    dialog.show(getFragmentManager(), "foo");
 
                 } else {
                     //close cursor
@@ -506,50 +465,6 @@ public class ItemsFragment extends Fragment {
 
     }
 
-
-    public static class ItemsDialogs extends DialogFragment {
-
-        int mode;
-        String message;
-
-        public static ItemsDialogs newInstance(int mode, String message) {
-            ItemsDialogs fragment = new ItemsDialogs();
-            Bundle bundle = new Bundle(2);
-            bundle.putInt("mode", mode);
-            bundle.putString("message", message);
-            fragment.setArguments(bundle);
-            return fragment;
-        }
-
-
-        @Override
-        public void onCreate(Bundle savedInstanceState) {
-            super.onCreate(savedInstanceState);
-            mode = getArguments().getInt("mode");
-            message = getArguments().getString("message");
-
-        }
-
-        @NonNull
-        @Override
-        public Dialog onCreateDialog(Bundle savedInstanceState) {
-            // Use the Builder class for convenient dialog construction
-            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-            builder.setMessage("TEST DIALOG")
-                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int id) {
-                            Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
-                        }
-                    })
-                    .setNegativeButton("CANCel", new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int id) {
-                        }
-                    });
-            // Create the AlertDialog object and return it
-            return builder.create();
-
-        }
-    }
 
 
 }
