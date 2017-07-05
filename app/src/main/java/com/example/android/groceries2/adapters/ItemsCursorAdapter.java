@@ -7,6 +7,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.text.InputType;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -23,7 +24,6 @@ import com.example.android.groceries2.activities.MainActivity;
 import com.example.android.groceries2.fragments.ItemsFragment;
 import com.example.android.groceries2.fragments.ListFragment;
 
-import static android.os.Build.VERSION_CODES.M;
 import static com.example.android.groceries2.activities.MainActivity.db;
 import static com.example.android.groceries2.activities.MainActivity.dbHelper;
 import static com.example.android.groceries2.activities.MainActivity.nums;
@@ -62,15 +62,17 @@ public class ItemsCursorAdapter extends CursorAdapter {
 
 
         //Create text view object for item's name
-        TextView itemNameTextView = (TextView) view.findViewById(R.id.item_name);
+        final TextView itemNameTextView = (TextView) view.findViewById(R.id.item_name);
 
         //Set its name to NAME_COLUMN
         itemNameTextView.setText(cursor.getString(cursor.getColumnIndexOrThrow(NAME_COLUMN)));
 
         //Set color of the view (according to CHECKED_COLUMN state of the row)
-        if (cursor.getInt(cursor.getColumnIndexOrThrow(CHECKED_COLUMN)) == 1)
+        if (cursor.getInt(cursor.getColumnIndexOrThrow(CHECKED_COLUMN)) == 1) {
             view.setBackgroundColor(MainActivity.primaryLightColor);
-        else view.setBackgroundColor(Color.WHITE);
+            itemNameTextView.setTypeface(itemNameTextView.getTypeface(),
+                    Typeface.ITALIC);
+        } else view.setBackgroundColor(Color.WHITE);
 
         //Get ID_COLUMN of current row in int
         final int rowIdInt = cursor.getInt(cursor.getColumnIndexOrThrow(ID_COLUMN));
@@ -166,6 +168,9 @@ public class ItemsCursorAdapter extends CursorAdapter {
 
                                             //Set bg to green
                                             view.setBackgroundColor(MainActivity.primaryLightColor);
+
+                                            itemNameTextView.setTypeface(itemNameTextView.getTypeface(),
+                                                    Typeface.ITALIC);
 
                                             //Create contentValuesItemsTable var to store CHECKED_COLUMN value
                                             ContentValues contentValuesItemsTable
@@ -279,6 +284,9 @@ public class ItemsCursorAdapter extends CursorAdapter {
 
                     //Set bg to white
                     view.setBackgroundColor(Color.WHITE);
+
+                    itemNameTextView.setTypeface(itemNameTextView.getTypeface(),
+                            Typeface.NORMAL);
 
                     //Uncheck it in Items_table:
                     //Create contentValuesItemsTable var to store CHECKED_COLUMN value
