@@ -4,11 +4,12 @@
     android:layout_height="match_parent"
     android:tag="LIST">
 
-    <ListView
-        android:id="@+id/list_list"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginBottom="20dp" />
+
+        <ListView
+            android:id="@+id/list_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
 
 
     <!-- Empty view for the list -->

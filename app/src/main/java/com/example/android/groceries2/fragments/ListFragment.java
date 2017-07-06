@@ -204,12 +204,13 @@ public class ListFragment extends Fragment {
             listTotalTextView.setVisibility(View.VISIBLE);
         }
 
-        listCursorAdapter = new
-
-                ListCursorAdapter(getContext(), cursor, 0);
+        listCursorAdapter = new ListCursorAdapter(getContext(), cursor, 0);
 
         listListView.setAdapter(listCursorAdapter);
 
+        View footerView = ((LayoutInflater) getContext().getSystemService
+                (Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.footer_layout, null, false);
+        listListView.addFooterView(footerView);
 
         listTotalTextView.setOnClickListener(new View.OnClickListener() {
             @Override

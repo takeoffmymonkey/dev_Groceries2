@@ -135,7 +135,7 @@ public class ListCursorAdapter extends CursorAdapter {
 
         //Set color of the view (according to CHECKED_COLUMN state of the row)
         if (cursor.getInt(cursor.getColumnIndexOrThrow(CHECKED_COLUMN)) == 1)
-            view.setBackgroundColor(Color.GREEN);
+            view.setBackgroundColor(MainActivity.primaryLightColor);
         else view.setBackgroundColor(Color.WHITE);
 
 
@@ -161,7 +161,7 @@ public class ListCursorAdapter extends CursorAdapter {
                 if (freshListTableCursor.getInt(freshListTableCursor.getColumnIndexOrThrow(CHECKED_COLUMN)) == 0) {
                     //Row wasn't checked
                     //Set color
-                    view.setBackgroundColor(Color.GREEN);
+                    view.setBackgroundColor(MainActivity.primaryLightColor);
 
                     //Update table
                     contentValues.put(CHECKED_COLUMN, 1);
