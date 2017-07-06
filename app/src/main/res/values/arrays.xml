@@ -8,8 +8,31 @@
     </string-array>
 
 
-
     <integer-array name="array_auto_measure_list">
+        <item>1</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+    </integer-array>
+
+
+    <integer-array name="array_auto_image_list">
         <item>1</item>
         <item>0</item>
         <item>0</item>
@@ -81,7 +104,152 @@
     </string-array>
 
 
-
+    <string-array name="array_images">
+        <item>cookies</item>
+        <item>corn</item>
+        <item>croissant</item>
+        <item>cucumber</item>
+        <item>cupcake_1</item>
+        <item>cupcake_2</item>
+        <item>dairy</item>
+        <item>doughnut</item>
+        <item>doughnut_1</item>
+        <item>eggs</item>
+        <item>empty_basket</item>
+        <item>fig</item>
+        <item>fish</item>
+        <item>flour</item>
+        <item>flour_1</item>
+        <item>frappe</item>
+        <item>fries</item>
+        <item>garlic</item>
+        <item>gingerbread</item>
+        <item>glass_2</item>
+        <item>glass_3</item>
+        <item>glass_4</item>
+        <item>glass_5</item>
+        <item>glass_6</item>
+        <item>grain</item>
+        <item>grapes</item>
+        <item>ham</item>
+        <item>hamburguer</item>
+        <item>hazelnut</item>
+        <item>honey1</item>
+        <item>hot_dog</item>
+        <item>ice_cream_1</item>
+        <item>ice_cream_10</item>
+        <item>ice_cream_11</item>
+        <item>jam</item>
+        <item>jam_1</item>
+        <item>jawbreaker</item>
+        <item>jelly</item>
+        <item>kebab</item>
+        <item>kebab_1</item>
+        <item>lemon_1</item>
+        <item>lime</item>
+        <item>meat</item>
+        <item>meat_1</item>
+        <item>meat_2</item>
+        <item>milk</item>
+        <item>milk_1</item>
+        <item>mushrooms</item>
+        <item>mustard</item>
+        <item>mustard_2</item>
+        <item>noodles</item>
+        <item>oat</item>
+        <item>octopus</item>
+        <item>oil</item>
+        <item>olives</item>
+        <item>onion</item>
+        <item>onion_1</item>
+        <item>orange</item>
+        <item>pancakes</item>
+        <item>pancakes_1</item>
+        <item>pasta</item>
+        <item>peach</item>
+        <item>pear</item>
+        <item>peas</item>
+        <item>pepper</item>
+        <item>pepper_1</item>
+        <item>pickles</item>
+        <item>pie</item>
+        <item>pie_1</item>
+        <item>pineapple</item>
+        <item>pistachio</item>
+        <item>pizza_2</item>
+        <item>pizza_4</item>
+        <item>pomegranate</item>
+        <item>popsicle</item>
+        <item>potatoes_1</item>
+        <item>potatoes_2</item>
+        <item>pretzel</item>
+        <item>pudding</item>
+        <item>pumpkin</item>
+        <item>radish</item>
+        <item>raspberry</item>
+        <item>rice</item>
+        <item>risotto</item>
+        <item>salad_1</item>
+        <item>salami</item>
+        <item>salmon</item>
+        <item>salt</item>
+        <item>sandwich</item>
+        <item>sandwich_1</item>
+        <item>sausage</item>
+        <item>seeds</item>
+        <item>shrimp</item>
+        <item>sorbet</item>
+        <item>spaguetti</item>
+        <item>spices</item>
+        <item>steak</item>
+        <item>strawberry</item>
+        <item>sushi_1</item>
+        <item>sushi_2</item>
+        <item>taco</item>
+        <item>tea</item>
+        <item>teapot_1</item>
+        <item>toast</item>
+        <item>toffee</item>
+        <item>tomato</item>
+        <item>turkey</item>
+        <item>water</item>
+        <item>water_1</item>
+        <item>watermelon</item>
+        <item>wrap</item>
+        <item>apple_1</item>
+        <item>asparagus</item>
+        <item>aubergine</item>
+        <item>avocado</item>
+        <item>bacon</item>
+        <item>baguette</item>
+        <item>banana</item>
+        <item>beans</item>
+        <item>biscuit</item>
+        <item>blueberries</item>
+        <item>bread</item>
+        <item>bread_1</item>
+        <item>broccoli</item>
+        <item>butter</item>
+        <item>cabbage</item>
+        <item>cake</item>
+        <item>can</item>
+        <item>can_2</item>
+        <item>candy</item>
+        <item>candy_1</item>
+        <item>carrot</item>
+        <item>cauliflower</item>
+        <item>cereals</item>
+        <item>cheese</item>
+        <item>cheese_1</item>
+        <item>cherries</item>
+        <item>chili</item>
+        <item>chips</item>
+        <item>chives</item>
+        <item>chocolate</item>
+        <item>coconut</item>
+        <item>coffee_2</item>
+        <item>coffee_4</item>
+    </string-array>
 
 
 </resources>

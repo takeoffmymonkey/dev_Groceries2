@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CursorAdapter;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.NumberPicker;
 import android.widget.TextView;
 
@@ -29,6 +30,7 @@ import static com.example.android.groceries2.activities.MainActivity.dbHelper;
 import static com.example.android.groceries2.activities.MainActivity.nums;
 import static com.example.android.groceries2.db.GroceriesDbHelper.CHECKED_COLUMN;
 import static com.example.android.groceries2.db.GroceriesDbHelper.ID_COLUMN;
+import static com.example.android.groceries2.db.GroceriesDbHelper.IMAGE_COLUMN;
 import static com.example.android.groceries2.db.GroceriesDbHelper.ITEMS_TABLE_NAME;
 import static com.example.android.groceries2.db.GroceriesDbHelper.LIST_AMOUNT_COLUMN;
 import static com.example.android.groceries2.db.GroceriesDbHelper.LIST_ITEM_COLUMN;
@@ -60,12 +62,15 @@ public class ItemsCursorAdapter extends CursorAdapter {
     @Override
     public void bindView(final View view, final Context context, final Cursor cursor) {
 
-
-        //Create text view object for item's name
+        //Set item's name
         final TextView itemNameTextView = (TextView) view.findViewById(R.id.item_name);
-
-        //Set its name to NAME_COLUMN
         itemNameTextView.setText(cursor.getString(cursor.getColumnIndexOrThrow(NAME_COLUMN)));
+
+        //Set item's image
+        ImageView itemImage = (ImageView) view.findViewById(R.id.item_image);
+        int itemImageInt = cursor.getInt(cursor.getColumnIndex(IMAGE_COLUMN));
+
+        itemImage.setImageResource(R.drawable.apple_1);
 
         //Set color of the view (according to CHECKED_COLUMN state of the row)
         if (cursor.getInt(cursor.getColumnIndexOrThrow(CHECKED_COLUMN)) == 1) {
