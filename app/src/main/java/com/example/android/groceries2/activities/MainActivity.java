@@ -3,6 +3,9 @@ This is MainActivity
  */
 package com.example.android.groceries2.activities;
 
+
+
+
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.database.Cursor;
@@ -19,6 +22,8 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.MemoryCategory;
 import com.example.android.groceries2.R;
 import com.example.android.groceries2.adapters.CategoryAdapter;
 import com.example.android.groceries2.db.GroceriesDbHelper;

@@ -19,6 +19,7 @@ import android.widget.ImageView;
 import android.widget.NumberPicker;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.example.android.groceries2.R;
 import com.example.android.groceries2.activities.ItemEditorActivity;
 import com.example.android.groceries2.activities.MainActivity;
@@ -74,8 +75,8 @@ public class ItemsCursorAdapter extends CursorAdapter {
 
         String imageName = images[itemImageInt - 1];
 
-        itemImage.setImageResource(context.getResources().getIdentifier
-                (imageName, "drawable", context.getPackageName()));
+        Glide.with(context).load(context.getResources().getIdentifier
+                (imageName, "drawable", context.getPackageName())).into(itemImage);
 
 
         //Set color of the view (according to CHECKED_COLUMN state of the row)
