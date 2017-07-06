@@ -187,7 +187,7 @@ public class ListFragment extends Fragment {
 
         listListView.setEmptyView(emptyView);
 
-        Cursor cursor = db.query("List_" + activeListVersion, null,
+        Cursor cursor = db.query("LIST_" + activeListVersion, null,
                 null, null, null, null, null);
 
         if (cursor.getCount() == 0)

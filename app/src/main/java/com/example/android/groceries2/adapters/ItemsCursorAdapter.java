@@ -217,7 +217,7 @@ public class ItemsCursorAdapter extends CursorAdapter {
                                                 int newActiveVersion = dbHelper.getActiveListVersion();
 
                                                 //Insert new item into List table
-                                                db.insert("List_" + newActiveVersion,
+                                                db.insert("LIST_" + newActiveVersion,
                                                         null, contentValuesListTable);
 
                                                 //update total considering new version
@@ -229,7 +229,7 @@ public class ItemsCursorAdapter extends CursorAdapter {
                                                 //There is active table
 
                                                 //Insert new item into List table
-                                                db.insert("List_" + activeVersion,
+                                                db.insert("LIST_" + activeVersion,
                                                         null, contentValuesListTable);
 
                                                 //update total
@@ -302,7 +302,7 @@ public class ItemsCursorAdapter extends CursorAdapter {
                     //Get currentListTableVersion
                     int currentListTableVersion = dbHelper.getActiveListVersion();
                     //Get currentListTableName
-                    String currentListTableName = "List_" + currentListTableVersion;
+                    String currentListTableName = "LIST_" + currentListTableVersion;
 
                     Log.e("WARNING: ", "currentListTableVersion: " + currentListTableVersion);
 

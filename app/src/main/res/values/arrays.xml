@@ -3,8 +3,8 @@
     <!-- These are the options displayed in the gender drop-down Spinner -->
     <string-array name="array_measurement_options">
         <item>items</item>
-        <item>Kg</item>
-        <item>L</item>
+        <item>kg</item>
+        <item>l</item>
     </string-array>
 
 
