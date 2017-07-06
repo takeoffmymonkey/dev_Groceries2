@@ -105,7 +105,7 @@ public class ItemsCursorAdapter extends CursorAdapter {
                 }
 
                 final Cursor freshItemsTableCursor = db.query(ITEMS_TABLE_NAME,
-                        new String[]{CHECKED_COLUMN, NAME_COLUMN, MEASURE_COLUMN},
+                        new String[]{CHECKED_COLUMN, NAME_COLUMN, MEASURE_COLUMN, IMAGE_COLUMN},
                         ID_COLUMN + "=?", new String[]{Integer.toString(rowIdInt)},
                         null, null, null);
 
@@ -117,17 +117,17 @@ public class ItemsCursorAdapter extends CursorAdapter {
                 final String itemName = freshItemsTableCursor.getString(freshItemsTableCursor
                         .getColumnIndex(NAME_COLUMN));
 
+                final int image = freshItemsTableCursor.getInt(freshItemsTableCursor
+                        .getColumnIndex(IMAGE_COLUMN));
+
                 //Check if the row was checked
                 if (freshItemsTableCursor.getInt(freshItemsTableCursor.getColumnIndexOrThrow(CHECKED_COLUMN)) == 0) {
                     //Row wasn't checked
-                    //Create alert dialog:
-                    //Create alert dialog object
+
+                    //Create alert dialog
                     AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
-                    //Create inflater object
                     final LayoutInflater inflater = LayoutInflater.from(view.getContext());
-                    //Create view object containing dialog_item_amount layout
                     View editItemDialogView = inflater.inflate(R.layout.dialog_item_amount, null);
-                    //Create edit text object linked to to editor_price id
 
                     final NumberPicker numberPicker = (NumberPicker) editItemDialogView
                             .findViewById(R.id.dialog_picker_1);
@@ -187,9 +187,7 @@ public class ItemsCursorAdapter extends CursorAdapter {
                                             //Create contentValuesItemsTable var to store CHECKED_COLUMN value
                                             ContentValues contentValuesItemsTable
                                                     = new ContentValues();
-                                            //Put new value into contentValuesItemsTable
                                             contentValuesItemsTable.put(CHECKED_COLUMN, 1);
-                                            //Update checked field
                                             db.update(ITEMS_TABLE_NAME, contentValuesItemsTable,
                                                     ID_COLUMN + "=?",
                                                     new String[]{Integer.toString(rowIdInt)});
@@ -198,21 +196,16 @@ public class ItemsCursorAdapter extends CursorAdapter {
 
                                             int amountPicker = numberPicker.getValue();
 
-
                                             float amount = Float
                                                     .parseFloat(nums[amountPicker]);
 
                                             //Create contentValuesListTable var
                                             ContentValues contentValuesListTable
                                                     = new ContentValues();
-                                            //Put new value into contentValuesItemsTable
                                             contentValuesListTable.put(LIST_ITEM_COLUMN, itemName);
-                                            //Put new value into contentValuesItemsTable
                                             contentValuesListTable.put(LIST_AMOUNT_COLUMN, amount);
-                                            //Put new value into contentValuesItemsTable
                                             contentValuesListTable.put(MEASURE_COLUMN, measureInItems);
-
-                                            //Put new value into contentValuesItemsTable
+                                            contentValuesListTable.put(IMAGE_COLUMN, image);
                                             float itemTotalPrice = rowPriceFloat * amount;
                                             contentValuesListTable.put(PRICE_COLUMN, itemTotalPrice);
 

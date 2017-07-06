@@ -8,8 +8,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CursorAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.example.android.groceries2.R;
 import com.example.android.groceries2.activities.MainActivity;
 import com.example.android.groceries2.fragments.ListFragment;
@@ -18,6 +20,7 @@ import static com.example.android.groceries2.activities.MainActivity.db;
 import static com.example.android.groceries2.activities.MainActivity.dbHelper;
 import static com.example.android.groceries2.db.GroceriesDbHelper.CHECKED_COLUMN;
 import static com.example.android.groceries2.db.GroceriesDbHelper.ID_COLUMN;
+import static com.example.android.groceries2.db.GroceriesDbHelper.IMAGE_COLUMN;
 import static com.example.android.groceries2.db.GroceriesDbHelper.LIST_AMOUNT_COLUMN;
 import static com.example.android.groceries2.db.GroceriesDbHelper.LIST_ITEM_COLUMN;
 import static com.example.android.groceries2.db.GroceriesDbHelper.MEASURE_COLUMN;
@@ -52,6 +55,17 @@ public class ListCursorAdapter extends CursorAdapter {
         //Get code of the items measure
         int measureInItems = cursor
                 .getInt(cursor.getColumnIndexOrThrow(MEASURE_COLUMN));
+
+
+        //Set item's image
+        ImageView itemImage = (ImageView) view.findViewById(R.id.list_item_image);
+        int itemImageInt = cursor.getInt(cursor.getColumnIndex(IMAGE_COLUMN));
+
+
+        String imageName = MainActivity.images[itemImageInt - 1];
+
+        Glide.with(context).load(context.getResources().getIdentifier
+                (imageName, "drawable", context.getPackageName())).into(itemImage);
 
 
         //Get cursor with MEASURE_MEASURE_COLUMN text from Measure_table
@@ -113,7 +127,7 @@ public class ListCursorAdapter extends CursorAdapter {
         //Get itemPrice value from cursor
         float itemPrice = cursor.getFloat(cursor.getColumnIndexOrThrow(PRICE_COLUMN));
         //Set itemPriceTextView to the product of item's amount and price
-        itemPriceTextView.setText(MainActivity.formatPrice(itemPrice));
+        itemPriceTextView.setText("(~" + MainActivity.formatPrice(itemPrice) + ")");
 
 
         //Get ID_COLUMN of current row in int

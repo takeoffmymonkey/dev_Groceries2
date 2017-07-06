@@ -100,6 +100,7 @@ public class GroceriesDbHelper extends SQLiteOpenHelper {
             LIST_AMOUNT_COLUMN + " REAL, " +
             PRICE_COLUMN + " REAL NOT NULL DEFAULT 0, " +
             MEASURE_COLUMN + " INTEGER NOT NULL, " +
+            IMAGE_COLUMN + " INTEGER DEFAULT 132, " +
             CHECKED_COLUMN + " INTEGER DEFAULT 0);";
 
 
@@ -342,6 +343,7 @@ public class GroceriesDbHelper extends SQLiteOpenHelper {
                 LIST_AMOUNT_COLUMN + " REAL, " +
                 PRICE_COLUMN + " REAL NOT NULL DEFAULT 0, " +
                 MEASURE_COLUMN + " INTEGER NOT NULL, " +
+                IMAGE_COLUMN + " INTEGER DEFAULT 132, " +
                 CHECKED_COLUMN + " INTEGER DEFAULT 0);";
 
         //Create new table
