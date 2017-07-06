@@ -35,6 +35,7 @@ import static com.example.android.groceries2.activities.MainActivity.dbHelper;
 import static com.example.android.groceries2.activities.MainActivity.showSnackBar;
 import static com.example.android.groceries2.activities.MainActivity.snackOn;
 import static com.example.android.groceries2.db.GroceriesDbHelper.ID_COLUMN;
+import static com.example.android.groceries2.db.GroceriesDbHelper.IMAGE_COLUMN;
 import static com.example.android.groceries2.db.GroceriesDbHelper.ITEMS_TABLE_NAME;
 import static com.example.android.groceries2.db.GroceriesDbHelper.MEASURE_COLUMN;
 import static com.example.android.groceries2.db.GroceriesDbHelper.NAME_COLUMN;
@@ -208,8 +209,6 @@ public class ItemsFragment extends Fragment {
         }
 
 
-
-
         itemsTotalTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -359,18 +358,18 @@ public class ItemsFragment extends Fragment {
             switch (params[0]) {
 
                 case 0: // Populate list
-                    //Get array of items' names from resources
                     String[] names = getResources().getStringArray(R.array.array_auto_name_list);
-                    //Get array of items' measures from resources
                     int[] measures = getResources().getIntArray(R.array.array_auto_measure_list);
-                    //Create array of items' prices
                     String[] prices = getResources().getStringArray(R.array.array_auto_price_list);
+                    int[] images = getResources().getIntArray(R.array.array_auto_image_list);
+
 
                     for (int i = 0; i < prices.length; i++) {
                         ContentValues contentValues = new ContentValues();
                         contentValues.put(NAME_COLUMN, names[i]);
                         contentValues.put(PRICE_COLUMN, Float.parseFloat(prices[i]));
                         contentValues.put(MEASURE_COLUMN, measures[i] + 1);
+                        contentValues.put(IMAGE_COLUMN, images[i]);
                         db.insert(ITEMS_TABLE_NAME, null, contentValues);
                     }
 

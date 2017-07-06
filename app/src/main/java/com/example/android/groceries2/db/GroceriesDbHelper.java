@@ -104,7 +104,7 @@ public class GroceriesDbHelper extends SQLiteOpenHelper {
 
 
     /*IMAGES table*/
-    private static final String IMAGES_TABLE_NAME = "IMAGES_table";
+    public static final String IMAGES_TABLE_NAME = "IMAGES_table";
     public static final String IMAGES_EN_COLUMN = "en";
     public static final String IMAGES_UA_COLUMN = "ua";
     public static final String IMAGES_RU_COLUMN = "ru";
@@ -631,5 +631,6 @@ public class GroceriesDbHelper extends SQLiteOpenHelper {
         }
 
     }
+
 
 }

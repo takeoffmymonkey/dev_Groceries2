@@ -27,6 +27,7 @@ import com.example.android.groceries2.fragments.ListFragment;
 
 import static com.example.android.groceries2.activities.MainActivity.db;
 import static com.example.android.groceries2.activities.MainActivity.dbHelper;
+import static com.example.android.groceries2.activities.MainActivity.images;
 import static com.example.android.groceries2.activities.MainActivity.nums;
 import static com.example.android.groceries2.db.GroceriesDbHelper.CHECKED_COLUMN;
 import static com.example.android.groceries2.db.GroceriesDbHelper.ID_COLUMN;
@@ -70,7 +71,12 @@ public class ItemsCursorAdapter extends CursorAdapter {
         ImageView itemImage = (ImageView) view.findViewById(R.id.item_image);
         int itemImageInt = cursor.getInt(cursor.getColumnIndex(IMAGE_COLUMN));
 
-        itemImage.setImageResource(R.drawable.apple_1);
+
+        String imageName = images[itemImageInt - 1];
+
+        itemImage.setImageResource(context.getResources().getIdentifier
+                (imageName, "drawable", context.getPackageName()));
+
 
         //Set color of the view (according to CHECKED_COLUMN state of the row)
         if (cursor.getInt(cursor.getColumnIndexOrThrow(CHECKED_COLUMN)) == 1) {
