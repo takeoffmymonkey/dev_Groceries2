@@ -20,7 +20,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.GridView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -29,6 +28,8 @@ import com.example.android.groceries2.R;
 import com.example.android.groceries2.activities.ItemEditorActivity;
 import com.example.android.groceries2.activities.MainActivity;
 import com.example.android.groceries2.adapters.ItemsCursorAdapter;
+
+import in.srain.cube.views.GridViewWithHeaderAndFooter;
 
 import static com.example.android.groceries2.activities.MainActivity.db;
 import static com.example.android.groceries2.activities.MainActivity.dbHelper;
@@ -64,7 +65,7 @@ public class ItemsFragment extends Fragment {
 
     public int lines;
 
-    GridView itemsGridView;
+    GridViewWithHeaderAndFooter itemsGridView;
 
 
     public static View itemsView;
@@ -182,7 +183,7 @@ public class ItemsFragment extends Fragment {
         });
 
         //Find the gridView to hold items
-        itemsGridView = (GridView) itemsView.findViewById(R.id.items_list);
+        itemsGridView = (GridViewWithHeaderAndFooter) itemsView.findViewById(R.id.items_list);
 
         //Find empty view when nothing to show
         View emptyView = itemsView.findViewById(R.id.items_empty_view);
@@ -198,6 +199,11 @@ public class ItemsFragment extends Fragment {
         }
         //Create cursor adapter object and pass cursor there
         itemsCursorAdapter = new ItemsCursorAdapter(getContext(), cursor, 0);
+
+
+        View footerView = ((LayoutInflater) getContext().getSystemService
+                (Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.footer_layout, null, false);
+        itemsGridView.addFooterView(footerView);
 
         itemsGridView.setAdapter(itemsCursorAdapter);
 

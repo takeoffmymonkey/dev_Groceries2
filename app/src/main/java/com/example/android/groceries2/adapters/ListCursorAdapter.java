@@ -12,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.android.groceries2.R;
 import com.example.android.groceries2.activities.MainActivity;
 import com.example.android.groceries2.fragments.ListFragment;
@@ -64,8 +65,10 @@ public class ListCursorAdapter extends CursorAdapter {
 
         String imageName = MainActivity.images[itemImageInt - 1];
 
-        Glide.with(context).load(context.getResources().getIdentifier
-                (imageName, "drawable", context.getPackageName())).into(itemImage);
+        Glide.with(context)
+                .load(context.getResources().getIdentifier(imageName, "drawable", context.getPackageName()))
+
+                .into(itemImage);
 
 
         //Get cursor with MEASURE_MEASURE_COLUMN text from Measure_table
