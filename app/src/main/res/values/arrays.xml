@@ -2,13 +2,16 @@
 <resources>
     <!-- These are the options displayed in the gender drop-down Spinner -->
     <string-array name="array_measurement_options">
+
         <item>items</item>
         <item>kg</item>
         <item>l</item>
+
     </string-array>
 
 
     <integer-array name="array_auto_measure_list">
+
         <item>1</item>
         <item>0</item>
         <item>0</item>
@@ -19,6 +22,7 @@
         <item>0</item>
         <item>0</item>
         <item>0</item>
+
         <item>1</item>
         <item>1</item>
         <item>1</item>
@@ -29,11 +33,74 @@
         <item>0</item>
         <item>0</item>
         <item>0</item>
+
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+
     </integer-array>
 
 
+    <string-array name="array_auto_name_list">
+
+        <item>Хлеб</item>
+        <item>Овсянка</item>
+        <item>Рис</item>
+        <item>Паста</item>
+        <item>Молоко</item>
+        <item>Cыр</item>
+        <item>Сметана</item>
+        <item>Яйца</item>
+        <item>Мясо</item>
+        <item>Рыба</item>
+
+        <item>Колбаса</item>
+        <item>Сосиски</item>
+        <item>Огурцы</item>
+        <item>Помидоры</item>
+        <item>Картошка</item>
+        <item>Морковь</item>
+        <item>Капуста</item>
+        <item>Лук</item>
+        <item>Кукуруза</item>
+        <item>Перец</item>
+
+        <item>Чеснок</item>
+        <item>Салат</item>
+        <item>Зелень</item>
+        <item>Грибы</item>
+        <item>Лсд-25</item>
+        <item>Яблоки</item>
+        <item>Бананы</item>
+        <item>Черешня</item>
+        <item>Апельсины</item>
+        <item>Виноград</item>
+
+        <item>Лимоны</item>
+        <item>Арбуз</item>
+        <item>Мед</item>
+        <item>Печенье</item>
+        <item>Конфеты</item>
+
+    </string-array>
+
+
     <integer-array name="array_auto_image_list">
-        <item>1</item>
+
+        <item>43</item>
         <item>3</item>
         <item>4</item>
         <item>5</item>
@@ -43,6 +110,7 @@
         <item>8</item>
         <item>10</item>
         <item>11</item>
+
         <item>12</item>
         <item>13</item>
         <item>14</item>
@@ -53,34 +121,30 @@
         <item>19</item>
         <item>20</item>
         <item>21</item>
+
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+
     </integer-array>
 
 
-    <string-array name="array_auto_name_list">
-        <item>Филе кур.</item>
-        <item>Батон 450</item>
-        <item>Хлебцы (Своя) 100</item>
-        <item>Мария (Своя) 170</item>
-        <item>Мария (Прем) 200</item>
-        <item>Сыр диетич. 185</item>
-        <item>Сыр топл. (Прем) 200</item>
-        <item>Лактония 400</item>
-        <item>Закваска (Фанни) 450</item>
-        <item>Закваска (Ягот) 900</item>
-        <item>Бананы</item>
-        <item>Кабачки</item>
-        <item>Огурцы</item>
-        <item>Морковь</item>
-        <item>Овсянка (Своя) 500</item>
-        <item>Овсянка (Карап) 200</item>
-        <item>Хлопья греч. (Сто) 400</item>
-        <item>Хлопья греч. (Нов) 800</item>
-        <item>Зубная щетка</item>
-        <item>Беруши</item>
-    </string-array>
-
 
     <string-array name="array_auto_price_list">
+
         <item>84.95</item>
         <item>7.45</item>
         <item>6.35</item>
@@ -91,6 +155,7 @@
         <item>8.85</item>
         <item>10.46</item>
         <item>17.7</item>
+
         <item>29.95</item>
         <item>9.89</item>
         <item>14.95</item>
@@ -101,6 +166,24 @@
         <item>44.53</item>
         <item>9.95</item>
         <item>24.73</item>
+
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+
     </string-array>
 
 
