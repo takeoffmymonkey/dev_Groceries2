@@ -4,8 +4,6 @@ This is MainActivity
 package com.example.android.groceries2.activities;
 
 
-
-
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.database.Cursor;
@@ -18,12 +16,9 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.MemoryCategory;
 import com.example.android.groceries2.R;
 import com.example.android.groceries2.adapters.CategoryAdapter;
 import com.example.android.groceries2.db.GroceriesDbHelper;
@@ -62,10 +57,6 @@ public class MainActivity extends AppCompatActivity {
     public static int iconsColor;
 
     public static String nums[];
-
-
-    private String[] titles;
-    private ListView drawerList;
 
 
     public static int snackLines;
@@ -246,7 +237,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
 
-        String[] numsTemp = new String[1099];
+        String[] numsTemp = new String[999];
 
         int first = 0;
         int second = 1;
@@ -255,8 +246,9 @@ public class MainActivity extends AppCompatActivity {
 
             if (second == 10) {
                 first++;
-                second = 0;
+                second = 1;
                 numsTemp[i] = Integer.toString(first);
+
             } else {
                 numsTemp[i] = Integer.toString(first) + "." + Integer.toString(second);
                 second++;
