@@ -41,23 +41,14 @@ import static com.example.android.groceries2.db.GroceriesDbHelper.PRICE_COLUMN;
 public class ItemEditorActivity extends AppCompatActivity {
 
     private String name;
-
     private float price;
-
     private int measure;
-
     private String measurement = "1";
-
     private EditText nameEditText;
-
     private EditText priceEditText;
-
     private Spinner measurementSpinner;
-
     private ImageView icon;
-
     private int itemId = 0;
-
     private int itemIconInt;
 
     private View.OnTouchListener touchListener = new View.OnTouchListener() {
@@ -150,13 +141,13 @@ public class ItemEditorActivity extends AppCompatActivity {
                         //Set ability to press back
                         .setCancelable(true)
                         //Set Ok button with click listener
-                        .setPositiveButton("Ok",
+                        /*.setPositiveButton("Ok",
                                 new DialogInterface.OnClickListener() {
                                     public void onClick(DialogInterface dialog, int id) {
                                         //Close the dialog window
                                         dialog.cancel();
                                     }
-                                })
+                                })*/
                         .setNegativeButton("Cancel",
                                 new DialogInterface.OnClickListener() {
                                     public void onClick(DialogInterface dialog, int id) {
@@ -236,6 +227,7 @@ public class ItemEditorActivity extends AppCompatActivity {
         }
 
     }
+
 
     private void setupSpinner() {
         ArrayAdapter measurementSpinnerAdapter =

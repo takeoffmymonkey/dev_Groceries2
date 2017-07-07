@@ -6,6 +6,7 @@ package com.example.android.groceries2.activities;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.res.Resources;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
@@ -38,15 +39,6 @@ import static com.example.android.groceries2.fragments.ItemsFragment.itemsView;
 
 public class MainActivity extends AppCompatActivity {
 
-    //Global link to dbHelper object
-    public static GroceriesDbHelper dbHelper;
-    //Global Link to db object
-    public static SQLiteDatabase db;
-
-    //Create tab layout object for tabs
-    static TabLayout tabLayout;
-
-
     public static int primaryColor;
     public static int primaryDarkColor;
     public static int primaryLightColor;
@@ -56,16 +48,16 @@ public class MainActivity extends AppCompatActivity {
     public static int dividerColor;
     public static int iconsColor;
 
+    public static GroceriesDbHelper dbHelper;
+    public static SQLiteDatabase db;
+    static TabLayout tabLayout;
     public static String nums[];
-
-
     public static int snackLines;
-
     public static boolean snackOn = false;
-
     public static Snackbar snackBar;
-
     public static String[] images;
+    public static Integer[] imagesIDs;
+
 
     @Override
     protected void onStart() {
@@ -73,11 +65,13 @@ public class MainActivity extends AppCompatActivity {
         Log.w("WARNING: ", "IN ONSTART OF MAIN ACTIVITY");
     }
 
+
     @Override
     protected void onResume() {
         super.onResume();
         Log.w("WARNING: ", "IN ONRESUME OF MAIN ACTIVITY");
     }
+
 
     @Override
     protected void onPause() {
@@ -103,30 +97,26 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //Set view for main activity class
-        setContentView(R.layout.activity_main);
 
+        setContentView(R.layout.activity_main);
 
         Log.w("WARNING: ", "IN ONCREATE OF MAIN ACTIVITY");
 
 
+        //Special for russian locale
         if (Locale.getDefault().getDisplayLanguage().equals("русский")) {
 
-            //Create alert dialog object
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            //Set title of the dialog
+
             builder.setTitle("Я не мог не заметить, что ты предпочитаешь русский язык..")
-                    //Set custom view of the dialog
                     .setMessage("Чей Крым?")
-                    //Set ability to press back
                     .setCancelable(false)
-                    //Set Ok button with click listener
                     .setPositiveButton("Украинский",
                             new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int id) {
 
                                     Toast.makeText(MainActivity.this, "Ще б пак!", Toast.LENGTH_SHORT).show();
-                                    //Close the dialog window
+
                                     dialog.cancel();
 
                                 }
@@ -139,7 +129,6 @@ public class MainActivity extends AppCompatActivity {
                                             "Молодец. Посмотри на досуге происхождение слова идиот",
                                             Toast.LENGTH_SHORT).show();
 
-                                    //Close the dialog window
                                     dialog.cancel();
 
                                 }
@@ -152,7 +141,6 @@ public class MainActivity extends AppCompatActivity {
                                             "Ваши данный успешно добавлены в базу Миротворец!",
                                             Toast.LENGTH_SHORT).show();
 
-                                    //Close the dialog window
                                     dialog.cancel();
                                 }
                             });
@@ -160,10 +148,10 @@ public class MainActivity extends AppCompatActivity {
             AlertDialog alert = builder.create();
             alert.show();
 
-
         }
 
 
+        //Get colors
         primaryColor = getResources().getColor(R.color.colorPrimary);
         primaryDarkColor = getResources().getColor(R.color.colorPrimaryDark);
         primaryLightColor = getResources().getColor(R.color.colorPrimaryLight);
@@ -173,34 +161,19 @@ public class MainActivity extends AppCompatActivity {
         dividerColor = getResources().getColor(R.color.colorDivider);
         iconsColor = getResources().getColor(R.color.colorIcons);
 
-        images = getResources().getStringArray(R.array.array_images);
 
-
-        //Create dbHelper object
-        dbHelper = new GroceriesDbHelper(this, DB_NAME,
-                null, DB_VERSION);
-
-        //Create db object
+        //Get db object
+        dbHelper = new GroceriesDbHelper(this, DB_NAME, null, DB_VERSION);
         db = dbHelper.getReadableDatabase();
 
-        //Create adapter for fragments
+
+        //Setting adapter and view pager
         CategoryAdapter adapter = new CategoryAdapter(getSupportFragmentManager());
-
-        //Create view pager for fragments content
         ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager);
-        //Set a PagerAdapter that will supply views for this pager as needed
         viewPager.setAdapter(adapter);
-
         tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setTabTextColors(iconsColor, iconsColor);
-
-        //tabLayout.setTabTextColors(iconsColor, primaryTextColor);
-
-
-        //Link tab layout with view pager
         tabLayout.setupWithViewPager(viewPager);
-
-
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -230,6 +203,8 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+
+        //Check what tab to select
         int tab = getIntent().getIntExtra("tab", 0);
 
         if (tab != 0) {
@@ -237,14 +212,15 @@ public class MainActivity extends AppCompatActivity {
         }
 
 
+        //Create array for number picker of selecting amount dialog
         String[] numsTemp = new String[999];
-
         int first = 0;
         int second = 1;
 
         for (int i = 0; i < numsTemp.length; i++) {
 
             if (second == 10) {
+
                 first++;
                 second = 1;
                 numsTemp[i] = Integer.toString(first);
@@ -253,19 +229,36 @@ public class MainActivity extends AppCompatActivity {
                 numsTemp[i] = Integer.toString(first) + "." + Integer.toString(second);
                 second++;
             }
+
         }
 
         nums = numsTemp;
+
+
+        //Create arrays for images names and ids
+        Resources resources = getResources();
+        images = resources.getStringArray(R.array.array_images);
+        Integer[] imagesIDsTemp = new Integer[144];
+        String packageName = getPackageName();
+        String type = "drawable";
+
+        for (int i = 0; i < imagesIDsTemp.length; i++) {
+
+            imagesIDsTemp[i] = resources.getIdentifier(images[i], type, packageName);
+
+        }
+
+        imagesIDs = imagesIDsTemp;
 
     }
 
 
     //Selects proper tab
-
     public static void selectTab(int number) {
         //Make it open a proper tab
         tabLayout.getTabAt(number).select();
     }
+
 
     @Override
     protected void onDestroy() {
@@ -273,6 +266,7 @@ public class MainActivity extends AppCompatActivity {
         //Close any open database object
         dbHelper.close();
     }
+
 
     public static String formatPrice(float price) {
 
@@ -426,6 +420,7 @@ public class MainActivity extends AppCompatActivity {
         snackOn = state;
         snackBar = snackbar;
     }
+
 
     public boolean getSnackOnState() {
         return snackOn;

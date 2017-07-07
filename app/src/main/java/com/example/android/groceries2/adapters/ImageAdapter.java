@@ -7,7 +7,9 @@ import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
 
-import com.example.android.groceries2.R;
+import com.bumptech.glide.Glide;
+
+import static com.example.android.groceries2.activities.MainActivity.imagesIDs;
 
 /**
  * Created by takeoff on 007 07 Jul 17.
@@ -21,7 +23,7 @@ public class ImageAdapter extends BaseAdapter {
     }
 
     public int getCount() {
-        return mThumbIds.length;
+        return imagesIDs.length;
     }
 
     public Object getItem(int position) {
@@ -45,12 +47,12 @@ public class ImageAdapter extends BaseAdapter {
             imageView = (ImageView) convertView;
         }
 
-        imageView.setImageResource(mThumbIds[position]);
+        //imageView.setImageResource(imagesIDs[position]);
+
+        Glide.with(mContext).load(imagesIDs[position]).into(imageView);
+
         return imageView;
     }
 
-    // references to our images
-    private Integer[] mThumbIds = {
-            R.drawable.cabbage
-    };
+
 }
