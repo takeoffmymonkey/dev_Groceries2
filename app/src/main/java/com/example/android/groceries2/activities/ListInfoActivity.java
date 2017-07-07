@@ -11,14 +11,13 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.android.groceries2.R;
-import com.example.android.groceries2.adapters.ListLogCursorAdapter;
+import com.example.android.groceries2.adapters.ListInfoCursorAdapter;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -123,7 +122,7 @@ public class ListInfoActivity extends AppCompatActivity {
                 null, null, null, null, null);
 
         //Create cursor adapter
-        ListLogCursorAdapter cursorAdapter = new ListLogCursorAdapter(this, cursor, 0);
+        ListInfoCursorAdapter cursorAdapter = new ListInfoCursorAdapter(this, cursor, 0);
         //Set adapter to list view
         listView.setAdapter(cursorAdapter);
 
@@ -149,8 +148,8 @@ public class ListInfoActivity extends AppCompatActivity {
                                         dbHelper.deleteListTable(listVersion);
 
                                         Intent intent = new Intent(ListInfoActivity.this, MainActivity.class);
-                                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                                        intent.putExtra("tab", 2);
+                                        //intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                        //intent.putExtra("tab", 2);
                                         startActivity(intent);
 
                                         Toast.makeText(ListInfoActivity.this, listName + " deleted",
@@ -180,7 +179,7 @@ public class ListInfoActivity extends AppCompatActivity {
 
 
     //Move back to log tab if Up is pressed
-    @Override
+/*    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             // Respond to the action bar's Up/Home button
@@ -192,6 +191,6 @@ public class ListInfoActivity extends AppCompatActivity {
                 return true;
         }
         return super.onOptionsItemSelected(item);
-    }
+    }*/
 
 }

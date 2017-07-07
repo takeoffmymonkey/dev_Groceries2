@@ -1,28 +1,27 @@
-package com.example.android.groceries2.fragments;
+package com.example.android.groceries2.activities;
 
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.database.Cursor;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.android.groceries2.R;
-import com.example.android.groceries2.activities.LogActivity;
 import com.example.android.groceries2.adapters.LogCursorAdapter;
+import com.example.android.groceries2.fragments.ListFragment;
 
 import static com.example.android.groceries2.activities.MainActivity.db;
 import static com.example.android.groceries2.activities.MainActivity.dbHelper;
@@ -30,108 +29,42 @@ import static com.example.android.groceries2.db.GroceriesDbHelper.LOG_CODE_COLUM
 import static com.example.android.groceries2.db.GroceriesDbHelper.LOG_TABLE_NAME;
 
 /**
- * Created by takeoff on 002 02 Jun 17.
+ * Created by takeoff on 007 07 Jul 17.
  */
 
-public class LogFragment extends Fragment {
+public class LogActivity extends AppCompatActivity {
 
-
-    View logView;
     static LogCursorAdapter logCursorAdapter;
-
 
     ProgressBar progressBar;
 
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        Log.w("WARNING: ", "IN ONATTACH OF LOG FRAGMENT");
-    }
-
 
     @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.w("WARNING: ", "IN ONCREATE OF LOG FRAGMENT");
-    }
 
-
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        Log.w("WARNING: ", "IN ONACTIVITYCREATE OF LOG FRAGMENT");
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        Log.w("WARNING: ", "IN ONSTART OF LOG FRAGMENT");
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        Log.w("WARNING: ", "IN ONRESUME OF LOG FRAGMENT");
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        Log.w("WARNING: ", "IN ONPAUSE OF LOG FRAGMENT");
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        Log.w("WARNING: ", "IN ONSTOP OF LOG FRAGMENT");
-    }
-
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        Log.w("WARNING: ", "IN ONDESTROYVIEW OF LOG FRAGMENT");
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        Log.w("WARNING: ", "IN ONDETACH OF LOG FRAGMENT");
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        Log.w("WARNING: ", "IN ONDESTROY OF LOG FRAGMENT");
-    }
-
-
-    @Nullable
-    @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
-                             @Nullable Bundle savedInstanceState) {
+        setContentView(R.layout.activity_lists);
 
 
         Log.w("WARNING: ", "IN ONCREATEVIEW OF LOG FRAGMENT");
 
-        logView = inflater.inflate(R.layout.tab_log, container, false);
 
-        progressBar = (ProgressBar) logView.findViewById(R.id.log_progress_bar);
+        progressBar = (ProgressBar) findViewById(R.id.log_progress_bar);
         progressBar.setVisibility(View.GONE);
 
 
         // Find the ListView which will be populated with the pet data
-        final ListView logListView = (ListView) logView.findViewById(R.id.log_list);
+        final ListView logListView = (ListView) findViewById(R.id.log_list);
 
         // Find and set empty view on the ListView, so that it only shows when the list has 0 items.
-        View emptyView = logView.findViewById(R.id.log_empty_view);
+        View emptyView = findViewById(R.id.log_empty_view);
 
         logListView.setEmptyView(emptyView);
 
-        TextView logEmptyText = (TextView) logView.findViewById(R.id.log_empty_text);
+        TextView logEmptyText = (TextView) findViewById(R.id.log_empty_text);
         logEmptyText.setText("No created lists");
 
-        TextView logEmptyTextSub = (TextView) logView.findViewById(R.id.log_empty_text_sub);
+        TextView logEmptyTextSub = (TextView) findViewById(R.id.log_empty_text_sub);
         logEmptyTextSub.setText("Please form a list in ITEMS");
 
         class LogBackgroundCursor extends AsyncTask<Void, Void, Boolean> {
@@ -142,7 +75,7 @@ public class LogFragment extends Fragment {
                 Cursor cursor = db.query(LOG_TABLE_NAME, null,
                         null, null, null, null, LOG_CODE_COLUMN + " DESC");
                 //Create cursor adapter object and pass cursor there
-                logCursorAdapter = new LogCursorAdapter(getContext(), cursor, 0);
+                logCursorAdapter = new LogCursorAdapter(LogActivity.this, cursor, 0);
                 return true;
             }
 
@@ -157,29 +90,38 @@ public class LogFragment extends Fragment {
         new LogBackgroundCursor().execute();
 
 
-        setHasOptionsMenu(true);
-
-        return logView;
+        //setHasOptionsMenu(true);
 
 
     }
 
 
+
+
     @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_log, menu);
-        super.onCreateOptionsMenu(menu, inflater);
+        return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // User clicked on a menu option in the app bar overflow menu
         switch (item.getItemId()) {
+
+            case android.R.id.home:
+                Intent intent = new Intent(LogActivity.this, MainActivity.class);
+                intent.putExtra("tab", 1);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(intent);
+                return true;
+
             // Respond to a click on the "Insert dummy data" menu option
             case R.id.settings_log_delete_all_lists:
 
                 //Create alert dialog object
-                AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                AlertDialog.Builder builder = new AlertDialog.Builder(LogActivity.this);
                 //Set title of the dialog
                 builder.setTitle("Delete all lists")
                         //Set custom view of the dialog
@@ -193,7 +135,7 @@ public class LogFragment extends Fragment {
 
                                         progressBar.setVisibility(View.VISIBLE);
 
-                                        new LogBackgroundTasks(getContext(),"Lists deleted",
+                                        new LogBackgroundTasks(LogActivity.this, "Lists deleted",
                                                 Toast.LENGTH_SHORT).execute();
 
                                         //Toast.makeText(getContext(), "Lists deleted", Toast.LENGTH_SHORT).show();
@@ -227,7 +169,6 @@ public class LogFragment extends Fragment {
         Context context;
         String toast;
         int length;
-
 
         public LogBackgroundTasks() {
             super();

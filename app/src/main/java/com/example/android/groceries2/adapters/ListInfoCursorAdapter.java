@@ -25,8 +25,8 @@ import static com.example.android.groceries2.db.GroceriesDbHelper.PRICE_COLUMN;
  * Created by takeoff on 021 21 Jun 17.
  */
 
-public class ListLogCursorAdapter extends CursorAdapter {
-    public ListLogCursorAdapter(Context context, Cursor c, int flags) {
+public class ListInfoCursorAdapter extends CursorAdapter {
+    public ListInfoCursorAdapter(Context context, Cursor c, int flags) {
         super(context, c, flags);
     }
 

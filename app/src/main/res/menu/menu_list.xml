@@ -18,6 +18,12 @@
         android:title="Delete list"
         app:showAsAction="never" />
 
+
+    <item
+        android:id="@+id/settings_view_lists"
+        android:title="View lists"
+        app:showAsAction="never" />
+
     <item
         android:id="@+id/settings_list_settings"
         android:title="Global settings"

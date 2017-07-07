@@ -20,6 +20,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.android.groceries2.R;
+import com.example.android.groceries2.activities.LogActivity;
 import com.example.android.groceries2.activities.MainActivity;
 import com.example.android.groceries2.adapters.ListCursorAdapter;
 
@@ -146,7 +147,7 @@ public class ListFragment extends Fragment {
             public void onClick(View v) {
                 dbHelper.approveCurrentList();
                 ListFragment.refreshListCursor(null, null, 0);
-                LogFragment.refreshLogCursor(null, null, 0);
+                LogActivity.refreshLogCursor(null, null, 0);
                 ItemsFragment.refreshItemsCursor(null, null, 0);
                 //Inform user
                 Toast.makeText(listView.getContext(), "List marked as complete", Toast.LENGTH_SHORT).show();
@@ -249,7 +250,7 @@ public class ListFragment extends Fragment {
             case R.id.settings_list_mark_as_complete:
                 dbHelper.approveCurrentList();
                 ListFragment.refreshListCursor(null, null, 0);
-                LogFragment.refreshLogCursor(null, null, 0);
+                LogActivity.refreshLogCursor(null, null, 0);
                 ItemsFragment.refreshItemsCursor(null, null, 0);
                 //Inform user
                 Toast.makeText(getContext(), "List marked as complete", Toast.LENGTH_SHORT).show();
@@ -270,11 +271,19 @@ public class ListFragment extends Fragment {
                 startActivity(sendIntent);
 
                 return true;
+
+            case R.id.settings_view_lists:
+                Intent intentLog = new Intent(getActivity(), LogActivity.class);
+
+                startActivity(intentLog);
+
+                return true;
+
             // Respond to a click on the "Delete all entries" menu option
             case R.id.settings_list_delete_list:
                 dbHelper.deleteListTable(dbHelper.getActiveListVersion());
                 ListFragment.refreshListCursor(null, null, 0);
-                LogFragment.refreshLogCursor(null, null, 0);
+                LogActivity.refreshLogCursor(null, null, 0);
                 Toast.makeText(getContext(), "List deleted", Toast.LENGTH_SHORT).show();
                 return true;
         }

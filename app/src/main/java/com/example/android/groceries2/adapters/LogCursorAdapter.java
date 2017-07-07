@@ -58,7 +58,7 @@ public class LogCursorAdapter extends CursorAdapter {
                 Intent intent = new Intent(view.getContext(), ListInfoActivity.class);
                 intent.putExtra("listName", listName);
                 intent.putExtra("listVersion", listVersion);
-                intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+                //intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
                 //Create editor activity
                 view.getContext().startActivity(intent);
             }

@@ -22,7 +22,19 @@
             android:label="Add/edit item"
             android:parentActivityName=".activities.MainActivity"
             android:theme="@style/EditorTheme"
-            android:windowSoftInputMode="stateVisible">
+            android:windowSoftInputMode="">
+            <!-- Parent activity meta-data to support 4.0 and lower -->
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activities.MainActivity" />
+        </activity>
+
+
+        <activity
+            android:name=".activities.LogActivity"
+            android:label="Lists History"
+            android:parentActivityName=".activities.MainActivity"
+            android:theme="@style/EditorTheme">
             <!-- Parent activity meta-data to support 4.0 and lower -->
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"

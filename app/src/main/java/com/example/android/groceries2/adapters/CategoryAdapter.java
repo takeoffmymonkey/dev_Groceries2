@@ -6,7 +6,6 @@ import android.support.v4.app.FragmentPagerAdapter;
 
 import com.example.android.groceries2.fragments.ItemsFragment;
 import com.example.android.groceries2.fragments.ListFragment;
-import com.example.android.groceries2.fragments.LogFragment;
 
 
 /**
@@ -23,34 +22,24 @@ public class CategoryAdapter extends FragmentPagerAdapter {
     //Pages' mapping
     @Override
     public Fragment getItem(int position) {
-        if (position == 0) {
-            return new ItemsFragment();
-        } else if (position == 1) {
-            return new ListFragment();
-        } else {
-            return new LogFragment();
-        }
+        if (position == 0) return new ItemsFragment();
+        else return new ListFragment();
+
     }
-
-
 
 
     //Number of pages
     @Override
     public int getCount() {
-        return 3;
+        return 2;
     }
 
     //Pages' titles
     @Override
     public CharSequence getPageTitle(int position) {
-        if (position == 0) {
-            return "Items";
-        } else if (position == 1) {
-            return "List";
-        } else {
-            return "Log";
-        }
+        if (position == 0) return "Items";
+        else return "List";
+
     }
 
 
