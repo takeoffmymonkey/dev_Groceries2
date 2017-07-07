@@ -54,7 +54,7 @@ public class GroceriesDbHelper extends SQLiteOpenHelper {
             NAME_COLUMN + " TEXT NOT NULL UNIQUE, " +
             PRICE_COLUMN + " REAL NOT NULL DEFAULT 0, " +
             MEASURE_COLUMN + " INTEGER NOT NULL, " +
-            IMAGE_COLUMN + " INTEGER DEFAULT 132, " +
+            IMAGE_COLUMN + " INTEGER DEFAULT 11, " +
             CHECKED_COLUMN + " INTEGER DEFAULT 0);";
     //table drop command
     public static final String ITEMS_TABLE_DROP_COMMAND = "DROP TABLE " + ITEMS_TABLE_NAME + ";";
@@ -343,7 +343,7 @@ public class GroceriesDbHelper extends SQLiteOpenHelper {
                 LIST_AMOUNT_COLUMN + " REAL, " +
                 PRICE_COLUMN + " REAL NOT NULL DEFAULT 0, " +
                 MEASURE_COLUMN + " INTEGER NOT NULL, " +
-                IMAGE_COLUMN + " INTEGER DEFAULT 132, " +
+                IMAGE_COLUMN + " INTEGER DEFAULT 11, " +
                 CHECKED_COLUMN + " INTEGER DEFAULT 0);";
 
         //Create new table

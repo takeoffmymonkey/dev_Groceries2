@@ -93,7 +93,7 @@
             android:layout_height="24dp"
             android:scaleType="fitXY"
             android:layout_gravity="center"
-            android:src="@drawable/carrot" />
+            android:src="@drawable/empty_basket" />
 
     </LinearLayout>
 
