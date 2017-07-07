@@ -28,7 +28,9 @@ import com.example.android.groceries2.R;
 import com.example.android.groceries2.adapters.ImageAdapter;
 
 import static com.example.android.groceries2.activities.MainActivity.db;
+import static com.example.android.groceries2.activities.MainActivity.imagesIDs;
 import static com.example.android.groceries2.db.GroceriesDbHelper.ID_COLUMN;
+import static com.example.android.groceries2.db.GroceriesDbHelper.IMAGE_COLUMN;
 import static com.example.android.groceries2.db.GroceriesDbHelper.ITEMS_TABLE_NAME;
 import static com.example.android.groceries2.db.GroceriesDbHelper.MEASURE_COLUMN;
 import static com.example.android.groceries2.db.GroceriesDbHelper.NAME_COLUMN;
@@ -49,7 +51,7 @@ public class ItemEditorActivity extends AppCompatActivity {
     private Spinner measurementSpinner;
     private ImageView icon;
     private int itemId = 0;
-    private int itemIconInt;
+    private int itemIconInt = 11;
 
     private View.OnTouchListener touchListener = new View.OnTouchListener() {
         @Override
@@ -170,7 +172,8 @@ public class ItemEditorActivity extends AppCompatActivity {
                     public void onItemClick(AdapterView<?> parent, View v,
                                             int position, long id) {
 
-                        itemIconInt = position;
+                        itemIconInt = position + 1;
+                        updateIconView(itemIconInt);
                         alert.cancel();
                     }
                 });
@@ -192,7 +195,7 @@ public class ItemEditorActivity extends AppCompatActivity {
                 protected Boolean doInBackground(Void... params) {
                     //Get cursor with proper data for the id
                     Cursor cursor = db.query(ITEMS_TABLE_NAME,
-                            new String[]{NAME_COLUMN, PRICE_COLUMN, MEASURE_COLUMN},
+                            new String[]{NAME_COLUMN, PRICE_COLUMN, MEASURE_COLUMN, IMAGE_COLUMN},
                             ID_COLUMN + "=?", new String[]{Integer.toString(itemId)},
                             null, null, null);
 
@@ -203,6 +206,7 @@ public class ItemEditorActivity extends AppCompatActivity {
                     name = cursor.getString(cursor.getColumnIndex(NAME_COLUMN));
                     price = cursor.getFloat(cursor.getColumnIndex(PRICE_COLUMN));
                     measure = cursor.getInt(cursor.getColumnIndex(MEASURE_COLUMN));
+                    itemIconInt = cursor.getInt(cursor.getColumnIndex(IMAGE_COLUMN));
 
                     cursor.close();
                     //test
@@ -214,9 +218,9 @@ public class ItemEditorActivity extends AppCompatActivity {
                     super.onPostExecute(aBoolean);
 
                     measurementSpinner.setSelection(measure - 1);
-
                     nameEditText.setText(name);
                     priceEditText.setText(Float.toString(price));
+                    updateIconView(itemIconInt);
 
                 }
             }
@@ -310,6 +314,7 @@ public class ItemEditorActivity extends AppCompatActivity {
                 contentValues.put(NAME_COLUMN, newName);
                 contentValues.put(PRICE_COLUMN, newPrice);
                 contentValues.put(MEASURE_COLUMN, measurement);
+                contentValues.put(IMAGE_COLUMN, itemIconInt);
                 db.insert(ITEMS_TABLE_NAME, null, contentValues);
                 Toast.makeText(this, "New item added", Toast.LENGTH_SHORT).show();
 
@@ -319,6 +324,7 @@ public class ItemEditorActivity extends AppCompatActivity {
                 contentValues.put(NAME_COLUMN, newName);
                 contentValues.put(PRICE_COLUMN, newPrice);
                 contentValues.put(MEASURE_COLUMN, measurement);
+                contentValues.put(IMAGE_COLUMN, itemIconInt);
                 db.update(ITEMS_TABLE_NAME, contentValues, ID_COLUMN + "=?",
                         new String[]{Integer.toString(itemId)});
                 Toast.makeText(this, "Item updated", Toast.LENGTH_SHORT).show();
@@ -370,4 +376,9 @@ public class ItemEditorActivity extends AppCompatActivity {
         startActivity(intent);
 
     }
+
+    private void updateIconView(int itemIconInt) {
+        Glide.with(this).load(imagesIDs[itemIconInt - 1]).into(icon);
+    }
+
 }
