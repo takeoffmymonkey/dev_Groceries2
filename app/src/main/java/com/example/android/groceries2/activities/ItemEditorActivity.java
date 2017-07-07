@@ -23,6 +23,7 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.example.android.groceries2.R;
 import com.example.android.groceries2.adapters.ImageAdapter;
 
@@ -57,6 +58,7 @@ public class ItemEditorActivity extends AppCompatActivity {
 
     private int itemId = 0;
 
+    private int itemIconInt;
 
     private View.OnTouchListener touchListener = new View.OnTouchListener() {
         @Override
@@ -108,6 +110,7 @@ public class ItemEditorActivity extends AppCompatActivity {
         priceEditText = (EditText) findViewById(R.id.dialog_edit_price_number_field);
         measurementSpinner = (Spinner) findViewById(R.id.editor_measurement);
         icon = (ImageView) findViewById(R.id.item_icon);
+        Glide.with(this).load(R.drawable.empty_basket).into(icon);
 
 
         // Setup OnTouchListeners on all the input fields, so we can determine if the user
@@ -131,9 +134,6 @@ public class ItemEditorActivity extends AppCompatActivity {
         });
 
 
-
-
-
         icon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -142,20 +142,6 @@ public class ItemEditorActivity extends AppCompatActivity {
                 final LayoutInflater inflater = LayoutInflater.from(ItemEditorActivity.this);
                 //Create view object containing dialog_item_amount layout
                 View iconSelectView = inflater.inflate(R.layout.dialog_item_icon, null);
-
-                GridView gridview = (GridView) iconSelectView.findViewById(R.id.icons_gridview);
-                ImageAdapter imageAdapter = new ImageAdapter(ItemEditorActivity.this);
-
-                gridview.setAdapter(imageAdapter);
-
-
-                gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                    public void onItemClick(AdapterView<?> parent, View v,
-                                            int position, long id) {
-                        Toast.makeText(ItemEditorActivity.this, "fsdf" + position,
-                                Toast.LENGTH_SHORT).show();
-                    }
-                });
 
                 //Set title of the dialog
                 builder.setTitle("Set icon")
@@ -179,8 +165,24 @@ public class ItemEditorActivity extends AppCompatActivity {
                                     }
                                 });
 
-                AlertDialog alert = builder.create();
+                final AlertDialog alert = builder.create();
                 alert.show();
+
+
+                GridView gridview = (GridView) iconSelectView.findViewById(R.id.icons_gridview);
+                ImageAdapter imageAdapter = new ImageAdapter(ItemEditorActivity.this);
+
+                gridview.setAdapter(imageAdapter);
+
+
+                gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    public void onItemClick(AdapterView<?> parent, View v,
+                                            int position, long id) {
+
+                        itemIconInt = position;
+                        alert.cancel();
+                    }
+                });
             }
         });
 
