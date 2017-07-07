@@ -56,88 +56,88 @@
 
     <string-array name="array_auto_name_list">
 
-        <item>Хлеб</item>
-        <item>Овсянка</item>
-        <item>Рис</item>
-        <item>Паста</item>
-        <item>Молоко</item>
-        <item>Cыр</item>
-        <item>Сметана</item>
-        <item>Яйца</item>
-        <item>Мясо</item>
-        <item>Рыба</item>
+        <item>Хлеб</item>bread 122
+        <item>Овсянка</item>cereals 134
+        <item>Рис</item>rice 83
+        <item>Паста</item>pasta 61
+        <item>Молоко</item>milk_1 47
+        <item>Cыр</item>cheese_1 136
+        <item>Сметана</item>dairy 7
+        <item>Яйца</item>eggs 10
+        <item>Мясо</item>meat 43
+        <item>Рыба</item>fish 13
 
-        <item>Колбаса</item>
-        <item>Сосиски</item>
-        <item>Огурцы</item>
-        <item>Помидоры</item>
-        <item>Картошка</item>
-        <item>Морковь</item>
-        <item>Капуста</item>
-        <item>Лук</item>
-        <item>Кукуруза</item>
-        <item>Перец</item>
+        <item>Колбаса</item>salami 86
+        <item>Сосиски</item>sausage 91
+        <item>Огурцы</item>cucumber 4
+        <item>Помидоры</item>tomato 106
+        <item>Картошка</item>potatoes_2 77
+        <item>Морковь</item>carrot 132
+        <item>Капуста</item>cabbage 126
+        <item>Лук</item>onion 56
+        <item>Кукуруза</item>corn 2
+        <item>Перец</item>pepper 65
 
-        <item>Чеснок</item>
-        <item>Салат</item>
-        <item>Зелень</item>
-        <item>Грибы</item>
-        <item>Лсд-25</item>
-        <item>Яблоки</item>
-        <item>Бананы</item>
-        <item>Черешня</item>
-        <item>Апельсины</item>
-        <item>Виноград</item>
+        <item>Чеснок</item>garlic 18
+        <item>Салат</item>salad_1 85
+        <item>Зелень</item>broccoli 124
+        <item>Грибы</item>mushrooms 48
+        <item>Лсд-25</item>gingerbread 19
+        <item>Яблоки</item>apple_1 112
+        <item>Бананы</item>banana 118
+        <item>Черешня</item>cherries 137
+        <item>Апельсины</item>orange 58
+        <item>Виноград</item>grapes 26
 
-        <item>Лимоны</item>
-        <item>Арбуз</item>
-        <item>Мед</item>
-        <item>Печенье</item>
-        <item>Конфеты</item>
+        <item>Лимоны</item>lemon_1 41
+        <item>Арбуз</item>watermelon 110
+        <item>Мед</item>honey1 30
+        <item>Печенье</item>cookies 1
+        <item>Конфеты</item>candy 130
 
     </string-array>
 
 
     <integer-array name="array_auto_image_list">
 
-        <item>43</item>
-        <item>3</item>
-        <item>4</item>
-        <item>5</item>
-        <item>6</item>
+        <item>122</item>
+        <item>134</item>
+        <item>83</item>
+        <item>61</item>
+        <item>47</item>
+        <item>136</item>
         <item>7</item>
-        <item>9</item>
-        <item>8</item>
         <item>10</item>
-        <item>11</item>
-
-        <item>12</item>
+        <item>43</item>
         <item>13</item>
-        <item>14</item>
-        <item>15</item>
-        <item>16</item>
-        <item>17</item>
+
+        <item>86</item>
+        <item>91</item>
+        <item>4</item>
+        <item>106</item>
+        <item>77</item>
+        <item>132</item>
+        <item>126</item>
+        <item>56</item>
+        <item>2</item>
+        <item>65</item>
+
         <item>18</item>
+        <item>85</item>
+        <item>124</item>
+        <item>48</item>
         <item>19</item>
-        <item>20</item>
-        <item>21</item>
+        <item>112</item>
+        <item>118</item>
+        <item>137</item>
+        <item>58</item>
+        <item>26</item>
 
+        <item>41</item>
+        <item>110</item>
+        <item>30</item>
         <item>1</item>
-        <item>1</item>
-        <item>1</item>
-        <item>1</item>
-        <item>1</item>
-        <item>1</item>
-        <item>1</item>
-        <item>1</item>
-        <item>1</item>
-        <item>1</item>
-
-        <item>1</item>
-        <item>1</item>
-        <item>1</item>
-        <item>1</item>
-        <item>1</item>
+        <item>130</item>
 
     </integer-array>
 
