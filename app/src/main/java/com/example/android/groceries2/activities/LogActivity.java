@@ -8,6 +8,7 @@ import android.database.Cursor;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
@@ -96,8 +97,6 @@ public class LogActivity extends AppCompatActivity {
     }
 
 
-
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
@@ -111,10 +110,13 @@ public class LogActivity extends AppCompatActivity {
         switch (item.getItemId()) {
 
             case android.R.id.home:
-                Intent intent = new Intent(LogActivity.this, MainActivity.class);
+                //Intent intent = new Intent(LogActivity.this, MainActivity.class);
+                Intent intent = NavUtils.getParentActivityIntent(this);
                 intent.putExtra("tab", 1);
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                startActivity(intent);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                NavUtils.navigateUpTo(this, intent);
+
+                //startActivity(intent);
                 return true;
 
             // Respond to a click on the "Insert dummy data" menu option

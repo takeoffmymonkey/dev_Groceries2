@@ -272,7 +272,7 @@ public class ListFragment extends Fragment {
 
                 return true;
 
-            case R.id.settings_view_lists:
+            case R.id.settings_lists_history:
                 Intent intentLog = new Intent(getActivity(), LogActivity.class);
 
                 startActivity(intentLog);

@@ -20,8 +20,8 @@
 
 
     <item
-        android:id="@+id/settings_view_lists"
-        android:title="View lists"
+        android:id="@+id/settings_lists_history"
+        android:title="Lists history"
         app:showAsAction="never" />
 
     <item

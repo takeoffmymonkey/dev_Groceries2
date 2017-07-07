@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -147,7 +148,7 @@ public class ListInfoActivity extends AppCompatActivity {
 
                                         dbHelper.deleteListTable(listVersion);
 
-                                        Intent intent = new Intent(ListInfoActivity.this, MainActivity.class);
+                                        Intent intent = new Intent(ListInfoActivity.this, LogActivity.class);
                                         //intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                         //intent.putExtra("tab", 2);
                                         startActivity(intent);
@@ -179,18 +180,17 @@ public class ListInfoActivity extends AppCompatActivity {
 
 
     //Move back to log tab if Up is pressed
-/*    @Override
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             // Respond to the action bar's Up/Home button
             case android.R.id.home:
-                Intent intent = new Intent(ListInfoActivity.this, MainActivity.class);
-                intent.putExtra("tab", 2);
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                Intent intent = new Intent(ListInfoActivity.this, LogActivity.class);
+                //intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(intent);
                 return true;
         }
         return super.onOptionsItemSelected(item);
-    }*/
+    }
 
 }
