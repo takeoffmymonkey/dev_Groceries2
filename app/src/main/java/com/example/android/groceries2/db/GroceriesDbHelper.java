@@ -89,7 +89,7 @@ public class GroceriesDbHelper extends SQLiteOpenHelper {
 
 
     /*LIST table*/
-    private static final String LIST_TABLE_NAME_part_1 = "LIST_";
+    private static final String LIST_TABLE_NAME_part_1 = "List_";
     public static final String LIST_ITEM_COLUMN = "item";
     public static final String LIST_AMOUNT_COLUMN = "amount";
     //CREATE TABLE command
@@ -214,7 +214,7 @@ public class GroceriesDbHelper extends SQLiteOpenHelper {
 
             cursor.close();
 
-            return "LIST_0";
+            return "List_0";
         }
     }
 
@@ -274,7 +274,7 @@ public class GroceriesDbHelper extends SQLiteOpenHelper {
 
             cursor.close();
 
-            return "LIST_0";
+            return "List_0";
         }
     }
 
@@ -376,7 +376,7 @@ public class GroceriesDbHelper extends SQLiteOpenHelper {
 
             cursor.close();
 
-            String LIST_TABLE_DROP_COMMAND = "DROP TABLE " + "LIST_" + version + ";";
+            String LIST_TABLE_DROP_COMMAND = "DROP TABLE " + "List_" + version + ";";
 
             //Drop current table
             db.execSQL(LIST_TABLE_DROP_COMMAND);
@@ -471,9 +471,9 @@ public class GroceriesDbHelper extends SQLiteOpenHelper {
                 for (int i = 0; i < cursorRowsCount; i++) {
 
                     int a = cursor.getInt(cursor.getColumnIndex(LOG_CODE_COLUMN));
-                    db.execSQL("DROP TABLE " + "LIST_" + a + ";");
+                    db.execSQL("DROP TABLE " + "List_" + a + ";");
                     cursor.moveToNext();
-                    Log.w("INFO: ", "LIST_" + a + " deleted");
+                    Log.w("INFO: ", "List_" + a + " deleted");
 
                 }
             }
