@@ -67,7 +67,7 @@
         android:layout_marginBottom="16dp"
         android:layout_marginRight="8dp"
         android:layout_toLeftOf="@+id/fab_complete_list"
-        android:src="@android:drawable/ic_dialog_email" />
+        android:src="@mipmap/ic_send_white_24dp" />
 
 
     <TextView
