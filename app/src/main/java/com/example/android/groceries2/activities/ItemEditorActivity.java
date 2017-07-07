@@ -18,11 +18,13 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.example.android.groceries2.R;
+import com.example.android.groceries2.adapters.ImageAdapter;
 
 import static com.example.android.groceries2.activities.MainActivity.db;
 import static com.example.android.groceries2.db.GroceriesDbHelper.ID_COLUMN;
@@ -129,6 +131,9 @@ public class ItemEditorActivity extends AppCompatActivity {
         });
 
 
+
+
+
         icon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -137,6 +142,20 @@ public class ItemEditorActivity extends AppCompatActivity {
                 final LayoutInflater inflater = LayoutInflater.from(ItemEditorActivity.this);
                 //Create view object containing dialog_item_amount layout
                 View iconSelectView = inflater.inflate(R.layout.dialog_item_icon, null);
+
+                GridView gridview = (GridView) iconSelectView.findViewById(R.id.icons_gridview);
+                ImageAdapter imageAdapter = new ImageAdapter(ItemEditorActivity.this);
+
+                gridview.setAdapter(imageAdapter);
+
+
+                gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    public void onItemClick(AdapterView<?> parent, View v,
+                                            int position, long id) {
+                        Toast.makeText(ItemEditorActivity.this, "fsdf" + position,
+                                Toast.LENGTH_SHORT).show();
+                    }
+                });
 
                 //Set title of the dialog
                 builder.setTitle("Set icon")
