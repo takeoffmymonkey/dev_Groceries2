@@ -152,7 +152,6 @@ public class ListFragment extends Fragment {
                 //Inform user
                 Toast.makeText(listView.getContext(), "List marked as complete", Toast.LENGTH_SHORT).show();
 
-                MainActivity.selectTab(2);
             }
         });
 
@@ -254,8 +253,6 @@ public class ListFragment extends Fragment {
                 ItemsFragment.refreshItemsCursor(null, null, 0);
                 //Inform user
                 Toast.makeText(getContext(), "List marked as complete", Toast.LENGTH_SHORT).show();
-
-                MainActivity.selectTab(2);
 
                 return true;
 
