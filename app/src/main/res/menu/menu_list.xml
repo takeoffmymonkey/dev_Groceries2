@@ -24,9 +24,6 @@
         android:title="Lists history"
         app:showAsAction="never" />
 
-    <item
-        android:id="@+id/settings_list_settings"
-        android:title="Global settings"
-        app:showAsAction="never" />
+
 
 </menu>

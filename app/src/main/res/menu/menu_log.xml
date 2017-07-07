@@ -8,19 +8,5 @@
         android:title="Delete all lists"
         app:showAsAction="never" />
 
-    <item
-        android:id="@+id/settings_log_sort_by"
-        android:title="Sort by"
-        app:showAsAction="never" />
-
-    <item
-        android:id="@+id/settings_log_display_options"
-        android:title="Display options"
-        app:showAsAction="never" />
-
-    <item
-        android:id="@+id/settings_log_settings"
-        android:title="Global settings"
-        app:showAsAction="never" />
 
 </menu>
