@@ -91,7 +91,6 @@ public class LogActivity extends AppCompatActivity {
         new LogBackgroundCursor().execute();
 
 
-        //setHasOptionsMenu(true);
 
 
     }
@@ -215,11 +214,6 @@ public class LogActivity extends AppCompatActivity {
             Context context;
             String toast;
             int length;
-
-            public NewLogCursor() {
-                super();
-            }
-
 
             public NewLogCursor(Context context, String toast, int length) {
                 super();

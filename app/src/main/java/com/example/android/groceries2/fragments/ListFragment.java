@@ -147,7 +147,7 @@ public class ListFragment extends Fragment {
             public void onClick(View v) {
                 dbHelper.approveCurrentList();
                 ListFragment.refreshListCursor(null, null, 0);
-                LogActivity.refreshLogCursor(null, null, 0);
+                //LogActivity.refreshLogCursor(null, null, 0);
                 ItemsFragment.refreshItemsCursor(null, null, 0);
                 //Inform user
                 Toast.makeText(listView.getContext(), "List marked as complete", Toast.LENGTH_SHORT).show();
@@ -190,15 +190,16 @@ public class ListFragment extends Fragment {
         Cursor cursor = db.query("List_" + activeListVersion, null,
                 null, null, null, null, null);
 
+
         if (cursor.getCount() == 0)
 
         {
             fabCompleteList.setVisibility(View.GONE);
             fabSendList.setVisibility(View.GONE);
             listTotalTextView.setVisibility(View.GONE);
-        } else
 
-        {
+        } else {
+
             fabCompleteList.setVisibility(View.VISIBLE);
             fabSendList.setVisibility(View.VISIBLE);
             listTotalTextView.setVisibility(View.VISIBLE);
@@ -249,7 +250,7 @@ public class ListFragment extends Fragment {
             case R.id.settings_list_mark_as_complete:
                 dbHelper.approveCurrentList();
                 ListFragment.refreshListCursor(null, null, 0);
-                LogActivity.refreshLogCursor(null, null, 0);
+                //LogActivity.refreshLogCursor(null, null, 0);
                 ItemsFragment.refreshItemsCursor(null, null, 0);
                 //Inform user
                 Toast.makeText(getContext(), "List marked as complete", Toast.LENGTH_SHORT).show();
@@ -280,7 +281,7 @@ public class ListFragment extends Fragment {
             case R.id.settings_list_delete_list:
                 dbHelper.deleteListTable(dbHelper.getActiveListVersion());
                 ListFragment.refreshListCursor(null, null, 0);
-                LogActivity.refreshLogCursor(null, null, 0);
+                //LogActivity.refreshLogCursor(null, null, 0);
                 Toast.makeText(getContext(), "List deleted", Toast.LENGTH_SHORT).show();
                 return true;
         }

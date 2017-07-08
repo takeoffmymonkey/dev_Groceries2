@@ -22,8 +22,8 @@ public class CategoryAdapter extends FragmentPagerAdapter {
     //Pages' mapping
     @Override
     public Fragment getItem(int position) {
-        if (position == 0) return new ItemsFragment();
-        else return new ListFragment();
+        if (position == 0) return new ListFragment();
+        else return new ItemsFragment();
 
     }
 
@@ -37,8 +37,8 @@ public class CategoryAdapter extends FragmentPagerAdapter {
     //Pages' titles
     @Override
     public CharSequence getPageTitle(int position) {
-        if (position == 0) return "Items";
-        else return "List";
+        if (position == 0) return "List";
+        else return "Items";
 
     }
 
