@@ -65,7 +65,7 @@ public class LogCursorAdapter extends CursorAdapter {
         });
 
         //Date formatting object
-        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy (hh:mm:ss)");
+        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
 
         //Create text view for name of the list
         TextView logItemName = (TextView) view.findViewById(R.id.log_item_value);
