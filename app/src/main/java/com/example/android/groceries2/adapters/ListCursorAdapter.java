@@ -16,18 +16,20 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.example.android.groceries2.R;
 import com.example.android.groceries2.activities.MainActivity;
-import com.example.android.groceries2.fragments.ListFragment;
 
 import static com.example.android.groceries2.activities.MainActivity.db;
 import static com.example.android.groceries2.activities.MainActivity.dbHelper;
 import static com.example.android.groceries2.db.GroceriesDbHelper.CHECKED_COLUMN;
 import static com.example.android.groceries2.db.GroceriesDbHelper.ID_COLUMN;
 import static com.example.android.groceries2.db.GroceriesDbHelper.IMAGE_COLUMN;
+import static com.example.android.groceries2.db.GroceriesDbHelper.ITEMS_TABLE_NAME;
 import static com.example.android.groceries2.db.GroceriesDbHelper.LIST_AMOUNT_COLUMN;
 import static com.example.android.groceries2.db.GroceriesDbHelper.LIST_ITEM_COLUMN;
 import static com.example.android.groceries2.db.GroceriesDbHelper.MEASURE_COLUMN;
 import static com.example.android.groceries2.db.GroceriesDbHelper.MEASURE_TABLE_NAME;
 import static com.example.android.groceries2.db.GroceriesDbHelper.PRICE_COLUMN;
+import static com.example.android.groceries2.fragments.ItemsFragment.refreshItemsCursor;
+import static com.example.android.groceries2.fragments.ListFragment.refreshListCursor;
 
 /**
  * Created by takeoff on 013 13 Jun 17.
@@ -180,6 +182,40 @@ public class ListCursorAdapter extends CursorAdapter {
             }
         });
 
+
+        //Set item to long-clickable
+        view.setLongClickable(true);
+
+        view.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+
+                //Close snack if there is one open
+                if (MainActivity.snackOn && MainActivity.snackBar != null) {
+                    MainActivity.snackBar.dismiss();
+                    MainActivity.snackLines = 0;
+                    MainActivity.setSnackOnState(false, null);
+                }
+
+
+                //Update Items table
+                ContentValues contentValuesItemsTable
+                        = new ContentValues();
+                contentValuesItemsTable.put(CHECKED_COLUMN, 0);
+                db.update(ITEMS_TABLE_NAME, contentValuesItemsTable,
+                        ID_COLUMN + "=?",
+                        new String[]{Integer.toString(rowIdInt)});
+
+
+                //refresh cursors
+                refreshItemsCursor(null, null, 0);
+                refreshListCursor(null, null, 0);
+
+                return true;
+            }
+        });
+
+
     }
 
     private void onClicking(int rowIdInt, CheckBox checkBox, View view, TextView itemNameTextView) {
@@ -232,7 +268,7 @@ public class ListCursorAdapter extends CursorAdapter {
         //Update check state
         isChecked = !isChecked;
 
-        ListFragment.refreshListCursor(null, null, 0);
+        refreshListCursor(null, null, 0);
 
     }
 }

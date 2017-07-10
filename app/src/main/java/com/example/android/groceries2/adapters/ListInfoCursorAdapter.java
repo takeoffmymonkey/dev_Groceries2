@@ -130,4 +130,9 @@ public class ListInfoCursorAdapter extends CursorAdapter {
 
 
     }
+
+    @Override
+    public boolean isEnabled(int position) {
+        return false;
+    }
 }
