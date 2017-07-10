@@ -9,10 +9,12 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
@@ -374,6 +376,7 @@ public class ItemEditorActivity extends AppCompatActivity {
 
         Intent intent = new Intent(this, MainActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        intent.putExtra("tab", 1);
         startActivity(intent);
 
     }
@@ -382,4 +385,23 @@ public class ItemEditorActivity extends AppCompatActivity {
         Glide.with(this).load(imagesIDs[itemIconInt - 1]).into(icon);
     }
 
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        switch (item.getItemId()) {
+
+            case android.R.id.home:
+                //Intent intent = new Intent(LogActivity.this, MainActivity.class);
+                Intent intent = NavUtils.getParentActivityIntent(this);
+                intent.putExtra("tab", 1);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                NavUtils.navigateUpTo(this, intent);
+
+                //startActivity(intent);
+                return true;
+
+        }
+        return super.onOptionsItemSelected(item);
+    }
 }

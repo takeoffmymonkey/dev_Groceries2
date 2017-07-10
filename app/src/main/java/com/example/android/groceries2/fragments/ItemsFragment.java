@@ -13,6 +13,7 @@ import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.NavUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -264,9 +265,10 @@ public class ItemsFragment extends Fragment {
 
 
             case R.id.settings_items_add_item:
-                Intent intent = new Intent(getActivity(), ItemEditorActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
-                startActivity(intent);
+                Intent intent2 = new Intent(getActivity(), ItemEditorActivity.class);
+                intent2.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+                intent2.putExtra("tab", 1);
+                startActivity(intent2);
                 return true;
 
             // Respond to a click on the "Delete all entries" menu option
