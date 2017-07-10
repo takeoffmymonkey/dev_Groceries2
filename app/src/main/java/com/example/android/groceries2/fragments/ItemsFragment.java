@@ -231,11 +231,6 @@ public class ItemsFragment extends Fragment {
         });
 
 
-        if (snackOn) {
-            Log.e("WARNING: ", "NEED TO SHOW SNACK");
-            showSnackBar(itemsView, snackText);
-        }
-
         //This fragment has options menu
         setHasOptionsMenu(true);
 
