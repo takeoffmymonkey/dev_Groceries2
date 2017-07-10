@@ -6,13 +6,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CursorAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.example.android.groceries2.R;
 import com.example.android.groceries2.activities.MainActivity;
 
 import static com.example.android.groceries2.activities.MainActivity.db;
 import static com.example.android.groceries2.db.GroceriesDbHelper.ID_COLUMN;
+import static com.example.android.groceries2.db.GroceriesDbHelper.IMAGE_COLUMN;
 import static com.example.android.groceries2.db.GroceriesDbHelper.ITEMS_TABLE_NAME;
 import static com.example.android.groceries2.db.GroceriesDbHelper.LIST_AMOUNT_COLUMN;
 import static com.example.android.groceries2.db.GroceriesDbHelper.LIST_ITEM_COLUMN;
@@ -55,6 +58,19 @@ public class ListInfoCursorAdapter extends CursorAdapter {
 
 
         itemName.setText(itemNameString);
+
+
+
+        //Set item's image
+        ImageView itemImage = (ImageView) view.findViewById(R.id.activity_list_item_image);
+        int itemImageInt = cursor.getInt(cursor.getColumnIndex(IMAGE_COLUMN));
+
+
+        String imageName = MainActivity.images[itemImageInt - 1];
+
+        Glide.with(context).load(context.getResources().getIdentifier
+                (imageName, "drawable", context.getPackageName())).into(itemImage);
+
 
         //Get code of the items measure
         int measureInt = cursor
