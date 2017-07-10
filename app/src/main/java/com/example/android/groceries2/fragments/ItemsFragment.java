@@ -206,7 +206,7 @@ public class ItemsFragment extends Fragment {
 
         View footerView = ((LayoutInflater) getContext().getSystemService
                 (Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.footer_layout, null, false);
-        itemsGridView.addFooterView(footerView);
+        itemsGridView.addFooterView(footerView, null, false);
 
         itemsGridView.setAdapter(itemsCursorAdapter);
 

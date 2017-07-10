@@ -211,7 +211,7 @@ public class ListFragment extends Fragment {
 
         View footerView = ((LayoutInflater) getContext().getSystemService
                 (Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.footer_layout, null, false);
-        listListView.addFooterView(footerView);
+        listListView.addFooterView(footerView, null, false);
 
 
         listTotalTextView.setOnClickListener(new View.OnClickListener() {
