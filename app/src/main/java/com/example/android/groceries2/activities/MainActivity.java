@@ -34,7 +34,6 @@ import static com.example.android.groceries2.db.GroceriesDbHelper.LIST_ITEM_COLU
 import static com.example.android.groceries2.db.GroceriesDbHelper.MEASURE_COLUMN;
 import static com.example.android.groceries2.db.GroceriesDbHelper.MEASURE_TABLE_NAME;
 import static com.example.android.groceries2.db.GroceriesDbHelper.PRICE_COLUMN;
-import static com.example.android.groceries2.fragments.ItemsFragment.itemsView;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -238,7 +237,7 @@ public class MainActivity extends AppCompatActivity {
         //Create arrays for images names and ids
         Resources resources = getResources();
         images = resources.getStringArray(R.array.array_images);
-        Integer[] imagesIDsTemp = new Integer[144];
+        Integer[] imagesIDsTemp = new Integer[147];
         String packageName = getPackageName();
         String type = "drawable";
 
@@ -404,8 +403,7 @@ public class MainActivity extends AppCompatActivity {
 
 
         snackbarView.setBackgroundColor(primaryDarkColor);
-        if (view != itemsView) snackBar.setActionTextColor(Color.WHITE);
-        else snackBar.setActionTextColor(Color.BLACK);
+        snackBar.setActionTextColor(Color.WHITE);
 
         snackBar.show();
 

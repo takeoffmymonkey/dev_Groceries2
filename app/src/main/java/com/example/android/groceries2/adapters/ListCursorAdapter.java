@@ -9,7 +9,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.CursorAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -37,6 +36,8 @@ import static com.example.android.groceries2.db.GroceriesDbHelper.PRICE_COLUMN;
 public class ListCursorAdapter extends CursorAdapter {
 
 
+    boolean isChecked;
+
     public ListCursorAdapter(Context context, Cursor c, int flags) {
         super(context, c, flags);
     }
@@ -54,6 +55,11 @@ public class ListCursorAdapter extends CursorAdapter {
     public void bindView(final View view, Context context, Cursor cursor) {
 
 
+        int isCheckedInt = cursor.getInt(cursor.getColumnIndex(CHECKED_COLUMN));
+
+        if (isCheckedInt == 0) isChecked = false;
+        else isChecked = true;
+
         //Get LIST_ITEM_COLUMN value of the item in List table
         String itemName = cursor.getString(cursor.getColumnIndexOrThrow(LIST_ITEM_COLUMN));
 
@@ -61,16 +67,6 @@ public class ListCursorAdapter extends CursorAdapter {
         //Get code of the items measure
         int measureInItems = cursor
                 .getInt(cursor.getColumnIndexOrThrow(MEASURE_COLUMN));
-
-
-        final CheckBox checkBox = (CheckBox) view.findViewById(R.id.list_item_checkbox);
-
-        checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-
-            }
-        });
 
 
         //Set item's image
@@ -151,8 +147,10 @@ public class ListCursorAdapter extends CursorAdapter {
         //Get ID_COLUMN of current row in int
         final int rowIdInt = cursor.getInt(cursor.getColumnIndexOrThrow(ID_COLUMN));
 
+        final CheckBox checkBox = (CheckBox) view.findViewById(R.id.list_item_checkbox);
+
         //Set color of the view (according to CHECKED_COLUMN state of the row)
-        if (cursor.getInt(cursor.getColumnIndexOrThrow(CHECKED_COLUMN)) == 1) {
+        if (isChecked) {
             view.setBackgroundColor(MainActivity.primaryLightColor);
             itemNameTextView.setPaintFlags(itemNameTextView.getPaintFlags()
                     | Paint.STRIKE_THRU_TEXT_FLAG);
@@ -162,72 +160,72 @@ public class ListCursorAdapter extends CursorAdapter {
             view.setBackgroundColor(Color.WHITE);
             itemNameTextView.setPaintFlags(0);
             checkBox.setChecked(false);
-
         }
 
+
+        checkBox.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                onClicking(rowIdInt, checkBox, view, itemNameTextView);
+
+            }
+        });
 
         //Set onClickListener
         view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                String activeListName = dbHelper.getLatestListName();
-
-                final Cursor freshListTableCursor = db.query(activeListName,
-                        new String[]{CHECKED_COLUMN},
-                        ID_COLUMN + "=?", new String[]{Integer.toString(rowIdInt)},
-                        null, null, null);
-
-                //Move cursor to 1st row
-                freshListTableCursor.moveToFirst();
-
-                //Create ContentValues
-                ContentValues contentValues = new ContentValues();
-
-                //Check if the row was checked
-                if (freshListTableCursor.getInt(freshListTableCursor
-                        .getColumnIndexOrThrow(CHECKED_COLUMN)) == 0) {
-                    //Row wasn't checked
-                    //Set color
-                    view.setBackgroundColor(MainActivity.primaryLightColor);
-                    itemNameTextView.setPaintFlags(itemNameTextView.getPaintFlags()
-                            | Paint.STRIKE_THRU_TEXT_FLAG);
-
-                    checkBox.setChecked(true);
-
-                    //Update table
-                    contentValues.put(CHECKED_COLUMN, 1);
-                    db.update(activeListName, contentValues,
-                            ID_COLUMN + "=?",
-                            new String[]{Integer.toString(rowIdInt)});
-
-                    //Update cursor
-                    ListFragment.refreshListCursor(null, null, 0);
-
-                } else {
-                    //Row was checked
-                    //Set color
-                    view.setBackgroundColor(Color.WHITE);
-
-                    itemNameTextView.setPaintFlags(0);
-
-                    checkBox.setChecked(false);
-
-                    //Update table
-                    contentValues.put(CHECKED_COLUMN, 0);
-                    db.update(activeListName, contentValues,
-                            ID_COLUMN + "=?",
-                            new String[]{Integer.toString(rowIdInt)});
-
-                    //Update cursor
-                    ListFragment.refreshListCursor(null, null, 0);
-                }
-
-                //Close cursor
-                freshListTableCursor.close();
-
+                onClicking(rowIdInt, checkBox, view, itemNameTextView);
             }
         });
+
+    }
+
+    private void onClicking(int rowIdInt, CheckBox checkBox, View view, TextView itemNameTextView) {
+
+        ContentValues contentValues = new ContentValues();
+
+        String activeListName = dbHelper.getLatestListName();
+
+        //view was checked
+        if (isChecked) {
+
+            view.setBackgroundColor(MainActivity.iconsColor);
+
+            itemNameTextView.setPaintFlags(0);
+
+            checkBox.setChecked(false);
+
+            contentValues.put(CHECKED_COLUMN, 0);
+
+        }
+
+        //view was unchecked
+        else {
+
+            view.setBackgroundColor(MainActivity.primaryLightColor);
+
+            itemNameTextView.setPaintFlags(itemNameTextView.getPaintFlags()
+                    | Paint.STRIKE_THRU_TEXT_FLAG);
+
+
+            checkBox.setChecked(true);
+
+            contentValues.put(CHECKED_COLUMN, 1);
+
+        }
+
+
+        //Update table
+        db.update(activeListName, contentValues,
+                ID_COLUMN + "=?",
+                new String[]{Integer.toString(rowIdInt)});
+
+        //Update check state
+        isChecked = !isChecked;
+
+        ListFragment.refreshListCursor(null, null, 0);
 
     }
 }
