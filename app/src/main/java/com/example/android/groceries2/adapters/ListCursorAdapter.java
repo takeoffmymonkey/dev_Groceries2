@@ -184,6 +184,13 @@ public class ListCursorAdapter extends CursorAdapter {
 
     private void onClicking(int rowIdInt, CheckBox checkBox, View view, TextView itemNameTextView) {
 
+        if (MainActivity.snackOn && MainActivity.snackBar != null) {
+            MainActivity.snackBar.dismiss();
+            MainActivity.snackLines = 0;
+            MainActivity.setSnackOnState(false, null);
+            return;
+        }
+
         ContentValues contentValues = new ContentValues();
 
         String activeListName = dbHelper.getLatestListName();

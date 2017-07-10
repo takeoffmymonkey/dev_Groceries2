@@ -131,7 +131,6 @@ public class ListFragment extends Fragment {
         listTotalTextView.setText("Total: " + MainActivity.formatPrice(total));
 
 
-
         TextView listEmptyText = (TextView) listView.findViewById(R.id.list_empty_text);
         listEmptyText.setText("No selected items");
 
@@ -245,6 +244,13 @@ public class ListFragment extends Fragment {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+
+        if (MainActivity.snackOn && MainActivity.snackBar != null) {
+            MainActivity.snackBar.dismiss();
+            MainActivity.snackLines = 0;
+            MainActivity.setSnackOnState(false, null);
+        }
+
         // User clicked on a menu option in the app bar overflow menu
         switch (item.getItemId()) {
             // Respond to a click on the "Insert dummy data" menu option
