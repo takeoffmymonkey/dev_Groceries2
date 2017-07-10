@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.graphics.Color;
+import android.graphics.Paint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -87,7 +88,7 @@ public class ListCursorAdapter extends CursorAdapter {
         measureTableCursor.close();
 
         //Create text view object
-        TextView itemNameTextView = (TextView) view.findViewById(R.id.list_item_name);
+        final TextView itemNameTextView = (TextView) view.findViewById(R.id.list_item_name);
         //Set its text
         itemNameTextView.setText(itemName);
 
@@ -136,9 +137,13 @@ public class ListCursorAdapter extends CursorAdapter {
         final int rowIdInt = cursor.getInt(cursor.getColumnIndexOrThrow(ID_COLUMN));
 
         //Set color of the view (according to CHECKED_COLUMN state of the row)
-        if (cursor.getInt(cursor.getColumnIndexOrThrow(CHECKED_COLUMN)) == 1)
+        if (cursor.getInt(cursor.getColumnIndexOrThrow(CHECKED_COLUMN)) == 1) {
             view.setBackgroundColor(MainActivity.primaryLightColor);
-        else view.setBackgroundColor(Color.WHITE);
+            itemNameTextView.setPaintFlags(itemNameTextView.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+        } else {
+            view.setBackgroundColor(Color.WHITE);
+            itemNameTextView.setPaintFlags(0);
+        }
 
 
         //Set onClickListener
@@ -164,6 +169,9 @@ public class ListCursorAdapter extends CursorAdapter {
                     //Row wasn't checked
                     //Set color
                     view.setBackgroundColor(MainActivity.primaryLightColor);
+                    itemNameTextView.setPaintFlags(itemNameTextView.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+
+
 
                     //Update table
                     contentValues.put(CHECKED_COLUMN, 1);
@@ -178,6 +186,8 @@ public class ListCursorAdapter extends CursorAdapter {
                     //Row was checked
                     //Set color
                     view.setBackgroundColor(Color.WHITE);
+
+                    itemNameTextView.setPaintFlags(0);
 
                     //Update table
                     contentValues.put(CHECKED_COLUMN, 0);
