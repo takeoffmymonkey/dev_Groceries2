@@ -131,6 +131,7 @@ public class ListFragment extends Fragment {
         listTotalTextView.setText("Total: " + MainActivity.formatPrice(total));
 
 
+
         TextView listEmptyText = (TextView) listView.findViewById(R.id.list_empty_text);
         listEmptyText.setText("No selected items");
 
