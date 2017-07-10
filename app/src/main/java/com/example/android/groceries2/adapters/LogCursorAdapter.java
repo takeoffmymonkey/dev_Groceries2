@@ -54,7 +54,7 @@ public class LogCursorAdapter extends CursorAdapter {
         String[] tokens = listName.split("_");
         final int listVersion = Integer.parseInt(tokens[1]);
 
-
+/*
         view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -64,7 +64,7 @@ public class LogCursorAdapter extends CursorAdapter {
                 intent.putExtra("listVersion", listVersion);
                 view.getContext().startActivity(intent);
             }
-        });
+        });*/
 
         //Date formatting object
         SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");

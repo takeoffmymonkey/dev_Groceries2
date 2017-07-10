@@ -29,10 +29,8 @@ import com.example.android.groceries2.fragments.ListFragment;
 import static com.example.android.groceries2.activities.MainActivity.db;
 import static com.example.android.groceries2.activities.MainActivity.dbHelper;
 import static com.example.android.groceries2.db.GroceriesDbHelper.ID_COLUMN;
-import static com.example.android.groceries2.db.GroceriesDbHelper.ITEMS_TABLE_NAME;
 import static com.example.android.groceries2.db.GroceriesDbHelper.LOG_CODE_COLUMN;
 import static com.example.android.groceries2.db.GroceriesDbHelper.LOG_TABLE_NAME;
-import static java.security.AccessController.getContext;
 
 /**
  * Created by takeoff on 007 07 Jul 17.
@@ -90,7 +88,14 @@ public class LogActivity extends AppCompatActivity {
                 super.onPostExecute(aBoolean);
                 //Set adapter to the grid view
                 logListView.setAdapter(logCursorAdapter);
+                logListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
+
+                        Toast.makeText(LogActivity.this, "fds", Toast.LENGTH_SHORT).show();
+                    }
+                });
             }
         }
 
