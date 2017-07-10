@@ -43,11 +43,11 @@ public class ListInfoCursorAdapter extends CursorAdapter {
         //Create itemPrice textView object
         TextView itemPriceTextView = (TextView) view.findViewById(R.id.activity_list_item_price);
         //Set price
-        itemPriceTextView.setText(MainActivity.formatPrice(cursor
-                .getFloat(cursor.getColumnIndex(PRICE_COLUMN))));
+        itemPriceTextView.setText("(" + MainActivity.formatPrice(cursor
+                .getFloat(cursor.getColumnIndex(PRICE_COLUMN))) + ")");
 
         //Create checkBox object
-        TextView itemName = (TextView) view.findViewById(R.id.activity_list_item_checkbox);
+        TextView itemName = (TextView) view.findViewById(R.id.activity_list_item_name);
         //Get item's code
         String itemNameString = cursor.getString(cursor.getColumnIndex(LIST_ITEM_COLUMN));
 
