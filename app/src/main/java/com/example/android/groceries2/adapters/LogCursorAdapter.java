@@ -12,6 +12,7 @@ import android.widget.CursorAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+
 import com.bumptech.glide.Glide;
 import com.example.android.groceries2.R;
 import com.example.android.groceries2.activities.ListInfoActivity;
@@ -52,6 +53,7 @@ public class LogCursorAdapter extends CursorAdapter {
 
         String[] tokens = listName.split("_");
         final int listVersion = Integer.parseInt(tokens[1]);
+
 
         view.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -100,7 +102,7 @@ public class LogCursorAdapter extends CursorAdapter {
             logItemCompleteDate.setTextColor(MainActivity.secondaryTextColor);
             logItemCompleteDate.setTypeface(null, Typeface.NORMAL);
 
-            Glide.with(context).load(R.drawable.empty_basket_2).into(itemImage);
+            Glide.with(context).load(R.drawable.empty_basket_3).into(itemImage);
 
             //Get date from LOG_DATE_COMPLETE_COLUMN in ms
             logItemCompleteDate.setTextColor(oldColors);
@@ -111,5 +113,10 @@ public class LogCursorAdapter extends CursorAdapter {
             logItemCompleteDate.setText(dateCompleteString);
         }
 
+    }
+
+    @Override
+    public boolean isEnabled(int position) {
+        return true;
     }
 }

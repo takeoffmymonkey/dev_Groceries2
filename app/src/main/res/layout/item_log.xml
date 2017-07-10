@@ -12,15 +12,14 @@
         android:layout_gravity="center"
         android:layout_margin="4dp"
         android:layout_weight="1"
-        android:scaleType="fitXY"
-        android:src="@drawable/empty_basket_2" />
+        android:scaleType="fitXY" />
 
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="100"
         android:layout_gravity="center"
+        android:layout_weight="100"
         android:orientation="vertical">
 
         <LinearLayout
@@ -48,7 +47,6 @@
                 android:text="List_1" />
 
         </LinearLayout>
-
 
 
         <LinearLayout

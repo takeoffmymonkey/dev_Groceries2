@@ -69,6 +69,8 @@
         android:layout_gravity="center"
         android:layout_marginRight="4dp"
         app:buttonTint="@color/colorSecondaryText"
+        android:focusable="false"
+        android:focusableInTouchMode="false"
         android:scaleX="2"
         android:scaleY="2"
         android:layout_weight="1"
