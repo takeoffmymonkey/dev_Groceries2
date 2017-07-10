@@ -4,7 +4,9 @@
 
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="horizontal">
+
 
     <ImageView
         android:id="@+id/list_item_image"
@@ -12,16 +14,16 @@
         android:layout_height="50dp"
         android:layout_gravity="center"
         android:layout_margin="4dp"
-        android:layout_weight="1"
+
         android:scaleType="fitXY" />
 
 
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginBottom="4dp"
-        android:layout_weight="100"
+        android:layout_weight="7"
         android:orientation="vertical">
 
 
@@ -60,14 +62,16 @@
 
     </LinearLayout>
 
-    <CheckBox
-        android:layout_width="wrap_content"
+    <android.support.v7.widget.AppCompatCheckBox
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginRight="4dp"
-        android:layout_weight="4"
+        app:buttonTint="@color/colorSecondaryText"
         android:scaleX="2"
-        android:scaleY="2" />
+        android:scaleY="2"
+        android:layout_weight="1"
+ />
 
 
 </LinearLayout>
