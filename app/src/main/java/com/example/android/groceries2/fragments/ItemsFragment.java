@@ -294,10 +294,8 @@ public class ItemsFragment extends Fragment {
 
                     //Create alert dialog object
                     AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-                    //Set title of the dialog
-                    builder.setTitle("WARNING!")
-                            //Set custom view of the dialog
-                            .setMessage("You are about to delete all items!")
+                    //Set custom view of the dialog
+                    builder.setMessage("Are you sure you want to delete ALL items?")
                             //Set ability to press back
                             .setCancelable(true)
                             //Set Ok button with click listener
@@ -321,7 +319,6 @@ public class ItemsFragment extends Fragment {
                                             dialog.cancel();
                                         }
                                     });
-
                     AlertDialog alert = builder.create();
                     alert.show();
 

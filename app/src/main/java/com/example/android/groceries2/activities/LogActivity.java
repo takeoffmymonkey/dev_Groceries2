@@ -22,12 +22,16 @@ import android.widget.Toast;
 
 import com.example.android.groceries2.R;
 import com.example.android.groceries2.adapters.LogCursorAdapter;
+import com.example.android.groceries2.fragments.ItemsFragment;
 import com.example.android.groceries2.fragments.ListFragment;
 
 import static com.example.android.groceries2.activities.MainActivity.db;
 import static com.example.android.groceries2.activities.MainActivity.dbHelper;
+import static com.example.android.groceries2.db.GroceriesDbHelper.ID_COLUMN;
+import static com.example.android.groceries2.db.GroceriesDbHelper.ITEMS_TABLE_NAME;
 import static com.example.android.groceries2.db.GroceriesDbHelper.LOG_CODE_COLUMN;
 import static com.example.android.groceries2.db.GroceriesDbHelper.LOG_TABLE_NAME;
+import static java.security.AccessController.getContext;
 
 /**
  * Created by takeoff on 007 07 Jul 17.
@@ -91,8 +95,6 @@ public class LogActivity extends AppCompatActivity {
         new LogBackgroundCursor().execute();
 
 
-
-
     }
 
 
@@ -121,42 +123,57 @@ public class LogActivity extends AppCompatActivity {
             // Respond to a click on the "Insert dummy data" menu option
             case R.id.settings_log_delete_all_lists:
 
-                //Create alert dialog object
-                AlertDialog.Builder builder = new AlertDialog.Builder(LogActivity.this);
-                //Set title of the dialog
-                builder.setTitle("Delete all lists")
-                        //Set custom view of the dialog
-                        .setMessage("Are you sure you want to delete all lists?")
-                        //Set ability to press back
-                        .setCancelable(true)
-                        //Set Ok button with click listener
-                        .setPositiveButton("Delete all",
-                                new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog, int id) {
+                Cursor cursorCheckItemsTable = db.query(LOG_TABLE_NAME,
+                        new String[]{ID_COLUMN},
+                        ID_COLUMN + "=?", new String[]{Integer.toString(1)},
+                        null, null, null);
 
-                                        progressBar.setVisibility(View.VISIBLE);
+                if (cursorCheckItemsTable.getCount() > 0) {
+                    //table has at least 1 item
+                    cursorCheckItemsTable.close();
 
-                                        new LogBackgroundTasks(LogActivity.this, "Lists deleted",
-                                                Toast.LENGTH_SHORT).execute();
+                    //Create alert dialog object
+                    AlertDialog.Builder builder = new AlertDialog.Builder(LogActivity.this);
+                    //Set title of the dialog
+                    builder.setTitle("Delete all lists")
+                            //Set custom view of the dialog
+                            .setMessage("Are you sure you want to delete all lists?")
+                            //Set ability to press back
+                            .setCancelable(true)
+                            //Set Ok button with click listener
+                            .setPositiveButton("Delete all",
+                                    new DialogInterface.OnClickListener() {
+                                        public void onClick(DialogInterface dialog, int id) {
 
-                                        //Toast.makeText(getContext(), "Lists deleted", Toast.LENGTH_SHORT).show();
-                                        dialog.cancel();
+                                            progressBar.setVisibility(View.VISIBLE);
 
-                                    }
-                                })
+                                            new LogBackgroundTasks(LogActivity.this, "Lists deleted",
+                                                    Toast.LENGTH_SHORT).execute();
 
-                        //Set cancel button with click listener
-                        .setNegativeButton("Cancel",
-                                new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog, int id) {
-                                        //Close the dialog window
-                                        dialog.cancel();
-                                    }
-                                });
+                                            dialog.cancel();
 
-                AlertDialog alert = builder.create();
-                alert.show();
+                                        }
+                                    })
 
+                            //Set cancel button with click listener
+                            .setNegativeButton("Cancel",
+                                    new DialogInterface.OnClickListener() {
+                                        public void onClick(DialogInterface dialog, int id) {
+                                            //Close the dialog window
+                                            dialog.cancel();
+                                        }
+                                    });
+
+                    AlertDialog alert = builder.create();
+                    alert.show();
+
+
+                } else {
+                    //close cursor
+                    cursorCheckItemsTable.close();
+                    //Inform user
+                    Toast.makeText(LogActivity.this, "No lists to delete!", Toast.LENGTH_LONG).show();
+                }
 
                 // Respond to a click on the "Delete all entries" menu option
 
@@ -190,6 +207,7 @@ public class LogActivity extends AppCompatActivity {
             dbHelper.deleteAll(0);
             LogActivity.refreshLogCursor(null, null, 0);
             ListFragment.refreshListCursor(null, null, 0);
+            ItemsFragment.refreshItemsCursor(null, null, 0);
             return true;
         }
 

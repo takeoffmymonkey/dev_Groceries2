@@ -339,6 +339,8 @@ public class ListFragment extends Fragment {
                 if (toast != null) {
                     Toast.makeText(context, toast, length).show();
                 }
+
+                ItemsFragment.refreshItemsCursor(null, null, 0);
             }
         }
 
