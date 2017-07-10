@@ -4,14 +4,15 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.database.Cursor;
-import android.graphics.Color;
 import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CursorAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.example.android.groceries2.R;
 import com.example.android.groceries2.activities.ListInfoActivity;
 import com.example.android.groceries2.activities.MainActivity;
@@ -20,8 +21,9 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import static com.example.android.groceries2.db.GroceriesDbHelper.LOG_DATE_COMPLETE_COLUMN;
-import static com.example.android.groceries2.db.GroceriesDbHelper.LOG_DATE_CREATED_COLUMN;
+import static com.example.android.groceries2.db.GroceriesDbHelper.LOG_TOTAL_COLUMN;
 import static com.example.android.groceries2.db.GroceriesDbHelper.NAME_COLUMN;
+import static com.example.android.groceries2.db.GroceriesDbHelper.PRICE_COLUMN;
 
 /**
  * Created by takeoff on 013 13 Jun 17.
@@ -58,8 +60,6 @@ public class LogCursorAdapter extends CursorAdapter {
                 Intent intent = new Intent(view.getContext(), ListInfoActivity.class);
                 intent.putExtra("listName", listName);
                 intent.putExtra("listVersion", listVersion);
-                //intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
-                //Create editor activity
                 view.getContext().startActivity(intent);
             }
         });
@@ -67,19 +67,16 @@ public class LogCursorAdapter extends CursorAdapter {
         //Date formatting object
         SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
 
-        //Create text view for name of the list
+        ImageView itemImage = (ImageView) view.findViewById(R.id.log_item_image);
+
+        //Set name
         TextView logItemName = (TextView) view.findViewById(R.id.log_item_value);
-        //Set its text to NAME_COLUMN of LOG_table
         logItemName.setText(cursor.getString(cursor.getColumnIndexOrThrow(NAME_COLUMN)));
 
-        //Create text view for creation date info
-        TextView logItemCreateDate = (TextView) view.findViewById(R.id.log_item_date_created_value);
-        //Get date from LOG_DATE_CREATED_COLUMN in ms
-        long dateCreatedInMs = cursor.getLong(cursor.getColumnIndexOrThrow(LOG_DATE_CREATED_COLUMN));
-        //Convert date to string with proper formatting
-        String dateCreatedString = formatter.format(new Date(dateCreatedInMs));
-        //Set text to as has been formatted
-        logItemCreateDate.setText(dateCreatedString);
+        //Set total
+        TextView logTotal = (TextView) view.findViewById(R.id.log_item_total_value);
+        logTotal.setText(MainActivity.formatPrice
+                (cursor.getFloat(cursor.getColumnIndexOrThrow(LOG_TOTAL_COLUMN))));
 
         //Create text view for completion date info
         TextView logItemCompleteDate = (TextView) view.findViewById(R.id.log_item_date_complete_value);
@@ -96,11 +93,14 @@ public class LogCursorAdapter extends CursorAdapter {
             logItemCompleteDate.setTextColor(MainActivity.primaryDarkColor);
             logItemCompleteDate.setTypeface(logItemCompleteDate.getTypeface(), Typeface.BOLD_ITALIC);
 
+            Glide.with(context).load(R.drawable.empty_basket).into(itemImage);
+
         } else {
 
             logItemCompleteDate.setTextColor(MainActivity.secondaryTextColor);
             logItemCompleteDate.setTypeface(null, Typeface.NORMAL);
 
+            Glide.with(context).load(R.drawable.empty_basket_2).into(itemImage);
 
             //Get date from LOG_DATE_COMPLETE_COLUMN in ms
             logItemCompleteDate.setTextColor(oldColors);
