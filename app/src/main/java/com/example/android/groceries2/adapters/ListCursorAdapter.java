@@ -129,7 +129,7 @@ public class ListCursorAdapter extends CursorAdapter {
         //Get itemPrice value from cursor
         float itemPrice = cursor.getFloat(cursor.getColumnIndexOrThrow(PRICE_COLUMN));
         //Set itemPriceTextView to the product of item's amount and price
-        itemPriceTextView.setText("(~" + MainActivity.formatPrice(itemPrice) + ")");
+        itemPriceTextView.setText("(" + MainActivity.formatPrice(itemPrice) + ")");
 
 
         //Get ID_COLUMN of current row in int
