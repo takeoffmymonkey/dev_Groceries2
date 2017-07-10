@@ -63,6 +63,7 @@
     </LinearLayout>
 
     <android.support.v7.widget.AppCompatCheckBox
+        android:id="@+id/list_item_checkbox"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"

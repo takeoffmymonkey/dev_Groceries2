@@ -8,6 +8,8 @@ import android.graphics.Paint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.CursorAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -33,6 +35,8 @@ import static com.example.android.groceries2.db.GroceriesDbHelper.PRICE_COLUMN;
  */
 
 public class ListCursorAdapter extends CursorAdapter {
+
+
     public ListCursorAdapter(Context context, Cursor c, int flags) {
         super(context, c, flags);
     }
@@ -49,6 +53,7 @@ public class ListCursorAdapter extends CursorAdapter {
     @Override
     public void bindView(final View view, Context context, Cursor cursor) {
 
+
         //Get LIST_ITEM_COLUMN value of the item in List table
         String itemName = cursor.getString(cursor.getColumnIndexOrThrow(LIST_ITEM_COLUMN));
 
@@ -56,6 +61,16 @@ public class ListCursorAdapter extends CursorAdapter {
         //Get code of the items measure
         int measureInItems = cursor
                 .getInt(cursor.getColumnIndexOrThrow(MEASURE_COLUMN));
+
+
+        final CheckBox checkBox = (CheckBox) view.findViewById(R.id.list_item_checkbox);
+
+        checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+
+            }
+        });
 
 
         //Set item's image
@@ -139,10 +154,15 @@ public class ListCursorAdapter extends CursorAdapter {
         //Set color of the view (according to CHECKED_COLUMN state of the row)
         if (cursor.getInt(cursor.getColumnIndexOrThrow(CHECKED_COLUMN)) == 1) {
             view.setBackgroundColor(MainActivity.primaryLightColor);
-            itemNameTextView.setPaintFlags(itemNameTextView.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+            itemNameTextView.setPaintFlags(itemNameTextView.getPaintFlags()
+                    | Paint.STRIKE_THRU_TEXT_FLAG);
+            checkBox.setChecked(true);
+
         } else {
             view.setBackgroundColor(Color.WHITE);
             itemNameTextView.setPaintFlags(0);
+            checkBox.setChecked(false);
+
         }
 
 
@@ -165,13 +185,15 @@ public class ListCursorAdapter extends CursorAdapter {
                 ContentValues contentValues = new ContentValues();
 
                 //Check if the row was checked
-                if (freshListTableCursor.getInt(freshListTableCursor.getColumnIndexOrThrow(CHECKED_COLUMN)) == 0) {
+                if (freshListTableCursor.getInt(freshListTableCursor
+                        .getColumnIndexOrThrow(CHECKED_COLUMN)) == 0) {
                     //Row wasn't checked
                     //Set color
                     view.setBackgroundColor(MainActivity.primaryLightColor);
-                    itemNameTextView.setPaintFlags(itemNameTextView.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+                    itemNameTextView.setPaintFlags(itemNameTextView.getPaintFlags()
+                            | Paint.STRIKE_THRU_TEXT_FLAG);
 
-
+                    checkBox.setChecked(true);
 
                     //Update table
                     contentValues.put(CHECKED_COLUMN, 1);
@@ -188,6 +210,8 @@ public class ListCursorAdapter extends CursorAdapter {
                     view.setBackgroundColor(Color.WHITE);
 
                     itemNameTextView.setPaintFlags(0);
+
+                    checkBox.setChecked(false);
 
                     //Update table
                     contentValues.put(CHECKED_COLUMN, 0);
