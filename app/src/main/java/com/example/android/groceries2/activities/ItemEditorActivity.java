@@ -108,9 +108,6 @@ public class ItemEditorActivity extends AppCompatActivity {
         Glide.with(this).load(R.drawable.empty_basket).into(icon);
 
 
-        // Setup OnTouchListeners on all the input fields, so we can determine if the user
-        // has touched or modified them. This will let us know if there are unsaved changes
-        // or not, if the user tries to leave the editor without saving.
         nameEditText.setOnTouchListener(touchListener);
         priceEditText.setOnTouchListener(touchListener);
         measurementSpinner.setOnTouchListener(touchListener);
@@ -121,8 +118,6 @@ public class ItemEditorActivity extends AppCompatActivity {
         FloatingActionButton fabApproveItem = (FloatingActionButton)
                 findViewById(R.id.fab_approve_item);
 
-        FloatingActionButton fabDeleteItem = (FloatingActionButton)
-                findViewById(R.id.fab_delete_item);
 
         fabApproveItem.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -130,6 +125,12 @@ public class ItemEditorActivity extends AppCompatActivity {
                 saveItem(name, price, itemId);
             }
         });
+
+        FloatingActionButton fabDeleteItem = (FloatingActionButton)
+                findViewById(R.id.fab_delete_item);
+
+        if (name == null) fabDeleteItem.setVisibility(View.GONE);
+
 
         fabDeleteItem.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -195,14 +196,6 @@ public class ItemEditorActivity extends AppCompatActivity {
                         .setView(iconSelectView)
                         //Set ability to press back
                         .setCancelable(true)
-                        //Set Ok button with click listener
-                        /*.setPositiveButton("Ok",
-                                new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog, int id) {
-                                        //Close the dialog window
-                                        dialog.cancel();
-                                    }
-                                })*/
                         .setNegativeButton("Cancel",
                                 new DialogInterface.OnClickListener() {
                                     public void onClick(DialogInterface dialog, int id) {
@@ -239,6 +232,10 @@ public class ItemEditorActivity extends AppCompatActivity {
         itemId = getIntent().getIntExtra("ID", 0);
 
         if (itemId != 0) {
+
+
+            fabDeleteItem.setVisibility(View.VISIBLE);
+
 
             getSupportActionBar().setTitle("Edit item");
 
@@ -282,6 +279,7 @@ public class ItemEditorActivity extends AppCompatActivity {
 
 
         }
+
 
     }
 
