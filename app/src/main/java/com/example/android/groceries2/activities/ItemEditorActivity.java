@@ -15,7 +15,6 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -55,12 +54,10 @@ public class ItemEditorActivity extends AppCompatActivity {
     private int itemId = 0;
     private int itemIconInt = 11;
 
-    private View.OnTouchListener touchListener = new View.OnTouchListener() {
-        @Override
-        public boolean onTouch(View view, MotionEvent motionEvent) {
-            return false;
-        }
-    };
+    private String nameInit;
+    private String measurementInit;
+    private Float priceInit;
+    private int itemIconInit;
 
 
     @Override
@@ -108,11 +105,6 @@ public class ItemEditorActivity extends AppCompatActivity {
         Glide.with(this).load(R.drawable.empty_basket).into(icon);
 
 
-        nameEditText.setOnTouchListener(touchListener);
-        priceEditText.setOnTouchListener(touchListener);
-        measurementSpinner.setOnTouchListener(touchListener);
-
-
         setupSpinner();
 
         FloatingActionButton fabApproveItem = (FloatingActionButton)
@@ -122,7 +114,7 @@ public class ItemEditorActivity extends AppCompatActivity {
         fabApproveItem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                saveItem(name, price, itemId);
+                saveItem(name, itemId);
             }
         });
 
@@ -271,7 +263,13 @@ public class ItemEditorActivity extends AppCompatActivity {
                 protected void onPostExecute(Boolean aBoolean) {
                     super.onPostExecute(aBoolean);
 
+                    nameInit = name;
+                    measurementInit = Integer.toString(measure);
+                    priceInit = price;
+                    itemIconInit = itemIconInt;
+
                     measurementSpinner.setSelection(measure - 1);
+
                     nameEditText.setText(name);
                     priceEditText.setText(Float.toString(price));
                     updateIconView(itemIconInt);
@@ -282,6 +280,11 @@ public class ItemEditorActivity extends AppCompatActivity {
             new Query().execute();
 
 
+        } else {
+            nameInit = name;
+            measurementInit = measurement;
+            priceInit = price;
+            itemIconInit = itemIconInt;
         }
 
 
@@ -333,7 +336,7 @@ public class ItemEditorActivity extends AppCompatActivity {
     //Save item, but get the init name to compare with new one
     //0 - add mode
     //!0 - edit mode
-    private void saveItem(String exName, float exPrice, int itemId) {
+    private void saveItem(String exName, int itemId) {
 
         //Get new name
         String newName = nameEditText.getText().toString().trim();
@@ -423,14 +426,77 @@ public class ItemEditorActivity extends AppCompatActivity {
     }
 
 
+    private boolean changesMade() {
+
+        boolean changesMade = false;
+
+        Float epsilon = 0.00000001f;
+
+        String newPriceString = priceEditText.getText().toString().trim();
+        Float newPrice = Float.parseFloat(newPriceString);
+
+        Log.e("WARNING: ", "nameInit: " + nameInit);
+        Log.e("WARNING: ", "nameEditText: " + nameEditText.getText().toString().trim());
+
+        if (nameInit != null && !nameInit.equals(nameEditText.getText().toString().trim())) {
+            changesMade = true;
+        } else if (Math.abs(priceInit - newPrice) > epsilon) {
+            changesMade = true;
+        } else if (measurementInit != null && !measurementInit.equals(measurement)) {
+            changesMade = true;
+        } else if (itemIconInit != itemIconInt) {
+            changesMade = true;
+        }
+        Log.e("WARNING: ", "changesMade: " + changesMade);
+        return changesMade;
+
+
+    }
+
+
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
 
-        Intent intent = new Intent(this, MainActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        intent.putExtra("tab", 1);
-        startActivity(intent);
+
+        if (changesMade()) {
+
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            //Set title of the dialog
+            builder.setMessage("Save changes?")
+                    //Set ability to press back
+                    .setCancelable(true)
+                    //Set Ok button with click listener
+                    .setPositiveButton("Yes",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    //Close the dialog window
+                                    saveItem(name, itemId);
+                                    dialog.cancel();
+                                }
+                            })
+                    .setNeutralButton("No",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    Intent intent = new Intent(ItemEditorActivity.this, MainActivity.class);
+                                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                    intent.putExtra("tab", 1);
+                                    startActivity(intent);
+                                    dialog.cancel();
+                                }
+                            })
+                    .setNegativeButton("Cancel",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    //Close the dialog window
+                                    dialog.cancel();
+                                }
+                            });
+
+            AlertDialog alert = builder.create();
+            alert.show();
+
+
+        } else super.onBackPressed();
 
     }
 
