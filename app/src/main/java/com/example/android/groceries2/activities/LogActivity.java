@@ -92,8 +92,35 @@ public class LogActivity extends AppCompatActivity {
                     @Override
                     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
+                        Cursor cursorLogTable = db.query(LOG_TABLE_NAME,
+                                new String[]{LOG_CODE_COLUMN},
+                                ID_COLUMN + "=?", new String[]{Long.toString(id)},
+                                null, null, null);
 
-                        Toast.makeText(LogActivity.this, "fds", Toast.LENGTH_SHORT).show();
+                        if (cursorLogTable.getCount() == 1) {
+
+                            cursorLogTable.moveToFirst();
+                            int listVersion = cursorLogTable.getInt(cursorLogTable
+                                    .getColumnIndex(LOG_CODE_COLUMN));
+
+                            cursorLogTable.close();
+
+                            String listName = "List_" + listVersion;
+                            Intent intent = new Intent(LogActivity.this, ListInfoActivity.class);
+                            intent.putExtra("listName", listName);
+                            intent.putExtra("listVersion", listVersion);
+                            view.getContext().startActivity(intent);
+
+
+                        } else {
+
+                            cursorLogTable.close();
+                            Log.e("WARNING: ", "cursor count: "
+                                    + cursorLogTable.getCount() + ", must be: 1");
+
+                        }
+
+
                     }
                 });
             }

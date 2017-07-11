@@ -1,7 +1,6 @@
 package com.example.android.groceries2.adapters;
 
 import android.content.Context;
-import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.database.Cursor;
 import android.graphics.Typeface;
@@ -15,7 +14,6 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.example.android.groceries2.R;
-import com.example.android.groceries2.activities.ListInfoActivity;
 import com.example.android.groceries2.activities.MainActivity;
 
 import java.text.SimpleDateFormat;
@@ -24,7 +22,6 @@ import java.util.Date;
 import static com.example.android.groceries2.db.GroceriesDbHelper.LOG_DATE_COMPLETE_COLUMN;
 import static com.example.android.groceries2.db.GroceriesDbHelper.LOG_TOTAL_COLUMN;
 import static com.example.android.groceries2.db.GroceriesDbHelper.NAME_COLUMN;
-import static com.example.android.groceries2.db.GroceriesDbHelper.PRICE_COLUMN;
 
 /**
  * Created by takeoff on 013 13 Jun 17.
@@ -48,23 +45,6 @@ public class LogCursorAdapter extends CursorAdapter {
     //This method binds data from cursors' row to the given item layout.
     @Override
     public void bindView(final View view, Context context, Cursor cursor) {
-
-        final String listName = cursor.getString(cursor.getColumnIndexOrThrow(NAME_COLUMN));
-
-        String[] tokens = listName.split("_");
-        final int listVersion = Integer.parseInt(tokens[1]);
-
-/*
-        view.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //Create object for intent
-                Intent intent = new Intent(view.getContext(), ListInfoActivity.class);
-                intent.putExtra("listName", listName);
-                intent.putExtra("listVersion", listVersion);
-                view.getContext().startActivity(intent);
-            }
-        });*/
 
         //Date formatting object
         SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
