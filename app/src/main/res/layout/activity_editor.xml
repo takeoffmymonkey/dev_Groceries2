@@ -1,105 +1,130 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    >
+    android:layout_height="match_parent">
 
 
     <LinearLayout
+        android:id="@+id/linear"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="vertical">
 
-        <TextView
-            android:layout_width="100dp"
-            android:layout_height="wrap_content"
-            android:padding="8dp"
-            android:text="NAME:" />
-
-        <EditText
-            android:id="@+id/editor_name"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Name"
-            android:inputType="textCapSentences" />
+            android:orientation="horizontal">
 
-    </LinearLayout>
+            <TextView
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:padding="8dp"
+                android:text="NAME:" />
+
+            <EditText
+                android:id="@+id/editor_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Name"
+                android:inputType="textCapSentences" />
+
+        </LinearLayout>
 
 
-    <LinearLayout
-        android:id="@+id/JUSTATEST"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <TextView
-            android:layout_width="100dp"
-            android:layout_height="wrap_content"
-            android:padding="8dp"
-            android:text="PRICE:" />
-
-        <EditText
-            android:id="@+id/dialog_edit_price_number_field"
+        <LinearLayout
+            android:id="@+id/JUSTATEST"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Price"
-            android:inputType="numberDecimal"
-            android:text="0.0" />
+            android:orientation="horizontal">
 
-    </LinearLayout>
+            <TextView
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:padding="8dp"
+                android:text="PRICE:" />
+
+            <EditText
+                android:id="@+id/dialog_edit_price_number_field"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Price"
+                android:inputType="numberDecimal"
+                android:text="0.0" />
+
+        </LinearLayout>
 
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <TextView
-            android:layout_width="100dp"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="8dp"
-            android:text="MEASURE:" />
+            android:orientation="horizontal">
 
-        <Spinner
+            <TextView
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:padding="8dp"
+                android:text="MEASURE:" />
 
-            android:id="@+id/editor_measurement"
-            android:layout_width="wrap_content"
+            <Spinner
+
+                android:id="@+id/editor_measurement"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+            </Spinner>
+
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:padding="8dp"
+                android:text="ICON:" />
+
+            <ImageView
+                android:id="@+id/item_icon"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_gravity="center"
+                android:scaleType="fitXY" />
+
+        </LinearLayout>
+
+
+        <RelativeLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-        </Spinner>
+            <android.support.design.widget.FloatingActionButton
+                android:id="@+id/fab_approve_item"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_margin="16dp"
+                android:src="@mipmap/ic_check_white_24dp" />
+
+
+            <android.support.design.widget.FloatingActionButton
+                android:id="@+id/fab_delete_item"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="8dp"
+                android:layout_marginTop="16dp"
+                android:layout_toLeftOf="@+id/fab_approve_item"
+                android:src="@mipmap/ic_delete_forever_white_24dp" />
+
+
+        </RelativeLayout>
 
 
     </LinearLayout>
 
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <TextView
-            android:layout_width="100dp"
-            android:layout_height="wrap_content"
-            android:padding="8dp"
-            android:text="ICON:" />
-
-        <ImageView
-            android:id="@+id/item_icon"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:layout_gravity="center"
-            android:scaleType="fitXY" />
-
-    </LinearLayout>
-
-
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fab_approve_item"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="end"
-        android:layout_margin="16dp"
-        android:src="@mipmap/ic_check_white_24dp" />
-
-</LinearLayout>
+</RelativeLayout>

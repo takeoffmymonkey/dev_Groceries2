@@ -121,10 +121,61 @@ public class ItemEditorActivity extends AppCompatActivity {
         FloatingActionButton fabApproveItem = (FloatingActionButton)
                 findViewById(R.id.fab_approve_item);
 
+        FloatingActionButton fabDeleteItem = (FloatingActionButton)
+                findViewById(R.id.fab_delete_item);
+
         fabApproveItem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 saveItem(name, price, itemId);
+            }
+        });
+
+        fabDeleteItem.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(ItemEditorActivity.this);
+
+                final LayoutInflater inflater = LayoutInflater.from(ItemEditorActivity.this);
+                //Create view object containing dialog_item_amount layout
+                View iconSelectView = inflater.inflate(R.layout.dialog_item_icon, null);
+
+                //Set title of the dialog
+                builder.setMessage("You are about to delete " + name + ". Proceed?")
+                        //Set message
+                        .setView(iconSelectView)
+                        //Set ability to press back
+                        .setCancelable(true)
+                        //Set Ok button with click listener
+                        .setPositiveButton("Yes",
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int id) {
+
+                                        db.delete(ITEMS_TABLE_NAME, ID_COLUMN + "=?",
+                                                new String[]{Integer.toString(itemId)});
+
+
+                                        Intent intent = new Intent(ItemEditorActivity.this, MainActivity.class);
+                                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                        intent.putExtra("tab", 1);
+                                        startActivity(intent);
+
+                                        dialog.cancel();
+                                    }
+                                })
+                        .setNegativeButton("Cancel",
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int id) {
+                                        //Close the dialog window
+                                        dialog.cancel();
+                                    }
+                                });
+
+                final AlertDialog alert = builder.create();
+                alert.show();
+
+
             }
         });
 

@@ -64,7 +64,6 @@
         android:layout_alignParentRight="true"
         android:layout_marginBottom="16dp"
         android:layout_marginRight="16dp"
-
         android:src="@mipmap/ic_check_white_24dp" />
 
 
