@@ -280,8 +280,10 @@ public class ItemsFragment extends Fragment {
                 //Check if there are items to delete
                 Cursor cursorCheckItemsTable = db.query(ITEMS_TABLE_NAME,
                         new String[]{ID_COLUMN},
-                        ID_COLUMN + "=?", new String[]{Integer.toString(1)},
+                        null, null,
                         null, null, null);
+
+                Log.e("WARNING: ", "Cursor count " + cursorCheckItemsTable.getCount());
 
                 if (cursorCheckItemsTable.getCount() > 0) {
                     //table has at least 1 item
