@@ -283,8 +283,6 @@ public class ItemsFragment extends Fragment {
                         null, null,
                         null, null, null);
 
-                Log.e("WARNING: ", "Cursor count " + cursorCheckItemsTable.getCount());
-
                 if (cursorCheckItemsTable.getCount() > 0) {
                     //table has at least 1 item
                     cursorCheckItemsTable.close();
