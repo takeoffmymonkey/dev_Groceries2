@@ -13,7 +13,6 @@ import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.NavUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -35,7 +34,6 @@ import in.srain.cube.views.GridViewWithHeaderAndFooter;
 import static com.example.android.groceries2.activities.MainActivity.db;
 import static com.example.android.groceries2.activities.MainActivity.dbHelper;
 import static com.example.android.groceries2.activities.MainActivity.showSnackBar;
-import static com.example.android.groceries2.activities.MainActivity.snackOn;
 import static com.example.android.groceries2.db.GroceriesDbHelper.ID_COLUMN;
 import static com.example.android.groceries2.db.GroceriesDbHelper.IMAGE_COLUMN;
 import static com.example.android.groceries2.db.GroceriesDbHelper.ITEMS_TABLE_NAME;
@@ -159,7 +157,6 @@ public class ItemsFragment extends Fragment {
         itemsTotalTextView.setText("Total: " + MainActivity.formatPrice(total));
 
 
-
         progressBar = (ProgressBar) itemsView.findViewById(R.id.items_progress_bar);
         progressBar.setVisibility(View.GONE);
 
@@ -259,7 +256,7 @@ public class ItemsFragment extends Fragment {
 
                 progressBar.setVisibility(View.VISIBLE);
 
-                new ItemsBackgroundTasks(getContext(), "New items added").execute(0);
+                new ItemsBackgroundTasks(getContext(), "Items added").execute(0);
 
                 return true;
 
@@ -281,7 +278,6 @@ public class ItemsFragment extends Fragment {
                 }
 
                 //Check if there are items to delete
-                //Create a cursor and ask for ID 1
                 Cursor cursorCheckItemsTable = db.query(ITEMS_TABLE_NAME,
                         new String[]{ID_COLUMN},
                         ID_COLUMN + "=?", new String[]{Integer.toString(1)},
@@ -343,6 +339,10 @@ public class ItemsFragment extends Fragment {
 
         String toast;
 
+        long failedAdds;
+
+        int itemsArrayLength;
+
         public ItemsBackgroundTasks() {
             super();
         }
@@ -357,11 +357,14 @@ public class ItemsFragment extends Fragment {
         //Actions to perform on background thread
         @Override
         protected Boolean doInBackground(Integer... params) {
+
+
             switch (params[0]) {
 
                 case 0: // Populate list
                     String[] names = getResources().getStringArray(R.array.array_auto_name_list);
                     int[] measures = getResources().getIntArray(R.array.array_auto_measure_list);
+                    itemsArrayLength = measures.length;
                     String[] prices = getResources().getStringArray(R.array.array_auto_price_list);
                     int[] images = getResources().getIntArray(R.array.array_auto_image_list);
 
@@ -372,13 +375,14 @@ public class ItemsFragment extends Fragment {
                         contentValues.put(PRICE_COLUMN, Float.parseFloat(prices[i]));
                         contentValues.put(MEASURE_COLUMN, measures[i] + 1);
                         contentValues.put(IMAGE_COLUMN, images[i]);
-                        db.insert(ITEMS_TABLE_NAME, null, contentValues);
+                        if (db.insert(ITEMS_TABLE_NAME, null, contentValues) == -1)
+                            failedAdds += 1;
                     }
 
 
                     refreshItemsCursor(null, null, 0);
 
-                    break;
+                    return true;
 
                 case 1: // Delete list
                     dbHelper.deleteAll(1);
@@ -398,7 +402,22 @@ public class ItemsFragment extends Fragment {
             progressBar.setVisibility(View.GONE);
 
             if (toast != null) {
-                Toast.makeText(context, toast, Toast.LENGTH_SHORT).show();
+                if (toast.equals("Items added")) {
+
+                    int fails = (int) failedAdds;
+
+                    if (fails == itemsArrayLength) {
+                        toast = "All items already exist";
+                    } else if (fails == 0) {
+                        toast = itemsArrayLength + " item(s) added successfully";
+                    } else {
+                        toast = "Added items: " + (itemsArrayLength - fails) +
+                                "\n" + "Already exist: " + fails;
+                    }
+
+                    Toast.makeText(context, toast, Toast.LENGTH_SHORT).show();
+
+                } else Toast.makeText(context, toast, Toast.LENGTH_SHORT).show();
             }
 
 
