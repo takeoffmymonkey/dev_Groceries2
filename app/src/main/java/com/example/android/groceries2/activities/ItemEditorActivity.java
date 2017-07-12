@@ -438,6 +438,11 @@ public class ItemEditorActivity extends AppCompatActivity {
         Log.e("WARNING: ", "nameInit: " + nameInit);
         Log.e("WARNING: ", "nameEditText: " + nameEditText.getText().toString().trim());
 
+        //In case of new item
+        if (nameInit == null) nameInit = nameEditText.getText().toString().trim();
+        if (!nameInit.equals("")) changesMade = true;
+
+        //Check fields
         if (nameInit != null && !nameInit.equals(nameEditText.getText().toString().trim())) {
             changesMade = true;
         } else if (Math.abs(priceInit - newPrice) > epsilon) {
@@ -460,40 +465,7 @@ public class ItemEditorActivity extends AppCompatActivity {
 
         if (changesMade()) {
 
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            //Set title of the dialog
-            builder.setMessage("Save changes?")
-                    //Set ability to press back
-                    .setCancelable(true)
-                    //Set Ok button with click listener
-                    .setPositiveButton("Yes",
-                            new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int id) {
-                                    //Close the dialog window
-                                    saveItem(name, itemId);
-                                    dialog.cancel();
-                                }
-                            })
-                    .setNeutralButton("No",
-                            new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int id) {
-                                    Intent intent = new Intent(ItemEditorActivity.this, MainActivity.class);
-                                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                                    intent.putExtra("tab", 1);
-                                    startActivity(intent);
-                                    dialog.cancel();
-                                }
-                            })
-                    .setNegativeButton("Cancel",
-                            new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int id) {
-                                    //Close the dialog window
-                                    dialog.cancel();
-                                }
-                            });
-
-            AlertDialog alert = builder.create();
-            alert.show();
+            alertSave();
 
 
         } else super.onBackPressed();
@@ -515,42 +487,7 @@ public class ItemEditorActivity extends AppCompatActivity {
 
                 if (changesMade()) {
 
-                    AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                    //Set title of the dialog
-                    builder.setMessage("Save changes?")
-                            //Set ability to press back
-                            .setCancelable(true)
-                            //Set Ok button with click listener
-                            .setPositiveButton("Yes",
-                                    new DialogInterface.OnClickListener() {
-                                        public void onClick(DialogInterface dialog, int id) {
-                                            //Close the dialog window
-                                            saveItem(name, itemId);
-                                            dialog.cancel();
-                                        }
-                                    })
-                            .setNeutralButton("No",
-                                    new DialogInterface.OnClickListener() {
-                                        public void onClick(DialogInterface dialog, int id) {
-                                            Intent intent = new Intent(ItemEditorActivity.this, MainActivity.class);
-                                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                                            intent.putExtra("tab", 1);
-                                            startActivity(intent);
-                                            dialog.cancel();
-                                        }
-                                    })
-                            .setNegativeButton("Cancel",
-                                    new DialogInterface.OnClickListener() {
-                                        public void onClick(DialogInterface dialog, int id) {
-                                            //Close the dialog window
-                                            dialog.cancel();
-                                        }
-                                    });
-
-                    AlertDialog alert = builder.create();
-                    alert.show();
-
-
+                    alertSave();
                 } else {
 
                     //Intent intent = new Intent(LogActivity.this, MainActivity.class);
@@ -564,5 +501,43 @@ public class ItemEditorActivity extends AppCompatActivity {
 
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void alertSave() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        //Set title of the dialog
+        builder.setMessage("Save changes?")
+                //Set ability to press back
+                .setCancelable(true)
+                //Set Ok button with click listener
+                .setPositiveButton("Yes",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                //Close the dialog window
+                                saveItem(name, itemId);
+                                dialog.cancel();
+                            }
+                        })
+                .setNeutralButton("No",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                Intent intent = new Intent(ItemEditorActivity.this, MainActivity.class);
+                                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                intent.putExtra("tab", 1);
+                                startActivity(intent);
+                                dialog.cancel();
+                            }
+                        })
+                .setNegativeButton("Cancel",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                //Close the dialog window
+                                dialog.cancel();
+                            }
+                        });
+
+        AlertDialog alert = builder.create();
+        alert.show();
+
     }
 }
