@@ -331,6 +331,112 @@ public class GroceriesDbHelper extends SQLiteOpenHelper {
     }
 
 
+    public void reactivateList(int version) {
+
+        approveCurrentList();
+
+
+        Cursor cursor = db.query(LOG_TABLE_NAME,
+                new String[]{LOG_CODE_COLUMN},
+                LOG_CODE_COLUMN + "=?", new String[]{Integer.toString(version)},
+                null, null, null);
+
+        //Version must be real
+        if (cursor.getCount() == 1) {
+            //List found
+
+            cursor.close();
+
+            //Set all lists to inactive state
+            ContentValues contentValues = new ContentValues();
+            contentValues.put(LOG_ACTIVE_COLUMN, 0);
+            db.update(LOG_TABLE_NAME, contentValues,
+                    LOG_ACTIVE_COLUMN + "=?", new String[]{"1"});
+
+            //Set required list to active state
+            ContentValues contentValues2 = new ContentValues();
+            contentValues2.put(LOG_ACTIVE_COLUMN, 1);
+            contentValues2.put(LOG_DATE_COMPLETE_COLUMN, 0);
+            db.update(LOG_TABLE_NAME, contentValues2,
+                    LOG_CODE_COLUMN + "=?", new String[]{Integer.toString(version)});
+
+
+            //Uncheck all items in items
+            ContentValues contentValues3 = new ContentValues();
+            contentValues3.put(CHECKED_COLUMN, 0);
+            db.update(ITEMS_TABLE_NAME, contentValues3,
+                    CHECKED_COLUMN + "=?", new String[]{"1"});
+
+
+            //Uncheck all items in list
+            String activeListName = getActiveListName();
+            ContentValues contentValues5 = new ContentValues();
+            contentValues5.put(CHECKED_COLUMN, 0);
+            db.update(activeListName, contentValues5,
+                    CHECKED_COLUMN + "=?", new String[]{"1"});
+
+
+            //Check items in items from requested table
+            Cursor cursorListTable = db.query(activeListName, null, null, null, null, null, null);
+
+            int count = cursorListTable.getCount();
+
+            if (count > 0) {
+
+                cursorListTable.moveToFirst();
+
+                for (int i = 0; i < count; i++) {
+
+                    String item = cursorListTable.getString(cursorListTable
+                            .getColumnIndex(LIST_ITEM_COLUMN));
+
+                    int image = cursorListTable.getInt(cursorListTable
+                            .getColumnIndex(IMAGE_COLUMN));
+
+                    float amount = cursorListTable.getFloat(cursorListTable
+                            .getColumnIndex(LIST_AMOUNT_COLUMN));
+
+                    float totalPrice = cursorListTable.getFloat(cursorListTable
+                            .getColumnIndex(PRICE_COLUMN));
+
+                    int measure = cursorListTable.getInt(cursorListTable
+                            .getColumnIndex(MEASURE_COLUMN));
+
+                    float price = totalPrice / amount;
+
+                    ContentValues contentValues4 = new ContentValues();
+                    contentValues4.put(NAME_COLUMN, item);
+                    contentValues4.put(PRICE_COLUMN, price);
+                    contentValues4.put(MEASURE_COLUMN, measure);
+                    contentValues4.put(IMAGE_COLUMN, image);
+                    contentValues4.put(CHECKED_COLUMN, 1);
+
+                    try {
+
+                        db.update(ITEMS_TABLE_NAME, contentValues4,
+                                NAME_COLUMN + "=?", new String[]{item});
+
+                    } catch (NullPointerException e) {
+
+                    }
+
+                    cursorListTable.moveToNext();
+                }
+
+                cursorListTable.close();
+            }
+
+
+        } else {
+            //List not found
+
+            Log.w("WARNING: ", "setActiveListVersion(): No such version: " + version);
+
+            cursor.close();
+        }
+
+    }
+
     /*Creates new List table*/
     public void createListTable() {
 

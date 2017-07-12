@@ -21,6 +21,8 @@ import android.widget.Toast;
 
 import com.example.android.groceries2.R;
 import com.example.android.groceries2.adapters.ListInfoCursorAdapter;
+import com.example.android.groceries2.fragments.ItemsFragment;
+import com.example.android.groceries2.fragments.ListFragment;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -41,6 +43,8 @@ public class ListInfoActivity extends AppCompatActivity {
 
 
     private boolean isActive;
+    private int listVersion;
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -68,12 +72,12 @@ public class ListInfoActivity extends AppCompatActivity {
         FloatingActionButton fabApproveList = (FloatingActionButton)
                 findViewById(R.id.fab_approve_list);
 
-        FloatingActionButton fabReactivateList = (FloatingActionButton)
+        final FloatingActionButton fabReactivateList = (FloatingActionButton)
                 findViewById(R.id.fab_reactivate_list);
 
         //Get listNameString from intent
         final String listName = getIntent().getStringExtra("listName");
-        final int listVersion = getIntent().getIntExtra("listVersion", 0);
+        listVersion = getIntent().getIntExtra("listVersion", 0);
 
         //Check if this list is active
         if (listVersion == dbHelper.getActiveListVersion()) {
@@ -155,45 +159,7 @@ public class ListInfoActivity extends AppCompatActivity {
         fabDeleteList.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-
-                //Create alert dialog object
-                AlertDialog.Builder builder = new AlertDialog.Builder(ListInfoActivity.this);
-                //Set title of the dialog
-                builder.setMessage("Are you sure you want to delete this list?")
-                        //Set ability to press back
-                        .setCancelable(true)
-                        //Set Ok button with click listener
-                        .setPositiveButton("Delete",
-                                new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog, int id) {
-
-                                        dbHelper.deleteListTable(listVersion);
-
-                                        Intent intent = new Intent(ListInfoActivity.this, LogActivity.class);
-                                        intent.setFlags(intent.getFlags()|Intent.FLAG_ACTIVITY_NO_HISTORY);
-                                        startActivity(intent);
-
-                                        Toast.makeText(ListInfoActivity.this, listName + " deleted",
-                                                Toast.LENGTH_SHORT).show();
-                                        dialog.cancel();
-
-                                    }
-                                })
-
-                        //Set cancel button with click listener
-                        .setNegativeButton("Cancel",
-                                new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog, int id) {
-                                        //Close the dialog window
-                                        dialog.cancel();
-                                    }
-                                });
-
-                AlertDialog alert = builder.create();
-                alert.show();
-
-
+                deleteDialog();
             }
         });
 
@@ -201,30 +167,7 @@ public class ListInfoActivity extends AppCompatActivity {
         fabApproveList.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(ListInfoActivity.this);
-                //Set title of the dialog
-                builder.setMessage("Mark this list as complete?")
-                        //Set ability to press back
-                        .setCancelable(true)
-                        //Set Ok button with click listener
-                        .setPositiveButton("Yes",
-                                new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog, int id) {
-
-                                    }
-                                })
-
-                        //Set cancel button with click listener
-                        .setNegativeButton("Cancel",
-                                new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog, int id) {
-                                        //Close the dialog window
-                                        dialog.cancel();
-                                    }
-                                });
-
-                AlertDialog alert = builder.create();
-                alert.show();
+                approveDialog();
             }
         });
 
@@ -232,31 +175,7 @@ public class ListInfoActivity extends AppCompatActivity {
         fabReactivateList.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //Create alert dialog object
-                AlertDialog.Builder builder = new AlertDialog.Builder(ListInfoActivity.this);
-                //Set title of the dialog
-                builder.setMessage("Reactivate list? Current active list (if exists) will be marked as complete.")
-                        //Set ability to press back
-                        .setCancelable(true)
-                        //Set Ok button with click listener
-                        .setPositiveButton("Reactivate",
-                                new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog, int id) {
-
-                                    }
-                                })
-
-                        //Set cancel button with click listener
-                        .setNegativeButton("Cancel",
-                                new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog, int id) {
-                                        //Close the dialog window
-                                        dialog.cancel();
-                                    }
-                                });
-
-                AlertDialog alert = builder.create();
-                alert.show();
+                reactivateDialog();
             }
         });
 
@@ -275,15 +194,151 @@ public class ListInfoActivity extends AppCompatActivity {
     //Move back to log tab if Up is pressed
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+
+        Intent intent = new Intent(ListInfoActivity.this, LogActivity.class);
+
         switch (item.getItemId()) {
+
             // Respond to the action bar's Up/Home button
             case android.R.id.home:
-                Intent intent = new Intent(ListInfoActivity.this, LogActivity.class);
                 //intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(intent);
                 return true;
+
+            case R.id.settings_log_list_approve:
+                approveDialog();
+                return true;
+
+
+            case R.id.settings_log_list_reactivate:
+                reactivateDialog();
+                return true;
+
+            case R.id.settings_log_list_delete:
+                deleteDialog();
+                return true;
+
+
         }
         return super.onOptionsItemSelected(item);
     }
+
+
+    private void approveDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(ListInfoActivity.this);
+        //Set title of the dialog
+        builder.setMessage("Mark this list as complete?")
+                //Set ability to press back
+                .setCancelable(true)
+                //Set Ok button with click listener
+                .setPositiveButton("Yes",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                dbHelper.approveCurrentList();
+
+                                ListFragment.refreshListCursor(null, null, 0);
+                                //LogActivity.refreshLogCursor(null, null, 0);
+                                ItemsFragment.refreshItemsCursor(null, null, 0);
+
+                                Toast.makeText(ListInfoActivity.this, "List_" + listVersion
+                                        + " marked as complete", Toast.LENGTH_SHORT).show();
+
+                                Intent intent = new Intent(ListInfoActivity.this, LogActivity.class);
+                                intent.setFlags(intent.getFlags() | Intent.FLAG_ACTIVITY_NO_HISTORY);
+                                startActivity(intent);
+
+                            }
+                        })
+
+                //Set cancel button with click listener
+                .setNegativeButton("Cancel",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                //Close the dialog window
+                                dialog.cancel();
+                            }
+                        });
+
+        AlertDialog alert = builder.create();
+        alert.show();
+    }
+
+    private void deleteDialog() {
+        //Create alert dialog object
+        AlertDialog.Builder builder = new AlertDialog.Builder(ListInfoActivity.this);
+        //Set title of the dialog
+        builder.setMessage("Are you sure you want to delete this list?")
+                //Set ability to press back
+                .setCancelable(true)
+                //Set Ok button with click listener
+                .setPositiveButton("Delete",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+
+                                dbHelper.deleteListTable(listVersion);
+
+                                Intent intent = new Intent(ListInfoActivity.this, LogActivity.class);
+                                intent.setFlags(intent.getFlags() | Intent.FLAG_ACTIVITY_NO_HISTORY);
+                                startActivity(intent);
+
+                                Toast.makeText(ListInfoActivity.this, "List_" + listVersion + " deleted",
+                                        Toast.LENGTH_SHORT).show();
+                                dialog.cancel();
+
+                            }
+                        })
+
+                //Set cancel button with click listener
+                .setNegativeButton("Cancel",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                //Close the dialog window
+                                dialog.cancel();
+                            }
+                        });
+
+        AlertDialog alert = builder.create();
+        alert.show();
+
+    }
+
+    private void reactivateDialog() {
+        //Create alert dialog object
+        AlertDialog.Builder builder = new AlertDialog.Builder(ListInfoActivity.this);
+        //Set title of the dialog
+        builder.setMessage("Reactivate list? Current active list (if exists) will be marked as complete. " +
+                "Items' attributes will be overwritten.")
+                //Set ability to press back
+                .setCancelable(true)
+                //Set Ok button with click listener
+                .setPositiveButton("Reactivate",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+
+                                dbHelper.reactivateList(listVersion);
+
+                                ListFragment.refreshListCursor(null, null, 0);
+                                //LogActivity.refreshLogCursor(null, null, 0);
+                                ItemsFragment.refreshItemsCursor(null, null, 0);
+
+                                Intent intent = new Intent(ListInfoActivity.this, LogActivity.class);
+                                intent.setFlags(intent.getFlags() | Intent.FLAG_ACTIVITY_NO_HISTORY);
+                                startActivity(intent);
+                            }
+                        })
+
+                //Set cancel button with click listener
+                .setNegativeButton("Cancel",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                //Close the dialog window
+                                dialog.cancel();
+                            }
+                        });
+
+        AlertDialog alert = builder.create();
+        alert.show();
+    }
+
 
 }
