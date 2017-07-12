@@ -20,7 +20,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.android.groceries2.R;
-import com.example.android.groceries2.activities.LogActivity;
+import com.example.android.groceries2.activities.HistoryActivity;
 import com.example.android.groceries2.activities.MainActivity;
 import com.example.android.groceries2.adapters.ListCursorAdapter;
 
@@ -147,7 +147,7 @@ public class ListFragment extends Fragment {
             public void onClick(View v) {
                 dbHelper.approveCurrentList();
                 ListFragment.refreshListCursor(null, null, 0);
-                //LogActivity.refreshLogCursor(null, null, 0);
+                //HistoryActivity.refreshHistoryCursor(null, null, 0);
                 ItemsFragment.refreshItemsCursor(null, null, 0);
                 //Inform user
                 Toast.makeText(listView.getContext(), "List marked as complete", Toast.LENGTH_SHORT).show();
@@ -257,7 +257,7 @@ public class ListFragment extends Fragment {
             case R.id.settings_list_mark_as_complete:
                 dbHelper.approveCurrentList();
                 ListFragment.refreshListCursor(null, null, 0);
-                //LogActivity.refreshLogCursor(null, null, 0);
+                //HistoryActivity.refreshHistoryCursor(null, null, 0);
                 ItemsFragment.refreshItemsCursor(null, null, 0);
                 //Inform user
                 Toast.makeText(getContext(), "List marked as complete", Toast.LENGTH_SHORT).show();
@@ -278,7 +278,7 @@ public class ListFragment extends Fragment {
                 return true;
 
             case R.id.settings_lists_history:
-                Intent intentLog = new Intent(getActivity(), LogActivity.class);
+                Intent intentLog = new Intent(getActivity(), HistoryActivity.class);
                 intentLog.setFlags(intentLog.getFlags()|Intent.FLAG_ACTIVITY_NO_HISTORY);
                 startActivity(intentLog);
 
@@ -288,7 +288,7 @@ public class ListFragment extends Fragment {
             case R.id.settings_list_delete_list:
                 dbHelper.deleteListTable(dbHelper.getActiveListVersion());
                 ListFragment.refreshListCursor(null, null, 0);
-                //LogActivity.refreshLogCursor(null, null, 0);
+                //HistoryActivity.refreshHistoryCursor(null, null, 0);
                 Toast.makeText(getContext(), "List deleted", Toast.LENGTH_SHORT).show();
                 return true;
         }

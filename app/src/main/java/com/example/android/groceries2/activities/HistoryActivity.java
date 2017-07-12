@@ -22,7 +22,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.android.groceries2.R;
-import com.example.android.groceries2.adapters.LogCursorAdapter;
+import com.example.android.groceries2.adapters.HistoryCursorAdapter;
 import com.example.android.groceries2.fragments.ItemsFragment;
 import com.example.android.groceries2.fragments.ListFragment;
 
@@ -37,42 +37,41 @@ import static com.example.android.groceries2.db.GroceriesDbHelper.LOG_TABLE_NAME
  * Created by takeoff on 007 07 Jul 17.
  */
 
-public class LogActivity extends AppCompatActivity {
+public class HistoryActivity extends AppCompatActivity {
 
-    static LogCursorAdapter logCursorAdapter;
+    static HistoryCursorAdapter historyCursorAdapter;
 
-    ProgressBar progressBar;
+    public static ProgressBar historyProgressBar;
 
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.activity_lists);
+        setContentView(R.layout.activity_history);
 
 
         Log.w("WARNING: ", "IN ONCREATEVIEW OF LOG FRAGMENT");
 
 
-        progressBar = (ProgressBar) findViewById(R.id.log_progress_bar);
-        progressBar.setVisibility(View.GONE);
-
+        historyProgressBar = (ProgressBar) findViewById(R.id.history_progress_bar2);
+        historyProgressBar.setVisibility(View.VISIBLE);
 
         // Find the ListView which will be populated with the pet data
-        final ListView logListView = (ListView) findViewById(R.id.log_list);
+        final ListView historyListView = (ListView) findViewById(R.id.history_list);
 
         // Find and set empty view on the ListView, so that it only shows when the list has 0 items.
-        View emptyView = findViewById(R.id.log_empty_view);
+        View emptyView = findViewById(R.id.history_empty_view);
 
-        logListView.setEmptyView(emptyView);
+        historyListView.setEmptyView(emptyView);
 
-        TextView logEmptyText = (TextView) findViewById(R.id.log_empty_text);
-        logEmptyText.setText("No created lists");
+        TextView historyEmptyText = (TextView) findViewById(R.id.history_empty_text);
+        historyEmptyText.setText("No created lists");
 
-        TextView logEmptyTextSub = (TextView) findViewById(R.id.log_empty_text_sub);
-        logEmptyTextSub.setText("Please form a list in ITEMS");
+        TextView historyEmptyTextSub = (TextView) findViewById(R.id.history_empty_text_sub);
+        historyEmptyTextSub.setText("Please form a list in ITEMS");
 
-        class LogBackgroundCursor extends AsyncTask<Void, Void, Boolean> {
+        class HistoryBackgroundCursor extends AsyncTask<Void, Void, Boolean> {
 
             @Override
             protected Boolean doInBackground(Void... params) {
@@ -80,7 +79,7 @@ public class LogActivity extends AppCompatActivity {
                 Cursor cursor = db.query(LOG_TABLE_NAME, null,
                         null, null, null, null, LOG_DATE_CREATED_COLUMN + " DESC");
                 //Create cursor adapter object and pass cursor there
-                logCursorAdapter = new LogCursorAdapter(LogActivity.this, cursor, 0);
+                historyCursorAdapter = new HistoryCursorAdapter(HistoryActivity.this, cursor, 0);
                 return true;
             }
 
@@ -88,8 +87,10 @@ public class LogActivity extends AppCompatActivity {
             protected void onPostExecute(Boolean aBoolean) {
                 super.onPostExecute(aBoolean);
                 //Set adapter to the grid view
-                logListView.setAdapter(logCursorAdapter);
-                logListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                historyListView.setAdapter(historyCursorAdapter);
+
+                historyProgressBar.setVisibility(View.GONE);
+                historyListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     @Override
                     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
@@ -107,7 +108,7 @@ public class LogActivity extends AppCompatActivity {
                             cursorLogTable.close();
 
                             String listName = "List_" + listVersion;
-                            Intent intent = new Intent(LogActivity.this, ListInfoActivity.class);
+                            Intent intent = new Intent(HistoryActivity.this, ListInfoActivity.class);
                             intent.setFlags(intent.getFlags()|Intent.FLAG_ACTIVITY_NO_HISTORY);
                             intent.putExtra("listName", listName);
                             intent.putExtra("listVersion", listVersion);
@@ -128,7 +129,7 @@ public class LogActivity extends AppCompatActivity {
             }
         }
 
-        new LogBackgroundCursor().execute();
+        new HistoryBackgroundCursor().execute();
 
 
     }
@@ -137,7 +138,7 @@ public class LogActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menu_log, menu);
+        inflater.inflate(R.menu.menu_history, menu);
         return true;
     }
 
@@ -147,7 +148,7 @@ public class LogActivity extends AppCompatActivity {
         switch (item.getItemId()) {
 
             case android.R.id.home:
-                //Intent intent = new Intent(LogActivity.this, MainActivity.class);
+                //Intent intent = new Intent(HistoryActivity.this, MainActivity.class);
                 Intent intent = NavUtils.getParentActivityIntent(this);
                 intent.putExtra("tab", 1);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
@@ -169,7 +170,7 @@ public class LogActivity extends AppCompatActivity {
                     cursorCheckItemsTable.close();
 
                     //Create alert dialog object
-                    AlertDialog.Builder builder = new AlertDialog.Builder(LogActivity.this);
+                    AlertDialog.Builder builder = new AlertDialog.Builder(HistoryActivity.this);
                     //Set title of the dialog
                     builder.setTitle("Delete all lists")
                             //Set custom view of the dialog
@@ -181,9 +182,9 @@ public class LogActivity extends AppCompatActivity {
                                     new DialogInterface.OnClickListener() {
                                         public void onClick(DialogInterface dialog, int id) {
 
-                                            progressBar.setVisibility(View.VISIBLE);
+                                            historyProgressBar.setVisibility(View.VISIBLE);
 
-                                            new LogBackgroundTasks(LogActivity.this, "Lists deleted",
+                                            new HistoryBackgroundTasks(HistoryActivity.this, "Lists deleted",
                                                     Toast.LENGTH_SHORT).execute();
 
                                             dialog.cancel();
@@ -208,7 +209,7 @@ public class LogActivity extends AppCompatActivity {
                     //close cursor
                     cursorCheckItemsTable.close();
                     //Inform user
-                    Toast.makeText(LogActivity.this, "No lists to delete!", Toast.LENGTH_LONG).show();
+                    Toast.makeText(HistoryActivity.this, "No lists to delete!", Toast.LENGTH_LONG).show();
                 }
 
                 // Respond to a click on the "Delete all entries" menu option
@@ -218,18 +219,18 @@ public class LogActivity extends AppCompatActivity {
     }
 
 
-    class LogBackgroundTasks extends AsyncTask<Integer, Void, Boolean> {
+    class HistoryBackgroundTasks extends AsyncTask<Integer, Void, Boolean> {
 
         Context context;
         String toast;
         int length;
 
-        public LogBackgroundTasks() {
+        public HistoryBackgroundTasks() {
             super();
         }
 
 
-        public LogBackgroundTasks(Context context, String toast, int length) {
+        public HistoryBackgroundTasks(Context context, String toast, int length) {
             super();
             this.context = context;
             this.toast = toast;
@@ -241,7 +242,7 @@ public class LogActivity extends AppCompatActivity {
         @Override
         protected Boolean doInBackground(Integer... params) {
             dbHelper.deleteAll(0);
-            LogActivity.refreshLogCursor(null, null, 0);
+            HistoryActivity.refreshHistoryCursor(null, null, 0);
             ListFragment.refreshListCursor(null, null, 0);
             ItemsFragment.refreshItemsCursor(null, null, 0);
             return true;
@@ -251,7 +252,7 @@ public class LogActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(Boolean aBoolean) {
             super.onPostExecute(aBoolean);
-            progressBar.setVisibility(View.GONE);
+            historyProgressBar.setVisibility(View.GONE);
 
             if (toast != null) {
                 Toast.makeText(context, toast, length).show();
@@ -260,8 +261,8 @@ public class LogActivity extends AppCompatActivity {
     }
 
 
-    public static void refreshLogCursor(@Nullable Context context,
-                                        @Nullable String toast, @Nullable final int length) {
+    public static void refreshHistoryCursor(@Nullable Context context,
+                                            @Nullable String toast, @Nullable final int length) {
 
         class NewLogCursor extends AsyncTask<Integer, Void, Cursor> {
 
@@ -292,7 +293,8 @@ public class LogActivity extends AppCompatActivity {
 
             @Override
             protected void onPostExecute(Cursor cursor) {
-                logCursorAdapter.changeCursor(cursor);
+                historyCursorAdapter.changeCursor(cursor);
+                historyProgressBar.setVisibility(View.GONE);
                 if (toast != null) {
                     Toast.makeText(context, toast, length).show();
                 }

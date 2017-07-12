@@ -26,18 +26,18 @@ import static com.example.android.groceries2.db.GroceriesDbHelper.LOG_VERSION_CO
  * Created by takeoff on 013 13 Jun 17.
  */
 
-public class LogCursorAdapter extends CursorAdapter {
+public class HistoryCursorAdapter extends CursorAdapter {
 
 
-    public LogCursorAdapter(Context context, Cursor c, int flags) {
+    public HistoryCursorAdapter(Context context, Cursor c, int flags) {
         super(context, c, flags);
     }
 
 
     @Override
     public View newView(Context context, Cursor cursor, ViewGroup parent) {
-        //Inflate a list item view using the layout specified in item_log.xml
-        return LayoutInflater.from(context).inflate(R.layout.item_log, parent, false);
+        //Inflate a list item view using the layout specified in item_history.xml.xml
+        return LayoutInflater.from(context).inflate(R.layout.item_history, parent, false);
     }
 
 

@@ -21,7 +21,6 @@ import android.widget.Toast;
 
 import com.example.android.groceries2.R;
 import com.example.android.groceries2.adapters.ListInfoCursorAdapter;
-import com.example.android.groceries2.adapters.LogCursorAdapter;
 import com.example.android.groceries2.fragments.ItemsFragment;
 import com.example.android.groceries2.fragments.ListFragment;
 
@@ -186,8 +185,8 @@ public class ListInfoActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
-        if (isActive) inflater.inflate(R.menu.menu_log_list_active, menu);
-        else inflater.inflate(R.menu.menu_log_list, menu);
+        if (isActive) inflater.inflate(R.menu.menu_history_list_active, menu);
+        else inflater.inflate(R.menu.menu_history_list, menu);
         return true;
     }
 
@@ -196,7 +195,7 @@ public class ListInfoActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
-        Intent intent = new Intent(ListInfoActivity.this, LogActivity.class);
+        Intent intent = new Intent(ListInfoActivity.this, HistoryActivity.class);
 
         switch (item.getItemId()) {
 
@@ -238,13 +237,13 @@ public class ListInfoActivity extends AppCompatActivity {
                                 dbHelper.approveCurrentList();
 
                                 ListFragment.refreshListCursor(null, null, 0);
-                                //LogActivity.refreshLogCursor(null, null, 0);
+                                //HistoryActivity.refreshHistoryCursor(null, null, 0);
                                 ItemsFragment.refreshItemsCursor(null, null, 0);
 
                                 Toast.makeText(ListInfoActivity.this, "List_" + listVersion
                                         + " marked as complete", Toast.LENGTH_SHORT).show();
 
-                                Intent intent = new Intent(ListInfoActivity.this, LogActivity.class);
+                                Intent intent = new Intent(ListInfoActivity.this, HistoryActivity.class);
                                 intent.setFlags(intent.getFlags() | Intent.FLAG_ACTIVITY_NO_HISTORY);
                                 startActivity(intent);
 
@@ -278,7 +277,7 @@ public class ListInfoActivity extends AppCompatActivity {
 
                                 dbHelper.deleteListTable(listVersion);
 
-                                Intent intent = new Intent(ListInfoActivity.this, LogActivity.class);
+                                Intent intent = new Intent(ListInfoActivity.this, HistoryActivity.class);
                                 intent.setFlags(intent.getFlags() | Intent.FLAG_ACTIVITY_NO_HISTORY);
                                 startActivity(intent);
 
@@ -319,11 +318,11 @@ public class ListInfoActivity extends AppCompatActivity {
                                 dbHelper.reactivateList(listVersion);
 
                                 ListFragment.refreshListCursor(null, null, 0);
-                                LogActivity.refreshLogCursor(null, null, 0);
+                                HistoryActivity.refreshHistoryCursor(null, null, 0);
                                 ItemsFragment.refreshItemsCursor(null, null, 0);
 
 
-                                Intent intent = new Intent(ListInfoActivity.this, LogActivity.class);
+                                Intent intent = new Intent(ListInfoActivity.this, HistoryActivity.class);
                                 intent.setFlags(intent.getFlags() | Intent.FLAG_ACTIVITY_NO_HISTORY);
                                 startActivity(intent);
                             }

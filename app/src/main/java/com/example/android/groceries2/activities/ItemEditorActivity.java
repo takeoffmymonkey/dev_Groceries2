@@ -490,7 +490,7 @@ public class ItemEditorActivity extends AppCompatActivity {
                     alertSave();
                 } else {
 
-                    //Intent intent = new Intent(LogActivity.this, MainActivity.class);
+                    //Intent intent = new Intent(HistoryActivity.this, MainActivity.class);
                     Intent intent = NavUtils.getParentActivityIntent(this);
                     intent.putExtra("tab", 1);
                     intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);

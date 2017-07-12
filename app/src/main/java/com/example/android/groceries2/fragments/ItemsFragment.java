@@ -24,7 +24,6 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.android.groceries2.App;
 import com.example.android.groceries2.R;
 import com.example.android.groceries2.activities.ItemEditorActivity;
 import com.example.android.groceries2.activities.MainActivity;
@@ -55,7 +54,7 @@ public class ItemsFragment extends Fragment {
     //Create ItemsCursorAdapter link
     static ItemsCursorAdapter itemsCursorAdapter;
 
-    public static ProgressBar progressBar;
+    public static ProgressBar itemsProgressBar;
 
     public static TextView itemsTotalTextView;
 
@@ -158,8 +157,8 @@ public class ItemsFragment extends Fragment {
         itemsTotalTextView.setText("Total: " + MainActivity.formatPrice(total));
 
 
-        progressBar = (ProgressBar) itemsView.findViewById(R.id.items_progress_bar);
-        progressBar.setVisibility(View.GONE);
+        itemsProgressBar = (ProgressBar) itemsView.findViewById(R.id.items_progress_bar);
+        itemsProgressBar.setVisibility(View.GONE);
 
 
         TextView itemsEmptyText = (TextView) itemsView.findViewById(R.id.items_empty_text);
@@ -255,7 +254,7 @@ public class ItemsFragment extends Fragment {
             // Respond to a click on the "Insert dummy data" menu option
             case R.id.settings_items_populate_list:
 
-                progressBar.setVisibility(View.VISIBLE);
+                itemsProgressBar.setVisibility(View.VISIBLE);
 
                 new ItemsBackgroundTasks(getContext(), "Items added").execute(0);
 
@@ -298,7 +297,7 @@ public class ItemsFragment extends Fragment {
                             .setPositiveButton("Ok",
                                     new DialogInterface.OnClickListener() {
                                         public void onClick(DialogInterface dialog, int id) {
-                                            progressBar.setVisibility(View.VISIBLE);
+                                            itemsProgressBar.setVisibility(View.VISIBLE);
                                             new ItemsBackgroundTasks(getContext(), "All items successfully deleted!")
                                                     .execute(1);
                                             //Close the dialog window
@@ -400,7 +399,7 @@ public class ItemsFragment extends Fragment {
 
             itemsTotalTextView.setText("Total: " + MainActivity.formatPrice(0.00f));
 
-            progressBar.setVisibility(View.GONE);
+            itemsProgressBar.setVisibility(View.GONE);
 
             if (toast != null) {
                 if (toast.equals("Items added")) {

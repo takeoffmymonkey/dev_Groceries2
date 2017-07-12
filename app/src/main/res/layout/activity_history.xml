@@ -1,22 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/colorGray">
 
     <ListView
-        android:id="@+id/log_list"
+        android:id="@+id/history_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
     <!-- Empty view for the list -->
     <RelativeLayout
-        android:id="@+id/log_empty_view"
+        android:id="@+id/history_empty_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_centerInParent="true">
 
         <ImageView
-            android:id="@+id/log_empty_basket"
+            android:id="@+id/history_empty_basket"
             android:layout_width="150dp"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
@@ -24,31 +25,31 @@
             android:src="@drawable/empty_basket" />
 
         <TextView
-            android:id="@+id/log_empty_text"
+            android:id="@+id/history_empty_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/log_empty_basket"
+            android:layout_below="@+id/history_empty_basket"
             android:layout_centerHorizontal="true"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
         <TextView
-            android:id="@+id/log_empty_text_sub"
+            android:id="@+id/history_empty_text_sub"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/log_empty_text"
+            android:layout_below="@+id/history_empty_text"
             android:layout_centerHorizontal="true" />
 
     </RelativeLayout>
 
 
     <RelativeLayout
-        android:id="@+id/log_progress_bar_layout"
+        android:id="@+id/history_progress_bar_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center">
 
         <ProgressBar
-            android:id="@+id/log_progress_bar"
+            android:id="@+id/history_progress_bar2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@xml/progress_back"

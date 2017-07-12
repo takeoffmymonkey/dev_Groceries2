@@ -5,13 +5,17 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.os.AsyncTask;
 import android.util.Log;
+import android.view.View;
 
 import com.example.android.groceries2.R;
+import com.example.android.groceries2.activities.HistoryActivity;
 import com.example.android.groceries2.activities.MainActivity;
 import com.example.android.groceries2.fragments.ItemsFragment;
 import com.example.android.groceries2.fragments.ListFragment;
 
+import static com.example.android.groceries2.activities.HistoryActivity.historyProgressBar;
 import static com.example.android.groceries2.activities.MainActivity.db;
 
 
@@ -306,104 +310,127 @@ public class GroceriesDbHelper extends SQLiteOpenHelper {
 
     public void reactivateList(int version) {
 
-        approveCurrentList();
+
+        class AsyncReactivate extends AsyncTask<Integer, Void, Boolean> {
+
+            @Override
+            protected Boolean doInBackground(Integer... versionArr) {
 
 
-        Cursor cursor = db.query(LOG_TABLE_NAME,
-                new String[]{LOG_TOTAL_COLUMN},
-                LOG_VERSION_COLUMN + "=?", new String[]{Integer.toString(version)},
-                null, null, null);
+                int version = versionArr[0];
 
-        //Version must be real
-        if (cursor.getCount() == 1) {
-            //List found
+                approveCurrentList();
 
-            cursor.moveToFirst();
+                Cursor cursor = db.query(LOG_TABLE_NAME,
+                        new String[]{LOG_TOTAL_COLUMN},
+                        LOG_VERSION_COLUMN + "=?", new String[]{Integer.toString(version)},
+                        null, null, null);
 
-            //Delete old list
-            float total = cursor.getFloat(cursor.getColumnIndex(LOG_TOTAL_COLUMN));
-            db.delete(LOG_TABLE_NAME, LOG_VERSION_COLUMN + "=?",
-                    new String[]{Integer.toString(version)});
-            cursor.close();
+                //Version must be real
+                if (cursor.getCount() == 1) {
+                    //List found
 
-            //Set all lists to inactive state
-            ContentValues contentValues = new ContentValues();
-            contentValues.put(LOG_ACTIVE_COLUMN, 0);
-            db.update(LOG_TABLE_NAME, contentValues,
-                    LOG_ACTIVE_COLUMN + "=?", new String[]{"1"});
+                    cursor.moveToFirst();
 
-            //Insert new list
-            ContentValues contentValues2 = new ContentValues();
-            contentValues2.put(NAME_COLUMN, "List_" + version);
-            contentValues2.put(LOG_VERSION_COLUMN, version);
-            contentValues2.put(LOG_ACTIVE_COLUMN, 1);
-            contentValues2.put(LOG_TOTAL_COLUMN, total);
-            contentValues2.put(LOG_DATE_CREATED_COLUMN, System.currentTimeMillis());
-            contentValues2.put(LOG_DATE_COMPLETE_COLUMN, 0);
-            db.insert(LOG_TABLE_NAME, null, contentValues2);
+                    //Delete old list
+                    float total = cursor.getFloat(cursor.getColumnIndex(LOG_TOTAL_COLUMN));
+                    db.delete(LOG_TABLE_NAME, LOG_VERSION_COLUMN + "=?",
+                            new String[]{Integer.toString(version)});
+                    cursor.close();
+
+                    //Set all lists to inactive state
+                    ContentValues contentValues = new ContentValues();
+                    contentValues.put(LOG_ACTIVE_COLUMN, 0);
+                    db.update(LOG_TABLE_NAME, contentValues,
+                            LOG_ACTIVE_COLUMN + "=?", new String[]{"1"});
+
+                    //Insert new list
+                    ContentValues contentValues2 = new ContentValues();
+                    contentValues2.put(NAME_COLUMN, "List_" + version);
+                    contentValues2.put(LOG_VERSION_COLUMN, version);
+                    contentValues2.put(LOG_ACTIVE_COLUMN, 1);
+                    contentValues2.put(LOG_TOTAL_COLUMN, total);
+                    contentValues2.put(LOG_DATE_CREATED_COLUMN, System.currentTimeMillis());
+                    contentValues2.put(LOG_DATE_COMPLETE_COLUMN, 0);
+                    db.insert(LOG_TABLE_NAME, null, contentValues2);
 
 
-            //Uncheck all items in list
-            ContentValues contentValues5 = new ContentValues();
-            contentValues5.put(CHECKED_COLUMN, 0);
-            db.update("List_" + version, contentValues5,
-                    CHECKED_COLUMN + "=?", new String[]{"1"});
+                    //Uncheck all items in list
+                    ContentValues contentValues5 = new ContentValues();
+                    contentValues5.put(CHECKED_COLUMN, 0);
+                    db.update("List_" + version, contentValues5,
+                            CHECKED_COLUMN + "=?", new String[]{"1"});
 
-            //Check items in ITEMS table according to requested table
-            Cursor cursorListTable = db.query("List_" + version, null, null, null, null, null, null);
+                    //Check items in ITEMS table according to requested table
+                    Cursor cursorListTable = db.query("List_" + version, null, null, null, null, null, null);
 
-            int count = cursorListTable.getCount();
+                    int count = cursorListTable.getCount();
 
-            if (count > 0) {
+                    if (count > 0) {
 
-                cursorListTable.moveToFirst();
+                        cursorListTable.moveToFirst();
 
-                for (int i = 0; i < count; i++) {
+                        for (int i = 0; i < count; i++) {
 
-                    String item = cursorListTable.getString(cursorListTable
-                            .getColumnIndex(LIST_ITEM_COLUMN));
+                            String item = cursorListTable.getString(cursorListTable
+                                    .getColumnIndex(LIST_ITEM_COLUMN));
 
-                    int image = cursorListTable.getInt(cursorListTable
-                            .getColumnIndex(IMAGE_COLUMN));
+                            int image = cursorListTable.getInt(cursorListTable
+                                    .getColumnIndex(IMAGE_COLUMN));
 
-                    float amount = cursorListTable.getFloat(cursorListTable
-                            .getColumnIndex(LIST_AMOUNT_COLUMN));
+                            float amount = cursorListTable.getFloat(cursorListTable
+                                    .getColumnIndex(LIST_AMOUNT_COLUMN));
 
-                    float totalPrice = cursorListTable.getFloat(cursorListTable
-                            .getColumnIndex(PRICE_COLUMN));
+                            float totalPrice = cursorListTable.getFloat(cursorListTable
+                                    .getColumnIndex(PRICE_COLUMN));
 
-                    int measure = cursorListTable.getInt(cursorListTable
-                            .getColumnIndex(MEASURE_COLUMN));
+                            int measure = cursorListTable.getInt(cursorListTable
+                                    .getColumnIndex(MEASURE_COLUMN));
 
-                    float price = totalPrice / amount;
+                            float price = totalPrice / amount;
 
-                    ContentValues contentValues4 = new ContentValues();
-                    contentValues4.put(NAME_COLUMN, item);
-                    contentValues4.put(PRICE_COLUMN, price);
-                    contentValues4.put(MEASURE_COLUMN, measure);
-                    contentValues4.put(IMAGE_COLUMN, image);
-                    contentValues4.put(CHECKED_COLUMN, 1);
+                            ContentValues contentValues4 = new ContentValues();
+                            contentValues4.put(NAME_COLUMN, item);
+                            contentValues4.put(PRICE_COLUMN, price);
+                            contentValues4.put(MEASURE_COLUMN, measure);
+                            contentValues4.put(IMAGE_COLUMN, image);
+                            contentValues4.put(CHECKED_COLUMN, 1);
 
-                    if (db.update(ITEMS_TABLE_NAME, contentValues4,
-                            NAME_COLUMN + "=?", new String[]{item}) < 1) {
-                        //Item is not in the ITEMS table
-                        db.insert(ITEMS_TABLE_NAME, null, contentValues4);
+                            if (db.update(ITEMS_TABLE_NAME, contentValues4,
+                                    NAME_COLUMN + "=?", new String[]{item}) < 1) {
+                                //Item is not in the ITEMS table
+                                db.insert(ITEMS_TABLE_NAME, null, contentValues4);
+                            }
+
+                            cursorListTable.moveToNext();
+                        }
+
+                        cursorListTable.close();
                     }
 
-                    cursorListTable.moveToNext();
+
+                } else {
+                    //List not found
+
+                    Log.w("WARNING: ", "reactivateList(): No such version: " + version);
+
+                    cursor.close();
                 }
 
-                cursorListTable.close();
+                return true;
             }
 
+            @Override
+            protected void onPostExecute(Boolean aBoolean) {
 
-        } else {
-            //List not found
-
-            Log.w("WARNING: ", "reactivateList(): No such version: " + version);
-
-            cursor.close();
+                HistoryActivity.refreshHistoryCursor(null, null, 0);
+                historyProgressBar.setVisibility(View.GONE);
+            }
         }
+
+        historyProgressBar.setVisibility(View.VISIBLE);
+
+        new AsyncReactivate().execute(version);
 
     }
 
