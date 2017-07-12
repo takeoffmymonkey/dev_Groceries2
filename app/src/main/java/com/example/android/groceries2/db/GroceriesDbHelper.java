@@ -384,13 +384,10 @@ public class GroceriesDbHelper extends SQLiteOpenHelper {
                     contentValues4.put(IMAGE_COLUMN, image);
                     contentValues4.put(CHECKED_COLUMN, 1);
 
-                    try {
-
-                        db.update(ITEMS_TABLE_NAME, contentValues4,
-                                NAME_COLUMN + "=?", new String[]{item});
-
-                    } catch (NullPointerException e) {
-
+                    if (db.update(ITEMS_TABLE_NAME, contentValues4,
+                            NAME_COLUMN + "=?", new String[]{item}) < 1) {
+                        //Item is not in the ITEMS table
+                        db.insert(ITEMS_TABLE_NAME, null, contentValues4);
                     }
 
                     cursorListTable.moveToNext();
