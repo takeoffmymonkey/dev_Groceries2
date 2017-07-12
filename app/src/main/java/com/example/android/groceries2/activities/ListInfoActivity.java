@@ -11,6 +11,8 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
@@ -36,6 +38,9 @@ import static com.example.android.groceries2.db.GroceriesDbHelper.NAME_COLUMN;
  */
 
 public class ListInfoActivity extends AppCompatActivity {
+
+
+    private boolean isActive;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -63,17 +68,24 @@ public class ListInfoActivity extends AppCompatActivity {
         FloatingActionButton fabApproveList = (FloatingActionButton)
                 findViewById(R.id.fab_approve_list);
 
+        FloatingActionButton fabReactivateList = (FloatingActionButton)
+                findViewById(R.id.fab_reactivate_list);
+
         //Get listNameString from intent
         final String listName = getIntent().getStringExtra("listName");
         final int listVersion = getIntent().getIntExtra("listVersion", 0);
 
         //Check if this list is active
         if (listVersion == dbHelper.getActiveListVersion()) {
+            isActive = true;
             fabApproveList.setVisibility(View.VISIBLE);
             fabDeleteList.setVisibility(View.GONE);
+            fabReactivateList.setVisibility(View.GONE);
         } else {
+            isActive = false;
             fabApproveList.setVisibility(View.GONE);
             fabDeleteList.setVisibility(View.VISIBLE);
+            fabReactivateList.setVisibility(View.VISIBLE);
         }
 
         //Get data from log table
@@ -188,6 +200,15 @@ public class ListInfoActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        if (isActive) inflater.inflate(R.menu.menu_log_list_active, menu);
+        else inflater.inflate(R.menu.menu_log_list, menu);
+        return true;
     }
 
 

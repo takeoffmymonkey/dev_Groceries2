@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?><!-- Options menu for the CatalogActivity -->
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+
+    <item
+        android:id="@+id/settings_log_list_approve"
+        android:title="Approve list"
+        app:showAsAction="never" />
+
+
+</menu>
