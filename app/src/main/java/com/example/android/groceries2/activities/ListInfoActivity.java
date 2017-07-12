@@ -60,9 +60,21 @@ public class ListInfoActivity extends AppCompatActivity {
                 findViewById(R.id.fab_delete_list);
 
 
+        FloatingActionButton fabApproveList = (FloatingActionButton)
+                findViewById(R.id.fab_approve_list);
+
         //Get listNameString from intent
         final String listName = getIntent().getStringExtra("listName");
         final int listVersion = getIntent().getIntExtra("listVersion", 0);
+
+        //Check if this list is active
+        if (listVersion == dbHelper.getActiveListVersion()) {
+            fabApproveList.setVisibility(View.VISIBLE);
+            fabDeleteList.setVisibility(View.GONE);
+        } else {
+            fabApproveList.setVisibility(View.GONE);
+            fabDeleteList.setVisibility(View.VISIBLE);
+        }
 
         //Get data from log table
         Cursor cursorLog = db.query(LOG_TABLE_NAME,
