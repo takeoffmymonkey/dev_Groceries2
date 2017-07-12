@@ -229,7 +229,7 @@ public class ListCursorAdapter extends CursorAdapter {
 
         ContentValues contentValues = new ContentValues();
 
-        String activeListName = dbHelper.getLatestListName();
+        String activeListName = dbHelper.getActiveListName();
 
         //view was checked
         if (isChecked) {

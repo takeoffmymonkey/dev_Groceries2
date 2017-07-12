@@ -70,7 +70,8 @@ public class GroceriesDbHelper extends SQLiteOpenHelper {
 
     /*LOG table*/
     public static final String LOG_TABLE_NAME = "LOG_table";
-    static public final String LOG_CODE_COLUMN = "code";
+    static public final String LOG_VERSION_COLUMN = "version";
+
     static public final String LOG_ACTIVE_COLUMN = "active";
     static public final String LOG_DATE_CREATED_COLUMN = "created";
     static public final String LOG_DATE_COMPLETE_COLUMN = "complete";
@@ -79,7 +80,7 @@ public class GroceriesDbHelper extends SQLiteOpenHelper {
     static public final String LOG_TABLE_CREATE_COMMAND = "CREATE TABLE " + LOG_TABLE_NAME + " (" +
             ID_COLUMN + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
             NAME_COLUMN + " TEXT NOT NULL UNIQUE, " +
-            LOG_CODE_COLUMN + " INTEGER UNIQUE, " +
+            LOG_VERSION_COLUMN + " INTEGER UNIQUE, " +
             LOG_ACTIVE_COLUMN + " INTEGER DEFAULT 0, " +
             LOG_TOTAL_COLUMN + " REAL DEFAULT 0, " +
             LOG_DATE_CREATED_COLUMN + " INTEGER NOT NULL UNIQUE, " +
@@ -153,6 +154,10 @@ public class GroceriesDbHelper extends SQLiteOpenHelper {
             db.insert(IMAGES_TABLE_NAME, null, contentValues);
         }
 
+
+        //Populate list on startup
+        ItemsFragment.populateList();
+
     }
 
 
@@ -162,13 +167,27 @@ public class GroceriesDbHelper extends SQLiteOpenHelper {
     }
 
 
-    /*Returns latest list version #*/
+    /*Returns the number of list in Log table*/
+    public int getListsCount() {
+        Cursor cursor = db.query(LOG_TABLE_NAME,
+                new String[]{ID_COLUMN},
+                null, null, null, null, null);
+
+        int count = cursor.getCount();
+
+        cursor.close();
+
+        return count;
+
+    }
+
+    /*Returns version of the list which is on the last row of LOG table*/
     public int getLatestListVersion() {
 
-        int latestVersion;
+        int latestCode;
 
         Cursor cursor = db.query(LOG_TABLE_NAME,
-                new String[]{LOG_CODE_COLUMN},
+                new String[]{LOG_VERSION_COLUMN},
                 null, null, null, null, null);
 
         //Check if there are lists at all
@@ -176,10 +195,10 @@ public class GroceriesDbHelper extends SQLiteOpenHelper {
             //There are lists
 
             cursor.moveToLast();
-            latestVersion = cursor.getInt(cursor.getColumnIndexOrThrow(LOG_CODE_COLUMN));
+            latestCode = cursor.getInt(cursor.getColumnIndexOrThrow(LOG_VERSION_COLUMN));
             cursor.close();
 
-            return latestVersion;
+            return latestCode;
 
         } else {
             //No lists
@@ -190,32 +209,10 @@ public class GroceriesDbHelper extends SQLiteOpenHelper {
         }
     }
 
-    /*Returns latest list name*/
+
+    /*Returns name of the list which is on the last row of LOG table*/
     public String getLatestListName() {
-
-        String latestVersionName;
-
-        Cursor cursor = db.query(LOG_TABLE_NAME,
-                new String[]{NAME_COLUMN},
-                null, null, null, null, null);
-
-        //Check if there are lists at all
-        if (cursor.getCount() > 0) {
-            //There are lists
-
-            cursor.moveToLast();
-            latestVersionName = cursor.getString(cursor.getColumnIndexOrThrow(NAME_COLUMN));
-            cursor.close();
-
-            return latestVersionName;
-
-        } else {
-            //No lists
-
-            cursor.close();
-
-            return "List_0";
-        }
+        return "List_" + getLatestListVersion();
     }
 
 
@@ -225,7 +222,7 @@ public class GroceriesDbHelper extends SQLiteOpenHelper {
         int activeVersion;
 
         Cursor cursor = db.query(LOG_TABLE_NAME,
-                new String[]{LOG_CODE_COLUMN},
+                new String[]{LOG_VERSION_COLUMN},
                 LOG_ACTIVE_COLUMN + "=?", new String[]{"1"},
                 null, null, null);
 
@@ -234,7 +231,7 @@ public class GroceriesDbHelper extends SQLiteOpenHelper {
             //There are lists
 
             cursor.moveToFirst();
-            activeVersion = cursor.getInt(cursor.getColumnIndexOrThrow(LOG_CODE_COLUMN));
+            activeVersion = cursor.getInt(cursor.getColumnIndexOrThrow(LOG_VERSION_COLUMN));
             cursor.close();
 
             return activeVersion;
@@ -251,31 +248,7 @@ public class GroceriesDbHelper extends SQLiteOpenHelper {
 
     /*Returns name of the active list*/
     public String getActiveListName() {
-
-        String latestVersionName;
-
-        Cursor cursor = db.query(LOG_TABLE_NAME,
-                new String[]{NAME_COLUMN},
-                LOG_ACTIVE_COLUMN + "=?", new String[]{"1"},
-                null, null, null);
-
-        //Check if there are lists at all
-        if (cursor.getCount() > 0) {
-            //There are lists
-
-            cursor.moveToLast();
-            latestVersionName = cursor.getString(cursor.getColumnIndexOrThrow(NAME_COLUMN));
-            cursor.close();
-
-            return latestVersionName;
-
-        } else {
-            //No lists
-
-            cursor.close();
-
-            return "List_0";
-        }
+        return "List_" + getActiveListVersion();
     }
 
 
@@ -297,8 +270,8 @@ public class GroceriesDbHelper extends SQLiteOpenHelper {
             //Version is not 0
 
             Cursor cursor = db.query(LOG_TABLE_NAME,
-                    new String[]{LOG_CODE_COLUMN},
-                    LOG_CODE_COLUMN + "=?", new String[]{Integer.toString(version)},
+                    new String[]{LOG_VERSION_COLUMN},
+                    LOG_VERSION_COLUMN + "=?", new String[]{Integer.toString(version)},
                     null, null, null);
 
             //Version must be real
@@ -315,7 +288,7 @@ public class GroceriesDbHelper extends SQLiteOpenHelper {
                 ContentValues contentValues2 = new ContentValues();
                 contentValues2.put(LOG_ACTIVE_COLUMN, 1);
                 db.update(LOG_TABLE_NAME, contentValues2,
-                        LOG_CODE_COLUMN + "=?", new String[]{Integer.toString(version)});
+                        LOG_VERSION_COLUMN + "=?", new String[]{Integer.toString(version)});
 
                 cursor.close();
 
@@ -337,14 +310,20 @@ public class GroceriesDbHelper extends SQLiteOpenHelper {
 
 
         Cursor cursor = db.query(LOG_TABLE_NAME,
-                new String[]{LOG_CODE_COLUMN},
-                LOG_CODE_COLUMN + "=?", new String[]{Integer.toString(version)},
+                new String[]{LOG_TOTAL_COLUMN},
+                LOG_VERSION_COLUMN + "=?", new String[]{Integer.toString(version)},
                 null, null, null);
 
         //Version must be real
         if (cursor.getCount() == 1) {
             //List found
 
+            cursor.moveToFirst();
+
+            //Delete old list
+            float total = cursor.getFloat(cursor.getColumnIndex(LOG_TOTAL_COLUMN));
+            db.delete(LOG_TABLE_NAME, LOG_VERSION_COLUMN + "=?",
+                    new String[]{Integer.toString(version)});
             cursor.close();
 
             //Set all lists to inactive state
@@ -353,31 +332,25 @@ public class GroceriesDbHelper extends SQLiteOpenHelper {
             db.update(LOG_TABLE_NAME, contentValues,
                     LOG_ACTIVE_COLUMN + "=?", new String[]{"1"});
 
-            //Set required list to active state
+            //Insert new list
             ContentValues contentValues2 = new ContentValues();
+            contentValues2.put(NAME_COLUMN, "List_" + version);
+            contentValues2.put(LOG_VERSION_COLUMN, version);
             contentValues2.put(LOG_ACTIVE_COLUMN, 1);
+            contentValues2.put(LOG_TOTAL_COLUMN, total);
+            contentValues2.put(LOG_DATE_CREATED_COLUMN, System.currentTimeMillis());
             contentValues2.put(LOG_DATE_COMPLETE_COLUMN, 0);
-            db.update(LOG_TABLE_NAME, contentValues2,
-                    LOG_CODE_COLUMN + "=?", new String[]{Integer.toString(version)});
-
-
-            //Uncheck all items in items
-            ContentValues contentValues3 = new ContentValues();
-            contentValues3.put(CHECKED_COLUMN, 0);
-            db.update(ITEMS_TABLE_NAME, contentValues3,
-                    CHECKED_COLUMN + "=?", new String[]{"1"});
+            db.insert(LOG_TABLE_NAME, null, contentValues2);
 
 
             //Uncheck all items in list
-            String activeListName = getActiveListName();
             ContentValues contentValues5 = new ContentValues();
             contentValues5.put(CHECKED_COLUMN, 0);
-            db.update(activeListName, contentValues5,
+            db.update("List_" + version, contentValues5,
                     CHECKED_COLUMN + "=?", new String[]{"1"});
 
-
-            //Check items in items from requested table
-            Cursor cursorListTable = db.query(activeListName, null, null, null, null, null, null);
+            //Check items in ITEMS table according to requested table
+            Cursor cursorListTable = db.query("List_" + version, null, null, null, null, null, null);
 
             int count = cursorListTable.getCount();
 
@@ -430,7 +403,7 @@ public class GroceriesDbHelper extends SQLiteOpenHelper {
         } else {
             //List not found
 
-            Log.w("WARNING: ", "setActiveListVersion(): No such version: " + version);
+            Log.w("WARNING: ", "reactivateList(): No such version: " + version);
 
             cursor.close();
         }
@@ -440,7 +413,7 @@ public class GroceriesDbHelper extends SQLiteOpenHelper {
     /*Creates new List table*/
     public void createListTable() {
 
-        int newVersion = getLatestListVersion() + 1;
+        int newVersion = getListsCount() + 1;
 
         String LIST_TABLE_CREATE_COMMAND = "CREATE TABLE " + LIST_TABLE_NAME_part_1 + newVersion +
                 " (" +
@@ -458,7 +431,7 @@ public class GroceriesDbHelper extends SQLiteOpenHelper {
         //Update LOG_table
         ContentValues contentValues = new ContentValues();
         contentValues.put(NAME_COLUMN, LIST_TABLE_NAME_part_1 + newVersion);
-        contentValues.put(LOG_CODE_COLUMN, newVersion);
+        contentValues.put(LOG_VERSION_COLUMN, newVersion);
         contentValues.put(LOG_DATE_CREATED_COLUMN, System.currentTimeMillis());
         db.insert(LOG_TABLE_NAME, null, contentValues);//add new record to LOG_table
 
@@ -472,8 +445,8 @@ public class GroceriesDbHelper extends SQLiteOpenHelper {
     public void deleteListTable(int version) {
 
         Cursor cursor = db.query(LOG_TABLE_NAME,
-                new String[]{LOG_CODE_COLUMN},
-                LOG_CODE_COLUMN + "=?", new String[]{Integer.toString(version)},
+                new String[]{LOG_VERSION_COLUMN},
+                LOG_VERSION_COLUMN + "=?", new String[]{Integer.toString(version)},
                 null, null, null);
 
         //Version must be real
@@ -501,7 +474,7 @@ public class GroceriesDbHelper extends SQLiteOpenHelper {
             }
 
             //Delete current list from LOG_table
-            db.delete(LOG_TABLE_NAME, LOG_CODE_COLUMN + "=?",
+            db.delete(LOG_TABLE_NAME, LOG_VERSION_COLUMN + "=?",
                     new String[]{Integer.toString(version)});
 
         } else {
@@ -518,8 +491,10 @@ public class GroceriesDbHelper extends SQLiteOpenHelper {
     /*Mark current list as complete:*/
     public boolean approveCurrentList() {
 
+        int latestVersion = getLatestListVersion();
+        String latestName = "List_" + latestVersion;
         //Check if latest list is active
-        if (getLatestListVersion() == getActiveListVersion()) {
+        if (latestVersion == getActiveListVersion()) {
             //List is active
 
             //Uncheck all items in Item table
@@ -532,7 +507,7 @@ public class GroceriesDbHelper extends SQLiteOpenHelper {
             //Check all items in List_? table
             ContentValues contentValuesList = new ContentValues();
             contentValuesList.put(CHECKED_COLUMN, 1);
-            db.update(getLatestListName(), contentValuesList,
+            db.update(latestName, contentValuesList,
                     CHECKED_COLUMN + "=?",
                     new String[]{"0"});
 
@@ -542,7 +517,7 @@ public class GroceriesDbHelper extends SQLiteOpenHelper {
             contentValuesLog.put(LOG_DATE_COMPLETE_COLUMN, System.currentTimeMillis());
             db.update(LOG_TABLE_NAME, contentValuesLog,
                     NAME_COLUMN + "=?",
-                    new String[]{getLatestListName()});
+                    new String[]{latestName});
 
         }
 
@@ -563,7 +538,7 @@ public class GroceriesDbHelper extends SQLiteOpenHelper {
             setActiveListVersion(0);
 
             Cursor cursor = db.query(LOG_TABLE_NAME,
-                    new String[]{LOG_CODE_COLUMN},
+                    new String[]{LOG_VERSION_COLUMN},
                     null, null, null, null, null);
 
             int cursorRowsCount = cursor.getCount();
@@ -576,7 +551,7 @@ public class GroceriesDbHelper extends SQLiteOpenHelper {
                 //Delete all list tables
                 for (int i = 0; i < cursorRowsCount; i++) {
 
-                    int a = cursor.getInt(cursor.getColumnIndex(LOG_CODE_COLUMN));
+                    int a = cursor.getInt(cursor.getColumnIndex(LOG_VERSION_COLUMN));
                     db.execSQL("DROP TABLE " + "List_" + a + ";");
                     cursor.moveToNext();
                     Log.w("INFO: ", "List_" + a + " deleted");
@@ -633,8 +608,8 @@ public class GroceriesDbHelper extends SQLiteOpenHelper {
             //version other than 0
 
             Cursor cursor = db.query(LOG_TABLE_NAME,
-                    new String[]{LOG_CODE_COLUMN, LOG_TOTAL_COLUMN},
-                    LOG_CODE_COLUMN + "=?", new String[]{Integer.toString(listTableVersion)},
+                    new String[]{LOG_VERSION_COLUMN, LOG_TOTAL_COLUMN},
+                    LOG_VERSION_COLUMN + "=?", new String[]{Integer.toString(listTableVersion)},
                     null, null, null);
 
             //Check if row is found, should be only one
@@ -722,7 +697,7 @@ public class GroceriesDbHelper extends SQLiteOpenHelper {
                 ContentValues contentValues = new ContentValues();
                 contentValues.put(LOG_TOTAL_COLUMN, newTotal);
                 db.update(LOG_TABLE_NAME, contentValues,
-                        LOG_CODE_COLUMN + "=?",
+                        LOG_VERSION_COLUMN + "=?",
                         new String[]{Integer.toString(listVersion)});
 
 

@@ -29,7 +29,7 @@ import com.example.android.groceries2.fragments.ListFragment;
 import static com.example.android.groceries2.activities.MainActivity.db;
 import static com.example.android.groceries2.activities.MainActivity.dbHelper;
 import static com.example.android.groceries2.db.GroceriesDbHelper.ID_COLUMN;
-import static com.example.android.groceries2.db.GroceriesDbHelper.LOG_CODE_COLUMN;
+import static com.example.android.groceries2.db.GroceriesDbHelper.LOG_VERSION_COLUMN;
 import static com.example.android.groceries2.db.GroceriesDbHelper.LOG_TABLE_NAME;
 
 /**
@@ -77,7 +77,7 @@ public class LogActivity extends AppCompatActivity {
             protected Boolean doInBackground(Void... params) {
                 //Create cursor
                 Cursor cursor = db.query(LOG_TABLE_NAME, null,
-                        null, null, null, null, LOG_CODE_COLUMN + " DESC");
+                        null, null, null, null, LOG_VERSION_COLUMN + " DESC");
                 //Create cursor adapter object and pass cursor there
                 logCursorAdapter = new LogCursorAdapter(LogActivity.this, cursor, 0);
                 return true;
@@ -93,7 +93,7 @@ public class LogActivity extends AppCompatActivity {
                     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
                         Cursor cursorLogTable = db.query(LOG_TABLE_NAME,
-                                new String[]{LOG_CODE_COLUMN},
+                                new String[]{LOG_VERSION_COLUMN},
                                 ID_COLUMN + "=?", new String[]{Long.toString(id)},
                                 null, null, null);
 
@@ -101,7 +101,7 @@ public class LogActivity extends AppCompatActivity {
 
                             cursorLogTable.moveToFirst();
                             int listVersion = cursorLogTable.getInt(cursorLogTable
-                                    .getColumnIndex(LOG_CODE_COLUMN));
+                                    .getColumnIndex(LOG_VERSION_COLUMN));
 
                             cursorLogTable.close();
 
@@ -284,7 +284,7 @@ public class LogActivity extends AppCompatActivity {
             @Override
             protected Cursor doInBackground(Integer... params) {
                 Cursor cursor = db.query(LOG_TABLE_NAME, null, null, null, null, null,
-                        LOG_CODE_COLUMN + " DESC");
+                        LOG_VERSION_COLUMN + " DESC");
                 return cursor;
 
             }

@@ -21,6 +21,7 @@ import android.widget.Toast;
 
 import com.example.android.groceries2.R;
 import com.example.android.groceries2.adapters.ListInfoCursorAdapter;
+import com.example.android.groceries2.adapters.LogCursorAdapter;
 import com.example.android.groceries2.fragments.ItemsFragment;
 import com.example.android.groceries2.fragments.ListFragment;
 
@@ -318,8 +319,9 @@ public class ListInfoActivity extends AppCompatActivity {
                                 dbHelper.reactivateList(listVersion);
 
                                 ListFragment.refreshListCursor(null, null, 0);
-                                //LogActivity.refreshLogCursor(null, null, 0);
+                                LogActivity.refreshLogCursor(null, null, 0);
                                 ItemsFragment.refreshItemsCursor(null, null, 0);
+
 
                                 Intent intent = new Intent(ListInfoActivity.this, LogActivity.class);
                                 intent.setFlags(intent.getFlags() | Intent.FLAG_ACTIVITY_NO_HISTORY);
