@@ -29,6 +29,7 @@ import com.example.android.groceries2.fragments.ListFragment;
 import static com.example.android.groceries2.activities.MainActivity.db;
 import static com.example.android.groceries2.activities.MainActivity.dbHelper;
 import static com.example.android.groceries2.db.GroceriesDbHelper.ID_COLUMN;
+import static com.example.android.groceries2.db.GroceriesDbHelper.LOG_DATE_CREATED_COLUMN;
 import static com.example.android.groceries2.db.GroceriesDbHelper.LOG_VERSION_COLUMN;
 import static com.example.android.groceries2.db.GroceriesDbHelper.LOG_TABLE_NAME;
 
@@ -77,7 +78,7 @@ public class LogActivity extends AppCompatActivity {
             protected Boolean doInBackground(Void... params) {
                 //Create cursor
                 Cursor cursor = db.query(LOG_TABLE_NAME, null,
-                        null, null, null, null, LOG_VERSION_COLUMN + " DESC");
+                        null, null, null, null, LOG_DATE_CREATED_COLUMN + " DESC");
                 //Create cursor adapter object and pass cursor there
                 logCursorAdapter = new LogCursorAdapter(LogActivity.this, cursor, 0);
                 return true;
@@ -284,7 +285,7 @@ public class LogActivity extends AppCompatActivity {
             @Override
             protected Cursor doInBackground(Integer... params) {
                 Cursor cursor = db.query(LOG_TABLE_NAME, null, null, null, null, null,
-                        LOG_VERSION_COLUMN + " DESC");
+                        LOG_DATE_CREATED_COLUMN + " DESC");
                 return cursor;
 
             }

@@ -11,7 +11,6 @@ import android.widget.CursorAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-
 import com.bumptech.glide.Glide;
 import com.example.android.groceries2.R;
 import com.example.android.groceries2.activities.MainActivity;
@@ -21,7 +20,7 @@ import java.util.Date;
 
 import static com.example.android.groceries2.db.GroceriesDbHelper.LOG_DATE_COMPLETE_COLUMN;
 import static com.example.android.groceries2.db.GroceriesDbHelper.LOG_TOTAL_COLUMN;
-import static com.example.android.groceries2.db.GroceriesDbHelper.NAME_COLUMN;
+import static com.example.android.groceries2.db.GroceriesDbHelper.LOG_VERSION_COLUMN;
 
 /**
  * Created by takeoff on 013 13 Jun 17.
@@ -53,7 +52,8 @@ public class LogCursorAdapter extends CursorAdapter {
 
         //Set name
         TextView logItemName = (TextView) view.findViewById(R.id.log_item_value);
-        logItemName.setText(cursor.getString(cursor.getColumnIndexOrThrow(NAME_COLUMN)));
+        logItemName.setText(Integer.toString(cursor.getInt(cursor
+                .getColumnIndexOrThrow(LOG_VERSION_COLUMN))));
 
         //Set total
         TextView logTotal = (TextView) view.findViewById(R.id.log_item_total_value);
