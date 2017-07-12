@@ -107,6 +107,7 @@ public class LogActivity extends AppCompatActivity {
 
                             String listName = "List_" + listVersion;
                             Intent intent = new Intent(LogActivity.this, ListInfoActivity.class);
+                            intent.setFlags(intent.getFlags()|Intent.FLAG_ACTIVITY_NO_HISTORY);
                             intent.putExtra("listName", listName);
                             intent.putExtra("listVersion", listVersion);
                             view.getContext().startActivity(intent);

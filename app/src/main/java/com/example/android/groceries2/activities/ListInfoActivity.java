@@ -160,9 +160,7 @@ public class ListInfoActivity extends AppCompatActivity {
                 //Create alert dialog object
                 AlertDialog.Builder builder = new AlertDialog.Builder(ListInfoActivity.this);
                 //Set title of the dialog
-                builder.setTitle("Delete list")
-                        //Set custom view of the dialog
-                        .setMessage("Are you sure you want to delete this list?")
+                builder.setMessage("Are you sure you want to delete this list?")
                         //Set ability to press back
                         .setCancelable(true)
                         //Set Ok button with click listener
@@ -173,8 +171,7 @@ public class ListInfoActivity extends AppCompatActivity {
                                         dbHelper.deleteListTable(listVersion);
 
                                         Intent intent = new Intent(ListInfoActivity.this, LogActivity.class);
-                                        //intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                                        //intent.putExtra("tab", 2);
+                                        intent.setFlags(intent.getFlags()|Intent.FLAG_ACTIVITY_NO_HISTORY);
                                         startActivity(intent);
 
                                         Toast.makeText(ListInfoActivity.this, listName + " deleted",
@@ -197,6 +194,69 @@ public class ListInfoActivity extends AppCompatActivity {
                 alert.show();
 
 
+            }
+        });
+
+
+        fabApproveList.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(ListInfoActivity.this);
+                //Set title of the dialog
+                builder.setMessage("Mark this list as complete?")
+                        //Set ability to press back
+                        .setCancelable(true)
+                        //Set Ok button with click listener
+                        .setPositiveButton("Yes",
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int id) {
+
+                                    }
+                                })
+
+                        //Set cancel button with click listener
+                        .setNegativeButton("Cancel",
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int id) {
+                                        //Close the dialog window
+                                        dialog.cancel();
+                                    }
+                                });
+
+                AlertDialog alert = builder.create();
+                alert.show();
+            }
+        });
+
+
+        fabReactivateList.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //Create alert dialog object
+                AlertDialog.Builder builder = new AlertDialog.Builder(ListInfoActivity.this);
+                //Set title of the dialog
+                builder.setMessage("Reactivate list? Current active list (if exists) will be marked as complete.")
+                        //Set ability to press back
+                        .setCancelable(true)
+                        //Set Ok button with click listener
+                        .setPositiveButton("Reactivate",
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int id) {
+
+                                    }
+                                })
+
+                        //Set cancel button with click listener
+                        .setNegativeButton("Cancel",
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int id) {
+                                        //Close the dialog window
+                                        dialog.cancel();
+                                    }
+                                });
+
+                AlertDialog alert = builder.create();
+                alert.show();
             }
         });
 
