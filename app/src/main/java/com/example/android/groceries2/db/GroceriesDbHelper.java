@@ -437,8 +437,30 @@ public class GroceriesDbHelper extends SQLiteOpenHelper {
     /*Creates new List table*/
     public void createListTable() {
 
-        int newVersion = getListsCount() + 1;
+        int count = getListsCount();
+        int newVersion = 0;
 
+
+        //Calculate proper version
+        if (count == 0) {//no rows found
+            newVersion = count + 1;
+        } else { //rows found
+            Cursor logTableCursor = db.query(LOG_TABLE_NAME,
+                    new String[]{"MAX(" + LOG_VERSION_COLUMN + ")"},
+                    null, null, null, null, null);
+            if (logTableCursor.getCount() > 0) {
+                logTableCursor.moveToFirst();
+                String maxVersion = logTableCursor.getString(0);
+                Log.e("WARNING: ", "createListTable(): maxVersion: " + maxVersion);
+                newVersion = Integer.parseInt(maxVersion) + 1;
+            } else {
+                Log.e("WARNING: ", "createListTable(): Cursor has no rows");
+            }
+            logTableCursor.close();
+        }
+
+
+        //Create new table
         String LIST_TABLE_CREATE_COMMAND = "CREATE TABLE " + LIST_TABLE_NAME_part_1 + newVersion +
                 " (" +
                 ID_COLUMN + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
@@ -448,9 +470,8 @@ public class GroceriesDbHelper extends SQLiteOpenHelper {
                 MEASURE_COLUMN + " INTEGER NOT NULL, " +
                 IMAGE_COLUMN + " INTEGER DEFAULT 11, " +
                 CHECKED_COLUMN + " INTEGER DEFAULT 0);";
-
-        //Create new table
         db.execSQL(LIST_TABLE_CREATE_COMMAND);
+
 
         //Update LOG_table
         ContentValues contentValues = new ContentValues();
@@ -458,6 +479,7 @@ public class GroceriesDbHelper extends SQLiteOpenHelper {
         contentValues.put(LOG_VERSION_COLUMN, newVersion);
         contentValues.put(LOG_DATE_CREATED_COLUMN, System.currentTimeMillis());
         db.insert(LOG_TABLE_NAME, null, contentValues);//add new record to LOG_table
+
 
         //Set latest list table to active state
         setActiveListVersion(newVersion);
