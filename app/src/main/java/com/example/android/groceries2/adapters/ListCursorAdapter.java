@@ -187,9 +187,6 @@ public class ListCursorAdapter extends CursorAdapter {
         });
 
 
-
-
-
         checkBox.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -203,6 +200,8 @@ public class ListCursorAdapter extends CursorAdapter {
                     MainActivity.snackBar.dismiss();
                     MainActivity.snackLines = 0;
                     MainActivity.setSnackOnState(false, null);
+                    if (checkBox.isChecked()) checkBox.setChecked(false);
+                    else checkBox.setChecked(true);
                     return;
                 }
 
