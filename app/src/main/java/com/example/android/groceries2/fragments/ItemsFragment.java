@@ -333,7 +333,7 @@ public class ItemsFragment extends Fragment {
     }
 
 
-    class ItemsBackgroundTasks extends AsyncTask<Integer, Void, Boolean> {
+    private class ItemsBackgroundTasks extends AsyncTask<Integer, Void, Boolean> {
 
         Context context;
 
@@ -428,7 +428,7 @@ public class ItemsFragment extends Fragment {
 
     /*Refresh cursor using inner class*/
     public static void refreshItemsCursor(@Nullable Context context,
-                                          @Nullable String toast, @Nullable final int length) {
+                                          @Nullable String toast, final int length) {
 
 
         class NewItemsCursor extends AsyncTask<Integer, Void, Cursor> {
