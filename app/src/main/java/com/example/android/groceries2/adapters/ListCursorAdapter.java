@@ -12,6 +12,7 @@ import android.widget.CheckBox;
 import android.widget.CursorAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.android.groceries2.R;
@@ -22,11 +23,14 @@ import static com.example.android.groceries2.activities.MainActivity.dbHelper;
 import static com.example.android.groceries2.db.GroceriesDbHelper.CHECKED_COLUMN;
 import static com.example.android.groceries2.db.GroceriesDbHelper.ID_COLUMN;
 import static com.example.android.groceries2.db.GroceriesDbHelper.IMAGE_COLUMN;
+import static com.example.android.groceries2.db.GroceriesDbHelper.ITEMS_TABLE_NAME;
 import static com.example.android.groceries2.db.GroceriesDbHelper.LIST_AMOUNT_COLUMN;
 import static com.example.android.groceries2.db.GroceriesDbHelper.LIST_ITEM_COLUMN;
 import static com.example.android.groceries2.db.GroceriesDbHelper.MEASURE_COLUMN;
 import static com.example.android.groceries2.db.GroceriesDbHelper.MEASURE_TABLE_NAME;
+import static com.example.android.groceries2.db.GroceriesDbHelper.NAME_COLUMN;
 import static com.example.android.groceries2.db.GroceriesDbHelper.PRICE_COLUMN;
+import static com.example.android.groceries2.fragments.ItemsFragment.refreshItemsCursor;
 import static com.example.android.groceries2.fragments.ListFragment.refreshListCursor;
 
 /**
@@ -65,7 +69,7 @@ public class ListCursorAdapter extends CursorAdapter {
 
 
         //Set item name
-        String itemName = cursor.getString(cursor.getColumnIndexOrThrow(LIST_ITEM_COLUMN));
+        final String itemName = cursor.getString(cursor.getColumnIndexOrThrow(LIST_ITEM_COLUMN));
         final TextView itemNameTextView = (TextView) view.findViewById(R.id.list_item_name);
         itemNameTextView.setText(itemName);
 
@@ -187,6 +191,7 @@ public class ListCursorAdapter extends CursorAdapter {
         });
 
 
+        //Set onClickListener on checkbox, must be identical to view's clicklistener
         checkBox.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -248,10 +253,8 @@ public class ListCursorAdapter extends CursorAdapter {
         });
 
 
-
-/*        //Set item to long-clickable
+        //Set view to long-clickability
         view.setLongClickable(true);
-
         view.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
@@ -261,25 +264,37 @@ public class ListCursorAdapter extends CursorAdapter {
                     MainActivity.snackBar.dismiss();
                     MainActivity.snackLines = 0;
                     MainActivity.setSnackOnState(false, null);
+                    return true;
                 }
 
-
-                //Update Items table
-                ContentValues contentValuesItemsTable
-                        = new ContentValues();
+                //Uncheck item in Items table
+                String item = itemName;
+                ContentValues contentValuesItemsTable = new ContentValues();
                 contentValuesItemsTable.put(CHECKED_COLUMN, 0);
                 db.update(ITEMS_TABLE_NAME, contentValuesItemsTable,
+                        NAME_COLUMN + "=?",
+                        new String[]{item});
+
+
+                //Delete item from the list
+                db.delete(dbHelper.getActiveListName(),
                         ID_COLUMN + "=?",
                         new String[]{Integer.toString(rowIdInt)});
 
 
-                //refresh cursors
-                refreshItemsCursor(null, null, 0);
+                //Update cursors
                 refreshListCursor(null, null, 0);
+                refreshItemsCursor(null, null, 0);
+
+
+                //Inform user
+                Toast.makeText(v.getContext(), item + " has been removed from list",
+                        Toast.LENGTH_SHORT).show();
+
 
                 return true;
             }
-        });*/
+        });
 
 
     }
