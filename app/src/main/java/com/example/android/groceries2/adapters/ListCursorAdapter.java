@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,6 +27,8 @@ import static com.example.android.groceries2.db.GroceriesDbHelper.IMAGE_COLUMN;
 import static com.example.android.groceries2.db.GroceriesDbHelper.ITEMS_TABLE_NAME;
 import static com.example.android.groceries2.db.GroceriesDbHelper.LIST_AMOUNT_COLUMN;
 import static com.example.android.groceries2.db.GroceriesDbHelper.LIST_ITEM_COLUMN;
+import static com.example.android.groceries2.db.GroceriesDbHelper.LOG_TABLE_NAME;
+import static com.example.android.groceries2.db.GroceriesDbHelper.LOG_TOTAL_COLUMN;
 import static com.example.android.groceries2.db.GroceriesDbHelper.MEASURE_COLUMN;
 import static com.example.android.groceries2.db.GroceriesDbHelper.MEASURE_TABLE_NAME;
 import static com.example.android.groceries2.db.GroceriesDbHelper.NAME_COLUMN;
@@ -106,7 +109,7 @@ public class ListCursorAdapter extends CursorAdapter {
 
         //Set item price
         TextView itemPriceTextView = (TextView) view.findViewById(R.id.list_item_price);
-        float itemPrice = cursor.getFloat(cursor.getColumnIndexOrThrow(PRICE_COLUMN));
+        final float itemPrice = cursor.getFloat(cursor.getColumnIndexOrThrow(PRICE_COLUMN));
         itemPriceTextView.setText("(" + MainActivity.formatPrice(itemPrice) + ")");
 
 
@@ -259,6 +262,7 @@ public class ListCursorAdapter extends CursorAdapter {
             @Override
             public boolean onLongClick(View v) {
 
+
                 //Close snack if there is one open
                 if (MainActivity.snackOn && MainActivity.snackBar != null) {
                     MainActivity.snackBar.dismiss();
@@ -266,6 +270,7 @@ public class ListCursorAdapter extends CursorAdapter {
                     MainActivity.setSnackOnState(false, null);
                     return true;
                 }
+
 
                 //Uncheck item in Items table
                 String item = itemName;
@@ -276,8 +281,17 @@ public class ListCursorAdapter extends CursorAdapter {
                         new String[]{item});
 
 
+                //Current table name
+                int currentListVersion = dbHelper.getActiveListVersion();
+                String currentList = "List_" + currentListVersion;
+
+
+                //Update total
+                dbHelper.updateTotal(currentListVersion, 0, itemPrice);
+
+
                 //Delete item from the list
-                db.delete(dbHelper.getActiveListName(),
+                db.delete(currentList,
                         ID_COLUMN + "=?",
                         new String[]{Integer.toString(rowIdInt)});
 

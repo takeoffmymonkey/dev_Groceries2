@@ -9,7 +9,6 @@ import android.database.Cursor;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.text.InputType;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -309,15 +308,12 @@ public class ItemsCursorAdapter extends CursorAdapter {
                     //Get currentListTableName
                     String currentListTableName = "List_" + currentListTableVersion;
 
-                    Log.e("WARNING: ", "currentListTableVersion: " + currentListTableVersion);
-
                     //Get totalPrice of the item
                     Cursor cursorItemsTotalPrice = db.query(currentListTableName,
                             new String[]{PRICE_COLUMN},
                             LIST_ITEM_COLUMN + "=?", new String[]{itemName},
                             null, null, null);
 
-                    Log.e("WARNING: ", "cursor len: " + cursorItemsTotalPrice.getCount());
 
                     //move to 1st row
                     cursorItemsTotalPrice.moveToFirst();
