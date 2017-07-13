@@ -439,8 +439,11 @@ public class ItemEditorActivity extends AppCompatActivity {
         Log.e("WARNING: ", "nameEditText: " + nameEditText.getText().toString().trim());
 
         //In case of new item
-        if (nameInit == null) nameInit = nameEditText.getText().toString().trim();
-        if (!nameInit.equals("")) changesMade = true;
+        if (nameInit == null) {
+            nameInit = nameEditText.getText().toString().trim();
+            if (!nameInit.equals("")) changesMade = true;
+        }
+
 
         //Check fields
         if (nameInit != null && !nameInit.equals(nameEditText.getText().toString().trim())) {
