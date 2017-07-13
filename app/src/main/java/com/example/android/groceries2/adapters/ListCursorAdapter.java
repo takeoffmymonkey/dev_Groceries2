@@ -5,7 +5,6 @@ import android.content.Context;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,8 +26,6 @@ import static com.example.android.groceries2.db.GroceriesDbHelper.IMAGE_COLUMN;
 import static com.example.android.groceries2.db.GroceriesDbHelper.ITEMS_TABLE_NAME;
 import static com.example.android.groceries2.db.GroceriesDbHelper.LIST_AMOUNT_COLUMN;
 import static com.example.android.groceries2.db.GroceriesDbHelper.LIST_ITEM_COLUMN;
-import static com.example.android.groceries2.db.GroceriesDbHelper.LOG_TABLE_NAME;
-import static com.example.android.groceries2.db.GroceriesDbHelper.LOG_TOTAL_COLUMN;
 import static com.example.android.groceries2.db.GroceriesDbHelper.MEASURE_COLUMN;
 import static com.example.android.groceries2.db.GroceriesDbHelper.MEASURE_TABLE_NAME;
 import static com.example.android.groceries2.db.GroceriesDbHelper.NAME_COLUMN;
@@ -294,6 +291,16 @@ public class ListCursorAdapter extends CursorAdapter {
                 db.delete(currentList,
                         ID_COLUMN + "=?",
                         new String[]{Integer.toString(rowIdInt)});
+
+
+                //Check if List table is empty now:
+                Cursor listTableCursor = db.query(currentList,
+                        new String[]{ID_COLUMN},
+                        null, null, null, null, null);
+                if (listTableCursor.getCount() == 0) {//List table is empty
+                    dbHelper.deleteListTable(currentListVersion);
+                }
+                listTableCursor.close();
 
 
                 //Update cursors
