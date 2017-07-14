@@ -12,8 +12,6 @@ import android.view.View;
 import com.example.android.groceries2.R;
 import com.example.android.groceries2.activities.HistoryActivity;
 import com.example.android.groceries2.activities.MainActivity;
-import com.example.android.groceries2.fragments.ItemsFragment;
-import com.example.android.groceries2.fragments.ListFragment;
 
 import static com.example.android.groceries2.activities.HistoryActivity.historyProgressBar;
 import static com.example.android.groceries2.activities.HistoryActivity.historyProgressBarBg;
@@ -309,13 +307,14 @@ public class GroceriesDbHelper extends SQLiteOpenHelper {
     public void reactivateList(int version) {
 
 
-        class AsyncReactivate extends AsyncTask<Integer, Void, Boolean> {
+        class AsyncReactivate extends AsyncTask<Integer, Void, Float> {
 
             @Override
-            protected Boolean doInBackground(Integer... versionArr) {
+            protected Float doInBackground(Integer... versionArr) {
 
 
                 int version = versionArr[0];
+                float total = 0f;
 
                 approveCurrentList();
 
@@ -331,7 +330,7 @@ public class GroceriesDbHelper extends SQLiteOpenHelper {
                     cursor.moveToFirst();
 
                     //Delete old list
-                    float total = cursor.getFloat(cursor.getColumnIndex(LOG_TOTAL_COLUMN));
+                    total = cursor.getFloat(cursor.getColumnIndex(LOG_TOTAL_COLUMN));
                     db.delete(LOG_TABLE_NAME, LOG_VERSION_COLUMN + "=?",
                             new String[]{Integer.toString(version)});
                     cursor.close();
@@ -415,15 +414,18 @@ public class GroceriesDbHelper extends SQLiteOpenHelper {
                     cursor.close();
                 }
 
-                return true;
+                return total;
             }
 
             @Override
-            protected void onPostExecute(Boolean aBoolean) {
+            protected void onPostExecute(Float total) {
 
                 HistoryActivity.refreshHistoryCursor(null, null, 0);
                 historyProgressBar.setVisibility(View.GONE);
                 historyProgressBarBg.setVisibility(View.GONE);
+
+                //Update total text views
+                MainActivity.setTotals(total);
             }
         }
 
@@ -746,15 +748,9 @@ public class GroceriesDbHelper extends SQLiteOpenHelper {
                         LOG_VERSION_COLUMN + "=?",
                         new String[]{Integer.toString(listVersion)});
 
-
-                String formattedTotal = MainActivity.formatPrice(newTotal);
+                MainActivity.setTotals(newTotal);
 
                 Log.e("WARNING: ", "updateTotal(): " + "returning newTotal: " + newTotal);
-
-                //update text views
-                ItemsFragment.itemsTotalTextView.setText("Total: " + formattedTotal);
-                ListFragment.listTotalTextView.setText("Total: " + formattedTotal);
-
             }
 
         }

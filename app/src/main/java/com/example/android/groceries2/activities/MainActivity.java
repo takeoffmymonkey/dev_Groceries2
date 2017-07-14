@@ -25,6 +25,8 @@ import android.widget.Toast;
 import com.example.android.groceries2.R;
 import com.example.android.groceries2.adapters.CategoryAdapter;
 import com.example.android.groceries2.db.GroceriesDbHelper;
+import com.example.android.groceries2.fragments.ItemsFragment;
+import com.example.android.groceries2.fragments.ListFragment;
 
 import java.text.NumberFormat;
 import java.util.Locale;
@@ -449,5 +451,11 @@ public class MainActivity extends AppCompatActivity {
         alert.show();
     }
 
+
+    public static void setTotals (float total){
+        String formattedTotal = MainActivity.formatPrice(total);
+        ItemsFragment.itemsTotalTextView.setText("Total: " + formattedTotal);
+        ListFragment.listTotalTextView.setText("Total: " + formattedTotal);
+    }
 
 }

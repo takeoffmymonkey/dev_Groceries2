@@ -146,6 +146,7 @@ public class ListFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 dbHelper.approveCurrentList();
+                MainActivity.setTotals(0f);
                 ListFragment.refreshListCursor(null, null, 0);
                 //HistoryActivity.refreshHistoryCursor(null, null, 0);
                 ItemsFragment.refreshItemsCursor(null, null, 0);
@@ -256,6 +257,7 @@ public class ListFragment extends Fragment {
             // Respond to a click on the "Insert dummy data" menu option
             case R.id.settings_list_mark_as_complete:
                 dbHelper.approveCurrentList();
+                MainActivity.setTotals(0f);
                 ListFragment.refreshListCursor(null, null, 0);
                 //HistoryActivity.refreshHistoryCursor(null, null, 0);
                 ItemsFragment.refreshItemsCursor(null, null, 0);

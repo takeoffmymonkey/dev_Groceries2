@@ -204,6 +204,7 @@ public class ItemsFragment extends Fragment {
             }
         });
 
+
         //Find the gridView to hold items
         itemsGridView = (GridViewWithHeaderAndFooter) itemsView.findViewById(R.id.items_list);
 

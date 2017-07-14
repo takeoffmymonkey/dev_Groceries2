@@ -168,6 +168,9 @@ public class ListInfoActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 approveDialog();
+
+                //Update total text views
+                MainActivity.setTotals(0f);
             }
         });
 
@@ -207,6 +210,7 @@ public class ListInfoActivity extends AppCompatActivity {
 
             case R.id.settings_log_list_approve:
                 approveDialog();
+                MainActivity.setTotals(0f);
                 return true;
 
 
