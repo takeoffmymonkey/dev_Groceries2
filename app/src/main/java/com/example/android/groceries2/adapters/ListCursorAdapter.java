@@ -130,8 +130,7 @@ public class ListCursorAdapter extends CursorAdapter {
             checkBox.setChecked(true);
         } else { //Normal style
             view.setBackgroundColor(Color.WHITE);
-            itemNameTextView.setTypeface(itemNameTextView.getTypeface(),
-                    Typeface.NORMAL);
+            itemNameTextView.setTypeface(null, Typeface.NORMAL);
             itemNameTextView.setPaintFlags(0);
             checkBox.setChecked(false);
         }
@@ -170,8 +169,7 @@ public class ListCursorAdapter extends CursorAdapter {
                 if (isChecked == 1) { //view was checked
                     //Normalise style
                     view.setBackgroundColor(MainActivity.iconsColor);
-                    itemNameTextView.setTypeface(itemNameTextView.getTypeface(),
-                            Typeface.NORMAL);
+                    itemNameTextView.setTypeface(null, Typeface.NORMAL);
                     itemNameTextView.setPaintFlags(0);
                     checkBox.setChecked(false);
                     //Prepare value for update
