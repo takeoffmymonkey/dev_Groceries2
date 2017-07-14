@@ -5,7 +5,6 @@ package com.example.android.groceries2.activities;
 
 
 import android.app.AlertDialog;
-import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
@@ -20,6 +19,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -32,13 +32,10 @@ import java.util.Locale;
 
 import static com.example.android.groceries2.db.GroceriesDbHelper.DB_NAME;
 import static com.example.android.groceries2.db.GroceriesDbHelper.DB_VERSION;
-import static com.example.android.groceries2.db.GroceriesDbHelper.IMAGE_COLUMN;
-import static com.example.android.groceries2.db.GroceriesDbHelper.ITEMS_TABLE_NAME;
 import static com.example.android.groceries2.db.GroceriesDbHelper.LIST_AMOUNT_COLUMN;
 import static com.example.android.groceries2.db.GroceriesDbHelper.LIST_ITEM_COLUMN;
 import static com.example.android.groceries2.db.GroceriesDbHelper.MEASURE_COLUMN;
 import static com.example.android.groceries2.db.GroceriesDbHelper.MEASURE_TABLE_NAME;
-import static com.example.android.groceries2.db.GroceriesDbHelper.NAME_COLUMN;
 import static com.example.android.groceries2.db.GroceriesDbHelper.PRICE_COLUMN;
 
 
@@ -63,19 +60,24 @@ public class MainActivity extends AppCompatActivity {
     public static String[] images;
     public static Integer[] imagesIDs;
 
+    public ProgressBar mainProgressBar;
+
     public static final String APP_PREFERENCES = "mysettings";
     public static final String APP_PREFERENCES_FIRST_LAUNCH = "firstLaunch";
-    boolean firstLaunch;
     public static final String APP_PREFERENCES_RUSSIAN_OK = "russianOk";
-    boolean russianOk;
+    public static boolean russianOk;
+    public static boolean firstLaunch;
 
-    SharedPreferences mSettings;
+    public static SharedPreferences mSettings;
 
 
     @Override
     protected void onStart() {
         super.onStart();
         Log.w("WARNING: ", "IN ONSTART OF MAIN ACTIVITY");
+        if (!russianOk && Locale.getDefault().getDisplayLanguage().equals("русский")) {
+            russianAlert();
+        }
     }
 
 
@@ -116,6 +118,9 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
 
+        mainProgressBar = (ProgressBar) findViewById(R.id.main_progress_bar);
+        mainProgressBar.setVisibility(View.VISIBLE);
+
         //Get db object
         dbHelper = new GroceriesDbHelper(this, DB_NAME, null, DB_VERSION);
         db = dbHelper.getReadableDatabase();
@@ -129,74 +134,6 @@ public class MainActivity extends AppCompatActivity {
         mSettings = getSharedPreferences(APP_PREFERENCES, Context.MODE_PRIVATE);
         firstLaunch = mSettings.getBoolean(APP_PREFERENCES_FIRST_LAUNCH, true);
         russianOk = mSettings.getBoolean(APP_PREFERENCES_RUSSIAN_OK, false);
-
-
-        //Check if first launch
-        if (firstLaunch) {// This is first launch
-            //Create items
-            String[] names = getResources().getStringArray(R.array.array_auto_name_list);
-            int[] measures = getResources().getIntArray(R.array.array_auto_measure_list);
-            String[] prices = getResources().getStringArray(R.array.array_auto_price_list);
-            int[] images = getResources().getIntArray(R.array.array_auto_image_list);
-            for (int i = 0; i < prices.length; i++) {
-                ContentValues contentValues = new ContentValues();
-                contentValues.put(NAME_COLUMN, names[i]);
-                contentValues.put(PRICE_COLUMN, Float.parseFloat(prices[i]));
-                contentValues.put(MEASURE_COLUMN, measures[i] + 1);
-                contentValues.put(IMAGE_COLUMN, images[i]);
-                db.insert(ITEMS_TABLE_NAME, null, contentValues);
-            }
-            //Update to not first launch
-            SharedPreferences.Editor editor = mSettings.edit();
-            editor.putBoolean(APP_PREFERENCES_FIRST_LAUNCH, false);
-            editor.apply();
-        }
-
-
-        //Check if russian user is a normal person
-        if (!russianOk && Locale.getDefault().getDisplayLanguage().equals("русский")) {
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setTitle("Я не мог не заметить, что ты предпочитаешь русский язык..")
-                    .setMessage("Чей Крым?")
-                    .setCancelable(false)
-                    .setPositiveButton("Украинский",
-                            new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int id) {
-                                    //Update to normal russian
-                                    SharedPreferences.Editor editor = mSettings.edit();
-                                    editor.putBoolean(APP_PREFERENCES_RUSSIAN_OK, true);
-                                    editor.apply();
-                                    //Respond to user
-                                    Toast.makeText(MainActivity.this, "Так, синку", Toast.LENGTH_SHORT).show();
-                                    dialog.cancel();
-                                }
-                            })
-                    .setNeutralButton("Я аполитичен",
-                            new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int id) {
-                                    //Update to normal russian
-                                    SharedPreferences.Editor editor = mSettings.edit();
-                                    editor.putBoolean(APP_PREFERENCES_RUSSIAN_OK, true);
-                                    editor.apply();
-                                    Toast.makeText(MainActivity.this,
-                                            "Молодец. Посмотри на досуге происхождение слова идиот",
-                                            Toast.LENGTH_SHORT).show();
-                                    dialog.cancel();
-                                }
-                            })
-                    //Set cancel button with click listener
-                    .setNegativeButton("Русский",
-                            new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int id) {
-                                    Toast.makeText(MainActivity.this,
-                                            "Ваши данный успешно добавлены в базу Миротворец!",
-                                            Toast.LENGTH_SHORT).show();
-                                    dialog.cancel();
-                                }
-                            });
-            AlertDialog alert = builder.create();
-            alert.show();
-        }
 
 
         Resources resources = getResources();
@@ -295,6 +232,8 @@ public class MainActivity extends AppCompatActivity {
         }
 
         imagesIDs = imagesIDsTemp;
+
+        mainProgressBar.setVisibility(View.GONE);
 
     }
 
@@ -469,6 +408,51 @@ public class MainActivity extends AppCompatActivity {
 
     public boolean getSnackOnState() {
         return snackOn;
+    }
+
+
+    void russianAlert() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Я не мог не заметить, что ты предпочитаешь русский язык..")
+                .setMessage("Чей Крым?")
+                .setCancelable(false)
+                .setPositiveButton("Украинский",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                //Update to normal russian
+                                SharedPreferences.Editor editor = mSettings.edit();
+                                editor.putBoolean(APP_PREFERENCES_RUSSIAN_OK, true);
+                                editor.apply();
+                                //Respond to user
+                                Toast.makeText(MainActivity.this, "Так, синку", Toast.LENGTH_SHORT).show();
+                                dialog.cancel();
+                            }
+                        })
+                .setNeutralButton("Я аполитичен",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                //Update to normal russian
+                                SharedPreferences.Editor editor = mSettings.edit();
+                                editor.putBoolean(APP_PREFERENCES_RUSSIAN_OK, true);
+                                editor.apply();
+                                Toast.makeText(MainActivity.this,
+                                        "Молодец. Посмотри на досуге происхождение слова идиот",
+                                        Toast.LENGTH_SHORT).show();
+                                dialog.cancel();
+                            }
+                        })
+                //Set cancel button with click listener
+                .setNegativeButton("Русский",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                Toast.makeText(MainActivity.this,
+                                        "До новых встреч в программе, кацапуля!",
+                                        Toast.LENGTH_SHORT).show();
+                                dialog.cancel();
+                            }
+                        });
+        AlertDialog alert = builder.create();
+        alert.show();
     }
 
 

@@ -5,6 +5,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.database.Cursor;
 import android.os.AsyncTask;
@@ -24,7 +25,6 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.android.groceries2.App;
 import com.example.android.groceries2.R;
 import com.example.android.groceries2.activities.ItemEditorActivity;
 import com.example.android.groceries2.activities.MainActivity;
@@ -32,8 +32,11 @@ import com.example.android.groceries2.adapters.ItemsCursorAdapter;
 
 import in.srain.cube.views.GridViewWithHeaderAndFooter;
 
+import static com.example.android.groceries2.activities.MainActivity.APP_PREFERENCES_FIRST_LAUNCH;
 import static com.example.android.groceries2.activities.MainActivity.db;
 import static com.example.android.groceries2.activities.MainActivity.dbHelper;
+import static com.example.android.groceries2.activities.MainActivity.firstLaunch;
+import static com.example.android.groceries2.activities.MainActivity.mSettings;
 import static com.example.android.groceries2.activities.MainActivity.showSnackBar;
 import static com.example.android.groceries2.db.GroceriesDbHelper.ID_COLUMN;
 import static com.example.android.groceries2.db.GroceriesDbHelper.IMAGE_COLUMN;
@@ -149,6 +152,7 @@ public class ItemsFragment extends Fragment {
         //int with active version
         int activeListVersion = dbHelper.getActiveListVersion();
 
+
         //Total text view
         itemsTotalTextView = (TextView) itemsView.findViewById(R.id.items_total);
 
@@ -160,6 +164,18 @@ public class ItemsFragment extends Fragment {
 
         itemsProgressBar = (ProgressBar) itemsView.findViewById(R.id.items_progress_bar);
         itemsProgressBar.setVisibility(View.GONE);
+
+
+        //Check if first launch
+        if (firstLaunch) {// This is first launch
+            //Create items
+            itemsProgressBar.setVisibility(View.VISIBLE);
+            new ItemsBackgroundTasks().execute(0);
+            //Update to not first launch
+            SharedPreferences.Editor editor = mSettings.edit();
+            editor.putBoolean(APP_PREFERENCES_FIRST_LAUNCH, false);
+            editor.apply();
+        }
 
 
         TextView itemsEmptyText = (TextView) itemsView.findViewById(R.id.items_empty_text);
@@ -521,23 +537,5 @@ public class ItemsFragment extends Fragment {
 
     }
 
-
-/*    public static void populateList() {
-
-        String[] names = App.getContext().getResources().getStringArray(R.array.array_auto_name_list);
-        int[] measures = App.getContext().getResources().getIntArray(R.array.array_auto_measure_list);
-        String[] prices = App.getContext().getResources().getStringArray(R.array.array_auto_price_list);
-        int[] images = App.getContext().getResources().getIntArray(R.array.array_auto_image_list);
-
-        for (int i = 0; i < prices.length; i++) {
-            ContentValues contentValues = new ContentValues();
-            contentValues.put(NAME_COLUMN, names[i]);
-            contentValues.put(PRICE_COLUMN, Float.parseFloat(prices[i]));
-            contentValues.put(MEASURE_COLUMN, measures[i] + 1);
-            contentValues.put(IMAGE_COLUMN, images[i]);
-            db.insert(ITEMS_TABLE_NAME, null, contentValues);
-        }
-
-    }*/
 
 }
