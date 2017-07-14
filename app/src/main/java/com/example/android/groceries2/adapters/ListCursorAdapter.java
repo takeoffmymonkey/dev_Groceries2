@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -121,12 +122,16 @@ public class ListCursorAdapter extends CursorAdapter {
 
         //Set style of the view according to checked state
         if (isChecked) { //Selected style
-            view.setBackgroundColor(MainActivity.primaryLightColor);
+            view.setBackgroundColor(MainActivity.dividerColor);
+            itemNameTextView.setTypeface(itemNameTextView.getTypeface(),
+                    Typeface.ITALIC);
             itemNameTextView.setPaintFlags(itemNameTextView.getPaintFlags()
                     | Paint.STRIKE_THRU_TEXT_FLAG);
             checkBox.setChecked(true);
         } else { //Normal style
             view.setBackgroundColor(Color.WHITE);
+            itemNameTextView.setTypeface(itemNameTextView.getTypeface(),
+                    Typeface.NORMAL);
             itemNameTextView.setPaintFlags(0);
             checkBox.setChecked(false);
         }
@@ -165,13 +170,17 @@ public class ListCursorAdapter extends CursorAdapter {
                 if (isChecked == 1) { //view was checked
                     //Normalise style
                     view.setBackgroundColor(MainActivity.iconsColor);
+                    itemNameTextView.setTypeface(itemNameTextView.getTypeface(),
+                            Typeface.NORMAL);
                     itemNameTextView.setPaintFlags(0);
                     checkBox.setChecked(false);
                     //Prepare value for update
                     contentValues.put(CHECKED_COLUMN, 0);
                 } else { //view was unchecked
                     //Apply selected style
-                    view.setBackgroundColor(MainActivity.primaryLightColor);
+                    view.setBackgroundColor(MainActivity.dividerColor);
+                    itemNameTextView.setTypeface(itemNameTextView.getTypeface(),
+                            Typeface.ITALIC);
                     itemNameTextView.setPaintFlags(itemNameTextView.getPaintFlags()
                             | Paint.STRIKE_THRU_TEXT_FLAG);
                     checkBox.setChecked(true);
