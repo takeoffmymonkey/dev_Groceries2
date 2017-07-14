@@ -16,6 +16,7 @@ import com.example.android.groceries2.fragments.ItemsFragment;
 import com.example.android.groceries2.fragments.ListFragment;
 
 import static com.example.android.groceries2.activities.HistoryActivity.historyProgressBar;
+import static com.example.android.groceries2.activities.HistoryActivity.historyProgressBarBg;
 import static com.example.android.groceries2.activities.MainActivity.db;
 
 
@@ -422,10 +423,12 @@ public class GroceriesDbHelper extends SQLiteOpenHelper {
 
                 HistoryActivity.refreshHistoryCursor(null, null, 0);
                 historyProgressBar.setVisibility(View.GONE);
+                historyProgressBarBg.setVisibility(View.GONE);
             }
         }
 
         historyProgressBar.setVisibility(View.VISIBLE);
+        historyProgressBarBg.setVisibility(View.VISIBLE);
 
         new AsyncReactivate().execute(version);
 

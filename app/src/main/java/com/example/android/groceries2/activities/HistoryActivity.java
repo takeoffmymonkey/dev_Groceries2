@@ -30,8 +30,8 @@ import static com.example.android.groceries2.activities.MainActivity.db;
 import static com.example.android.groceries2.activities.MainActivity.dbHelper;
 import static com.example.android.groceries2.db.GroceriesDbHelper.ID_COLUMN;
 import static com.example.android.groceries2.db.GroceriesDbHelper.LOG_DATE_CREATED_COLUMN;
-import static com.example.android.groceries2.db.GroceriesDbHelper.LOG_VERSION_COLUMN;
 import static com.example.android.groceries2.db.GroceriesDbHelper.LOG_TABLE_NAME;
+import static com.example.android.groceries2.db.GroceriesDbHelper.LOG_VERSION_COLUMN;
 
 /**
  * Created by takeoff on 007 07 Jul 17.
@@ -42,6 +42,7 @@ public class HistoryActivity extends AppCompatActivity {
     static HistoryCursorAdapter historyCursorAdapter;
 
     public static ProgressBar historyProgressBar;
+    public static View historyProgressBarBg;
 
 
     @Override
@@ -56,6 +57,10 @@ public class HistoryActivity extends AppCompatActivity {
 
         historyProgressBar = (ProgressBar) findViewById(R.id.history_progress_bar2);
         historyProgressBar.setVisibility(View.VISIBLE);
+
+
+        historyProgressBarBg = findViewById(R.id.history_progress_bar_bg);
+        historyProgressBarBg.setVisibility(View.VISIBLE);
 
         // Find the ListView which will be populated with the pet data
         final ListView historyListView = (ListView) findViewById(R.id.history_list);
@@ -90,6 +95,7 @@ public class HistoryActivity extends AppCompatActivity {
                 historyListView.setAdapter(historyCursorAdapter);
 
                 historyProgressBar.setVisibility(View.GONE);
+                historyProgressBarBg.setVisibility(View.GONE);
                 historyListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     @Override
                     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -183,6 +189,7 @@ public class HistoryActivity extends AppCompatActivity {
                                         public void onClick(DialogInterface dialog, int id) {
 
                                             historyProgressBar.setVisibility(View.VISIBLE);
+                                            historyProgressBarBg.setVisibility(View.VISIBLE);
 
                                             new HistoryBackgroundTasks(HistoryActivity.this, "Lists deleted",
                                                     Toast.LENGTH_SHORT).execute();
@@ -253,6 +260,7 @@ public class HistoryActivity extends AppCompatActivity {
         protected void onPostExecute(Boolean aBoolean) {
             super.onPostExecute(aBoolean);
             historyProgressBar.setVisibility(View.GONE);
+            historyProgressBarBg.setVisibility(View.GONE);
 
             if (toast != null) {
                 Toast.makeText(context, toast, length).show();
@@ -295,6 +303,7 @@ public class HistoryActivity extends AppCompatActivity {
             protected void onPostExecute(Cursor cursor) {
                 historyCursorAdapter.changeCursor(cursor);
                 historyProgressBar.setVisibility(View.GONE);
+                historyProgressBarBg.setVisibility(View.GONE);
                 if (toast != null) {
                     Toast.makeText(context, toast, length).show();
                 }
