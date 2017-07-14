@@ -60,7 +60,7 @@ public class MainActivity extends AppCompatActivity {
     public static String[] images;
     public static Integer[] imagesIDs;
 
-    public ProgressBar mainProgressBar;
+
 
     public static final String APP_PREFERENCES = "mysettings";
     public static final String APP_PREFERENCES_FIRST_LAUNCH = "firstLaunch";
@@ -116,10 +116,6 @@ public class MainActivity extends AppCompatActivity {
 
 
         setContentView(R.layout.activity_main);
-
-
-        mainProgressBar = (ProgressBar) findViewById(R.id.main_progress_bar);
-        mainProgressBar.setVisibility(View.VISIBLE);
 
         //Get db object
         dbHelper = new GroceriesDbHelper(this, DB_NAME, null, DB_VERSION);
@@ -233,7 +229,6 @@ public class MainActivity extends AppCompatActivity {
 
         imagesIDs = imagesIDsTemp;
 
-        mainProgressBar.setVisibility(View.GONE);
 
     }
 
