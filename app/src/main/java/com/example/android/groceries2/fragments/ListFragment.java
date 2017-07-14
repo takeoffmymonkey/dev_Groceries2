@@ -28,6 +28,9 @@ import static com.example.android.groceries2.activities.MainActivity.db;
 import static com.example.android.groceries2.activities.MainActivity.dbHelper;
 import static com.example.android.groceries2.activities.MainActivity.showSnackBar;
 import static com.example.android.groceries2.activities.MainActivity.snackLines;
+import static com.example.android.groceries2.db.GroceriesDbHelper.CHECKED_COLUMN;
+import static com.example.android.groceries2.db.GroceriesDbHelper.LOG_DATE_CREATED_COLUMN;
+import static com.example.android.groceries2.db.GroceriesDbHelper.LOG_TABLE_NAME;
 
 
 /**
@@ -189,7 +192,8 @@ public class ListFragment extends Fragment {
         listListView.setEmptyView(emptyView);
 
         Cursor cursor = db.query(dbHelper.getActiveListName(), null,
-                null, null, null, null, null);
+                null, null, null, null, CHECKED_COLUMN + " ASC");
+
 
 
         if (cursor.getCount() == 0)
@@ -327,7 +331,8 @@ public class ListFragment extends Fragment {
             //Actions to perform on background thread
             @Override
             protected Cursor doInBackground(Integer... params) {
-                Cursor cursor = db.query(dbHelper.getActiveListName(), null, null, null, null, null, null);
+                Cursor cursor = db.query(dbHelper.getActiveListName(), null,
+                        null, null, null, null, CHECKED_COLUMN + " ASC");
                 return cursor;
             }
 
