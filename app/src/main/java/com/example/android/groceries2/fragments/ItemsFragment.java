@@ -59,6 +59,8 @@ public class ItemsFragment extends Fragment {
     static ItemsCursorAdapter itemsCursorAdapter;
 
     public static ProgressBar itemsProgressBar;
+    public static View itemsProgressBarBg;
+
 
     public static TextView itemsTotalTextView;
 
@@ -165,11 +167,14 @@ public class ItemsFragment extends Fragment {
         itemsProgressBar = (ProgressBar) itemsView.findViewById(R.id.items_progress_bar);
         itemsProgressBar.setVisibility(View.GONE);
 
+        itemsProgressBarBg = itemsView.findViewById(R.id.items_progress_bar_bg);
+        itemsProgressBarBg.setVisibility(View.GONE);
 
         //Check if first launch
         if (firstLaunch) {// This is first launch
             //Create items
             itemsProgressBar.setVisibility(View.VISIBLE);
+            itemsProgressBarBg.setVisibility(View.VISIBLE);
             new ItemsBackgroundTasks().execute(0);
             //Update to not first launch
             SharedPreferences.Editor editor = mSettings.edit();
@@ -272,6 +277,7 @@ public class ItemsFragment extends Fragment {
             case R.id.settings_items_populate_list:
 
                 itemsProgressBar.setVisibility(View.VISIBLE);
+                itemsProgressBarBg.setVisibility(View.VISIBLE);
 
                 new ItemsBackgroundTasks(getContext(), "Items added").execute(0);
 
@@ -315,6 +321,7 @@ public class ItemsFragment extends Fragment {
                                     new DialogInterface.OnClickListener() {
                                         public void onClick(DialogInterface dialog, int id) {
                                             itemsProgressBar.setVisibility(View.VISIBLE);
+                                            itemsProgressBarBg.setVisibility(View.VISIBLE);
                                             new ItemsBackgroundTasks(getContext(), "All items successfully deleted!")
                                                     .execute(1);
                                             //Close the dialog window
@@ -417,6 +424,7 @@ public class ItemsFragment extends Fragment {
             itemsTotalTextView.setText("Total: " + MainActivity.formatPrice(0.00f));
 
             itemsProgressBar.setVisibility(View.GONE);
+            itemsProgressBarBg.setVisibility(View.GONE);
 
             if (toast != null) {
                 if (toast.equals("Items added")) {

@@ -76,11 +76,18 @@
         android:layout_height="match_parent"
         android:gravity="center">
 
+        <View
+            android:id="@+id/items_progress_bar_bg"
+            android:background="@color/colorDarkerGray"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
         <ProgressBar
             android:id="@+id/items_progress_bar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:indeterminate="true"
+            android:layout_centerInParent="true"
             android:background ="@xml/progress_back"
             android:indeterminateDrawable="@drawable/progress_face"/>
     </RelativeLayout>
