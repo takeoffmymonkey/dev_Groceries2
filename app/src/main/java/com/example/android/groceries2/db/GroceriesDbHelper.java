@@ -159,9 +159,6 @@ public class GroceriesDbHelper extends SQLiteOpenHelper {
         }
 
 
-        //Populate list on startup
-        ItemsFragment.populateList();
-
     }
 
 

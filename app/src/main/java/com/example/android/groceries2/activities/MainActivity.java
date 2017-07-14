@@ -5,7 +5,10 @@ package com.example.android.groceries2.activities;
 
 
 import android.app.AlertDialog;
+import android.content.ContentValues;
+import android.content.Context;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -29,10 +32,13 @@ import java.util.Locale;
 
 import static com.example.android.groceries2.db.GroceriesDbHelper.DB_NAME;
 import static com.example.android.groceries2.db.GroceriesDbHelper.DB_VERSION;
+import static com.example.android.groceries2.db.GroceriesDbHelper.IMAGE_COLUMN;
+import static com.example.android.groceries2.db.GroceriesDbHelper.ITEMS_TABLE_NAME;
 import static com.example.android.groceries2.db.GroceriesDbHelper.LIST_AMOUNT_COLUMN;
 import static com.example.android.groceries2.db.GroceriesDbHelper.LIST_ITEM_COLUMN;
 import static com.example.android.groceries2.db.GroceriesDbHelper.MEASURE_COLUMN;
 import static com.example.android.groceries2.db.GroceriesDbHelper.MEASURE_TABLE_NAME;
+import static com.example.android.groceries2.db.GroceriesDbHelper.NAME_COLUMN;
 import static com.example.android.groceries2.db.GroceriesDbHelper.PRICE_COLUMN;
 
 
@@ -56,6 +62,14 @@ public class MainActivity extends AppCompatActivity {
     public static Snackbar snackBar;
     public static String[] images;
     public static Integer[] imagesIDs;
+
+    public static final String APP_PREFERENCES = "mysettings";
+    public static final String APP_PREFERENCES_FIRST_LAUNCH = "firstLaunch";
+    boolean firstLaunch;
+    public static final String APP_PREFERENCES_RUSSIAN_OK = "russianOk";
+    boolean russianOk;
+
+    SharedPreferences mSettings;
 
 
     @Override
@@ -96,40 +110,78 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        setContentView(R.layout.activity_main);
-
         Log.w("WARNING: ", "IN ONCREATE OF MAIN ACTIVITY");
 
 
-        //Special for russian locale
-        if (Locale.getDefault().getDisplayLanguage().equals("русский")) {
+        setContentView(R.layout.activity_main);
 
+
+        //Get db object
+        dbHelper = new GroceriesDbHelper(this, DB_NAME, null, DB_VERSION);
+        db = dbHelper.getReadableDatabase();
+
+
+        //Tab to open
+        int tab = 0;
+        if (dbHelper.getActiveListVersion() == 0) tab = 1;
+
+        //Get settings values
+        mSettings = getSharedPreferences(APP_PREFERENCES, Context.MODE_PRIVATE);
+        firstLaunch = mSettings.getBoolean(APP_PREFERENCES_FIRST_LAUNCH, true);
+        russianOk = mSettings.getBoolean(APP_PREFERENCES_RUSSIAN_OK, false);
+
+
+        //Check if first launch
+        if (firstLaunch) {// This is first launch
+            //Create items
+            String[] names = getResources().getStringArray(R.array.array_auto_name_list);
+            int[] measures = getResources().getIntArray(R.array.array_auto_measure_list);
+            String[] prices = getResources().getStringArray(R.array.array_auto_price_list);
+            int[] images = getResources().getIntArray(R.array.array_auto_image_list);
+            for (int i = 0; i < prices.length; i++) {
+                ContentValues contentValues = new ContentValues();
+                contentValues.put(NAME_COLUMN, names[i]);
+                contentValues.put(PRICE_COLUMN, Float.parseFloat(prices[i]));
+                contentValues.put(MEASURE_COLUMN, measures[i] + 1);
+                contentValues.put(IMAGE_COLUMN, images[i]);
+                db.insert(ITEMS_TABLE_NAME, null, contentValues);
+            }
+            //Update to not first launch
+            SharedPreferences.Editor editor = mSettings.edit();
+            editor.putBoolean(APP_PREFERENCES_FIRST_LAUNCH, false);
+            editor.apply();
+        }
+
+
+        //Check if russian user is a normal person
+        if (!russianOk && Locale.getDefault().getDisplayLanguage().equals("русский")) {
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
-
             builder.setTitle("Я не мог не заметить, что ты предпочитаешь русский язык..")
                     .setMessage("Чей Крым?")
                     .setCancelable(false)
                     .setPositiveButton("Украинский",
                             new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int id) {
-
-                                    Toast.makeText(MainActivity.this, "Ще б пак!", Toast.LENGTH_SHORT).show();
-
+                                    //Update to normal russian
+                                    SharedPreferences.Editor editor = mSettings.edit();
+                                    editor.putBoolean(APP_PREFERENCES_RUSSIAN_OK, true);
+                                    editor.apply();
+                                    //Respond to user
+                                    Toast.makeText(MainActivity.this, "Так, синку", Toast.LENGTH_SHORT).show();
                                     dialog.cancel();
-
                                 }
                             })
                     .setNeutralButton("Я аполитичен",
                             new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int id) {
-
+                                    //Update to normal russian
+                                    SharedPreferences.Editor editor = mSettings.edit();
+                                    editor.putBoolean(APP_PREFERENCES_RUSSIAN_OK, true);
+                                    editor.apply();
                                     Toast.makeText(MainActivity.this,
                                             "Молодец. Посмотри на досуге происхождение слова идиот",
                                             Toast.LENGTH_SHORT).show();
-
                                     dialog.cancel();
-
                                 }
                             })
                     //Set cancel button with click listener
@@ -139,31 +191,25 @@ public class MainActivity extends AppCompatActivity {
                                     Toast.makeText(MainActivity.this,
                                             "Ваши данный успешно добавлены в базу Миротворец!",
                                             Toast.LENGTH_SHORT).show();
-
                                     dialog.cancel();
                                 }
                             });
-
             AlertDialog alert = builder.create();
             alert.show();
-
         }
 
 
+        Resources resources = getResources();
+
         //Get colors
-        primaryColor = getResources().getColor(R.color.colorPrimary);
-        primaryDarkColor = getResources().getColor(R.color.colorPrimaryDark);
-        primaryLightColor = getResources().getColor(R.color.colorPrimaryLight);
-        accentColor = getResources().getColor(R.color.colorAccent);
-        primaryTextColor = getResources().getColor(R.color.colorPrimaryText);
-        secondaryTextColor = getResources().getColor(R.color.colorSecondaryText);
-        dividerColor = getResources().getColor(R.color.colorDivider);
-        iconsColor = getResources().getColor(R.color.colorIcons);
-
-
-        //Get db object
-        dbHelper = new GroceriesDbHelper(this, DB_NAME, null, DB_VERSION);
-        db = dbHelper.getReadableDatabase();
+        primaryColor = resources.getColor(R.color.colorPrimary);
+        primaryDarkColor = resources.getColor(R.color.colorPrimaryDark);
+        primaryLightColor = resources.getColor(R.color.colorPrimaryLight);
+        accentColor = resources.getColor(R.color.colorAccent);
+        primaryTextColor = resources.getColor(R.color.colorPrimaryText);
+        secondaryTextColor = resources.getColor(R.color.colorSecondaryText);
+        dividerColor = resources.getColor(R.color.colorDivider);
+        iconsColor = resources.getColor(R.color.colorIcons);
 
 
         //Setting adapter and view pager
@@ -204,9 +250,10 @@ public class MainActivity extends AppCompatActivity {
 
 
         //Check what tab to select
-        int tab = getIntent().getIntExtra("tab", 0);
-
-        if (tab != 0) {
+        int tabFromIntent = getIntent().getIntExtra("tab", -1);
+        if (tabFromIntent != -1) {//There is a request to tab select from intent
+            selectTab(tabFromIntent);
+        } else { //there is no intent request for tab select
             selectTab(tab);
         }
 
@@ -235,7 +282,7 @@ public class MainActivity extends AppCompatActivity {
 
 
         //Create arrays for images names and ids
-        Resources resources = getResources();
+
         images = resources.getStringArray(R.array.array_images);
         Integer[] imagesIDsTemp = new Integer[147];
         String packageName = getPackageName();

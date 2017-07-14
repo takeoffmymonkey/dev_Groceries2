@@ -24,6 +24,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.android.groceries2.App;
 import com.example.android.groceries2.R;
 import com.example.android.groceries2.activities.ItemEditorActivity;
 import com.example.android.groceries2.activities.MainActivity;
@@ -521,9 +522,9 @@ public class ItemsFragment extends Fragment {
     }
 
 
-    public static void populateList() {
+/*    public static void populateList() {
 
-     /*   String[] names = App.getContext().getResources().getStringArray(R.array.array_auto_name_list);
+        String[] names = App.getContext().getResources().getStringArray(R.array.array_auto_name_list);
         int[] measures = App.getContext().getResources().getIntArray(R.array.array_auto_measure_list);
         String[] prices = App.getContext().getResources().getStringArray(R.array.array_auto_price_list);
         int[] images = App.getContext().getResources().getIntArray(R.array.array_auto_image_list);
@@ -535,8 +536,8 @@ public class ItemsFragment extends Fragment {
             contentValues.put(MEASURE_COLUMN, measures[i] + 1);
             contentValues.put(IMAGE_COLUMN, images[i]);
             db.insert(ITEMS_TABLE_NAME, null, contentValues);
-        }*/
+        }
 
-    }
+    }*/
 
 }
